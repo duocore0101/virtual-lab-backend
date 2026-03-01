@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - G MARS</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#060b16;
+    color:white;
+    padding:60px 8%;
+}
+
+/* ===== HEADER ===== */
+.about-header small{
+    color:#f4b400;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+.about-header h1{
+    font-size:48px;
+    margin-top:10px;
+    font-weight:700;
+}
+
+.about-header h1 span{
+    color:#f4b400;
+}
+
+.about-header p{
+    margin-top:15px;
+    color:#9aa4b2;
+    max-width:650px;
+    font-size:15px;
+    line-height:1.6;
+}
+
+/* ===== MISSION SECTION ===== */
+.mission-section{
+    margin-top:70px;
+    background:#0c1222;
+    padding:40px;
+    border-radius:20px;
+    border:1px solid #1f2937;
+}
+
+.mission-section h2{
+    color:#f4b400;
+    margin-bottom:20px;
+}
+
+.mission-section p{
+    color:#9aa4b2;
+    line-height:1.7;
+    font-size:15px;
+}
+
+/* ===== TEAM SECTION ===== */
+.team-section{
+    margin-top:80px;
+}
+
+.team-section h2{
+    font-size:36px;
+    margin-bottom:40px;
+}
+
+.team-section h2 span{
+    color:#f4b400;
+}
+
+/* FORCE 5 IN ONE LINE */
+.team-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:stretch;
+    gap:25px;
+    margin-top:60px;
+}
+
+.team-card{
+    background:#0c1222;
+    border-radius:20px;
+    padding:30px 20px;
+    text-align:center;
+    width:19%;
+    border:1px solid #1f2937;
+    transition:0.3s;
+}
+
+.team-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 40px rgba(244,180,0,0.25);
+}
+
+/* IMAGE FIX */
+.team-card img{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center top;
+    border:4px solid #f4b400;
+    margin-bottom:20px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    box-shadow:0 0 20px rgba(244,180,0,0.3);
+}
+
+.team-card h3{
+    margin-top:10px;
+    font-size:17px;
+}
+
+.team-card p{
+    font-size:13px;
+    color:#9aa4b2;
+    margin-top:5px;
+}
+
+/* ===== VALUES ===== */
+.values{
+    margin-top:80px;
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.value-card{
+    background:#0c1222;
+    padding:30px;
+    border-radius:20px;
+    flex:1 1 calc(33% - 20px);
+    border:1px solid #1f2937;
+    transition:0.3s;
+}
+
+.value-card:hover{
+    box-shadow:0 0 40px rgba(244,180,0,0.2);
+}
+
+.value-card h4{
+    color:#f4b400;
+    margin-bottom:15px;
+}
+
+.value-card p{
+    color:#9aa4b2;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){
+    .team-container{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .team-card{
+        width:45%;
+        margin-bottom:25px;
+    }
+
+    .value-card{
+        flex:1 1 100%;
+    }
+}
+
+@media(max-width:700px){
+    .team-card{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="about-header">
+    <small>ABOUT G MARS</small>
+    <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
+    <p>
+        G MARS Pharma Solution is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
+    </p>
+</div>
+
+<!-- Mission -->
+<div class="mission-section">
+    <h2>Our Mission</h2>
+    <p>
+        We aim to bridge the gap between theoretical pharmacology education and real-world laboratory experience through advanced digital simulation technology. G MARS empowers colleges with AI-driven evaluation, automated practical journals, real-time analytics, and multi-tenant SaaS infrastructure.
+    </p>
+</div>
+
+<!-- Team -->
+<div class="team-section">
+    <h2>Meet Our <span>Core Team</span></h2>
+
+    <div class="team-container">
+
+        <div class="team-card">
+            <img src="{% static 'images/member1.png' %}" alt="Dr. Ganesh Y Dama">
+            <h3>Dr. Ganesh Y Dama</h3>
+            <p>Principle <br>
+            Sharadchandra Pawar College of Pharmacy</p>
+        </div>
+
+        <div class="team-card">
+            <img src="{% static 'images/member2.png' %}" alt="Dr. Abhishek D Meher">
+            <h3>Dr. Abhishek D Meher</h3>
+            <p>Faculty</p>
+        </div>
+
+        <div class="team-card">
+            <img src="{% static 'images/member3.png' %}" alt="Dr. Ashwini S Gawade">
+            <h3>Dr. Ashwini S Gawade</h3>
+            <p>Faculty</p>
+        </div>
+
+        <div class="team-card">
+            <img src="{% static 'images/member4.png' %}" alt="Dr. Ramesh B Pethakar">
+            <h3>Dr. Ramesh B Pethakar</h3>
+            <p>Faculty</p>
+        </div>
+
+        <div class="team-card">
+            <img src="{% static 'images/member5.png' %}" alt="Dr. Sumit A Joshi">
+            <h3>Dr. Sumit A Joshi</h3>
+            <p>HOD Pharmacology</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Values -->
+<div class="values">
+    <div class="value-card">
+        <h4>Innovation</h4>
+        <p>We integrate AI, automation, and modern SaaS architecture into pharmaceutical education.</p>
+    </div>
+
+    <div class="value-card">
+        <h4>Accuracy</h4>
+        <p>Every simulation is designed to reflect real pharmacological laboratory standards.</p>
+    </div>
+
+    <div class="value-card">
+        <h4>Scalability</h4>
+        <p>Built for institutions — supporting multiple colleges under one secure multi-tenant system.</p>
+    </div>
+</div>
+
+</body>
+</html>

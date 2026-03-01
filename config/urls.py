@@ -13,6 +13,13 @@ from .views import pricing_view
 def home_view(request):
     return render(request, "public/home.html")
 
+def features_view(request):
+    return render(request, "public/features.html")
+
+def experiments_view(request):
+    return render(request, "public/experiments.html")
+
+
 
 
 
@@ -23,6 +30,13 @@ urlpatterns = [
     # -------------------------
     path("", home_view, name="home"),
     path('pricing/', pricing_view, name='pricing'),
+
+    # -------------------------
+# PUBLIC PAGES
+# -------------------------
+path("features/", features_view, name="features"),
+path("experiments/", experiments_view, name="experiments"),
+path('about/', views.about, name='about'),
 
     # -------------------------
     # AUTH

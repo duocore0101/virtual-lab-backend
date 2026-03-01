@@ -1,0 +1,383 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Experiments – G MARS Pharma Solution</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ═══════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --red:#c70000;
+  --red-bright:#ff4d4d;
+  --bg-main:#f4efe8;
+  --bg-dark:#05070f;
+  --bg-experiment:#030508;
+  --text:#e8eaf0;
+  --text-dim:#636b80;
+  --green:#00ff9d;
+  --surface:rgba(255,255,255,0.03);
+}
+
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-main);
+  transition:0.4s ease;
+}
+
+body.dark-mode {
+  --bg-main:#05070f;
+}
+
+/* NAVBAR */
+.navbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:#fff;
+}
+
+body.dark-mode .navbar { background:#0b0f1a; }
+
+.nav-links a {
+  margin-left:25px;
+  text-decoration:none;
+  font-family:'Poppins',sans-serif;
+  color:#000;
+  font-weight:500;
+}
+
+body.dark-mode .nav-links a { color:#fff; }
+
+.nav-links a:hover { color:var(--red-bright); }
+
+.login-btn {
+  background:var(--red-bright);
+  color:#fff!important;
+  padding:8px 18px;
+  border-radius:25px;
+}
+
+.theme-toggle {
+  margin-left:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:1px solid #ddd;
+  background:#fff;
+}
+
+/* ═══════════════════════════════════════════
+   EXPERIMENT SECTION
+═══════════════════════════════════════════ */
+.exp-section {
+  background:var(--bg-experiment);
+  padding:100px 60px 120px;
+  color:var(--text);
+  min-height:100vh;
+}
+
+.exp-inner { max-width:1400px; margin:0 auto; }
+
+.exp-eyebrow {
+  font-family:'Orbitron',monospace;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--green);
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+
+.exp-title {
+  font-family:'Orbitron',monospace;
+  font-size:48px;
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+.exp-title .g-accent { color:var(--green); }
+.exp-title .g-dim { color:var(--text-dim); }
+
+.exp-subtitle {
+  font-size:16px;
+  color:var(--text-dim);
+  max-width:700px;
+  margin-bottom:70px;
+  line-height:1.7;
+}
+
+/* HERO GRID */
+.exp-hero {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  margin-bottom:70px;
+}
+
+/* TERMINAL */
+.exp-terminal {
+  background:rgba(0,255,157,0.02);
+  border:1px solid rgba(0,255,157,0.2);
+  border-radius:16px;
+  padding:30px;
+  font-family:'Space Mono',monospace;
+  font-size:13px;
+  line-height:1.8;
+}
+
+/* STAT CARDS */
+.exp-stat-card {
+  background:var(--surface);
+  border:1px solid rgba(0,255,157,0.15);
+  padding:22px;
+  border-radius:14px;
+  margin-bottom:16px;
+}
+
+/* EXPERIMENT GRID */
+.exp-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:60px;
+}
+
+.exp-card {
+  background:var(--surface);
+  border:1px solid rgba(0,255,157,0.1);
+  border-radius:16px;
+  padding:24px;
+  transition:0.3s;
+}
+
+.exp-card:hover {
+  transform:translateY(-6px);
+  border-color:var(--green);
+  box-shadow:0 15px 35px rgba(0,255,157,.1);
+}
+
+.exp-card-title {
+  font-family:'Orbitron',monospace;
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.exp-card-desc {
+  font-size:13px;
+  color:var(--text-dim);
+}
+
+/* CURRICULUM */
+.exp-curriculum {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:60px;
+}
+
+.curr-card {
+  background:var(--surface);
+  border:1px solid rgba(199,0,0,.15);
+  padding:26px;
+  border-radius:14px;
+}
+
+/* CTA */
+.exp-cta {
+  background:linear-gradient(135deg,rgba(0,255,157,0.05),rgba(199,0,0,0.05));
+  padding:50px;
+  border-radius:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.cta-btn {
+  padding:12px 28px;
+  border-radius:30px;
+  font-family:'Orbitron',monospace;
+  text-decoration:none;
+}
+
+.cta-btn.primary {
+  background:var(--green);
+  color:#000;
+}
+
+.cta-btn.secondary {
+  border:1px solid #fff;
+  color:#fff;
+}
+
+@media(max-width:1000px){
+  .exp-grid{grid-template-columns:repeat(2,1fr);}
+  .exp-curriculum{grid-template-columns:1fr;}
+  .exp-hero{grid-template-columns:1fr;}
+}
+
+@media(max-width:600px){
+  .exp-grid{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div>
+    <a href="{% url 'home' %}" style="text-decoration:none;font-weight:700;">G MARS</a>
+  </div>
+
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'features' %}">Features</a>
+    <a href="{% url 'experiments' %}">Experiments</a>
+    <a href="{% url 'pricing' %}">Pricing</a>
+    <a href="{% url 'login' %}" class="login-btn">Login</a>
+    <button id="themeToggle" class="theme-toggle">🌙</button>
+  </div>
+</div>
+
+<!-- EXPERIMENT SECTION -->
+<section class="exp-section">
+<div class="exp-inner">
+
+<p class="exp-eyebrow">Virtual Laboratory</p>
+
+<h2 class="exp-title">
+<span class="g-dim">Explore Our</span><br>
+<span class="g-accent">Virtual Pharmacology</span><br>
+<span class="g-dim">Experiments</span>
+</h2>
+
+<p class="exp-subtitle">
+Perform practicals digitally, record observations, analyze results, and generate professional reports — all in one intelligent platform.
+</p>
+
+<!-- HERO -->
+<div class="exp-hero">
+<div class="exp-terminal">
+$ gmars init --lab pharmacology <br>
+✔ Lab environment loaded <br>
+✔ Simulation ready <br>
+✔ Journal PDF auto-generated
+</div>
+
+<div>
+<div class="exp-stat-card">🔬 No Physical Risk</div>
+<div class="exp-stat-card">⚡ Real-Time Simulation</div>
+<div class="exp-stat-card">📄 Instant Journal Generation</div>
+<div class="exp-stat-card">🎓 Exam-Ready Format</div>
+</div>
+</div>
+
+<!-- EXPERIMENT CARDS -->
+<div class="exp-grid">
+
+<div class="exp-card">
+<div class="exp-card-title">Rotarod Test</div>
+<div class="exp-card-desc">Evaluation of motor coordination and CNS depressant activity.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Maze Test</div>
+<div class="exp-card-desc">Assessment of learning and cognitive behavior.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Hot Plate Method</div>
+<div class="exp-card-desc">Analgesic activity testing with thermal stimulus.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Actophotometer</div>
+<div class="exp-card-desc">Measurement of locomotor activity.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Convulsion Studies</div>
+<div class="exp-card-desc">Anticonvulsant drug screening models.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Major & Minor Practicals</div>
+<div class="exp-card-desc">University-structured examination practicals.</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-card-title">Viva Modules</div>
+<div class="exp-card-desc">AI-generated viva question systems.</div>
+</div>
+
+</div>
+
+<!-- CURRICULUM -->
+<div class="exp-curriculum">
+
+<div class="curr-card">
+<h4>D. Pharm</h4>
+<p>Complete second-year practical coverage.</p>
+</div>
+
+<div class="curr-card">
+<h4>B. Pharm</h4>
+<p>Sem IV, V & VI pharmacology practicals.</p>
+</div>
+
+<div class="curr-card">
+<h4>M. Pharm</h4>
+<p>Advanced research-oriented modules.</p>
+</div>
+
+</div>
+
+<!-- CTA -->
+<div class="exp-cta">
+<div>
+<h3>From Lab to Learning — Digitally.</h3>
+<p>No physical lab limitations. Just smart simulation.</p>
+</div>
+
+<div>
+<a href="{% url 'login' %}" class="cta-btn primary">Start Simulating</a>
+<a href="{% url 'features' %}" class="cta-btn secondary">View Features</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<script>
+const toggleBtn=document.getElementById("themeToggle");
+if(localStorage.getItem("theme")==="dark"){
+document.body.classList.add("dark-mode");
+toggleBtn.textContent="☀️";
+}
+toggleBtn.addEventListener("click",()=>{
+document.body.classList.toggle("dark-mode");
+if(document.body.classList.contains("dark-mode")){
+localStorage.setItem("theme","dark");
+toggleBtn.textContent="☀️";
+}else{
+localStorage.setItem("theme","light");
+toggleBtn.textContent="🌙";
+}
+});
+</script>
+
+</body>
+</html>
