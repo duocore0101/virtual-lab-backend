@@ -1,0 +1,153 @@
+/* ===============================
+   BASE RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===============================
+   DARK THEME (DEFAULT)
+================================ */
+body.theme-dark {
+  background: radial-gradient(circle at top, #1a0000, #000000);
+  color: #ffffff;
+}
+
+/* ===============================
+   LIGHT THEME
+================================ */
+body.theme-light {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* ===============================
+   MAIN CONTAINER
+================================ */
+.exp-container {
+  max-width: 1000px;
+  margin: 120px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* ===============================
+   TITLE
+================================ */
+.exp-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ff2b2b;
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+/* ===============================
+   CONTENT CARD
+================================ */
+.exp-card {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  line-height: 1.8;
+  font-size: 18px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+body.theme-light .exp-card {
+  background: #ffffff;
+  color: #111;
+}
+
+/* ===============================
+   VIDEO SECTION (FIXED)
+================================ */
+
+/* Container: flexible, no forced height */
+.video-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto 40px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Video: natural aspect ratio */
+.video-container video {
+  width: 100%;
+  height: auto;                /* ✅ critical */
+  max-height: 520px;           /* optional cap */
+  display: block;
+  object-fit: contain;         /* ✅ NEVER crop */
+}
+
+/* Small video = same behavior (NO forced crop) */
+.video-container.small-video {
+  max-width: 900px;
+  height: auto;                /* ✅ remove forced height */
+  background: #000;
+}
+
+.video-container.small-video video {
+  height: auto;
+  object-fit: contain;         /* ✅ fix */
+}
+
+/* ===============================
+   FLEX LAYOUT
+================================ */
+.top-flex-row {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  margin-bottom: 50px;
+}
+
+.top-flex-row .video-container {
+  flex: 1.2;
+}
+
+.overview-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ===============================
+   NAV BUTTON
+================================ */
+.exp-actions {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-start {
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 900px) {
+  .top-flex-row {
+    flex-direction: column;
+  }
+
+  .video-container video {
+    max-height: none;
+  }
+}

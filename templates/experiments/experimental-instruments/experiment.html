@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experimental Instruments | Virtual Lab</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<!-- 🧪 MAIN CONTAINER -->
+<div class="exp-container">
+
+  <!-- TITLE -->
+  <h1 class="exp-title">Experimental Instruments</h1>
+
+  <!-- 🔘 INSTRUMENT BUTTON LIST -->
+  <div class="animal-list">
+
+    <a href="/experiment/{{ experiment.slug }}/student-organ-bath/" class="animal-btn">
+      Student Organ Bath
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/sherrington-kymograph/" class="animal-btn">
+      Sherrington's Rotating Drum (Kymograph)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/actophotometer/" class="animal-btn">
+      Actophotometer (Activity Cage)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/rotarod/" class="animal-btn">
+      Rotarod
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/hot-plate/" class="animal-btn">
+      Eddy's Hot Plate Analgesiometer
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/digital-telethermometer/" class="animal-btn">
+      Digital Telethermometer
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/pole-climbing/" class="animal-btn">
+      Pole Climbing Apparatus (Cook's)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/staircase/" class="animal-btn">
+      Staircase Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/y-maze/" class="animal-btn">
+      Y-Maze Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/elevated-plus-maze/" class="animal-btn">
+      Elevated Plus Maze Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/open-field/" class="animal-btn">
+      Open Field Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/hole-board/" class="animal-btn">
+      Hole Board Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/electroconvulsiometer/" class="animal-btn">
+      Electroconvulsiometer (Convulsiometer)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/plethysmometer/" class="animal-btn">
+      Plethysmometer (Digital Plethysmometer)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/tail-flick/" class="animal-btn">
+      Tail Flick Analgesiometer
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/langendorff/" class="animal-btn">
+      Langendorff Apparatus
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/basic-surgical-instruments/" class="animal-btn">
+      Basic Surgical Instruments Used in Experimental Pharmacology
+    </a>
+
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="exp-actions">
+
+    <a href="/experiment/{{ experiment.slug }}/"
+       class="exp-nav-btn back-btn">
+      ← Back to Introduction
+    </a>
+
+    <a href="/student/dashboard/"
+       class="exp-nav-btn finish-btn">
+      ✔ Finish Practical
+    </a>
+
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+</body>
+</html>

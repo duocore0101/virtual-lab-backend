@@ -1,0 +1,64 @@
+{% extends "student/base.html" %}
+{% block title %}My Exams{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>My Exams</h2>
+    <hr>
+
+    {% if exam_data %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Exam Title</th>
+                    <th>Type</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in exam_data %}
+                <tr>
+                    <td>{{ item.exam.title }}</td>
+                    <td>{{ item.exam.get_exam_type_display }}</td>
+                    <td>{{ item.exam.get_year_display }}</td>
+                    <td>
+                        {% if item.status == "Approved" %}
+                            <span class="badge bg-success">{{ item.status }}</span>
+                        {% elif item.status == "Submitted" %}
+                            <span class="badge bg-warning text-dark">{{ item.status }}</span>
+                        {% elif item.status == "In Progress" %}
+                            <span class="badge bg-primary">{{ item.status }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ item.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.status == "Not Started" %}
+                            <a href="{% url 'start-exam' item.exam.id %}" 
+   class="btn btn-sm btn-success">
+   Start
+</a>
+                        {% elif item.status == "In Progress" %}
+                            <a href="#" class="btn btn-sm btn-primary">Resume</a>
+                        {% elif item.status == "Approved" %}
+                            <a href="{% url 'student-view-result' item.exam.id %}" 
+                            class="btn btn-sm btn-info">
+                            View Result
+                            </a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No exams available.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Conclusion – Anticonvulsant Activity (MES / PTZ)</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <style>
+    /* =========================
+       CONCLUSION CARD
+    ========================== */
+    .conclusion-card {
+      max-width: 900px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme .conclusion-card {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .conclusion-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #ff4b4b;
+    }
+
+    body.light-theme .conclusion-title {
+      color: #c62828;
+    }
+
+    .conclusion-text {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #e5e5e5;
+      text-align: justify;
+    }
+
+    body.light-theme .conclusion-text {
+      color: #333;
+    }
+
+    .highlight {
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    body.light-theme .highlight {
+      color: #15803d;
+    }
+
+    /* NAV BUTTON */
+    .nav-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .nav-btn button {
+      margin-top: 25px;
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 30px;
+      border: 2px solid #ff2a2a;
+      background: transparent;
+      color: #ff2a2a;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-btn button:hover {
+      background: linear-gradient(135deg, #ff2a2a, #8b0000);
+      color: #ffffff;
+      box-shadow:
+        0 0 8px rgba(255, 42, 42, 0.7),
+        0 0 18px rgba(255, 0, 0, 0.5);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .nav-btn button:active {
+      transform: scale(0.97);
+    }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #555;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #ff4b4b;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    body.light-theme .toggle-label {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🌗 THEME TOGGLE -->
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+</div>
+
+<div class="conclusion-card">
+
+  <div class="conclusion-title">Conclusion</div>
+
+  <p class="conclusion-text">
+    The anticonvulsant activity of the test drug was evaluated using
+    <span class="highlight">Maximal Electroshock Seizure (MES)</span> and
+    <span class="highlight">Pentylenetetrazol (PTZ)</span> induced seizure models
+    in experimental animals.
+  </p>
+
+  <p class="conclusion-text">
+    In the MES method, the standard drug <span class="highlight">Phenytoin</span>
+    significantly reduced hind limb tonic extension, indicating protection
+    against generalized tonic–clonic seizures. The test drug also showed
+    appreciable anticonvulsant activity when compared to the control group.
+  </p>
+
+  <p class="conclusion-text">
+    In the PTZ-induced seizure model, the standard drug
+    <span class="highlight">Diazepam</span> provided complete protection against
+    clonic seizures. The test drug produced a significant delay in seizure onset
+    and partial protection, demonstrating its efficacy against absence and
+    clonic seizures.
+  </p>
+
+  <p class="conclusion-text">
+    Thus, it can be concluded that the test drug possesses
+    <span class="highlight">significant anticonvulsant activity</span>, as
+    evidenced by its protective effects in both MES and PTZ experimental models.
+  </p>
+
+  <div class="nav-btn">
+    <button onclick="location.href='/student/dashboard/'">
+      Finish Practical ✔
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* =========================
+   THEME TOGGLE LOGIC
+========================== */
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("uiTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "uiTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+
+</body>
+</html>

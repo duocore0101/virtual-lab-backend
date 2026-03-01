@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Acute Eye Irritation Test – Requirements</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐇 Animals -->
+  <div class="info-box">
+    <h2>Experimental Animals</h2>
+    <ul>
+      <li>Healthy young adult albino rabbits</li>
+      <li>Either sex</li>
+      <li>Body weight: 2–3 kg</li>
+      <li>Initial test: 1 animal</li>
+      <li>Confirmatory test: Up to 2 additional animals</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 Test Substance -->
+  <div class="info-box">
+    <h2>Test Substance</h2>
+    <ul>
+      <li>Liquids: 0.1 mL instilled into conjunctival sac</li>
+      <li>Solids / Pastes: 0.1 g or ≤ 100 mg (finely ground)</li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>Apparatus and Instruments</h2>
+    <ul>
+      <li>Rabbit restraining holder</li>
+      <li>Hand-held slit lamp / binocular loupe</li>
+      <li>Fluorescein strips</li>
+      <li>Measuring scale</li>
+      <li>Torch light</li>
+      <li>Cotton wool</li>
+    </ul>
+  </div>
+
+  
+
+  <!-- 💉 Drugs -->
+  <div class="info-box">
+    <h2>Drugs</h2>
+    <ul>
+      <li><strong>Topical Anaesthetic:</strong> 0.5% Proparacaine or Tetracaine hydrochloride (preservative-free)</li>
+      <li><strong>Systemic Analgesics:</strong> Buprenorphine (0.01 mg/kg, SC)</li>
+      <li>Meloxicam (0.5 mg/kg, SC)</li>
+    </ul>
+  </div>
+
+  <!-- 🏠 Housing Conditions -->
+  <div class="info-box">
+    <h2>Animal Housing Conditions</h2>
+    <ul>
+      <li>Individual cages</li>
+      <li>Temperature: 20 ± 3°C</li>
+      <li>Relative humidity: 30–70%</li>
+      <li>12-hour light/dark cycle</li>
+      <li>Standard diet and water ad libitum</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Calcium Ions on Frog’s Heart – Theory</title>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ===== SLIDE IMAGE ===== */
+    .slide-image {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .slide-image img {
+      max-width: 100%;
+      height: 260px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- MAIN TITLE -->
+  <h1 class="title">
+    To study the effect of varying concentrations of calcium ions on frog’s heart
+  </h1>
+
+  <!-- ================= SLIDE 1 ================= -->
+  <div class="info-box slide active">
+    <h2>Principle</h2>
+    <p>
+      The <strong>frog heart muscle (myocardium)</strong> acts as a
+      <strong>functional syncytium</strong>. Unlike skeletal muscle,
+      cardiac muscle depends heavily on
+      <strong>extracellular calcium ions (Ca²⁺)</strong>
+      for contraction.
+    </p>
+    <p>
+      Therefore, variations in calcium concentration in the perfusion
+      fluid directly influence both
+      <strong>heart rate (chronotropy)</strong> and
+      <strong>force of contraction (inotropy)</strong>.
+    </p>
+  </div>
+
+  <!-- ================= SLIDE 2 ================= -->
+  <div class="info-box slide">
+    <h2>Excitation–Contraction Coupling</h2>
+    <ul>
+      <li>
+        During the <strong>plateau phase (Phase 2)</strong> of the cardiac
+        action potential, calcium enters the cardiomyocyte through
+        <strong>L-type voltage-gated calcium channels</strong>.
+      </li>
+      <li>
+        This calcium influx triggers release of additional calcium from
+        the sarcoplasmic reticulum
+        (<strong>Calcium-Induced Calcium Release</strong>).
+      </li>
+      <li>
+        Released calcium binds to <strong>Troponin-C</strong>, initiating
+        actin–myosin interaction and cardiac contraction.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ================= SLIDE 3 ================= -->
+  <div class="info-box slide">
+    <h2>Role of Extracellular Calcium</h2>
+    <p>
+      Cardiac muscle contraction strength is directly proportional to the
+      amount of <strong>calcium available extracellularly</strong>.
+    </p>
+    <p>
+      Increasing calcium concentration enhances calcium influx,
+      producing a <strong>positive inotropic effect</strong>,
+      while calcium deficiency reduces myocardial contractility.
+    </p>
+
+    <div class="slide-image">
+      <img src="{% static 'experiments/calcium-effect-frog-heart/images/calcium_entry.png' %}"
+           alt="Calcium entry during cardiac action potential">
+    </div>
+  </div>
+
+  <!-- ================= SLIDE 4 ================= -->
+  <div class="info-box slide">
+    <h2>Frog Heart Specificity</h2>
+    <p>
+      The <strong>sarcoplasmic reticulum</strong> in the frog heart is
+      poorly developed compared to mammals.
+    </p>
+    <p>
+      Hence, the frog heart is <strong>highly sensitive</strong> to changes
+      in the calcium concentration of the perfusion fluid.
+    </p>
+    <p>
+      Excess calcium may lead to <strong>sustained contraction
+      (systolic arrest)</strong>, whereas calcium deficiency causes
+      weak or absent contractions.
+    </p>
+
+    <div class="slide-image">
+      <img src="{% static 'experiments/calcium-effect-frog-heart/images/frog_heart_sensitivity.png' %}"
+           alt="Sensitivity of frog heart to calcium ions">
+    </div>
+  </div>
+
+  <!-- ================= COUNTER ================= -->
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 4
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

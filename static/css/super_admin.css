@@ -1,0 +1,605 @@
+/* =========================
+   THEME VARIABLES
+========================= */
+
+/* 🌑 DARK THEME (DEFAULT) */
+:root {
+  --bg-main: #0b0b0b;
+  --bg-card: #141414;
+  --bg-header: #000000;
+
+  --text-main: #ffffff;
+  --text-muted: #b3b3b3;
+
+  --accent-red: #ff1a1a;
+  --accent-red-dark: #cc0000;
+
+  --border-color: #222;
+  --success: #00e676;
+
+  --shadow-soft: 0 12px 30px rgba(0,0,0,0.45);
+  --shadow-red: 0 0 22px rgba(255, 26, 26, 0.35);
+}
+
+/* ☀️ LIGHT THEME */
+.light-theme {
+  --bg-main: #ffffff;
+  --bg-card: #f6f6f6;
+  --bg-header: #ffffff;
+
+  --text-main: #111111;
+  --text-muted: #555555;
+
+  --accent-red: #ff1a1a;
+  --accent-red-dark: #cc0000;
+
+  --border-color: #dddddd;
+  --success: #1b9c5a;
+
+  --shadow-soft: 0 10px 25px rgba(0,0,0,0.08);
+  --shadow-red: 0 0 18px rgba(255, 26, 26, 0.25);
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* =========================
+   MAIN LAYOUT FIX (IMPORTANT)
+========================= */
+.sa-layout {
+  display: flex;
+  width: 100%;
+}
+
+.sa-content {
+  flex: 1;
+  overflow-x: hidden;
+}
+
+/* Universal page container */
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+  animation: fadeUp 0.35s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   HEADER
+========================= */
+.sa-header {
+  height: 72px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  height: 36px;
+}
+
+.badge {
+  background: var(--accent-red);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-left: 10px;
+  box-shadow: var(--shadow-red);
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.icon-btn {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.icon-btn:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-red);
+}
+
+.logout-btn {
+  background: var(--accent-red);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.logout-btn:hover {
+  background: var(--accent-red-dark);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sa-sidebar {
+  width: 240px;
+  background: var(--bg-header);
+  min-height: calc(100vh - 72px);
+  border-right: 1px solid var(--border-color);
+  padding-top: 20px;
+  transition: width 0.3s ease;
+}
+
+.sa-sidebar nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sa-sidebar a {
+  color: var(--text-muted);
+  padding: 14px 24px;
+  text-decoration: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.sa-sidebar a:hover {
+  background: rgba(255, 0, 0, 0.15);
+  color: var(--accent-red);
+  transform: translateX(6px);
+}
+
+.sa-sidebar a.active {
+  background: rgba(255, 0, 0, 0.22);
+  color: var(--accent-red);
+  border-left: 4px solid var(--accent-red);
+}
+
+/* Collapsed sidebar */
+.sa-sidebar.collapsed {
+  width: 72px;
+}
+
+.sa-sidebar.collapsed a span {
+  display: none;
+}
+
+.sa-sidebar.collapsed a {
+  justify-content: center;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.sa-hero {
+  padding: 60px 50px;
+  border-radius: 22px;
+  margin-bottom: 35px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,0,0,0.28),
+    rgba(0,0,0,0.95)
+  );
+}
+
+.sa-hero h1 {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.sa-hero p {
+  color: var(--text-muted);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.primary-btn,
+.secondary-btn {
+  transition: all 0.25s ease;
+}
+
+.primary-btn {
+  background: var(--accent-red);
+  color: #fff;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: var(--accent-red-dark);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-red);
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  padding: 14px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+.kpi-section {
+  margin-bottom: 40px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.kpi-card {
+  background: linear-gradient(145deg, #161616, #0d0d0d);
+  padding: 28px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--accent-red);
+}
+
+.kpi-card span {
+  display: block;
+  font-size: 32px;
+  color: var(--accent-red);
+  margin-top: 10px;
+}
+
+/* =========================
+   PANELS / TABLE CARDS
+========================= */
+.panel {
+  background: linear-gradient(145deg, #161616, #0c0c0c);
+  padding: 30px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 40px;
+  transition: 0.3s;
+}
+
+.panel:hover {
+  transform: translateY(-6px);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+/* =========================
+   TABLES (COLLEGES / USERS / ETC.)
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  color: var(--accent-red);
+  font-weight: 600;
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table tr {
+  transition: all 0.25s ease;
+}
+
+.table tr:hover {
+  background: rgba(255, 0, 0, 0.18);
+  transform: scale(1.01);
+}
+
+.table a {
+  color: var(--accent-red);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.sa-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+}
+/* =====================================================
+   🔥 FIX 1: CONTENT WIDTH & OVERLAP
+===================================================== */
+
+.sa-content {
+  padding: 32px 40px 60px; /* fixes half-screen issue */
+}
+
+/* Ensure tables never overflow sidebar */
+.panel,
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* =====================================================
+   🔥 FIX 2: TABLE TEXT VISIBILITY (CRITICAL)
+===================================================== */
+
+.table td {
+  color: var(--text-main); /* fixes invisible data after toggle */
+}
+
+/* Light theme safety */
+.light-theme .table td {
+  color: var(--text-main);
+}
+
+/* =====================================================
+   🔥 FIX 3: ACTION BUTTONS (NO HTML CHANGE)
+===================================================== */
+
+.activate-btn,
+.deactivate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+/* Activate */
+.activate-btn {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(0, 230, 118, 0.4);
+}
+
+.activate-btn:hover {
+  background: rgba(0, 230, 118, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Deactivate */
+.deactivate-btn {
+  background: rgba(255, 26, 26, 0.18);
+  color: var(--accent-red);
+  border: 1px solid rgba(255, 26, 26, 0.4);
+}
+
+.deactivate-btn:hover {
+  background: rgba(255, 26, 26, 0.35);
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   🔥 FIX 4: TABLE ROW SPACING (CLEAN LOOK)
+===================================================== */
+
+.table tr {
+  vertical-align: middle;
+}
+
+/* =====================================================
+   🔥 FIX 5: PAGE HEADING SPACING
+===================================================== */
+
+.page-container h1,
+.page-container h2 {
+  margin-bottom: 18px;
+}
+
+/* =====================================================
+   🔥 FIX 6: BACK LINK OVERLAP
+===================================================== */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+/* =====================================================
+   ✅ MINIMAL PATCH — DO NOT CHANGE UI
+===================================================== */
+
+/* FIX 1: Sidebar overlap (flexbox shrink bug) */
+.sa-content {
+  min-width: 0; /* REQUIRED for flex layouts */
+}
+
+/* FIX 2: Table text invisible after theme toggle */
+.table td {
+  color: var(--text-main);
+}
+
+/* Light theme safety */
+.light-theme .table td {
+  color: var(--text-main);
+}
+/* =====================================================
+   ✅ REAL FIX: LIGHT THEME TEXT VISIBILITY
+   (NO UI / NO LAYOUT CHANGE)
+===================================================== */
+
+/* Ensure text inside dark cards stays readable */
+.kpi-card,
+.kpi-card h1,
+.kpi-card h2,
+.kpi-card h3,
+.kpi-card p,
+.panel,
+.panel h1,
+.panel h2,
+.panel h3,
+.panel p,
+.panel td,
+.panel th {
+  color: var(--text-main);
+}
+
+/* Extra safety for light theme */
+.light-theme .kpi-card,
+.light-theme .panel {
+  color: var(--text-main);
+}
+/* =====================================================
+   🔥 LIGHT THEME CARD & PANEL FIX (NO UI CHANGE)
+===================================================== */
+
+.light-theme .kpi-card,
+.light-theme .panel {
+  background: linear-gradient(145deg, #ffffff, #f2f2f2);
+  color: var(--text-main);
+}
+
+/* Hero section safety */
+.light-theme .sa-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 26, 26, 0.15),
+    #ffffff
+  );
+}
+
+/* KPI numbers */
+.light-theme .kpi-card span {
+  color: var(--accent-red);
+}
+
+/* Table header stays visible */
+.light-theme .table th {
+  color: var(--accent-red);
+}
+
+/* Table rows hover safety */
+.light-theme .table tr:hover {
+  background: rgba(255, 26, 26, 0.08);
+}
+/* =====================================================
+   🔥 HARD STOP HERO OVERLAP (FINAL FIX)
+===================================================== */
+
+/* Force next content to start AFTER hero */
+.sa-hero + * {
+  margin-top: 40px;
+}
+
+/* Back link must live in normal document flow */
+.back-link {
+  display: block;
+  clear: both;          /* CRITICAL */
+  margin-top: 12px;
+  margin-bottom: 28px;
+}
+
+/* Safety for pages without hero */
+.page-container > .back-link:first-child {
+  margin-top: 0;
+}
+/* =====================================================
+   🚨 FORCE BACK LINK INTO NORMAL FLOW (FINAL FIX)
+===================================================== */
+
+.back-link {
+  position: static !important;   /* KILLS absolute/fixed */
+  display: block !important;
+  float: none !important;
+
+  margin-top: 12px;
+  margin-bottom: 24px;
+
+  line-height: 1.4;
+}
+
+/* Ensure subtitle never collides */
+.back-link + * {
+  margin-top: 12px;
+}
+
+.badge-count {
+  background: #ff4d4d;
+  color: white;
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 20px;
+  margin-left: 8px;
+}

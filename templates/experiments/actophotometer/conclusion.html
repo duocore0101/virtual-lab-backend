@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Actophotometer Experiment – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The basal locomotor activity of mice was recorded using a digital
+      actophotometer prior to drug administration. Following intraperitoneal
+      administration of the test drugs, a significant change in locomotor
+      activity was observed when compared with pre-drug values.
+    </p>
+
+    <p>
+      <strong>Chlorpromazine (CNS depressant)</strong> produced a marked
+      reduction in locomotor activity, whereas
+      <strong>Caffeine (CNS stimulant)</strong> caused a significant increase
+      in locomotor counts.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      The present experiment demonstrates that drugs affecting the central
+      nervous system significantly alter spontaneous locomotor activity
+      in mice.
+    </p>
+
+    <p>
+      Chlorpromazine exhibited a <strong>50–70% decrease</strong> in locomotor
+      activity, confirming its <strong>CNS depressant property</strong>.
+      In contrast, caffeine produced a <strong>30–150% increase</strong>
+      in activity, indicating its <strong>CNS stimulant action</strong>.
+    </p>
+  </div>
+
+  
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <!-- ✅ FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  const pre = JSON.parse(localStorage.getItem("actophoto_pre")) || [];
+  const post = JSON.parse(localStorage.getItem("actophoto_post")) || [];
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        pre: pre,
+        post: post
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // 🔥 BACKEND DECIDES WHERE TO GO
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

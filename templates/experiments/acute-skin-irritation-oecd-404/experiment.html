@@ -1,0 +1,490 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Acute Skin Irritation / Corrosion Test – Virtual Simulator</title>
+
+  <!-- ✅ SAME CSS THEME AS ROTAROD -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS (EXACT FLOW) */
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 12px;
+      z-index: 50;
+    }
+
+    .dropdown-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.3s;
+    }
+
+    .dropdown-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .sim-section {
+      margin: 25px 0;
+    }
+
+    .sim-section input,
+    .sim-section select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+
+    .result-box {
+      background: #e8f1ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    .warning { color: red; font-weight: 600; }
+    .success { color: green; font-weight: 600; }
+  </style>
+  <style>
+/* ===============================
+   PREMIUM MAIN PAGE UI ENHANCEMENT
+================================ */
+
+/* Background Enhancement */
+body {
+  background: linear-gradient(135deg, #eef4ff, #f8fbff);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Container */
+.exp-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+/* Title */
+.exp-container h1 {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 25px;
+  color: #1f4e79;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Section Card Style */
+.sim-section {
+  margin: 30px 0;
+  padding: 25px 30px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(31, 78, 121, 0.08);
+  transition: 0.3s ease;
+}
+
+.sim-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(31, 78, 121, 0.15);
+}
+
+/* Section Heading */
+.sim-section h3 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  color: #1f4e79;
+  border-left: 4px solid #1f4e79;
+  padding-left: 12px;
+}
+
+/* Labels */
+.sim-section label {
+  font-weight: 600;
+  display: block;
+  margin-top: 10px;
+  color: #333;
+}
+
+/* Inputs & Dropdown */
+.sim-section input,
+.sim-section select {
+  width: 250px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccd6e0;
+  font-size: 14px;
+  transition: 0.3s ease;
+  background: #f9fbff;
+}
+
+.sim-section input:focus,
+.sim-section select:focus {
+  outline: none;
+  border-color: #1f4e79;
+  box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.15);
+}
+
+/* Substance Confirmation Text */
+#substanceMsg {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1f4e79;
+}
+
+/* Validation Messages */
+.warning {
+  color: #c62828;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.success {
+  color: #2e7d32;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Navigation Buttons */
+.exp-container > button {
+  margin-top: 25px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(45deg, #1f4e79, #2a6fb0);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 15px rgba(31, 78, 121, 0.3);
+}
+
+.exp-container > button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(31, 78, 121, 0.45);
+}
+
+/* Top Action Buttons Enhancement */
+.top-actions {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  display: flex;
+  gap: 14px;
+  z-index: 50;
+}
+
+.dropdown-btn {
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff2e2e, #ff6a6a);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(255, 0, 0, 0.35);
+  transition: 0.3s ease;
+}
+
+.dropdown-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
+}
+
+/* Light Theme Support */
+.light-theme {
+  background: linear-gradient(135deg, #ffffff, #f4f8ff);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exp-container {
+    padding: 25px;
+  }
+
+  .sim-section input,
+  .sim-section select {
+    width: 100%;
+  }
+
+  .top-actions {
+    flex-direction: column;
+    right: 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 INSTRUCTIONS POPUP -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Enter correct application area (6 cm²).</li>
+      <li>Select substance type and apply standard quantity.</li>
+      <li>Enter Draize scores for 24, 48 and 72 hours.</li>
+      <li>Calculate PDII and determine classification.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure (OECD 404)</h2>
+    <ol class="instruction-list">
+      <li>Shave dorsal area of rabbit (~6 cm²).</li>
+      <li>Apply 0.5 g (solid) or 0.5 mL (liquid).</li>
+      <li>Cover with semi-occlusive patch for 4 hours.</li>
+      <li>Score erythema & oedema at 24, 48, 72 hours.</li>
+      <li>Observe up to 14 days for reversibility.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:900px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+    <h2>Draize Scoring Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Erythema (0–4)</th>
+          <th>Oedema (0–4)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>24 h</td>
+          <td><input type="number" min="0" max="4" class="ery"></td>
+          <td><input type="number" min="0" max="4" class="oed"></td>
+        </tr>
+        <tr>
+          <td>48 h</td>
+          <td><input type="number" min="0" max="4" class="ery"></td>
+          <td><input type="number" min="0" max="4" class="oed"></td>
+        </tr>
+        <tr>
+          <td>72 h</td>
+          <td><input type="number" min="0" max="4" class="ery"></td>
+          <td><input type="number" min="0" max="4" class="oed"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br>
+    <label>
+      <input type="checkbox" id="necrosis">
+      Necrosis / Ulceration Observed
+    </label>
+
+    <br><br>
+    <button onclick="calculatePDII()">Calculate PDII</button>
+
+    <div id="calculationBreakdown" class="result-box" style="display:none;"></div>
+    <div id="finalResult" class="result-box" style="display:none;"></div>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- 🔽 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Acute Skin Irritation / Corrosion Test – Virtual Simulator</h1>
+
+  <!-- 🌗 THEME TOGGLE (UNCHANGED FLOW) -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🧪 EXPERIMENT INFORMATION -->
+  <div class="sim-section">
+    <h3>Experiment Information</h3>
+    <p><b>Animal ID:</b> Rabbit 1</p>
+    <p><b>Animal Weight:</b> 2.5 kg</p>
+    <p><b>Exposure Duration:</b> 4 hours</p>
+
+    <label>Application Area (cm²):</label><br>
+    <input type="number" id="areaInput">
+    <div id="areaMsg"></div>
+  </div>
+
+  <!-- 🧴 SUBSTANCE SECTION -->
+  <div class="sim-section">
+    <h3>Substance Application</h3>
+
+    <select id="substanceType">
+      <option value="">Select Substance Type</option>
+      <option value="solid">Solid</option>
+      <option value="liquid">Liquid</option>
+    </select>
+
+    <div id="substanceMsg"></div>
+    <p>Test substance applied under semi-occlusive patch for 4 hours.</p>
+  </div>
+
+  <!-- NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- ================= CORE LOGIC ================= -->
+
+<script>
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+document.getElementById("areaInput").addEventListener("input", function(){
+  let msg = document.getElementById("areaMsg");
+  if(this.value == 6){
+    msg.innerHTML="<span class='success'>Correct as per OECD 404.</span>";
+  } else {
+    msg.innerHTML="<span class='warning'>As per OECD 404, application area should be approximately 6 cm².</span>";
+  }
+});
+
+document.getElementById("substanceType").addEventListener("change", function(){
+  let msg=document.getElementById("substanceMsg");
+  if(this.value=="solid"){
+    msg.innerHTML="Standard quantity applied: 0.5 g";
+  } else if(this.value=="liquid"){
+    msg.innerHTML="Standard quantity applied: 0.5 mL";
+  } else {
+    msg.innerHTML="";
+  }
+});
+
+function calculatePDII(){
+  let ery=document.querySelectorAll(".ery");
+  let oed=document.querySelectorAll(".oed");
+
+  let sumE=0,sumO=0;
+
+  for(let i=0;i<3;i++){
+    if(ery[i].value==""||oed[i].value==""){
+      alert("Please fill all scoring fields.");
+      return;
+    }
+
+    let e=parseInt(ery[i].value);
+    let o=parseInt(oed[i].value);
+
+    if(e<0||e>4||o<0||o>4){
+      alert("Scores must be between 0 and 4.");
+      return;
+    }
+
+    sumE+=e;
+    sumO+=o;
+  }
+
+  let total=sumE+sumO;
+  let pdii=(total/3).toFixed(2);
+
+  let classification="";
+  if(document.getElementById("necrosis").checked){
+    classification="Corrosive (Category 1)";
+  } else {
+    if(pdii<1.5) classification="Non-Irritant";
+    else if(pdii<2.3) classification="Mild Irritant";
+    else classification="Irritant (Category 2)";
+  }
+
+  document.getElementById("calculationBreakdown").style.display="block";
+  document.getElementById("finalResult").style.display="block";
+
+  document.getElementById("calculationBreakdown").innerHTML=
+    "Sum of Erythema = "+sumE+"<br>"+
+    "Sum of Oedema = "+sumO+"<br>"+
+    "Total = "+total+"<br>"+
+    "PDII = "+total+" / 3<br>"+
+    "PDII = "+pdii;
+
+  document.getElementById("finalResult").innerHTML=
+    "The test substance produced reaction.<br>"+
+    "PDII = "+pdii+".<br>"+
+    "Classification: "+classification+".";
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert(`Error enabling fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

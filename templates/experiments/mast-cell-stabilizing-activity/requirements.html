@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mast Cell Stabilizing Activity – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐀 EXPERIMENTAL ANIMALS -->
+  <div class="info-box">
+    <h2>Experimental Animals</h2>
+    <ul>
+      <li>
+        <strong>Adult healthy albino rats</strong> (150–200 g)
+      </li>
+      <li>Animals should be healthy and properly acclimatized</li>
+      <li>Maintained under standard laboratory conditions</li>
+    </ul>
+  </div>
+
+  <!-- 💊 DRUGS & CHEMICALS -->
+  <div class="info-box">
+    <h2>Drugs and Chemicals</h2>
+    <ul>
+      <li>
+        <strong>Standard Drug:</strong>  
+        Ketotifen / Disodium cromoglycate
+      </li>
+      <li>
+        <strong>Test Drug:</strong>  
+        Anti-allergic agent (Low and High doses)
+      </li>
+      <li>
+        <strong>Degranulating Agent:</strong>  
+        Compound 48/80 or Egg albumin
+      </li>
+      <li>Normal saline</li>
+      <li>Toluidine blue stain</li>
+      <li>Distilled water</li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPARATUS -->
+  <div class="info-box">
+    <h2>Apparatus</h2>
+    <ul>
+      <li>Microscope</li>
+      <li>Slides and cover slips</li>
+      <li>Syringes</li>
+      <li>Centrifuge</li>
+      <li>Test tubes</li>
+      <li>Dissection instruments</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

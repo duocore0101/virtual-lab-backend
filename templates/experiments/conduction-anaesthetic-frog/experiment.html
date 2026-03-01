@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Conduction Anaesthetic Activity – Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10005">
+
+  <style>
+    .video-frame {
+      width: 100%;
+      height: 480px;
+      border-radius: 14px;
+      background: #000;
+      margin-top: 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      display: none;
+    }
+
+    .start-btn {
+      padding: 14px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* TOP RIGHT BUTTONS */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 1100px;
+      color: white;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #222;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Conduction Anaesthetic Activity by Loss of Reflex Withdrawal in Frog
+  </h1>
+
+  <div class="top-actions">
+  <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+  <button class="dropdown-btn" onclick="openObservation()">Observations</button>
+  <button class="dropdown-btn" onclick="toggleTheme()">🌗</button>
+  <button class="dropdown-btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+  <div class="video-frame">
+    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+      ▶ Start Practical
+    </button>
+
+    <video id="experimentVideo" controls>
+      <source src="{% static 'experiments/conduction-anaesthetic-frog/videos/frog_conduction.mp4' %}" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="button-row" style="justify-content:center; margin-top:25px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= PROCEDURE MODAL ================= -->
+<div class="modal" id="procedureModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol>
+      <li>Take pithed/decerebrated frog ethically.</li>
+      <li>Expose sciatic nerve plexus near thigh root.</li>
+      <li>Check baseline withdrawal using dilute HCl (0.1–0.2%).</li>
+      <li>Inject 0.2–0.5 mL test drug around sciatic plexus.</li>
+      <li>Inject saline in other leg (control).</li>
+      <li>Test every 2–5 min and record withdrawal time.</li>
+      <li>Measure onset and duration of anaesthesia.</li>
+      <li>Alternative: Sciatic-gastrocnemius electrical stimulation.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ================= OBSERVATION MODAL ================= -->
+<div class="modal" id="observationModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+    <h2>Observation Table</h2>
+
+    <!-- Based on your uploaded image -->
+    <table>
+      <thead>
+        <tr>
+          <th>Animal No.</th>
+          <th>Site</th>
+          <th>Drug</th>
+          <th>Conc/Vol</th>
+          <th>Onset (min)</th>
+          <th>Duration (min)</th>
+          <th>Pinprick Response</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Left dorsal</td>
+          <td>Lignocaine HCl 1%</td>
+          <td>0.3 mL</td>
+          <td>2</td>
+          <td>45</td>
+          <td>0 (No response)</td>
+          <td>Clear wheel</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Right dorsal</td>
+          <td>Normal saline</td>
+          <td>0.3 mL</td>
+          <td>—</td>
+          <td>—</td>
+          <td>++</td>
+          <td>Normal</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Left dorsal</td>
+          <td>Procaine HCl 1%</td>
+          <td>0.3 mL</td>
+          <td>3</td>
+          <td>28</td>
+          <td>0</td>
+          <td>Slight blanching</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Right dorsal</td>
+          <td>Normal saline</td>
+          <td>0.3 mL</td>
+          <td>—</td>
+          <td>—</td>
+          <td>++</td>
+          <td>Normal</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function startExperiment() {
+  document.getElementById("startBtn").style.display = "none";
+  let video = document.getElementById("experimentVideo");
+  video.style.display = "block";
+  video.play();
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+</body>
+</html>

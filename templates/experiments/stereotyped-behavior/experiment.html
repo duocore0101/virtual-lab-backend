@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stereotyped Behavior Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/stereotyped-behavior/css/experiment.css' %}?v=20001">
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe animal before apomorphine administration</li>
+      <li>Inject apomorphine</li>
+      <li>Observe stereotyped behavior after drug</li>
+    </ol>
+  </div>
+</div>
+
+<div class="exp-container">
+  <h1>Stereotyped Behavior – Virtual Simulator</h1>
+
+  <!-- 🌗 THEME TOGGLE -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 VIDEO GRID (ROTAROD STYLE) -->
+  <div class="video-grid">
+
+    <!-- LEFT CONTAINER -->
+    <div class="side-video">
+      <h4>Control</h4>
+      <video id="leftVideo" muted loop autoplay>
+        <source src="{% static 'experiments/stereotyped-behavior/videos/control.mp4' %}">
+      </video>
+    </div>
+
+    <!-- MAIN VIDEO -->
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/stereotyped-behavior/videos/animal_resting.mp4' %}">
+      </video>
+    </div>
+
+    <!-- RIGHT CONTAINER -->
+    <div class="side-video">
+      <h4>Drug Treated</h4>
+      <video id="rightVideo" muted loop autoplay>
+        <source src="{% static 'experiments/stereotyped-behavior/videos/drug_container.mp4' %}">
+      </video>
+    </div>
+
+  </div>
+
+  <!-- 🎛 CONTROLS (ROTAROD STYLE) -->
+  <div class="control-panel">
+    <button onclick="observeBaseline()">Before Apomorphine</button>
+    <button onclick="injectDrug()">Inject Apomorphine</button>
+    <button onclick="observeAfterDrug()">After Apomorphine</button>
+  </div>
+
+  <!-- 📊 OBSERVATION TABLE -->
+  <div class="observation-section">
+    <h2>Stereotypy Observation (Single Mouse)</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Mouse No.</th>
+          <th>Baseline Score (A)</th>
+          <th>After Drug Score (B)</th>
+          <th>Difference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td id="A1">—</td>
+          <td id="B1">—</td>
+          <td id="D1">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- 🧠 SCRIPT (UNCHANGED LOGIC) -->
+<script>
+const mainVideo = document.getElementById("expVideo");
+const leftVideo = document.getElementById("leftVideo");
+const rightVideo = document.getElementById("rightVideo");
+
+const BASELINE_SCORE = 1;
+const AFTER_DRUG_SCORE = 4;
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+/* ▶ BEFORE APOMORPHINE */
+function observeBaseline() {
+  mainVideo.src = "{% static 'experiments/stereotyped-behavior/videos/baseline.mp4' %}";
+  mainVideo.play();
+
+  // ✅ LEFT becomes EMPTY
+  leftVideo.src = "{% static 'experiments/stereotyped-behavior/videos/empty_container.mp4' %}";
+  rightVideo.src = "{% static 'experiments/stereotyped-behavior/videos/drug_container.mp4' %}";
+
+  leftVideo.play();
+  rightVideo.play();
+
+  document.getElementById("A1").innerText = BASELINE_SCORE;
+}
+
+/* ▶ INJECT APOMORPHINE */
+function injectDrug() {
+  mainVideo.src = "{% static 'experiments/stereotyped-behavior/videos/inject.mp4' %}";
+  mainVideo.play();
+
+  // ✅ RIGHT becomes EMPTY
+  leftVideo.src = "{% static 'experiments/stereotyped-behavior/videos/control.mp4' %}";
+  rightVideo.src = "{% static 'experiments/stereotyped-behavior/videos/empty_container.mp4' %}";
+
+  leftVideo.play();
+  rightVideo.play();
+}
+
+/* ▶ AFTER APOMORPHINE */
+function observeAfterDrug() {
+  mainVideo.src = "{% static 'experiments/stereotyped-behavior/videos/stereotypy.mp4' %}";
+  mainVideo.play();
+
+  // ✅ RIGHT stays EMPTY
+  leftVideo.src = "{% static 'experiments/stereotyped-behavior/videos/control.mp4' %}";
+  rightVideo.src = "{% static 'experiments/stereotyped-behavior/videos/empty_container.mp4' %}";
+
+  leftVideo.play();
+  rightVideo.play();
+
+  document.getElementById("B1").innerText = AFTER_DRUG_SCORE;
+  document.getElementById("D1").innerText =
+    AFTER_DRUG_SCORE - BASELINE_SCORE;
+
+  localStorage.setItem(
+    "stereotypy_data",
+    JSON.stringify({ A: BASELINE_SCORE, B: AFTER_DRUG_SCORE })
+  );
+}
+</script>
+
+
+
+<!-- 🌗 THEME SCRIPT -->
+<script>
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+
+</body>
+</html>

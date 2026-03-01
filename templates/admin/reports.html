@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Reports & Analytics | Admin{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="sa-hero">
+  <h1>Reports & Analytics</h1>
+  <p>College-level insights into experiment usage and student activity</p>
+</section>
+
+<!-- ================= FILTERS ================= -->
+<section class="panel">
+  <div class="panel-header">
+    <h2>Filter Reports</h2>
+  </div>
+
+  <form method="get" class="quick-actions" style="padding: 20px;">
+    <label>
+      From:
+      <input type="date" name="start" value="{{ request.GET.start }}">
+    </label>
+
+    <label>
+      To:
+      <input type="date" name="end" value="{{ request.GET.end }}">
+    </label>
+
+    <button type="submit" class="primary-btn">
+      Apply Filters
+    </button>
+
+    <a href="/admin/reports/" class="secondary-btn">
+      Reset
+    </a>
+  </form>
+</section>
+
+<!-- ================= KPI SUMMARY ================= -->
+<section class="kpi-section">
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      Total Practical Attempts
+      <span>{{ total_attempts }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHART ================= -->
+<section class="panel">
+  <div class="panel-header">
+    <h2>Practical Attempts Over Time</h2>
+  </div>
+
+  <div style="padding: 20px;">
+    <canvas id="attemptsChart" height="120"></canvas>
+  </div>
+</section>
+
+<!-- ================= SAFE DATA TRANSFER ================= -->
+{{ daily_stats|json_script:"dailyStatsData" }}
+
+<!-- ================= CHART.JS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const rawData = JSON.parse(
+    document.getElementById("dailyStatsData").textContent
+  );
+
+  const labels = rawData.map(item => item.day);
+  const values = rawData.map(item => item.count);
+
+  const ctx = document.getElementById("attemptsChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Attempts",
+        data: values,
+        borderColor: "#e50914",
+        backgroundColor: "rgba(229,9,20,0.15)",
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: "#ff4d4d"
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: { color: "#ccc" }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "#aaa" },
+          grid: { color: "rgba(255,255,255,0.05)" }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#aaa" },
+          grid: { color: "rgba(255,255,255,0.05)" }
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

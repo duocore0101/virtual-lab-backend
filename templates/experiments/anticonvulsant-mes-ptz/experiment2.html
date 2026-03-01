@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PTZ Experiment – Anticonvulsant Activity</title>
+
+  <!-- SAME CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <!-- 🔹 UI ONLY: Bigger image card -->
+  <style>
+    .video-grid {
+      grid-template-columns: 1fr !important;
+      margin-top: 30px;
+    }
+
+    .main-video {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .main-video img {
+      width: 100%;
+      height: 520px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: #000;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="exp-container">
+
+  <h1>
+    Anticonvulsant Activity – Virtual Simulator<br>
+    <small>Pentylenetetrazol (PTZ) Method</small>
+  </h1>
+
+  <!-- 🔁 METHOD TOGGLE (UNCHANGED) -->
+  <div class="exp-toggle">
+    <button class="toggle-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      MES Method
+    </button>
+    <button class="toggle-btn active">PTZ Method</button>
+  </div>
+
+  <!-- 🌗 THEME TOGGLE (RESTORED) -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🖼️ SINGLE LARGE IMAGE -->
+  <div class="video-grid">
+    <div class="main-video">
+      <img
+        src="{% static 'experiments/anticonvulsant-mes-ptz/images/ptz_induced_seizure.png' %}"
+        alt="PTZ Induced Seizure in Mouse">
+    </div>
+  </div>
+
+  <!-- 📊 OBSERVATION TABLE -->
+<div class="observation-section">
+  <h2>PTZ Induced Seizure Observation Table</h2>
+
+  <table class="observation-table">
+    <thead>
+      <tr>
+        <th>Group</th>
+        <th>Latency to Clonus (sec)<br><small>(Mean ± SEM)</small></th>
+        <th>Duration of Clonus (sec)</th>
+        <th>No. Protected<br>(No Death)</th>
+        <th>% Protection</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Control (PTZ 85 mg/kg)</td>
+        <td>120 ± 15</td>
+        <td>45 ± 8</td>
+        <td>0</td>
+        <td>0%</td>
+      </tr>
+      <tr>
+        <td>Standard (Diazepam 5 mg/kg)</td>
+        <td>900 ± 120<strong>**</strong></td>
+        <td>10 ± 5<strong>**</strong></td>
+        <td>6</td>
+        <td>100%</td>
+      </tr>
+      <tr>
+        <td>Test Drug (200 mg/kg)</td>
+        <td>600 ± 90<strong>*</strong></td>
+        <td>20 ± 6<strong>*</strong></td>
+        <td>4</td>
+        <td>66.7%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:12px;font-size:14px;color:#ccc;">
+    <strong>*</strong> p&lt;0.05, <strong>**</strong> p&lt;0.01 vs. control
+    (ANOVA / Dunnett’s test)
+  </p>
+</div>
+
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- 🌗 THEME TOGGLE SCRIPT (UNCHANGED) -->
+<script>
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+
+</body>
+</html>

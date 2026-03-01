@@ -1,0 +1,119 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Support | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Support & Helpdesk</h1>
+      <p>Monitor issues, requests & platform support activity</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= SUPPORT STATS ================= -->
+  <section class="kpi-section">
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        Open Tickets
+        <span>0</span>
+      </div>
+
+      <div class="kpi-card">
+        In Progress
+        <span>0</span>
+      </div>
+
+      <div class="kpi-card">
+        Resolved
+        <span>0</span>
+      </div>
+
+      <div class="kpi-card">
+        Avg. Response Time
+        <span>—</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SUPPORT MODULE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Support Tickets</h2>
+      <span class="text-muted">Centralized helpdesk (Coming Soon)</span>
+    </div>
+
+    <div class="empty-state">
+      <div class="empty-icon">🎧</div>
+      <h3>No Support Tickets Yet</h3>
+      <p>
+        All support requests from students, teachers, and admins  
+        will appear here once the support module is activated.
+      </p>
+      <span class="text-muted">
+        Designed for enterprise-level ticket tracking & escalation
+      </span>
+    </div>
+  </section>
+
+  <!-- ================= SUPPORT FEATURES ================= -->
+  <section class="panel">
+    <h2>Planned Support Features</h2>
+
+    <div class="card-row">
+
+      <div class="mini-card">
+        🎟 Ticket Creation  
+        <p class="text-muted">Role-based ticket submission</p>
+      </div>
+
+      <div class="mini-card">
+        🧑‍💻 Assignment  
+        <p class="text-muted">Assign tickets to support staff</p>
+      </div>
+
+      <div class="mini-card">
+        ⏱ SLA Tracking  
+        <p class="text-muted">Response & resolution deadlines</p>
+      </div>
+
+      <div class="mini-card">
+        📎 Attachments  
+        <p class="text-muted">Logs, screenshots & documents</p>
+      </div>
+
+      <div class="mini-card">
+        🔔 Notifications  
+        <p class="text-muted">Email & dashboard alerts</p>
+      </div>
+
+      <div class="mini-card">
+        📊 Reports  
+        <p class="text-muted">Support analytics & performance</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= INFO NOTE ================= -->
+  <section class="panel info-panel">
+    <h3>ℹ Support Module Status</h3>
+    <p>
+      The support system is currently in <strong>UI-only mode</strong>.
+      Backend integration will enable real-time ticket handling,
+      role-based access, and audit logging.
+    </p>
+    <span class="text-muted">
+      Built for scalable SaaS & institutional deployments
+    </span>
+  </section>
+
+</div>
+
+{% endblock %}

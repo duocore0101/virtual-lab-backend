@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dog Blood Pressure – Graph</title>
+
+  <!-- Reuse intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    .chart-box {
+      background: rgba(0,0,0,0.25);
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    canvas {
+      margin-top: 15px;
+    }
+
+    .legend-note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .button-row {
+      margin-top: 35px;
+    }
+
+    /* 🌗 LIGHT MODE FIXES */
+    body.light-mode .chart-box {
+      background: #ffffff;
+    }
+
+    body.light-mode .title,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode p,
+    body.light-mode .legend-note {
+      color: #222 !important;
+    }
+
+    body.light-mode canvas {
+      background: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Graphical Representation</h1>
+
+  <div class="info-box">
+    <h2>Effect of Drugs on Arterial Blood Pressure</h2>
+    <p style="text-align:center;">
+      The line graph below represents changes in
+      <strong>arterial blood pressure (mm of Hg)</strong>
+      following intravenous administration of
+      <strong>Adrenaline</strong>, <strong>Noradrenaline</strong>,
+      and <strong>Isoprenaline</strong>.
+    </p>
+  </div>
+
+  <!-- 📊 LINE GRAPH -->
+  <div class="chart-box">
+    <h3 style="text-align:center;">Arterial Blood Pressure vs Time</h3>
+    <canvas id="bpLineChart"></canvas>
+
+    <div class="legend-note">
+      Orange – Adrenaline &nbsp; | &nbsp;
+      Yellow – Noradrenaline &nbsp; | &nbsp;
+      Blue – Isoprenaline
+    </div>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+/* ⛶ FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+/* ============================
+   📈 BP LINE GRAPH (THEME AWARE)
+   ============================ */
+
+const labels = [
+  "Baseline",
+  "Drug Injection",
+  "Peak Effect",
+  "Declining Phase",
+  "Recovery"
+];
+
+const adrenalineBP = [100, 140, 150, 120, 105];
+const noradrenalineBP = [100, 150, 160, 130, 110];
+const isoprenalineBP = [100, 90, 70, 85, 100];
+
+let chartInstance = null;
+
+function renderChart(isLightMode = false) {
+
+  const textColor = isLightMode ? "#222" : "#ddd";
+  const gridColor = isLightMode
+    ? "rgba(0,0,0,0.12)"
+    : "rgba(255,255,255,0.15)";
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(
+    document.getElementById("bpLineChart"),
+    {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Adrenaline",
+            data: adrenalineBP,
+            borderColor: "#FF9800",
+            backgroundColor: "rgba(255,152,0,0.2)",
+            tension: 0.35,
+            borderWidth: 3
+          },
+          {
+            label: "Noradrenaline",
+            data: noradrenalineBP,
+            borderColor: "#FFEB3B",
+            backgroundColor: "rgba(255,235,59,0.2)",
+            tension: 0.35,
+            borderWidth: 3
+          },
+          {
+            label: "Isoprenaline",
+            data: isoprenalineBP,
+            borderColor: "#03A9F4",
+            backgroundColor: "rgba(3,169,244,0.2)",
+            tension: 0.35,
+            borderWidth: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: textColor,
+              font: { size: 13 }
+            }
+          },
+          tooltip: {
+            backgroundColor: "#111",
+            titleColor: "#fff",
+            bodyColor: "#ff5252",
+            borderColor: "#ff5252",
+            borderWidth: 1
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: textColor
+            },
+            grid: {
+              color: gridColor
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: "Blood Pressure (mm of Hg)",
+              color: textColor
+            },
+            ticks: {
+              color: textColor
+            },
+            grid: {
+              color: gridColor
+            }
+          }
+        }
+      }
+    }
+  );
+}
+
+/* INITIAL DRAW */
+renderChart(document.body.classList.contains("light-mode"));
+
+/* 🌗 THEME TOGGLE (RE-RENDER CHART) */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+  renderChart(document.body.classList.contains("light-mode"));
+}
+</script>
+
+</body>
+</html>

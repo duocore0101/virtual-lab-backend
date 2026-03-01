@@ -1,0 +1,92 @@
+{% extends "teacher/base.html" %}
+{% load static %}
+
+{% block title %}My Students | Teacher{% endblock %}
+
+{% block content %}
+
+<div style="padding:20px;">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">My Students</h2>
+      <p style="margin:4px 0; color:var(--text-muted);">
+        Manage and monitor your assigned students
+      </p>
+    </div>
+
+    <a href="/teacher/export/students/"
+       class="create-teacher-btn export-btn">
+       ⬇ Export Students CSV
+    </a>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <div class="table-wrapper panel">
+
+    <table class="table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Roll No</th>
+          <th>Mobile</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        {% for student in students %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+
+          <td>
+            <strong>{{ student.first_name }}</strong>
+          </td>
+
+          <td>{{ student.email }}</td>
+
+          <!-- 🔥 ROLL NUMBER -->
+          <td>
+            {% if student.roll_no %}
+              {{ student.roll_no }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+
+          <!-- 🔥 MOBILE NUMBER -->
+          <td>
+            {% if student.mobile %}
+              {{ student.mobile }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+
+          <td>
+            <span class="status {% if student.is_active %}active{% else %}inactive{% endif %}">
+              {% if student.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+            </span>
+          </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">
+            No students found
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock %}

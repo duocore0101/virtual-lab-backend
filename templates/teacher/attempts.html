@@ -1,0 +1,67 @@
+{% extends "teacher/base.html" %}
+{% load static %}
+
+{% block title %}Practical Attempts | Teacher{% endblock %}
+
+{% block content %}
+
+
+
+<div style="padding:20px;">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">Completed Practicals</h2>
+      <p style="margin:4px 0; color:gray;">
+        View and export student practical attempts
+      </p>
+    </div>
+
+    <a href="/teacher/export/attempts/"
+       class="create-teacher-btn export-btn">
+       ⬇ Export Attempts CSV
+    </a>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <div class="table-wrapper"
+       style="background:#fff; padding:20px; border-radius:10px;
+              box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <table style="width:100%;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student</th>
+          <th>Experiment</th>
+          <th>Completed At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        {% for attempt in attempts %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ attempt.student.first_name }}</td>
+          <td>{{ attempt.experiment.name }}</td>
+          <td>{{ attempt.completed_at|date:"d M Y, H:i" }}</td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="4" style="text-align:center; padding:20px; color:gray;">
+            No attempts recorded
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock %}

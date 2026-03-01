@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tail Flick Method – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The tail withdrawal latency was recorded before and after 
+      administration of standard and test drugs using the 
+      tail flick method (radiant heat stimulus).
+    </p>
+
+    <p>
+      <strong>Morphine (standard drug)</strong> produced a marked 
+      prolongation of latency, confirming significant 
+      central (opioid-like) analgesic activity.
+    </p>
+
+    <p>
+      The test drug showed a dose-dependent increase in 
+      reaction time compared to the control group, 
+      indicating central analgesic effect.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      The tail flick method evaluates centrally acting analgesics 
+      by measuring the latency of a spinal nociceptive reflex 
+      following radiant heat stimulation.
+    </p>
+
+    <p>
+      Significant prolongation of tail withdrawal latency 
+      confirms <strong>central analgesic activity</strong>, 
+      particularly opioid-mediated mechanisms.
+    </p>
+
+    <p>
+      The tail flick method is often more specific 
+      for strong opioid analgesics and is highly effective 
+      for evaluating spinal-level analgesic responses.
+    </p>
+
+    <p>
+      Thus, the present experiment confirms that the analgesic 
+      effect observed is centrally mediated rather than peripheral.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        method: "Tail Flick",
+        result: "Central analgesic activity observed"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+
+}
+</script>
+
+</body>
+</html>

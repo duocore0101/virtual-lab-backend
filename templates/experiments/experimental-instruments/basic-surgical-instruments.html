@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Surgical Instruments | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Basic Surgical Instruments Used in Experimental Pharmacology
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/basic-surgical-instruments.glb' %}"
+        alt="Basic Surgical Instruments 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        In experimental pharmacology practicals,
+        <strong>basic surgical instruments</strong> are essential for
+        animal dissection, tissue isolation, cannulation, and minor
+        surgical procedures performed on laboratory animals such as
+        rats, mice, guinea pigs, frogs, or rabbits.
+      </p>
+      <p>
+        These instruments are commonly used during
+        <strong>organ bath experiments</strong>,
+        <strong>blood pressure recording</strong>,
+        <strong>drug administration</strong>,
+        and <strong>ex vivo tissue preparation</strong>.
+        Most instruments are made of stainless steel for durability,
+        corrosion resistance, and easy sterilization.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ GENERAL PURPOSE -->
+  <div class="exp-card">
+    <h2>General Purpose</h2>
+    <p>
+      Standard surgical instrument sets used in pharmacology laboratories
+      follow guidelines described in classical practical manuals
+      (e.g., Kulkarni, Ghosh) and institutional animal ethics protocols.
+      Proper handling ensures minimal tissue damage and reliable
+      experimental outcomes.
+    </p>
+  </div>
+
+  <!-- 🧪 COMMONLY USED INSTRUMENTS -->
+  <div class="exp-card">
+    <h2>Commonly Used Instruments and Their Purposes</h2>
+
+    <ul>
+      <li>
+        <strong>Dissecting Forceps (Plain & Toothed):</strong>
+        Fine-tipped instruments used to grasp tissues delicately (plain)
+        or firmly (toothed). Commonly used for holding vessels, nerves,
+        or isolating tissues such as guinea pig ileum.
+      </li>
+
+      <li>
+        <strong>Dissecting Scissors (Straight & Curved):</strong>
+        Used for cutting tissues, membranes, and sutures.
+        Curved scissors are preferred for deeper or blind dissections.
+      </li>
+
+      <li>
+        <strong>Scalpel with Blades:</strong>
+        Used for making precise incisions on skin or organs.
+        Disposable blades (No. 11 or No. 15) are commonly employed.
+      </li>
+
+      <li>
+        <strong>Arterial and Venous Cannulas:</strong>
+        Polythene or glass tubes used for cannulating blood vessels
+        (e.g., carotid artery for blood pressure recording,
+        jugular vein for intravenous drug administration).
+      </li>
+
+      <li>
+        <strong>Bull Dog Clamps / Aneurysm Clips:</strong>
+        Small vascular clamps used to temporarily occlude blood vessels
+        without causing permanent damage.
+      </li>
+
+      <li>
+        <strong>Needle Holder:</strong>
+        Instrument used for holding suturing needles during closure
+        of incisions or securing cannulas.
+      </li>
+
+      <li>
+        <strong>Probes and Seekers:</strong>
+        Blunt probes used for separating tissues;
+        hooks or seekers help retract tissues gently.
+      </li>
+
+      <li>
+        <strong>Retractors:</strong>
+        Used to hold back tissues and maintain exposure
+        of the surgical field.
+      </li>
+
+      <li>
+        <strong>Dissecting Board (Frog Board):</strong>
+        Wax or cork board used for pinning animals,
+        especially during frog pithing or tissue dissection.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧰 OTHER ACCESSORIES -->
+  <div class="exp-card">
+    <h2>Other Accessories</h2>
+    <ul>
+      <li>Thread or silk sutures for tying vessels</li>
+      <li>Dissecting pins for fixation</li>
+      <li>Syringes and needles for injections</li>
+      <li>Saline, cotton swabs, and antiseptic solutions</li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Isolation of tissues for organ bath experiments</li>
+      <li>Cannulation for cardiovascular pharmacology studies</li>
+      <li>Minor surgical procedures in laboratory animals</li>
+      <li>Teaching experimental pharmacology practicals</li>
+      <li>Preclinical drug research and training</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

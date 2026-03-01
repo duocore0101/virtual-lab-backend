@@ -1,0 +1,530 @@
+/* =========================
+   RESET & BASE
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0b0b0b, #000);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  height: 90px;
+  background: rgba(0,0,0,0.95);
+  border-bottom: 1px solid rgba(255,0,0,0.25);
+}
+
+.logo {
+  height: 65px;
+  filter: drop-shadow(0 0 10px rgba(255,0,0,0.4));
+}
+
+.admin-badge {
+  margin-left: 12px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e50914, #ff3b3b);
+  box-shadow: 0 0 18px rgba(229,9,20,0.8);
+}
+
+.logout-btn {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: 40px;
+  border: 1px solid rgba(255,0,0,0.5);
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: rgba(229,9,20,0.2);
+  box-shadow: 0 0 25px rgba(229,9,20,0.9);
+}
+
+/* =========================
+   HERO
+========================= */
+.admin-hero {
+  height: 35vh;
+  background: url("../images/pharma-bg.jpg") center/cover no-repeat;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.5));
+}
+
+.hero-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 25px rgba(255,0,0,0.8);
+}
+
+.hero-content p {
+  color: #ccc;
+  margin-top: 10px;
+}
+
+/* =========================
+   PRIMARY BUTTON
+========================= */
+.create-teacher-btn {
+  margin: 30px 60px;
+  padding: 14px 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #e50914, #ff4d4d);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 50px;
+  box-shadow: 0 0 35px rgba(229,9,20,0.8);
+  transition: 0.35s;
+}
+
+.create-teacher-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 0 55px rgba(255,60,60,1);
+}
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+.stats-section {
+  padding: 40px 60px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+.stat-card {
+  background: linear-gradient(180deg, #111, #050505);
+  padding: 30px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.9);
+  transition: 0.35s;
+  border: 1px solid rgba(255,0,0,0.15);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 45px rgba(229,9,20,0.8);
+}
+
+.stat-card h4 {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.stat-card p {
+  margin-top: 12px;
+  font-size: 36px;
+  font-weight: bold;
+  color: #ff3b3b;
+}
+
+/* =========================
+   COOL EXAM MANAGEMENT CARD
+========================= */
+.exam-management-card {
+  margin: 60px;
+  padding: 40px;
+  border-radius: 24px;
+  background: radial-gradient(circle at top, rgba(255,0,0,0.18), #050505);
+  border: 1px solid rgba(255,0,0,0.35);
+  box-shadow: 0 0 70px rgba(255,0,0,0.35);
+  transition: 0.4s;
+}
+
+.exam-management-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 90px rgba(255,0,0,0.6);
+}
+
+.exam-management-card h3 {
+  font-size: 26px;
+  color: #ff4d4d;
+  margin-bottom: 20px;
+}
+
+.exam-management-card ul {
+  list-style: none;
+}
+
+.exam-management-card li {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #eee;
+}
+
+.exam-management-card li::before {
+  content: "✔";
+  color: #00ff9c;
+  margin-right: 10px;
+}
+
+/* =========================
+   CONTENT SECTIONS (TABLE)
+========================= */
+.experiments-section {
+  margin: 60px;
+}
+
+.experiments-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  color: #ff3b3b;
+  text-shadow: 0 0 18px rgba(255,0,0,0.6);
+}
+
+/* =========================
+   TABLES
+========================= */
+.table-wrapper {
+  background: #0b0b0b;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 35px rgba(0,0,0,0.9);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(255,0,0,0.18);
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+}
+
+th {
+  color: #ff4d4d;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+tr {
+  border-bottom: 1px solid rgba(255,0,0,0.15);
+}
+
+tr:hover {
+  background: rgba(255,0,0,0.08);
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.active {
+  background: rgba(34,197,94,0.25);
+  color: #22c55e;
+}
+
+.status.inactive {
+  background: rgba(239,68,68,0.25);
+  color: #ef4444;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.action-btn {
+  background: linear-gradient(135deg, #ff2e2e, #ff5f5f);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 0 20px rgba(255,0,0,0.5);
+  text-decoration: none;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 35px rgba(255,0,0,0.9);
+}
+
+.action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================
+   EXAM STATUS BADGES
+========================= */
+.exam-status {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.exam-status.enabled {
+  background: rgba(0,255,156,0.15);
+  color: #00ff9c;
+  border: 1px solid rgba(0,255,156,0.4);
+}
+
+.exam-status.disabled {
+  background: rgba(255,0,0,0.15);
+  color: #ff4d4d;
+  border: 1px solid rgba(255,0,0,0.4);
+}
+
+/* =========================
+   EXAM MANAGEMENT PAGE
+========================= */
+.exam-page {
+  max-width: 1100px;
+  margin: 70px auto;
+  padding: 0 20px;
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,0,0,0.25);
+  box-shadow: 0 0 45px rgba(255,0,0,0.2);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 0 25px;
+  }
+
+  .stats-section,
+  .experiments-section,
+  .exam-management-card {
+    margin: 30px 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+}
+/* =========================
+   MCQ OPTIONS
+========================= */
+.mcq-options {
+  list-style: none;
+  margin-left: 10px;
+}
+
+.mcq-options li {
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.correct-option {
+  color: #00ff9c;
+  font-weight: 600;
+}
+
+.normal-option {
+  color: #ddd;
+}
+/* =====================================================
+   NEW UI ENHANCEMENTS (EXAM / MCQ / SHORT ANSWER)
+   ⚠️ APPEND ONLY – DOES NOT MODIFY EXISTING STYLES
+===================================================== */
+
+/* ---------- SECTION HEADERS ---------- */
+.exam-page h1,
+.exam-page h2 {
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.exam-page h1 {
+  font-size: 2.6rem;
+  color: #ff4d4d;
+  text-shadow: 0 0 22px rgba(255,0,0,0.6);
+}
+
+.exam-page h2 {
+  font-size: 1.2rem;
+  color: #bbb;
+  margin-bottom: 35px;
+}
+
+/* ---------- QUESTION CARDS (MCQ & SHORT) ---------- */
+.question-card {
+  background: linear-gradient(180deg, #0e0e0e, #050505);
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 26px;
+  border: 1px solid rgba(255,0,0,0.25);
+  box-shadow: 0 0 45px rgba(0,0,0,0.9);
+  transition: 0.35s;
+}
+
+.question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 70px rgba(255,0,0,0.5);
+}
+
+.question-card h3,
+.question-card h4 {
+  color: #ff5c5c;
+  margin-bottom: 12px;
+}
+
+.question-meta {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 14px;
+}
+
+/* ---------- FORM CARD (ADD MCQ / ADD SHORT) ---------- */
+.form-card {
+  max-width: 720px;
+  margin: auto;
+}
+
+.form-card label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #ff9a9a;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,0,0,0.35);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  outline: none;
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus {
+  border-color: #ff4d4d;
+  box-shadow: 0 0 18px rgba(255,0,0,0.7);
+}
+
+.form-card textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* ---------- OPTION GRID (MCQ ADD PAGE) ---------- */
+.mcq-option-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* ---------- DELETE BUTTON ---------- */
+.delete-btn {
+  background: linear-gradient(135deg, #7f1d1d, #ef4444);
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  box-shadow: 0 0 40px rgba(239,68,68,0.9);
+}
+
+/* ---------- BADGES (MARKS / KEYWORDS) ---------- */
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.badge.marks {
+  background: rgba(0,255,156,0.18);
+  color: #00ff9c;
+  border: 1px solid rgba(0,255,156,0.4);
+}
+
+.badge.keywords {
+  background: rgba(255,0,0,0.18);
+  color: #ff7b7b;
+  border: 1px solid rgba(255,0,0,0.4);
+}
+
+/* ---------- NAVIGATION BAR (TOP ACTIONS) ---------- */
+.exam-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: #aaa;
+}
+
+.empty-state p {
+  margin-top: 10px;
+  font-size: 16px;
+}

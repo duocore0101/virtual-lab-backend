@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frog Heart Isolation – Experiment</title>
+
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10004">
+
+  <style>
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
+      width: 100%;
+      height: 480px;
+      background: #000;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    iframe, video {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+    }
+
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= PROCEDURE POPUP ================= */
+    .procedure-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .procedure-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 28px 34px;
+      box-shadow:
+        0 0 0 2px #ff3b3b,
+        0 0 35px rgba(255, 59, 59, 0.55);
+      animation: popIn 0.35s ease;
+      position: relative;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .procedure-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 20px;
+    }
+
+    .procedure-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    .procedure-list {
+      padding-left: 22px;
+    }
+
+    .procedure-list > li {
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .procedure-list strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .procedure-list ul {
+      margin-left: 18px;
+      list-style: disc;
+    }
+
+    .precaution-title {
+      margin-top: 20px;
+      color: #b91c1c;
+    }
+
+    .precaution-list {
+      margin-left: 22px;
+      list-style: square;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    Isolation of Frog's Heart and Assembly Setup
+  </h1>
+
+  <!-- TOP ACTION BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+  </div>
+
+  <!-- ================= VIDEO FRAME ================= -->
+  <div class="video-frame">
+    <video controls>
+      <source src="{% static 'experiments/frog-heart/videos/frog_heart_isolation.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row" style="justify-content:center; margin-top:25px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🌗 THEME TOGGLE (RESTORED) -->
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+<!-- ================= PROCEDURE MODAL ================= -->
+<div class="procedure-overlay" id="procedureModal">
+  <div class="procedure-card">
+
+    <span class="procedure-close" onclick="closeProcedure()">✖</span>
+
+    <h2 class="procedure-title">Procedure</h2>
+
+    <ol class="procedure-list">
+
+      <li>
+        <strong>Preparation of Frog (Pithing)</strong>
+        <ul>
+          <li>Select a healthy medium-sized frog.</li>
+          <li>Stun by sharp blow or brief ether/chloroform exposure.</li>
+          <li>Destroy brain using pithing needle via foramen magnum.</li>
+          <li>Double pith to destroy spinal cord.</li>
+          <li>Pin frog supine on frog board.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Exposure of Heart</strong>
+        <ul>
+          <li>Make midline incision from abdomen to throat.</li>
+          <li>Cut sternum / pectoral girdle.</li>
+          <li>Open pericardium carefully.</li>
+          <li>Keep heart moist with Frog Ringer’s solution.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Cannulation</strong>
+        <ul>
+          <li>Identify sinus venosus.</li>
+          <li>Pass ligature and insert venous cannula.</li>
+          <li>Secure cannula and cut aorta.</li>
+          <li>Connect to perfusion bottle (20–30 cm).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Perfusion and Recording</strong>
+        <ul>
+          <li>Start perfusion at 30–40 drops/min.</li>
+          <li>Attach thread to ventricle tip.</li>
+          <li>Connect to Starling heart lever.</li>
+          <li>Record tracing on kymograph drum.</li>
+        </ul>
+      </li>
+
+    </ol>
+
+    <h3 class="precaution-title">Precautions</h3>
+    <ul class="precaution-list">
+      <li>Keep heart moist at all times.</li>
+      <li>Avoid air bubbles in cannula.</li>
+      <li>Aerate Ringer’s solution.</li>
+      <li>Maintain room temperature.</li>
+      <li>Follow ethical guidelines.</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blood Withdrawal Techniques – Theory</title>
+
+  <!-- 🔥 USE ROTAROD INTRO CSS FOR SLIDE FLOW -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- MAIN TITLE -->
+  <h1 class="title">Theory</h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <div class="info-box slide active">
+      <h2>Introduction to Blood Withdrawal</h2>
+      <p>
+        Blood withdrawal is a fundamental laboratory technique in experimental
+        pharmacology used to obtain blood samples for biochemical, hematological,
+        and pharmacokinetic analysis in laboratory animals.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Purpose of Blood Collection</h2>
+      <p>
+        Blood samples are required for estimation of drug levels, metabolites,
+        biomarkers, hormones, and safety parameters. Proper blood collection
+        ensures reliable experimental data and reproducibility.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Types of Blood Collection Methods</h2>
+      <p>
+        Blood withdrawal techniques are classified as
+        <strong>non-terminal</strong> (tail vein, saphenous vein, marginal ear vein)
+        and <strong>terminal</strong> methods (cardiac puncture, posterior vena cava),
+        depending on volume required and study design.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Animal Welfare & Ethical Considerations</h2>
+      <p>
+        All blood collection procedures must follow ethical principles including
+        the <strong>3Rs – Replacement, Reduction, and Refinement</strong>.
+        Stress, pain, and blood volume limits must be strictly controlled.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Guidelines and Safety</h2>
+      <p>
+        Blood withdrawal should be performed by trained personnel under
+        institutional and international guidelines (NC3Rs, IACUC, AVMA).
+        Proper restraint, aseptic technique, and anesthesia (when required)
+        are essential for animal safety.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → INTRO PAGE
+    location.href = "/experiment/{{ experiment.slug }}/";
+  }
+}
+
+/* KEYBOARD SUPPORT */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

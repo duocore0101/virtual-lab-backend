@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Admin | G-MARS{% endblock %}</title>
+
+  <!-- Admin Base CSS -->
+  <link rel="stylesheet" href="{% static 'css/super_admin.css' %}?v=10002">
+
+  <style>
+    /* 🔥 Request Badge */
+    .req-badge {
+      background: red;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 50px;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="sa-header">
+  <div class="logo-area">
+    <img src="{% static 'images/gmars-logo.png' %}" class="logo" alt="G-MARS">
+    <span class="badge">ADMIN</span>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn" title="Toggle Menu" onclick="toggleSidebar()">☰</button>
+
+    <!-- 🔥 Notification now goes to Teacher Requests -->
+    <button class="icon-btn" title="Teacher Requests"
+            onclick="window.location.href='/admin/teacher-requests/'">
+      🔔
+    </button>
+
+    <button class="icon-btn" title="Toggle Theme" onclick="toggleTheme()">🌓</button>
+
+    <button class="icon-btn" title="Settings"
+            onclick="window.location.href='/admin/settings/'">⚙</button>
+
+    <a href="/logout/" class="logout-btn">Logout</a>
+  </div>
+</header>
+
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="sa-layout">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sa-sidebar">
+    <nav>
+      <a href="/admin/dashboard/">🏠 <span>Dashboard</span></a>
+      <a href="/admin/teachers/">👨‍🏫 <span>Teachers</span></a>
+      <a href="/admin/students/">🎓 <span>Students</span></a>
+
+      <!-- 🔥 NEW: Teacher Requests Menu -->
+      <a href="/admin/teacher-requests/">
+        📨 <span>Teacher Requests</span>
+        {% if pending_teacher_requests > 0 %}
+          <span class="req-badge">{{ pending_teacher_requests }}</span>
+        {% endif %}
+      </a>
+
+      <a href="/admin/experiments/">🧪 <span>Experiments</span></a>
+      <a href="/admin/attempts/">📊 <span>Attempts</span></a>
+      <a href="/admin/reports/">📈 <span>Reports</span></a>
+      <a href="/admin/support/">🎧 <span>Support</span></a>
+      <a href="/admin/settings/">⚙ <span>Settings</span></a>
+    </nav>
+  </aside>
+
+  <!-- ================= PAGE CONTENT ================= -->
+  <main class="sa-content">
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="sa-footer">
+  <p>© 2026 G-MARS Pharma Solutions | Admin Panel</p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>
+
+</body>
+</html>

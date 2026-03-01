@@ -1,0 +1,909 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dose Calculation – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .slide-container {
+      position: relative;
+      min-height: 450px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    .info-box p {
+      margin-bottom: 12px;
+      line-height: 1.6;
+      text-align: justify;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Theory / Principle</h1>
+
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+<div class="info-box slide active">
+  <h2>1. Introduction</h2>
+
+  <p>
+    Experimental animals have been of very important tools in the history of
+    non-human research models for scientific purposes in almost every aspect of
+    biomedical, behavioral researches and testing conducted in Universities,
+    Medical schools, Pharmaceutical companies, research institutes, farms and
+    commercial facilities that provide animal-testing services to industry.
+    Experiments on animals are necessary in drugs discovery and development
+    as well as to advance medical and biological knowledge.
+  </p>
+
+  <p>
+    Dosage calculation and stock solution preparation based on dosage rationale
+    formula are prerequisites to drug administration in experimental animals.
+    However, drugs dosage calculations and stock solution preparations are not
+    clearly explained in most scientific literatures involving the use of
+    experimental animals, and this is a major challenge to some undergraduate
+    students, post-graduate students and other researchers.
+  </p>
+
+  <p>
+    Since over 90% of animals used in in vivo experiments in medical,
+    physiological, pharmacological, chemical, toxicological, biological,
+    biochemical and genetic studies are rats and mice, this work is aimed to
+    simplify calculation of doses, preparation of stock solution in experimental
+    animal for the benefits of all researchers.
+  </p>
+</div>
+
+    <!-- SLIDE 2 -->
+<div class="info-box slide">
+  <h2>2. Vehicle of Choice, Drugs Dissolution and Volume Selection Rationale</h2>
+
+  <p>
+    A vehicle is any substance that acts as a medium in which a drug is administered.
+    Vehicle, which is an essential consideration in all animal research should be
+    biologically inert, have no toxic effects on the animals and not also influence
+    the results obtained for the compound under investigation.
+  </p>
+
+  <p>
+    Example of suitable vehicles for animal research include; water, normal saline
+    (0.9% sodium chloride), 50% polyethylene glycol, 5 to 10% Tween 80,
+    0.25% methylcellulose or carboxymethylcellulose.
+  </p>
+
+  <p>
+    In most researches involving experimental animals, dosages are usually calculated
+    from stock solution of the test drugs dissolved in appropriate volume of solvent
+    (vehicle). According to the OECD’s (Organization of Economic Cooperation and Development)
+    guidelines, dosage of drug (mg) should be constituted in an appropriate volume
+    not usually exceeding 10 ml/kg (1 ml/100g) body weight of experimental animals
+    (mice and rats) for non-aqueous solvent in oral route of administration.
+  </p>
+
+  <p>
+    However, in the case of aqueous solvents, 20 ml/kg (2 ml/100g) body weight can
+    be considered (OECD, 2000). Large dose volumes (40 ml/kg body weight) can cause
+    unnecessary stress to animals and can overload the stomach capacity, resulting in
+    reflux, aspiration pneumonia, pharyngeal, esophageal and gastric irritation or
+    rupture. Lower volume (5 ml/kg) can be considered to dissolve highly soluble drugs.
+    However, final dilution volume should not exceed 20 ml/kg.
+  </p>
+
+  <p>
+    Based on 10 ml/kg volume selection, required dose volume for a 100 g rat:
+    (100 g = 0.1 kg) × 10 ml = 1 ml.
+    <br><strong>NB:</strong> 1 kg = 1000 g.
+  </p>
+
+  <p>
+    Based on 20 ml/kg volume selection, required dose volume for a 100 g rat:
+    (0.1 kg) × 20 ml = 2 ml.
+  </p>
+
+  <p>
+    This is illustrated below in the OECD guideline table on volume selection.
+  </p>
+
+  <!-- ===== OECD TABLE ===== -->
+  <div style="overflow-x:auto; margin-top:20px;">
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#ff2e2e; color:white;">
+          <th style="padding:8px; border:1px solid #444;">Standard Volume</th>
+          <th style="padding:8px; border:1px solid #444;">Animal’s Body Weight (g)</th>
+          <th style="padding:8px; border:1px solid #444;">Calculated Volume (ml)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="5" style="border:1px solid #444; padding:8px;">
+            10 ml/kg<br>(Appropriate volume)
+          </td>
+          <td style="border:1px solid #444;">100 g</td>
+          <td style="border:1px solid #444;">1.00 ml</td>
+        </tr>
+        <tr><td style="border:1px solid #444;">120 g</td><td style="border:1px solid #444;">1.20 ml</td></tr>
+        <tr><td style="border:1px solid #444;">130 g</td><td style="border:1px solid #444;">1.30 ml</td></tr>
+        <tr><td style="border:1px solid #444;">135 g</td><td style="border:1px solid #444;">1.35 ml</td></tr>
+        <tr><td style="border:1px solid #444;">150 g</td><td style="border:1px solid #444;">1.50 ml</td></tr>
+
+        <tr>
+          <td rowspan="5" style="border:1px solid #444; padding:8px;">
+            20 ml/kg<br>(Maximum volume)
+          </td>
+          <td style="border:1px solid #444;">100 g</td>
+          <td style="border:1px solid #444;">2.00 ml</td>
+        </tr>
+        <tr><td style="border:1px solid #444;">120 g</td><td style="border:1px solid #444;">2.40 ml</td></tr>
+        <tr><td style="border:1px solid #444;">130 g</td><td style="border:1px solid #444;">2.60 ml</td></tr>
+        <tr><td style="border:1px solid #444;">135 g</td><td style="border:1px solid #444;">2.70 ml</td></tr>
+        <tr><td style="border:1px solid #444;">150 g</td><td style="border:1px solid #444;">3.00 ml</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+ <!-- SLIDE 3 -->
+<div class="info-box slide">
+  <h2>3. Dosage Calculation and Preparation of Stock Solution of Crude Plant Extract</h2>
+
+  <p>
+    With reference to table 1 above, stock solutions and doses of a plant extract
+    (with selected doses 200 mg/kg and 400 mg/kg) for a rat weighing 120 g
+    can be calculated as follows:
+  </p>
+
+  <p><strong>Step 1: Dosage Calculation</strong></p>
+  <p>
+    Body weight of animal = 120 g = 0.12 kg
+  </p>
+  <p>
+    Dosage in mg = Body weight (kg) × Dose (mg/kg)
+  </p>
+  <p>
+    Dosage in mg = 0.12 × 200 mg = <strong>24 mg</strong>
+  </p>
+
+  <p><strong>Step 2: Dissolution in Suitable Vehicle</strong></p>
+  <p>
+    According to OECD guidelines, a 120 g rat requires 24 mg of crude plant extract
+    constituted in not more than 1.2 ml of normal saline (10 ml/kg rule).
+  </p>
+
+  <p>
+    In summary:
+    <strong>120 g ≡ 24 mg ≡ 1.2 ml of normal saline</strong>
+  </p>
+
+  <p>
+    Bulk stock preparation:
+  </p>
+
+  <p>
+    24 mg = 1.2 ml  
+    <br>
+    40 × 24 mg = 40 × 1.2 ml  
+    <br>
+    960 mg dissolved in 48 ml normal saline  
+    <br>
+    = <strong>20 mg/ml stock solution</strong>
+  </p>
+
+  <p>
+    From this stock (20 mg/ml):
+    1 ml is required for 100 g rat,
+    while 1.2 ml is required for 120 g rat.
+  </p>
+
+  <p>
+    For higher selected dose (400 mg/kg):
+    960 mg dissolved in 24 ml → <strong>40 mg/ml</strong>
+    which is twice the concentration of the 200 mg/kg stock.
+  </p>
+
+  <!-- ===== TABLE 2 ===== -->
+  <div style="overflow-x:auto; margin-top:20px;">
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#ff2e2e; color:white;">
+          <th style="padding:8px; border:1px solid #444;">Selected Dose</th>
+          <th style="padding:8px; border:1px solid #444;">Stock Solution</th>
+          <th style="padding:8px; border:1px solid #444;">Animal Body Weight (g)</th>
+          <th style="padding:8px; border:1px solid #444;">Calculated Dose (mg)</th>
+          <th style="padding:8px; border:1px solid #444;">Equivalent Dose (ml)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- LOW DOSE -->
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            Low dose, 200 mg/kg
+          </td>
+          <td rowspan="4" style="border:1px solid #444;">
+            960 mg / 48 ml<br>(20 mg/ml)
+          </td>
+          <td style="border:1px solid #444;">120 g</td>
+          <td style="border:1px solid #444;">24 mg</td>
+          <td style="border:1px solid #444;">1.20 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">130 g</td>
+          <td style="border:1px solid #444;">30 mg</td>
+          <td style="border:1px solid #444;">1.30 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">135 g</td>
+          <td style="border:1px solid #444;">26 mg</td>
+          <td style="border:1px solid #444;">1.35 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">150 g</td>
+          <td style="border:1px solid #444;">30 mg</td>
+          <td style="border:1px solid #444;">1.50 ml</td>
+        </tr>
+
+        <!-- HIGH DOSE -->
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            High dose, 400 mg/kg
+          </td>
+          <td rowspan="4" style="border:1px solid #444;">
+            960 mg / 24 ml<br>(40 mg/ml)
+          </td>
+          <td style="border:1px solid #444;">120 g</td>
+          <td style="border:1px solid #444;">48 mg</td>
+          <td style="border:1px solid #444;">1.20 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">130 g</td>
+          <td style="border:1px solid #444;">60 mg</td>
+          <td style="border:1px solid #444;">1.20 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">135 g</td>
+          <td style="border:1px solid #444;">52 mg</td>
+          <td style="border:1px solid #444;">1.35 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">150 g</td>
+          <td style="border:1px solid #444;">60 mg</td>
+          <td style="border:1px solid #444;">1.50 ml</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:18px;">
+    The above table shows that animals with higher body weight in the same
+    standard dose category will receive higher doses (mg or ml) of plant
+    extract solution. Also, the stock solution for high dose will be thicker
+    and more concentrated than low dose.
+  </p>
+
+</div>
+
+   <!-- SLIDE 4 -->
+<div class="info-box slide">
+  <h2>4. Dosage Calculation and Preparation of Stock Solution of a Reference Drug (Silymarin)</h2>
+
+  <p>
+    Silymarin (figure 1) is a reference drug (with dosage formulations of
+    70 mg and 140 mg per tablet respectively) used in animal models for
+    screening hepatoprotective, nephroprotective and antioxidant agents
+    at standard doses ranging between 25 mg/kg to 200 mg/kg body weight.
+  </p>
+
+  <!-- ===== IMAGE PLACEHOLDER ===== -->
+  <div style="text-align:center; margin:20px 0;">
+    <img src="{% static 'experiments/dose-calculation-stock-solution/images/silymarin.png' %}"
+         alt="Silymarin Tablet"
+         style="max-width:300px; border-radius:8px;">
+    <p style="font-size:13px; color:#aaa;">Figure 1: Silymarin Tablet</p>
+  </div>
+
+  <p><strong>Example Calculation:</strong></p>
+
+  <p>
+    Required dose of silymarin (70 mg tablet) for a rat weighing
+    130 g at a standard dose of 25 mg/kg:
+  </p>
+
+  <p><strong>Step 1: Dosage Calculation</strong></p>
+
+  <p>
+    Required dose = Body weight (kg) × Standard dose (mg/kg)
+  </p>
+
+  <p>
+    0.13 × 25 mg = <strong>3.25 mg</strong>
+  </p>
+
+  <p><strong>Step 2: Dissolution in Suitable Vehicle</strong></p>
+
+  <p>
+    A 130 g rat requires 3.25 mg of silymarin and this dose should be
+    constituted in not more than 1.3 ml of normal saline according to
+    OECD’s 10 ml/kg guideline.
+  </p>
+
+  <p>
+    In summary:
+    <strong>130 g ≡ 3.25 mg ≡ 1.3 ml of normal saline</strong>
+  </p>
+
+  <p>
+    If 3.25 mg is constituted in 1.3 ml, then one tablet of
+    silymarin (70 mg) would be constituted in:
+  </p>
+
+  <p>
+    (1.3 ml ÷ 3.25 mg) × 70 mg = <strong>28 ml of normal saline</strong>
+  </p>
+
+  <p>
+    Therefore stock solution:
+    <strong>70 mg / 28 ml = 2.5 mg/ml</strong>
+  </p>
+
+  <p>
+    From this stock solution, dosages can be administered to animals
+    of varying body weights based on the OECD 10 ml/kg standard volume
+    rationale as shown in Table 3 below.
+  </p>
+
+  <!-- ===== TABLE 3 ===== -->
+  <div style="overflow-x:auto; margin-top:20px;">
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#ff2e2e; color:white;">
+          <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
+          <th style="padding:8px; border:1px solid #444;">Stock Solution</th>
+          <th style="padding:8px; border:1px solid #444;">Animal’s Body Weight (g)</th>
+          <th style="padding:8px; border:1px solid #444;">Calculated Dose (mg)</th>
+          <th style="padding:8px; border:1px solid #444;">Equivalent Dose (ml)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            Silymarin, 25 mg/kg
+          </td>
+          <td rowspan="4" style="border:1px solid #444;">
+            70 mg / 28 ml<br>= (2.5 mg/ml)
+          </td>
+          <td style="border:1px solid #444;">130 g</td>
+          <td style="border:1px solid #444;">3.25 mg</td>
+          <td style="border:1px solid #444;">1.30 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">135 g</td>
+          <td style="border:1px solid #444;">3.38 mg</td>
+          <td style="border:1px solid #444;">1.35 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">140 g</td>
+          <td style="border:1px solid #444;">3.50 mg</td>
+          <td style="border:1px solid #444;">1.40 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">150 g</td>
+          <td style="border:1px solid #444;">3.75 mg</td>
+          <td style="border:1px solid #444;">1.50 ml</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+    <!-- SLIDE 5 -->
+<div class="info-box slide">
+  <h2>5. Dosage Calculation and Preparation of Stock Solution for Salt Compound (Alloxan Monohydrate)</h2>
+
+  <p>
+    Alloxan monohydrate is a diabetogenic agent used at a standard dose of
+    150 mg/kg for rats via the intraperitoneal (IP) route as reported in
+    several experimental diabetes literatures (Erhirhie et al., 2013;
+    Oluwole et al., 2012). It is available in salt form.
+  </p>
+
+  <p>
+    The required dose of alloxan monohydrate to induce experimental diabetes
+    intraperitoneally in a rat weighing 200 g at a standard dose of
+    150 mg/kg can be calculated as follows:
+  </p>
+
+  <p><strong>Step 1: Dosage Calculation</strong></p>
+
+  <p>
+    Required dose = Body weight (kg) × Standard dose (mg/kg)
+  </p>
+
+  <p>
+    0.2 × 150 mg = <strong>30 mg</strong>
+  </p>
+
+  <p><strong>Step 2: Volume Selection for IP Route</strong></p>
+
+  <p>
+    For intraperitoneal administration, an appropriate vehicle volume
+    ranging between 2 ml/kg to 5 ml/kg in rats is recommended.
+  </p>
+
+  <p>
+    Based on 2 ml/kg volume selection:
+  </p>
+
+  <p>
+    Required volume = 0.2 kg × 2 ml = <strong>0.4 ml</strong>
+  </p>
+
+  <p>
+    Therefore, 30 mg (0.03 g) of alloxan monohydrate should be
+    constituted in 0.4 ml of normal saline.
+  </p>
+
+  <p><strong>Bulk Stock Preparation</strong></p>
+
+  <p>
+    For multiple animals, stock can be prepared by weighing:
+  </p>
+
+  <p>
+    300 mg (0.3 g) dissolved in 4 ml normal saline
+  </p>
+
+  <p>
+    Concentration = 300 mg / 4 ml = <strong>75 mg/ml</strong>
+  </p>
+
+  <!-- ===== TABLE 4 ===== -->
+  <div style="overflow-x:auto; margin-top:20px;">
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#ff2e2e; color:white;">
+          <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
+          <th style="padding:8px; border:1px solid #444;">Stock Solution</th>
+          <th style="padding:8px; border:1px solid #444;">Animal Body Weight (g)</th>
+          <th style="padding:8px; border:1px solid #444;">Calculated Dose (mg)</th>
+          <th style="padding:8px; border:1px solid #444;">Equivalent Dose (ml)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            Alloxan Monohydrate, 150 mg/kg
+          </td>
+          <td rowspan="4" style="border:1px solid #444;">
+            300 mg / 4 ml<br>= (75 mg/ml)
+          </td>
+          <td style="border:1px solid #444;">200 g</td>
+          <td style="border:1px solid #444;">30 mg</td>
+          <td style="border:1px solid #444;">0.40 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">180 g</td>
+          <td style="border:1px solid #444;">27 mg</td>
+          <td style="border:1px solid #444;">0.36 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">160 g</td>
+          <td style="border:1px solid #444;">24 mg</td>
+          <td style="border:1px solid #444;">0.32 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">150 g</td>
+          <td style="border:1px solid #444;">22.5 mg</td>
+          <td style="border:1px solid #444;">0.30 ml</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:18px;">
+    From the above table, animals with higher body weight will receive
+    higher doses (mg or ml) of alloxan monohydrate solution.
+  </p>
+
+  <p>
+    Larger volume of stock solution can be prepared for multiple animals
+    by dissolving:
+    <br>
+    600 mg (0.6 g) in 8 ml normal saline, or
+    1200 mg (1.2 g) in 16 ml normal saline.
+  </p>
+
+  <p>
+    Analytical weighing balance with high accuracy and sensitivity should
+    be used when weighing alloxan monohydrate.
+  </p>
+
+  <p>
+    For mice, dissolution volume of 5 ml/kg can be considered due to
+    their lower body weight compared to rats.
+  </p>
+
+</div>
+
+    <!-- SLIDE 6 -->
+<div class="info-box slide">
+  <h2>6. Dosage Calculation and Preparation of Stock Solution for Ampoules (Gentamicin Injection)</h2>
+
+  <p>
+    Gentamicin (figure 2) is an aminoglycoside antibiotic used to induce
+    nephrotoxicity in experimental animals (rats and mice) at a standard
+    dose of 80 mg/kg via intraperitoneal route as reported in literature.
+  </p>
+
+  <!-- ===== IMAGE PLACEHOLDER ===== -->
+  <div style="text-align:center; margin:20px 0;">
+    <img src="{% static 'experiments/dose-calculation-stock-solution/images/gentamicin.png' %}"
+         alt="Gentamicin Ampoule"
+         style="max-width:300px; border-radius:8px;">
+    <p style="font-size:13px; color:#aaa;">Figure 2: Gentamicin Injection (80 mg/2 ml)</p>
+  </div>
+
+  <p>
+    The required dose of gentamicin to induce experimental nephrotoxicity
+    intraperitoneally in a rat weighing 100 g at a standard dose of
+    80 mg/kg can be calculated as follows:
+  </p>
+
+  <p><strong>Step 1: Dosage Calculation</strong></p>
+
+  <p>
+    Required dose = Body weight (kg) × Standard dose (mg/kg)
+  </p>
+
+  <p>
+    0.1 × 80 mg = <strong>8 mg</strong>
+  </p>
+
+  <p><strong>Step 2: Required Volume Calculation</strong></p>
+
+  <p>
+    Gentamicin ampoule contains 80 mg / 2 ml
+    which equals <strong>40 mg/ml</strong>.
+  </p>
+
+  <p>
+    Thus:
+    40 mg ≡ 1 ml  
+    8 mg ≡ (8 ÷ 40) ml = <strong>0.2 ml</strong>
+  </p>
+
+  <p>
+    Therefore, 100 g rat requires 0.2 ml of gentamicin injection.
+  </p>
+
+  <p>
+    Required dosages for animals of varying body weights are shown below.
+  </p>
+
+  <!-- ===== TABLE 5 ===== -->
+  <div style="overflow-x:auto; margin-top:20px;">
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#ff2e2e; color:white;">
+          <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
+          <th style="padding:8px; border:1px solid #444;">Stock Solution</th>
+          <th style="padding:8px; border:1px solid #444;">Animal’s Body Weight (g)</th>
+          <th style="padding:8px; border:1px solid #444;">Calculated Dose (mg)</th>
+          <th style="padding:8px; border:1px solid #444;">Equivalent Dose (ml)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- RATS -->
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            Gentamicin, 80 mg/kg (Rats)
+          </td>
+          <td rowspan="8" style="border:1px solid #444;">
+            80 mg / 2 ml<br>= (40 mg/ml)
+          </td>
+          <td style="border:1px solid #444;">100 g</td>
+          <td style="border:1px solid #444;">8 mg</td>
+          <td style="border:1px solid #444;">0.20 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">120 g</td>
+          <td style="border:1px solid #444;">9.6 mg</td>
+          <td style="border:1px solid #444;">0.24 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">140 g</td>
+          <td style="border:1px solid #444;">11.2 mg</td>
+          <td style="border:1px solid #444;">0.28 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">150 g</td>
+          <td style="border:1px solid #444;">12.0 mg</td>
+          <td style="border:1px solid #444;">0.30 ml</td>
+        </tr>
+
+        <!-- MICE -->
+        <tr>
+          <td rowspan="4" style="border:1px solid #444;">
+            Gentamicin, 80 mg/kg (Mice)
+          </td>
+          <td style="border:1px solid #444;">20 g</td>
+          <td style="border:1px solid #444;">1.6 mg</td>
+          <td style="border:1px solid #444;">0.04 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">25 g</td>
+          <td style="border:1px solid #444;">2.0 mg</td>
+          <td style="border:1px solid #444;">0.05 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">30 g</td>
+          <td style="border:1px solid #444;">2.4 mg</td>
+          <td style="border:1px solid #444;">0.06 ml</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #444;">35 g</td>
+          <td style="border:1px solid #444;">2.8 mg</td>
+          <td style="border:1px solid #444;">0.07 ml</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:18px;">
+    The above table shows that animals with higher body weight will
+    receive higher doses (mg or ml) of gentamicin injection.
+  </p>
+
+  <p>
+    However, twice serial dilution may be carried out to obtain
+    larger measurable volumes, especially for mice.
+  </p>
+
+  <p>
+    Example of double dilution:
+    <br>
+    1 ml gentamicin + 1 ml normal saline → 20 mg/ml  
+    <br>
+    Further dilution can be done to achieve measurable volume.
+  </p>
+
+  <p>
+    Therefore, double volume (e.g., 0.1 ml instead of 0.05 ml
+    for 25 g mouse) can be administered from diluted stock.
+  </p>
+
+  <p>
+    Further serial dilution (3–4 times) may be required for
+    very small animals to ensure accurate measurement.
+  </p>
+
+</div>
+
+   <!-- SLIDE 7 -->
+<div class="info-box slide">
+  <h2>7. Direct Calculation of Animals’ Dose from Human Dose</h2>
+
+  <p>
+    Some experimental situations may arise when animal doses of compounds
+    of different formulations (syrup, tonic, solution, ampoule injection,
+    suspension and tablet) are calculated from average adult (70 kg)
+    human dose.
+  </p>
+
+  <p>
+    We shall consider chemiron blood tonic (figure 3) in this instance.
+  </p>
+
+  <!-- ===== IMAGE PLACEHOLDER ===== -->
+  <div style="text-align:center; margin:20px 0;">
+    <img src="{% static 'experiments/dose-calculation-stock-solution/images/chemiron-tonic.png' %}"
+         alt="Chemiron Blood Tonic"
+         style="max-width:300px; border-radius:8px;">
+    <p style="font-size:13px; color:#aaa;">
+      Figure 3: Chemiron Blood Tonic
+    </p>
+  </div>
+
+  <p>
+    For example, if the required dose of chemiron blood tonic for a
+    70 kg human = 10 ml (×3 daily) = 30 ml/70 kg/day,
+    dosage for a rat weighing 150 g can be calculated as follows:
+  </p>
+
+  <p>
+    70 kg (70,000 g) adult man requires = 30 ml of chemiron blood tonic per day
+  </p>
+
+  <p>
+    Therefore,
+  </p>
+
+  <p>
+    150 g rat requires = (30 ml / 70,000 g) × 150 g
+  </p>
+
+  <p>
+    = <strong>0.06 ml</strong>
+  </p>
+
+  <p>
+    Since the volume (0.06 ml) is very small to be measured accurately
+    with a one milliliter syringe, it is recommended to carry out
+    ten times (×10) serial dilution for the tonic.
+  </p>
+
+  <p><strong>Serial Dilution Method:</strong></p>
+
+  <p>
+    Dilute 1 ml of chemiron blood tonic with 9 ml of normal saline
+  </p>
+
+  <p>
+    OR
+  </p>
+
+  <p>
+    Dilute 10 ml of chemiron blood tonic with 90 ml of normal saline
+  </p>
+
+  <p>
+    Required new volume of chemiron tonic for 150 g rat from
+    the diluted stock will be:
+  </p>
+
+  <p>
+    0.06 ml × 10 = <strong>0.6 ml</strong>
+  </p>
+
+  <p>
+    Subsequent volume of chemiron can be calculated for rats
+    whose body weights differ from 150 g using the same proportional formula.
+  </p>
+
+  <p>
+    However, further serial dilutions (×15 to ×20) are recommended
+    for mice (which weigh far less than rats) in order to obtain
+    an accurately measurable and administrable volume.
+  </p>
+
+</div>
+
+    <!-- SLIDE 8 -->
+    <div class="info-box slide">
+      <h2>8. Restraining & Administration</h2>
+      <p>
+        Oral administration requires gentle restraint
+        and gavage tube insertion via esophagus.
+      </p>
+      <p>
+        Intraperitoneal injection involves administration
+        into abdominal cavity avoiding visceral organs.
+      </p>
+      <p>
+        Proper training minimizes stress,
+        prevents injury and ensures experimental accuracy.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 8
+  </div>
+
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i){
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide(){
+  if(index < slides.length - 1){
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide(){
+  if(index > 0){
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/";
+  }
+}
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter") nextSlide();
+  if(e.key === "Escape") prevSlide();
+});
+
+function toggleTheme(){
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

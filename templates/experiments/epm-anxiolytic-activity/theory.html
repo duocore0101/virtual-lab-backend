@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elevated Plus Maze – Theory</title>
+
+  <!-- Reuse SAME CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">Theory – Elevated Plus Maze (EPM) Method</h1>
+
+  <!-- PRINCIPLE -->
+  <div class="info-box">
+    <h2>Principle</h2>
+    <p>
+      The Elevated Plus Maze (EPM) is a behavioral model used to evaluate
+      anxiety and the anxiolytic activity of drugs in laboratory animals
+      such as mice and rats.
+    </p>
+    <p>
+      The method is based on the natural conflict between the tendency of
+      rodents to explore a new environment and their fear of open and
+      elevated spaces. Anxiolytic drugs reduce this fear and increase
+      exploratory behavior in open arms.
+    </p>
+  </div>
+
+  <!-- OPEN ARMS -->
+  <div class="info-box">
+    <h2>Open Arms</h2>
+    <p>
+      The open arms of the Elevated Plus Maze are unprotected and elevated,
+      making them aversive to rodents under normal conditions.
+    </p>
+    <ul>
+      <li>
+        <strong>Increased open arm entries:</strong>
+        Indicates reduced anxiety and anxiolytic activity of the drug.
+      </li>
+      <li>
+        <strong>Increased time spent in open arms:</strong>
+        Suggests enhanced exploratory behavior due to anxiolytic action.
+      </li>
+    </ul>
+  </div>
+
+  <!-- CLOSED ARMS -->
+  <div class="info-box">
+    <h2>Closed Arms</h2>
+    <p>
+      Closed arms are enclosed by high walls and provide a sense of safety
+      to the animal, making them the preferred area for anxious rodents.
+    </p>
+    <ul>
+      <li>
+        <strong>Increased closed arm entries:</strong>
+        Indicates anxiety or lack of anxiolytic effect.
+      </li>
+      <li>
+        <strong>Prolonged time in closed arms:</strong>
+        Reflects fear and anxiety-related behavior.
+      </li>
+    </ul>
+  </div>
+
+  <!-- SIGNIFICANCE -->
+  <div class="info-box">
+    <h2>Significance</h2>
+    <p>
+      The Elevated Plus Maze is a simple, reliable, and widely accepted
+      experimental model for screening anxiolytic drugs.
+    </p>
+    <p>
+      It helps in understanding the effects of drugs acting on the central
+      nervous system and has significant relevance in the development and
+      evaluation of anti-anxiety medications.
+    </p>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/'">
+      ⬅ Previous
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next: Requirements ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+/* Load saved theme */
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

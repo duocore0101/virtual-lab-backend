@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ciliary Motility – Graph</title>
+
+  <!-- Reuse intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    .chart-box {
+      background: rgba(0,0,0,0.25);
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    canvas {
+      margin-top: 15px;
+    }
+
+    .legend-note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .button-row {
+      margin-top: 35px;
+    }
+
+    /* 🌗 LIGHT MODE FIXES */
+    body.light-mode .chart-box {
+      background: #ffffff;
+    }
+
+    body.light-mode .title,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode p,
+    body.light-mode .legend-note {
+      color: #222 !important;
+    }
+
+    body.light-mode canvas {
+      background: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Graphical Representation</h1>
+
+  <div class="info-box">
+    <h2>Effect of Drugs on Ciliary Motility</h2>
+    <p style="text-align:center;">
+      The bar graph below represents the
+      <strong>mean time (seconds)</strong> taken by indicator particles
+      to travel a fixed distance in the frog oesophagus after drug application.
+    </p>
+  </div>
+
+  <!-- 📊 BAR GRAPH -->
+  <div class="chart-box">
+    <h3 style="text-align:center;">Mean Transit Time (seconds)</h3>
+    <canvas id="ciliaryBarChart"></canvas>
+
+    <div class="legend-note">
+      <strong>Note:</strong> Shorter time = increased ciliary motility (stimulation) <br>
+      Longer time = inhibition / paralysis
+    </div>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+/* ⛶ FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+/* ============================
+   📊 CILIARY MOTILITY BAR CHART
+   ============================ */
+
+const labels = [
+  "Ringer (Control)",
+  "Acetylcholine",
+  "Physostigmine",
+  "Atropine"
+];
+
+const meanTime = [32, 19, 14, 46];
+
+let chartInstance = null;
+
+function renderChart(isLightMode = false) {
+
+  const textColor = isLightMode ? "#222" : "#ddd";
+  const gridColor = isLightMode
+    ? "rgba(0,0,0,0.12)"
+    : "rgba(255,255,255,0.15)";
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(
+    document.getElementById("ciliaryBarChart"),
+    {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Mean Time (seconds)",
+            data: meanTime,
+            backgroundColor: [
+              "#64B5F6",  // Control
+              "#EF5350",  // ACh
+              "#66BB6A",  // Physostigmine
+              "#FFCA28"   // Atropine
+            ],
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: textColor,
+              font: { size: 13 }
+            }
+          },
+          tooltip: {
+            backgroundColor: "#111",
+            titleColor: "#fff",
+            bodyColor: "#ff5252",
+            borderColor: "#ff5252",
+            borderWidth: 1
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: textColor
+            },
+            grid: {
+              color: gridColor
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Mean Time (seconds)",
+              color: textColor
+            },
+            ticks: {
+              color: textColor
+            },
+            grid: {
+              color: gridColor
+            }
+          }
+        }
+      }
+    }
+  );
+}
+
+/* INITIAL DRAW */
+renderChart(document.body.classList.contains("light-mode"));
+
+/* 🌗 THEME TOGGLE */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+  renderChart(document.body.classList.contains("light-mode"));
+}
+</script>
+
+</body>
+</html>

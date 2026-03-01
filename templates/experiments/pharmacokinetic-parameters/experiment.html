@@ -1,0 +1,438 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pharmacokinetic Parameters – Virtual Experiment</title>
+
+<link rel="stylesheet"
+      href="{% static 'experiments/rotarod/css/experiment.css' %}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+.top-actions {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+
+.dropdown-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #ff2e2e;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255,0,0,0.6);
+  transition: 0.3s;
+}
+
+.dropdown-btn:hover {
+  transform: scale(1.05);
+}
+
+.table-box { overflow-x:auto; }
+table {
+  width:100%;
+  border-collapse: collapse;
+}
+table th, table td {
+  padding:8px;
+  border:1px solid #444;
+  text-align:center;
+}
+input {
+  width:100%;
+  padding:6px;
+  border-radius:6px;
+  border:1px solid #555;
+}
+</style>
+<style>
+
+/* ================= GLOBAL BACKGROUND ================= */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  transition: 0.4s ease;
+}
+
+/* LIGHT THEME */
+body.light-theme {
+  background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+  color: #222;
+}
+
+/* ================= CONTAINER ================= */
+.exp-container {
+  padding: 40px 8%;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+/* ================= GLASS CARD ================= */
+.info-box {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
+
+body.light-theme .info-box {
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* ================= TABLE DESIGN ================= */
+.table-box { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table th {
+  background: linear-gradient(45deg, #ff2e2e, #ff5e5e);
+  color: #fff;
+  padding: 12px;
+  font-weight: 600;
+}
+
+table td {
+  padding: 10px;
+  text-align: center;
+  background: rgba(255,255,255,0.05);
+}
+
+body.light-theme table td {
+  background: rgba(0,0,0,0.03);
+}
+
+table tr:nth-child(even) td {
+  background: rgba(255,255,255,0.08);
+}
+
+table tr:hover td {
+  background: rgba(255,0,0,0.15);
+  transition: 0.3s;
+}
+
+/* ================= INPUT STYLE ================= */
+input {
+  width: 90%;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  text-align: center;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: 500;
+}
+
+body.light-theme input {
+  background: rgba(0,0,0,0.05);
+  color: #222;
+}
+
+input:focus {
+  box-shadow: 0 0 10px #ff2e2e;
+}
+
+/* ================= BUTTONS ================= */
+.top-actions {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  gap: 12px;
+}
+
+.dropdown-btn {
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(45deg, #ff2e2e, #ff5e5e);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255,0,0,0.6);
+  transition: 0.3s ease;
+}
+
+.dropdown-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255,0,0,0.9);
+}
+
+/* ================= NAV BUTTONS ================= */
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.back-btn, .exp-btn {
+  padding: 12px 28px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.back-btn {
+  background: #444;
+  color: #fff;
+}
+
+.exp-btn {
+  background: linear-gradient(45deg, #ff2e2e, #ff5e5e);
+  color: #fff;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+}
+
+.exp-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+}
+
+/* ================= MODAL DESIGN ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  padding: 30px;
+  border-radius: 18px;
+  width: 85%;
+  max-width: 700px;
+  box-shadow: 0 0 30px rgba(255,0,0,0.5);
+  animation: slideUp 0.4s ease;
+}
+
+body.light-theme .modal-content {
+  background: #fff;
+  color: #222;
+}
+
+.close-btn {
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================= THEME TOGGLE ================= */
+.theme-toggle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= PROCEDURE MODAL ================= -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+      <li>Record the given data in your observation table.</li>
+      <li>Plot semi-log graph (Time linear, Concentration log).</li>
+      <li>Draw best-fit straight line.</li>
+      <li>Extrapolate to obtain C₀.</li>
+      <li>Calculate slope and Kₑₗ.</li>
+      <li>Calculate remaining PK parameters.</li>
+      <li>Optional: Verify using Excel trendline.</li>
+      <li>Calculate AUC using trapezoidal rule.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ================= CALCULATION MODAL ================= -->
+<div id="calculationModal" class="modal">
+  <div class="modal-content" style="max-width:800px;">
+    <span class="close-btn" onclick="closeCalculation()">✖</span>
+    <h2>Sample Calculations</h2>
+    <ul>
+      <li>C₀ = 25 mg/L</li>
+      <li>Slope = (0.616 – 1.137)/(6–2) = –0.13025</li>
+      <li>Kₑₗ = –2.303 × slope = 0.300 h⁻¹</li>
+      <li>t₁/₂ = 0.693 / 0.300 = 2.31 h</li>
+      <li>Vd = 500 / 25 = 20 L</li>
+      <li>AUC₀–∞ = 25 / 0.300 = 83.33 mg·h/L</li>
+      <li>Clearance = 0.300 × 20 = 6 L/h</li>
+    </ul>
+  </div>
+</div>
+
+<div class="exp-container">
+
+<!-- TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+  <button class="dropdown-btn" onclick="openCalculation()">Calculations</button>
+  <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<h1>Pharmacokinetic Parameters – Virtual Analysis</h1>
+
+<!-- THEME TOGGLE -->
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+</div>
+
+<!-- GIVEN DATA -->
+<div class="info-box table-box">
+<h2>Given Data (IV Bolus – 500 mg)</h2>
+
+<table>
+<tr><th>Time (h)</th><th>Conc (mg/L)</th><th>log Cp</th></tr>
+<tr><td>0</td><td>25.00</td><td>1.398</td></tr>
+<tr><td>1</td><td>18.52</td><td>1.268</td></tr>
+<tr><td>2</td><td>13.72</td><td>1.137</td></tr>
+<tr><td>4</td><td>7.53</td><td>0.877</td></tr>
+<tr><td>6</td><td>4.13</td><td>0.616</td></tr>
+<tr><td>8</td><td>2.27</td><td>0.356</td></tr>
+<tr><td>12</td><td>0.68</td><td>-0.168</td></tr>
+</table>
+</div>
+
+<!-- GRAPH -->
+<div class="info-box">
+<h2>Semi-Log Plasma Concentration Curve</h2>
+<canvas id="pkChart"></canvas>
+</div>
+
+<!-- STUDENT INPUT -->
+<div class="info-box">
+<h2>Enter Your Calculated Values</h2>
+<table>
+<tr><td>C₀</td><td><input></td></tr>
+<tr><td>Kₑₗ</td><td><input></td></tr>
+<tr><td>t₁/₂</td><td><input></td></tr>
+<tr><td>Vd</td><td><input></td></tr>
+<tr><td>Clearance</td><td><input></td></tr>
+<tr><td>AUC</td><td><input></td></tr>
+</table>
+</div>
+
+<!-- NAVIGATION -->
+<div class="button-row">
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+Next ▶
+</button>
+</div>
+
+</div>
+
+<!-- ================= GRAPH LOGIC ================= -->
+<script>
+new Chart(document.getElementById('pkChart'), {
+type:'line',
+data:{
+labels:[0,1,2,4,6,8,12],
+datasets:[{
+label:'Plasma Concentration',
+data:[25,18.52,13.72,7.53,4.13,2.27,0.68],
+borderColor:'red',
+fill:false
+}]
+},
+options:{
+scales:{
+y:{type:'logarithmic'},
+x:{}
+}
+}
+});
+</script>
+
+<!-- ================= MODAL FUNCTIONS ================= -->
+<script>
+function openProcedure(){document.getElementById("procedureModal").style.display="flex";}
+function closeProcedure(){document.getElementById("procedureModal").style.display="none";}
+function openCalculation(){document.getElementById("calculationModal").style.display="flex";}
+function closeCalculation(){document.getElementById("calculationModal").style.display="none";}
+</script>
+
+<!-- ================= THEME TOGGLE ================= -->
+<script>
+const toggle=document.getElementById("themeToggle");
+if(localStorage.getItem("expTheme")==="light"){
+document.body.classList.add("light-theme");
+toggle.checked=true;
+}
+toggle.addEventListener("change",()=>{
+document.body.classList.toggle("light-theme");
+localStorage.setItem("expTheme",
+document.body.classList.contains("light-theme")?"light":"dark");
+});
+</script>
+
+<!-- ================= FULLSCREEN ================= -->
+<script>
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+}
+</script>
+
+</body>
+</html>

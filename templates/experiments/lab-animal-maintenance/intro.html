@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Laboratory Animal Maintenance – Aim</title>
+
+  <!-- CSS (SAME AS ROTAROD FLOW) -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+    <style>
+         .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+    }
+
+    .dropdown-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Fullscreen adjustment */
+    :fullscreen .top-actions {
+      top: 14px;
+      left: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- =========================
+       TITLE (AIM ONLY)
+  ========================== -->
+  <h1 class="title">Aim</h1>
+
+   <!-- FULL SCREEN BUTTON -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">
+      ⛶ Full Screen
+    </button>
+  </div>
+
+  <!-- =========================
+       AIM TEXT
+  ========================== -->
+  <div class="info-box">
+    <p style="font-size:18px; text-align:center; font-weight:500;">
+      To study the maintenance of laboratory animals according to
+      <strong>CPCSEA guidelines</strong>, including housing, feeding,
+      sanitation, handling, and ethical care.
+    </p>
+  </div>
+
+  <!-- =========================
+       NAVIGATION BUTTONS
+  ========================== -->
+  <div class="button-row" style="justify-content:center;">
+    <button class="back-btn"
+      onclick="location.href='/student/dashboard/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- =========================
+     🌗 THEME TOGGLE BUTTON
+========================== -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert(`Error enabling fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

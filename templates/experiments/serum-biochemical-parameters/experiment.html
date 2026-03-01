@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Semi-Autoanalyser | Virtual Lab</title>
+
+<link rel="stylesheet"
+      href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+<style>
+
+/* ================= TOP RIGHT ACTIONS ================= */
+.top-actions{
+  position:fixed;
+  top:20px;
+  right:25px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+.top-actions button{
+  padding:10px 18px;
+  border-radius:22px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff2e2e;
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,0,0,0.6);
+  transition:0.3s;
+}
+
+.top-actions button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* ================= CONTAINER ================= */
+.exp-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px;
+}
+
+.exp-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:25px;
+}
+
+.full-width{
+  grid-column:1 / -1;
+}
+
+.exp-input{
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+}
+
+.result-box{
+  margin-top:10px;
+  font-weight:600;
+}
+
+.timer{
+  font-size:18px;
+  color:#ff2e2e;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+</style>
+</head>
+
+<body class="theme-dark">
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+<h1 class="exp-title" style="text-align:center;">
+  Semi-Autoanalyser Simulation
+</h1>
+
+<div class="exp-grid">
+
+<!-- 1️⃣ TEST SELECTION -->
+<div class="exp-card">
+<h3 class="exp-heading">Select Parameter</h3>
+<select id="testSelect" class="exp-input" onchange="updateTestInfo()">
+<option value="">-- Select --</option>
+<option value="glucose">Glucose</option>
+<option value="bilirubin">Total Bilirubin</option>
+<option value="cholesterol">Cholesterol</option>
+<option value="calcium">Calcium</option>
+<option value="ast">AST (SGOT)</option>
+<option value="alt">ALT (SGPT)</option>
+</select>
+
+<div class="result-box" id="testInfo"></div>
+</div>
+
+<!-- 2️⃣ REAGENT SETUP -->
+<div class="exp-card">
+<h3 class="exp-heading">Reaction Setup</h3>
+<p>Reagent Volume: <b>1000 µL</b></p>
+<input type="number" id="sampleVol" class="exp-input" placeholder="Sample Volume (µL)">
+<button class="btn-start btn-small" onclick="prepareReaction()">Prepare Reaction</button>
+<div class="result-box" id="reactionMsg"></div>
+<div class="timer" id="timer"></div>
+</div>
+
+<!-- 3️⃣ ABSORBANCE -->
+<div class="exp-card">
+<h3 class="exp-heading">Absorbance</h3>
+<p>Abs Standard: <span id="absStd">--</span></p>
+<p>Abs Test: <span id="absTest">--</span></p>
+<input type="number" id="stdValue" class="exp-input" placeholder="Standard Value">
+<button class="btn-start btn-small" onclick="calcConc()">Calculate Concentration</button>
+<div class="result-box" id="concResult"></div>
+</div>
+
+<!-- 4️⃣ INTERPRETATION -->
+<div class="exp-card full-width">
+<h3 class="exp-heading">Interpretation & QC</h3>
+<div id="interpretation"></div>
+<div id="qcCheck" style="margin-top:10px;"></div>
+</div>
+
+</div>
+
+<!-- ================= NAVIGATION ================= -->
+<div class="exp-actions" style="margin-top:30px; text-align:center;">
+  <a href="/experiment/{{ experiment.slug }}/theory/" 
+     class="btn-start btn-small" style="margin-right:20px;">
+     ⬅ Back
+  </a>
+
+  <a href="/experiment/{{ experiment.slug }}/conclusion/" 
+     class="btn-start btn-small">
+     Next ▶
+  </a>
+</div>
+
+</div>
+
+<script>
+
+/* ================= THEME & FULLSCREEN ================= */
+function toggleTheme(){
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+/* ================= TEST DATA ================= */
+const testData={
+glucose:{method:"GOD-POD",wave:"505 nm",temp:"37°C",normal:[70,100],qc:[85,115]},
+bilirubin:{method:"Jendrassik-Grof",wave:"540 nm",temp:"37°C",normal:[0.3,1.2],qc:[0.8,1.1]},
+cholesterol:{method:"CHOD-POD",wave:"505 nm",temp:"37°C",normal:[150,200],qc:[160,190]},
+calcium:{method:"OCPC",wave:"578 nm",temp:"37°C",normal:[8.5,10.5],qc:[8.8,10]},
+ast:{method:"Kinetic UV",wave:"340 nm",temp:"37°C",normal:[5,40],qc:[20,30]},
+alt:{method:"Kinetic UV",wave:"340 nm",temp:"37°C",normal:[5,45],qc:[22,35]},
+};
+
+/* ================= UPDATE INFO ================= */
+function updateTestInfo(){
+let t=testSelect.value;
+if(!t) return;
+let d=testData[t];
+testInfo.innerHTML=
+"<b>Method:</b> "+d.method+
+"<br><b>Wavelength:</b> "+d.wave+
+"<br><b>Temperature:</b> "+d.temp+
+"<br><b>Normal Range:</b> "+d.normal[0]+" - "+d.normal[1];
+}
+
+/* ================= REACTION PREP ================= */
+function prepareReaction(){
+let v=parseFloat(sampleVol.value);
+if(isNaN(v)||v<5||v>100){
+reactionMsg.innerHTML="⚠️ Sample volume must be 5–100 µL";
+return;
+}
+reactionMsg.innerHTML="Reaction mixture prepared. Incubating at 37°C...";
+startTimer();
+}
+
+/* ================= TIMER ================= */
+function startTimer(){
+let sec=5;
+timer.innerHTML="Incubation: "+sec+"s";
+let x=setInterval(()=>{
+sec--;
+timer.innerHTML="Incubation: "+sec+"s";
+if(sec<=0){
+clearInterval(x);
+timer.innerHTML="Reading absorbance...";
+generateAbs();
+}
+},1000);
+}
+
+/* ================= GENERATE ABS ================= */
+function generateAbs(){
+let std=(Math.random()*0.3+0.4).toFixed(3);
+let test=(Math.random()*0.5+0.5).toFixed(3);
+absStd.innerText=std;
+absTest.innerText=test;
+}
+
+/* ================= CALCULATE ================= */
+function calcConc(){
+let std=parseFloat(absStd.innerText);
+let test=parseFloat(absTest.innerText);
+let stdVal=parseFloat(stdValue.value);
+if(isNaN(stdVal)){
+concResult.innerHTML="⚠️ Enter standard value";
+return;
+}
+let result=(test/std)*stdVal;
+concResult.innerHTML="Concentration: <b>"+result.toFixed(2)+"</b>";
+
+interpret(result);
+}
+
+/* ================= INTERPRET ================= */
+function interpret(val){
+let t=testSelect.value;
+if(!t) return;
+let d=testData[t];
+
+let status="Normal";
+if(val<d.normal[0]) status="Low";
+if(val>d.normal[1]) status="Elevated";
+
+interpretation.innerHTML=
+"<b>Result:</b> "+status;
+
+if(status==="Elevated" && t==="glucose"){
+interpretation.innerHTML+="<br>Possible Cause: Diabetes Mellitus";
+}
+
+if(val>=d.qc[0] && val<=d.qc[1]){
+qcCheck.innerHTML="<span style='color:lime;'>QC Passed</span>";
+}else{
+qcCheck.innerHTML="<span style='color:red;'>QC Failed – Recalibration Required</span>";
+}
+}
+
+</script>
+
+</body>
+</html>

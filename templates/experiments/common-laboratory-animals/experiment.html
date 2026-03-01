@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experimental Animals | Virtual Lab</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <h1 class="exp-title">Experimental Animals</h1>
+
+  <!-- 🔘 ANIMAL BUTTON LIST -->
+  <div class="animal-list">
+
+    <a href="/experiment/{{ experiment.slug }}/swiss-albino-mice/" class="animal-btn">
+      Swiss Albino Mice
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/wistar-rat/" class="animal-btn">
+      Wistar Rat (Rattus norvegicus)
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/sprague-dawley-rat/" class="animal-btn">
+      Sprague-Dawley Rat
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/long-evans-rat/" class="animal-btn">
+      Long-Evans Rat
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/guinea-pig/" class="animal-btn">
+      Guinea Pig
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/hamsters/" class="animal-btn">
+      Hamsters
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/frogs/" class="animal-btn">
+      Frogs
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/dog/" class="animal-btn">
+      Dog
+    </a>
+
+    <a href="/experiment/{{ experiment.slug }}/cat/" class="animal-btn">
+      Cat
+    </a>
+
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="exp-actions">
+
+    <a href="/experiment/{{ experiment.slug }}/"
+       class="exp-nav-btn back-btn">
+       ← Back to Introduction
+    </a>
+
+    <a href="/student/dashboard/"
+       class="exp-nav-btn finish-btn">
+       ✔ Finish Practical
+    </a>
+
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

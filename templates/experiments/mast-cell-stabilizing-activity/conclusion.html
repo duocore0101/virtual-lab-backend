@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mast Cell Stabilizing Activity – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The mast cell degranulation method was used to evaluate 
+      the anti-allergic potential of the test drug by observing 
+      intact and degranulated mast cells.
+    </p>
+
+    <p>
+      The <strong>standard drug</strong> showed maximum mast cell 
+      stabilization compared to the disease control group.
+    </p>
+
+    <p>
+      The test drug showed a <strong>dose-dependent increase</strong> 
+      in mast cell protection.
+    </p>
+
+    <p>
+      The high dose of the test drug showed significant 
+      anti-allergic activity.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      Mast cell stabilization is an important mechanism in 
+      preventing allergic reactions by inhibiting the release 
+      of inflammatory mediators.
+    </p>
+
+    <p>
+      The test drug demonstrated significant mast cell stabilizing 
+      (anti-degranulation) activity, confirming its potential 
+      as an effective <strong>anti-allergic agent</strong>.
+    </p>
+
+    <p>
+      The dose-dependent response further supports the 
+      pharmacological efficacy of the drug in controlling 
+      allergic conditions.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        method: "Mast Cell Degranulation",
+        result: "Significant mast cell stabilizing activity observed"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+
+}
+</script>
+
+</body>
+</html>

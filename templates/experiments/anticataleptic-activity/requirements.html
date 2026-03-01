@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Catatonic Activity – Requirements</title>
+
+  <!-- SAME THEME AS OTHER PAGES -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Requirements – Anti-Catatonic (Anti-Cataleptic) Activity
+  </h1>
+
+  <!-- ANIMALS USED -->
+  <div class="info-box">
+    <h2>Animals Used</h2>
+    <ul>
+      <li>Albino Rats (150–250 g)</li>
+      <li>OR Albino Mice (20–30 g)</li>
+    </ul>
+  </div>
+
+  <!-- DRUGS USED -->
+  <div class="info-box">
+    <h2>Drugs Used</h2>
+    <ul>
+      <li><strong>Haloperidol</strong> (1 mg/kg, i.p.) – to induce catalepsy</li>
+      <li><strong>Standard drug</strong> (Scopolamine / Trihexyphenidyl)</li>
+      <li><strong>Test drug</strong> (as per experiment)</li>
+      <li>Normal saline – Control</li>
+    </ul>
+  </div>
+
+  <!-- APPARATUS -->
+  <div class="info-box">
+    <h2>Apparatus</h2>
+    <ul>
+      <li>Wooden or metal horizontal bar</li>
+      <li>Wooden blocks (3 cm and 9 cm height)</li>
+      <li>Stopwatch</li>
+      <li>Observation cage</li>
+    </ul>
+  </div>
+
+  <!-- EXPERIMENTAL DESIGN -->
+  <div class="info-box">
+    <h2>Experimental Design</h2>
+    <ul>
+      <li>Animals are divided into 3 groups (n = 6)</li>
+      <li>Group I: Control (Vehicle + Haloperidol)</li>
+      <li>Group II: Standard (Standard drug + Haloperidol)</li>
+      <li>Group III: Test drug + Haloperidol</li>
+    </ul>
+  </div>
+
+  <!-- NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Previous
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      Next: Experiment ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

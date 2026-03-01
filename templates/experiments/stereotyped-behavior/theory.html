@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stereotyped Behavior – Theory | Virtual Lab</title>
+
+  <!-- ✅ CSS (SAME PATTERN AS ROTAROD) -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- ============================= -->
+  <!-- 🧪 TITLE -->
+  <!-- ============================= -->
+  <h1 class="title">
+    Theory: Stereotyped Behavior Produced by Centrally Acting Drugs
+  </h1>
+
+  <!-- ============================= -->
+  <!-- 📘 THEORY CONTENT -->
+  <!-- ============================= -->
+
+  <div class="info-box">
+    <h2>Definition of Stereotyped Behavior</h2>
+    <p>
+      Stereotyped behavior is defined as repetitive, uniform, and purposeless
+      motor activity that is performed continuously without any apparent goal.
+      These behaviors are easily observable in laboratory animals following the
+      administration of certain centrally acting drugs.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>Neurochemical Basis</h2>
+    <p>
+      The development of stereotyped behavior is primarily associated with
+      excessive stimulation of dopaminergic pathways in the central nervous
+      system, particularly within the striatum. Activation of dopamine
+      D<sub>1</sub> and D<sub>2</sub> receptors plays a key role in the expression
+      of repetitive motor responses.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>Role of Apomorphine and Other Drugs</h2>
+    <p>
+      Apomorphine is a direct dopamine receptor agonist that produces marked
+      stereotyped behavior in rodents when administered in appropriate doses.
+      Other stimulants, such as amphetamine, may also induce similar effects by
+      increasing dopamine release in the brain.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>Effect of Antipsychotic Drugs</h2>
+    <p>
+      Antipsychotic drugs such as chlorpromazine and haloperidol antagonize
+      dopamine receptors and thereby suppress stereotyped behavior. The ability
+      of a test drug to reduce these behaviors is considered indicative of
+      potential antipsychotic activity.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>Pharmacological Significance</h2>
+    <p>
+      This experimental model is widely used as a screening method for evaluating
+      antipsychotic drugs. Suppression of stereotypy suggests dopamine antagonism
+      in the mesolimbic system, which is therapeutically relevant in the treatment
+      of psychotic disorders.
+    </p>
+  </div>
+
+  <!-- ============================= -->
+  <!-- 🔘 ACTION BUTTONS -->
+  <!-- ============================= -->
+
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🌗 THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+</body>
+</html>

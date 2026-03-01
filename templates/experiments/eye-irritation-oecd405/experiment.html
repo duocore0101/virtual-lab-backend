@@ -1,0 +1,533 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Acute Eye Irritation / Corrosion Test – Virtual Simulator</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20003">
+
+<style>
+
+/* ================= BODY DEFAULT (FIX ADDED) ================= */
+body{
+  background:#000;
+  color:#fff;
+  transition:0.3s ease;
+}
+
+/* ================= TOP RIGHT ACTIONS ================= */
+.top-actions{
+  position:fixed;
+  top:20px;
+  right:25px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+.top-actions button{
+  padding:10px 18px;
+  border-radius:22px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff2e2e;
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,0,0,0.6);
+  transition:0.3s;
+}
+
+.top-actions button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* ================= CONTAINER ================= */
+.exp-container{
+  max-width:1000px;
+  margin:40px auto;
+  padding:20px;
+}
+
+/* ================= CARD DESIGN ================= */
+.exp-card{
+  background:#111;
+  border-radius:16px;
+  padding:25px 30px;
+  margin-bottom:30px;
+  box-shadow:0 0 20px rgba(229,9,20,0.15);
+  border:1px solid rgba(229,9,20,0.2);
+}
+
+.exp-card h3{
+  margin-bottom:18px;
+  color:#e50914;
+  font-weight:600;
+}
+
+/* ================= INPUTS ================= */
+.exp-input{
+  border-radius:10px;
+  padding:8px 10px;
+  font-size:14px;
+  text-align:center;
+  background:#1e1e1e;
+  border:1px solid #333;
+  color:#fff;
+  width:80px;
+}
+
+select.exp-input{
+  width:200px;
+  cursor:pointer;
+}
+
+/* ================= TABLE ================= */
+.exp-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+.exp-table th{
+  background:#1b0000;
+  color:#ff4d4d;
+  padding:12px;
+  text-align:center;
+  font-weight:600;
+}
+
+.exp-table td{
+  padding:14px;
+  text-align:center;
+  border-bottom:1px solid #222;
+}
+
+/* ================= BUTTON ================= */
+.btn-small{
+  padding:8px 20px;
+  font-size:14px;
+  margin-top:20px;
+  border:none;
+  border-radius:20px;
+  background:#e50914;
+  color:#fff;
+  cursor:pointer;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  transition:0.3s;
+}
+
+.btn-small:hover{
+  background:#ff2e2e;
+  transform:scale(1.05);
+}
+
+/* ================= RESULT ================= */
+.result-box{
+  background:#1c1c1c;
+  padding:15px;
+  border-radius:12px;
+  margin-top:20px;
+  text-align:center;
+  border:1px solid rgba(229,9,20,0.3);
+}
+
+/* ================= THEME TOGGLE ================= */
+.theme-toggle{
+  text-align:right;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+}
+
+.toggle-label{
+  font-size:14px;
+  color:#ccc;
+}
+
+.toggle-switch{
+  position:relative;
+  display:inline-block;
+  width:50px;
+  height:24px;
+}
+
+.toggle-switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#444;
+  transition:.4s;
+  border-radius:34px;
+}
+
+.slider:before{
+  position:absolute;
+  content:"";
+  height:18px;
+  width:18px;
+  left:3px;
+  bottom:3px;
+  background:white;
+  transition:.4s;
+  border-radius:50%;
+}
+
+/* ===== FIX: Slider turns white when ON ===== */
+input:checked + .slider{
+  background:#ffffff;
+}
+
+input:checked + .slider:before{
+  background:#000;
+  transform:translateX(26px);
+}
+
+/* ================= LIGHT THEME ================= */
+.light-theme{
+  background:#f5f7fa !important;
+  color:#111 !important;
+}
+
+.light-theme .exp-card{
+  background:#ffffff;
+  color:#111;
+  border:1px solid #ddd;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.light-theme .exp-card h3{
+  color:#e50914;
+}
+
+.light-theme .exp-table th{
+  background:#ffe5e5;
+  color:#e50914;
+}
+
+.light-theme .exp-table td{
+  border-bottom:1px solid #ddd;
+}
+
+.light-theme .exp-input{
+  background:#fff;
+  color:#000;
+  border:1px solid #ccc;
+}
+
+.light-theme .result-box{
+  background:#f0f3f8;
+  color:#000;
+  border:1px solid #ddd;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeProcedure()">✖</span>
+<h2>Procedure (Step-by-Step as per OECD 405)</h2>
+
+<ol>
+
+<li><b>Pre-test Preparation (24 h before)</b>
+<ul>
+<li>Examine both eyes for abnormalities (fluorescein if needed).</li>
+<li>Discard unsuitable animals.</li>
+<li>Acclimatise animals.</li>
+</ul>
+</li>
+
+<li><b>Pain Management (Mandatory Refinement)</b>
+<ul>
+<li>60 min before: Buprenorphine 0.01 mg/kg SC.</li>
+<li>5 min before: 1–2 drops topical anaesthetic.</li>
+<li>8 h after: Buprenorphine + Meloxicam SC.</li>
+<li>Continue analgesia until lesions resolve.</li>
+<li>Untreated eye also receives anaesthetic.</li>
+</ul>
+</li>
+
+<li><b>Application of Test Substance</b>
+<ul>
+<li>Pull lower eyelid to form conjunctival sac.</li>
+<li>Instil 0.1 mL (liquid) or 0.1 g (solid).</li>
+<li>Hold lids closed for 1 second.</li>
+<li>No washing for 24 h.</li>
+<li>Untreated eye = control.</li>
+</ul>
+</li>
+
+<li><b>Sequential Testing</b>
+<ul>
+<li>Initial test: 1 animal.</li>
+<li>If serious damage → Stop (Category 1).</li>
+<li>If no severe effects → Test up to 2 more animals.</li>
+</ul>
+</li>
+
+<li><b>Observation Period</b>
+<ul>
+<li>Observe at 1h, 24h, 48h, 72h.</li>
+<li>Daily up to 21 days.</li>
+<li>Use fluorescein + slit lamp.</li>
+<li>Record pain/distress twice daily.</li>
+<li>Humane euthanasia if severe endpoints reached.</li>
+</ul>
+</li>
+
+</ol>
+</div>
+</div>
+
+<div class="exp-container">
+
+<!-- TOP BUTTONS -->
+<div class="top-actions">
+<button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+<button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+<!-- 🌗 THEME TOGGLE -->
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+</div>
+
+<h1>Acute Eye Irritation / Corrosion (OECD 405)</h1>
+
+<div class="exp-card">
+<h3>Study Setup</h3>
+
+<p><b>Animal:</b> Albino rabbit</p>
+<p><b>Weight:</b> 2.5 kg</p>
+<p><b>Route:</b> Conjunctival instillation</p>
+<p><b>Dose:</b> 0.1 mL (Liquid) / 0.1 g (Solid)</p>
+<p><b>Observation Period:</b> 21 days</p>
+
+<select id="substanceType" class="exp-input">
+<option value="">Select Substance Type</option>
+<option value="liquid">Liquid</option>
+<option value="solid">Solid</option>
+</select>
+
+<br><br>
+
+<label>
+<input type="checkbox" id="extremePH">
+ Extreme pH (≤2 or ≥11.5)
+</label>
+
+<div id="phMsg"></div>
+</div>
+
+<div class="exp-card">
+<h3>Draize Scoring (24h, 48h, 72h)</h3>
+
+<table class="exp-table">
+<thead>
+<tr>
+<th>Time</th>
+<th>Opacity</th>
+<th>Area</th>
+<th>Iris</th>
+<th>Redness</th>
+<th>Chemosis</th>
+<th>Discharge</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>24h</td>
+<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
+<td><input type="number" min="0" max="4" class="area exp-input"></td>
+<td><input type="number" min="0" max="2" class="iris exp-input"></td>
+<td><input type="number" min="0" max="3" class="red exp-input"></td>
+<td><input type="number" min="0" max="4" class="che exp-input"></td>
+<td><input type="number" min="0" max="3" class="dis exp-input"></td>
+</tr>
+
+<tr>
+<td>48h</td>
+<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
+<td><input type="number" min="0" max="4" class="area exp-input"></td>
+<td><input type="number" min="0" max="2" class="iris exp-input"></td>
+<td><input type="number" min="0" max="3" class="red exp-input"></td>
+<td><input type="number" min="0" max="4" class="che exp-input"></td>
+<td><input type="number" min="0" max="3" class="dis exp-input"></td>
+</tr>
+
+<tr>
+<td>72h</td>
+<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
+<td><input type="number" min="0" max="4" class="area exp-input"></td>
+<td><input type="number" min="0" max="2" class="iris exp-input"></td>
+<td><input type="number" min="0" max="3" class="red exp-input"></td>
+<td><input type="number" min="0" max="4" class="che exp-input"></td>
+<td><input type="number" min="0" max="3" class="dis exp-input"></td>
+</tr>
+</tbody>
+</table>
+
+<button class="btn-small" onclick="calculateScores()">Calculate Mean Score</button>
+
+<div id="meanResult" class="result-box" style="display:none;"></div>
+</div>
+
+<!-- HUMANE ENDPOINT -->
+<div class="exp-card">
+<h3>Humane Endpoint Decision</h3>
+
+<label><input type="checkbox" class="humane"> Corneal perforation</label><br><br>
+<label><input type="checkbox" class="humane"> No light reflex at 72h</label><br><br>
+<label><input type="checkbox" class="humane"> Conjunctival necrosis</label>
+
+</div>
+
+<!-- NAVIGATION -->
+<button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">⬅ Back</button>
+<button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">Next ▶</button>
+
+</div>
+
+<script>
+document.getElementById("extremePH").addEventListener("change", function(){
+let msg=document.getElementById("phMsg");
+if(this.checked){
+msg.innerHTML="<span class='warning'>Substance predicted corrosive. Animal test not required. Classified as Category 1.</span>";
+}else{
+msg.innerHTML="";
+}
+});
+
+const times=["24h","48h","72h"];
+let container=document.getElementById("timeInputs");
+
+if(container){
+times.forEach(t=>{
+container.innerHTML+=`
+<hr>
+<h4>${t}</h4>
+
+<b>Cornea</b><br>
+Opacity (0-4) <input type="number" min="0" max="4" class="opacity">
+Area (0-4) <input type="number" min="0" max="4" class="area"><br>
+
+<b>Iris</b><br>
+Grade (0-2) <input type="number" min="0" max="2" class="iris"><br>
+
+<b>Conjunctiva</b><br>
+Redness (0-3) <input type="number" min="0" max="3" class="red">
+Chemosis (0-4) <input type="number" min="0" max="4" class="che">
+Discharge (0-3) <input type="number" min="0" max="3" class="dis"><br>
+`;
+});
+}
+
+function calculateScores(){
+
+if(document.getElementById("extremePH").checked){
+return;
+}
+
+let opacity=document.querySelectorAll(".opacity");
+let area=document.querySelectorAll(".area");
+let iris=document.querySelectorAll(".iris");
+let red=document.querySelectorAll(".red");
+let che=document.querySelectorAll(".che");
+let dis=document.querySelectorAll(".dis");
+
+let totals=[];
+
+for(let i=0;i<3;i++){
+let cornea=(opacity[i].value*area[i].value*5)||0;
+let irisScore=(iris[i].value*5)||0;
+let conj=((+red[i].value + +che[i].value + +dis[i].value)*2)||0;
+totals.push(cornea+irisScore+conj);
+}
+
+let mean=(totals[0]+totals[1]+totals[2])/3;
+let classification="Non-Irritant";
+
+if(totals.some(t=>t>=80) ||
+[...document.querySelectorAll(".humane")].some(c=>c.checked)){
+classification="Category 1 (Serious Eye Damage)";
+}
+else if(mean>=10){
+classification="Category 2 (Eye Irritant)";
+}
+
+document.getElementById("meanResult").style.display="block";
+document.getElementById("meanResult").innerHTML=
+"Mean Draize Score (24–72h) = "+mean.toFixed(2)+"<br>"+
+"GHS Classification: "+classification+".";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+}
+
+/* ================= THEME TOGGLE JS (FIXED SAFELY) ================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const toggle = document.getElementById("themeToggle");
+
+  if(!toggle) return;
+
+  // Load saved theme
+  if (localStorage.getItem("expTheme") === "light") {
+    document.body.classList.add("light-theme");
+    toggle.checked = true;
+  }
+
+  // Toggle theme
+  toggle.addEventListener("change", function(){
+    document.body.classList.toggle("light-theme");
+
+    if(document.body.classList.contains("light-theme")){
+      localStorage.setItem("expTheme","light");
+    } else {
+      localStorage.setItem("expTheme","dark");
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

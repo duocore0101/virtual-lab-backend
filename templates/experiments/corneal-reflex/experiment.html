@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surface Anaesthetic Activity – Corneal Reflex</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <style>
+    .exp-container h1 { margin-bottom: 6px; }
+    .theme-toggle { margin-top: 0; }
+
+    .lab-window {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: 24px;
+      margin-top: 14px;
+      align-items: flex-start;
+    }
+
+    .video-panel video {
+      width: 100%;
+      border-radius: 18px;
+      background: #000;
+      box-shadow: 0 0 24px rgba(255,0,0,0.35);
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .observation-panel h3 {
+      text-align: center;
+      color: #ff3b3b;
+      margin-bottom: 10px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .lab-btn {
+      padding: 10px 14px;
+      border-radius: 28px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lab-btn.red { background:#ff4d4d; color:#fff; }
+    .lab-btn.darkred { background:#c70000; color:#fff; }
+    .lab-btn.gray { background:#e6e6e6; color:#000; }
+
+    .lab-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    }
+
+    @media (max-width: 1100px) {
+      .lab-window { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="exp-container">
+
+  <h1>
+    Surface Anaesthetic Activity – Virtual Simulator<br>
+    <small>Loss of Corneal Reflex</small>
+  </h1>
+
+  <!-- THEME -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <div class="lab-window">
+
+    <!-- VIDEO -->
+    <div class="video-panel">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/corneal-reflex/videos/idle.mp4' %}">
+      </video>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+
+      <!-- OBSERVATION TABLE -->
+      <div class="observation-panel">
+        <h3>Observation Table – Corneal Reflex</h3>
+
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Onset (min)</th>
+              <th>Duration (min)</th>
+              <th>Reflex</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lignocaine 2%</td>
+              <td id="onset_ligno">—</td>
+              <td id="duration_ligno">—</td>
+              <td id="reflex_ligno">—</td>
+            </tr>
+            <tr>
+              <td>Procaine 2%</td>
+              <td id="onset_proc">—</td>
+              <td id="duration_proc">—</td>
+              <td id="reflex_proc">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="action-grid">
+
+        <button class="lab-btn red"
+          onclick="playStep('restrainer')">
+          Place Rabbit in Restrainer
+        </button>
+
+        <button class="lab-btn darkred"
+          onclick="playStep('instill_lignocaine')">
+          Instill Lignocaine
+        </button>
+
+        <button class="lab-btn darkred"
+          onclick="playStep('instill_procaine')">
+          Instill Procaine
+        </button>
+
+        <button class="lab-btn gray"
+          onclick="playStep('cotton_test')">
+          Cotton Touch Test
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+    Next ▶
+  </button>
+
+</div>
+
+<script>
+const video = document.getElementById("expVideo");
+
+const videos = {
+  restrainer: "{% static 'experiments/corneal-reflex/videos/restrainer.mp4' %}",
+  instill_lignocaine: "{% static 'experiments/corneal-reflex/videos/instill_lignocaine.mp4' %}",
+  instill_procaine: "{% static 'experiments/corneal-reflex/videos/instill_procaine.mp4' %}",
+  cotton_test: "{% static 'experiments/corneal-reflex/videos/cotton_test_after.mp4' %}",
+};
+
+let currentDrug = null;
+
+function playStep(step) {
+
+  video.src = videos[step];
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+
+    if (step === "instill_lignocaine") {
+      currentDrug = "ligno";
+    }
+
+    if (step === "instill_procaine") {
+      currentDrug = "proc";
+    }
+
+    if (step === "cotton_test") {
+
+      if (currentDrug === "ligno") {
+        onset_ligno.innerText = "1.5";
+        duration_ligno.innerText = "18";
+        reflex_ligno.innerText = "Absent";
+      }
+
+      if (currentDrug === "proc") {
+        onset_proc.innerText = "2.0";
+        duration_proc.innerText = "12";
+        reflex_proc.innerText = "Absent";
+      }
+    }
+  };
+}
+
+/* THEME */
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+
+</body>
+</html>

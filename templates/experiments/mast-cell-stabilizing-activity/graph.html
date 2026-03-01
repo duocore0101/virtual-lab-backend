@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result Graph – Mast Cell Stabilizing Activity</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme {
+      background: #f4f6f9;
+      color: #111;
+    }
+
+    .graph-card {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme .graph-card {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .graph-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #ff4b4b;
+    }
+
+    body.light-theme .graph-title {
+      color: #c62828;
+    }
+
+    .graph-subtitle {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #ddd;
+    }
+
+    body.light-theme .graph-subtitle {
+      color: #555;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #555;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #ff4b4b;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    body.light-theme .toggle-label {
+      color: #333;
+    }
+
+    .fullscreen-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .fullscreen-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
+    }
+
+    .next-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .next-btn button {
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 30px;
+      border: 2px solid #ff2a2a;
+      background: transparent;
+      color: #ff2a2a;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .next-btn button:hover {
+      background: linear-gradient(135deg, #ff2a2a, #8b0000);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+
+  <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+
+<div class="graph-card">
+
+  <div class="graph-title">Mast Cell Stabilization Activity</div>
+  <div class="graph-subtitle">% Protection vs Experimental Groups</div>
+
+  <canvas id="resultChart" height="120"></canvas>
+
+  <div class="next-btn">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* THEME */
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("uiTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "uiTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+/* MAST CELL STABILIZATION BAR GRAPH */
+
+const ctx = document.getElementById("resultChart").getContext("2d");
+
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: [
+      "Normal Control",
+      "Disease Control",
+      "Standard Drug",
+      "Test Low Dose",
+      "Test High Dose"
+    ],
+    datasets: [{
+      label: "% Protection",
+      data: [0, 0, 70.0, 30.0, 58.3],
+      backgroundColor: [
+        "#607d8b",
+        "#e53935",
+        "#7cb342",
+        "#8e24aa",
+        "#26a69a"
+      ],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: { color: "#fff" }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+        title: {
+          display: true,
+          text: "% Protection"
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Experimental Groups"
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

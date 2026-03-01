@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Acetylcholine on Frog’s Heart – Requirements</title>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐸 Animal -->
+  <div class="info-box">
+    <h2>Animal</h2>
+    <ul>
+      <li>
+        Healthy medium-sized frog
+        (<em>Rana tigrina</em> or similar species)
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧪 Physiological Solution -->
+  <div class="info-box">
+    <h2>Physiological Solution</h2>
+    <ul>
+      <li>
+        Frog Ringer’s solution
+        <br>
+        <small>(composition per liter)</small>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 💊 Drugs -->
+  <div class="info-box">
+    <h2>Drugs</h2>
+    <ul>
+      <li>
+        <strong>Acetylcholine chloride:</strong>
+        Typically 1:10,000 (0.01%) solution;
+        doses 0.05–0.5 ml injected
+      </li>
+      <li>
+        <strong>Atropine</strong> (optional, as antagonist):
+        1:5000 solution
+      </li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>Apparatus</h2>
+    <ul>
+      <li>Frog board with pins</li>
+      <li>Dissection instruments (forceps, scissors, pithing needle)</li>
+      <li>
+        Perfusion setup:
+        Syme’s cannula (or venous cannula),
+        rubber tubing,
+        Mariotte’s bottle (for constant pressure perfusion),
+        iron stand with clamps
+      </li>
+      <li>
+        Kymograph (or modern digital recording system)
+        with lever, thread, and smoked paper
+      </li>
+      <li>
+        Tuberculin syringe / insulin syringe
+        for drug injection
+      </li>
+      <li>
+        Aerator (optional, for oxygenated Ringer’s solution)
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

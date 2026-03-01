@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay of Serotonin (5-HT) – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The <strong>concentration of the unknown 5-HT (serotonin) solution</strong> 
+      in the given test sample was found to be:
+    </p>
+
+    <p style="font-size:22px; text-align:center; font-weight:700;">
+      9.2 μg/mL
+    </p>
+
+    <p>
+      (Approximately 9.24 μg/mL using precise interpolation calculation.)
+    </p>
+
+    <p>
+      Potency comparison:
+    </p>
+
+    <ul>
+      <li>
+        The unknown sample is slightly less potent than the standard stock (10 μg/mL).
+      </li>
+      <li>
+        A larger volume (0.4 mL) of test solution was required to match 
+        the response of ~0.355 mL of standard solution.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      The experiment confirms the validity of the 
+      <strong>Three-Point Bioassay Method</strong> for determining the potency 
+      of serotonin (5-HT) using rat fundus strip.
+    </p>
+
+    <p>
+      The assay demonstrated:
+    </p>
+
+    <ul>
+      <li>
+        Successful bracketing of the test response 
+        (42 mm lies between 23 mm and 57 mm).
+      </li>
+      <li>
+        Good reproducibility (cycle variations less than 5 mm).
+      </li>
+      <li>
+        Stable tissue preparation with minimal tachyphylaxis.
+      </li>
+    </ul>
+
+    <p>
+      Therefore, the bioassay is reliable and suitable for 
+      estimation of unknown 5-HT concentration in student practical settings.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()">
+      Download Practical PDF 📄
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment: "Bioassay of Serotonin (5-HT)"
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Serotonin_Bioassay_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        experiment: "Bioassay of Serotonin (5-HT) – Three Point Method",
+        result: "9.2 μg/mL"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

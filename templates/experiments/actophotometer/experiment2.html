@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Actophotometer Experiment – CNS Stimulant</title>
+
+  <!-- SAME CSS AS ROTAROD -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 12px;
+      z-index: 50;
+    }
+
+    .dropdown-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.3s;
+    }
+
+    .dropdown-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔥 INSTRUCTIONS -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe empty actophotometer</li>
+      <li>Record basal locomotor activity</li>
+      <li>Inject CNS stimulant drug</li>
+      <li>Record increased locomotor activity</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+      <li>Select healthy mice (20–30 g).</li>
+      <li>Record basal locomotor activity.</li>
+      <li>Inject CNS stimulant (Caffeine 20 mg/kg i.p.).</li>
+      <li>Record activity after 30 minutes.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION TABLE -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:900px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+
+    <h2>Locomotor Activity – CNS Stimulant</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Sr</th>
+          <th>Body wt (g)</th>
+          <th>Dose (mg)</th>
+          <th>Basal (A)</th>
+          <th>Post-Drug (B)</th>
+          <th>% Increase</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in "123456" %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><input value="25" oninput="updateDose(this)"></td>
+          <td><input value="0.50" oninput="updateWeight(this)"></td>
+          <td id="A{{ forloop.counter }}">—</td>
+          <td id="B{{ forloop.counter }}">—</td>
+          <td id="P{{ forloop.counter }}">—</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- 🔽 TOP ACTION BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>
+    Actophotometer Experiment – Virtual Simulator<br>
+    <small>CNS Stimulant</small>
+  </h1>
+
+  <!-- CNS TOGGLE -->
+  <div class="exp-toggle">
+    <button class="toggle-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      CNS Depressant
+    </button>
+    <button class="toggle-btn active">CNS Stimulant</button>
+  </div>
+
+  <!-- 🌗 THEME -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 VIDEO GRID -->
+  <div class="video-grid">
+
+    <div class="side-video">
+      <h4>Vehicle Tested</h4>
+      <video id="leftVideo" muted loop autoplay>
+        <source src="{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}">
+      </video>
+    </div>
+
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}">
+      </video>
+    </div>
+
+    <div class="side-video">
+      <h4>Drug Tested</h4>
+      <video id="rightVideo" muted loop autoplay>
+        <source src="{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}">
+      </video>
+    </div>
+
+  </div>
+
+  <!-- 🎛 CONTROLS -->
+  <div class="control-panel">
+    <button onclick="startActophotometer()">Start Actophotometer</button>
+    <button onclick="runBeforeDrug()">Before Drug</button>
+    <button onclick="injectDrug()">Inject Drug</button>
+    <button onclick="runAfterDrug()">After Drug</button>
+  </div>
+
+  <!-- NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">⬅ Back</button>
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">Next ▶</button>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+const mainVideo = document.getElementById("expVideo");
+const leftVideo = document.getElementById("leftVideo");
+const rightVideo = document.getElementById("rightVideo");
+
+const DOSE_PER_KG = 20; // CNS stimulant (Caffeine)
+let currentMouse = 0;
+let counterInterval = null;
+
+const beforeVideos = [
+  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse1.mp4' %}",
+  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse2.mp4' %}",
+  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse3.mp4' %}"
+];
+
+const afterVideos = [
+  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse1.mp4' %}",
+  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse2.mp4' %}",
+  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse3.mp4' %}"
+];
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+  leftVideo.playbackRate = 0.6;
+  rightVideo.playbackRate = 0.6;
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+/* START */
+function startActophotometer() {
+  mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}";
+  mainVideo.loop = true;
+  mainVideo.play();
+}
+
+/* BEFORE DRUG */
+function runBeforeDrug() {
+  currentMouse = 0;
+  leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
+  rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}";
+  playBefore();
+}
+
+function playBefore() {
+  if (currentMouse >= 3) return;
+  mainVideo.src = beforeVideos[currentMouse];
+  mainVideo.play();
+  startCounter(`A${currentMouse+1}`);
+  mainVideo.onended = () => {
+    stopCounter();
+    currentMouse++;
+    playBefore();
+  };
+}
+
+/* INJECT */
+function injectDrug() {
+  mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/inject_drug.mp4' %}";
+  mainVideo.play();
+}
+
+/* AFTER DRUG */
+function runAfterDrug() {
+  currentMouse = 0;
+  leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}";
+  rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
+  playAfter();
+}
+
+function playAfter() {
+  if (currentMouse >= 3) {
+    autoFillExtraMice();
+    return;
+  }
+  mainVideo.src = afterVideos[currentMouse];
+  mainVideo.play();
+  startCounter(`B${currentMouse+1}`, () => calculateIncrease(currentMouse+1));
+  mainVideo.onended = () => {
+    stopCounter();
+    currentMouse++;
+    playAfter();
+  };
+}
+
+/* COUNTER */
+function startCounter(cellId, cb) {
+  const cell = document.getElementById(cellId);
+  cell.innerText = "0";
+  counterInterval = setInterval(() => {
+    cell.innerText = Math.floor(mainVideo.currentTime);
+  }, 1000);
+  mainVideo.addEventListener("ended", () => {
+    clearInterval(counterInterval);
+    if (cb) cb();
+  }, { once:true });
+}
+
+function stopCounter() {
+  clearInterval(counterInterval);
+}
+
+/* % INCREASE */
+function calculateIncrease(i) {
+  const A = Number(document.getElementById(`A${i}`).innerText);
+  const B = Number(document.getElementById(`B${i}`).innerText);
+  if (A > 0) {
+    document.getElementById(`P${i}`).innerText =
+      (((B - A) / A) * 100).toFixed(1) + " %";
+  }
+}
+
+/* AUTO FILL MICE 4–6 */
+function autoFillExtraMice() {
+  for (let i = 4; i <= 6; i++) {
+    const A = (180 + Math.random()*50).toFixed(1);
+    const B = (A * (1.4 + Math.random()*0.4)).toFixed(1);
+    document.getElementById(`A${i}`).innerText = A;
+    document.getElementById(`B${i}`).innerText = B;
+    document.getElementById(`P${i}`).innerText =
+      (((B - A) / A) * 100).toFixed(1) + " %";
+  }
+}
+
+/* DOSE ↔ WEIGHT */
+function updateDose(input) {
+  const row = input.closest("tr");
+  row.cells[2].querySelector("input").value =
+    ((parseFloat(input.value) * DOSE_PER_KG) / 1000).toFixed(3);
+}
+
+function updateWeight(input) {
+  const row = input.closest("tr");
+  row.cells[1].querySelector("input").value =
+    ((parseFloat(input.value) * 1000) / DOSE_PER_KG).toFixed(1);
+}
+
+/* MODALS */
+function openObservation(){observationModal.style.display="flex";}
+function closeObservation(){observationModal.style.display="none";}
+function openProcedure(){procedureModal.style.display="flex";}
+function closeProcedure(){procedureModal.style.display="none";}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+</script>
+
+<!-- 🌗 THEME -->
+<script>
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme")==="light"){
+  document.body.classList.add("light-theme");
+  toggle.checked=true;
+}
+toggle.addEventListener("change",()=>{
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem("expTheme",
+    document.body.classList.contains("light-theme")?"light":"dark");
+});
+</script>
+
+</body>
+</html>

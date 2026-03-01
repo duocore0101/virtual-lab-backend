@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stereotyped Behavior – Graph</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* =========================
+       GLOBAL THEME (RED–BLACK)
+    ========================== */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme {
+      background: #f4f6f9;
+      color: #111;
+    }
+
+    /* =========================
+       GRAPH CARD
+    ========================== */
+    .graph-card {
+      max-width: 950px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme .graph-card {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .graph-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ff4b4b;
+    }
+
+    body.light-theme .graph-title {
+      color: #c62828;
+    }
+
+    .graph-subtitle {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 28px;
+      color: #ddd;
+    }
+
+    body.light-theme .graph-subtitle {
+      color: #555;
+    }
+
+    /* =========================
+       THEME TOGGLE
+    ========================== */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background-color: #555;
+      border-radius: 34px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #ff4b4b;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    body.light-theme .toggle-label {
+      color: #333;
+    }
+
+    /* =========================
+       NAV BUTTON
+    ========================== */
+    .next-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .next-btn button {
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 30px;
+      border: 2px solid #ff2a2a;
+      background: transparent;
+      color: #ff2a2a;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .next-btn button:hover {
+      background: linear-gradient(135deg, #ff2a2a, #8b0000);
+      color: #ffffff;
+      box-shadow:
+        0 0 8px rgba(255, 42, 42, 0.7),
+        0 0 18px rgba(255, 0, 0, 0.5);
+      transform: translateY(-2px) scale(1.03);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🌗 THEME TOGGLE -->
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+</div>
+
+<div class="graph-card">
+  <div class="graph-title">Effect of Apomorphine on Stereotyped Behavior</div>
+  <div class="graph-subtitle">Baseline vs After Drug</div>
+
+  <canvas id="stereotypyChart" height="130"></canvas>
+
+  <div class="next-btn">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+</div>
+
+<script>
+/* =========================
+   THEME TOGGLE
+========================== */
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+
+/* =========================
+   GRAPH DATA (UNCHANGED)
+========================== */
+const data = JSON.parse(localStorage.getItem("stereotypy_data")) || { A: 1, B: 4 };
+
+const ctx = document.getElementById("stereotypyChart").getContext("2d");
+
+/* 🔵 BLUE GRADIENT (ONLY GRAPH COLOR CHANGE) */
+const blueGrad = ctx.createLinearGradient(0, 0, 0, 300);
+blueGrad.addColorStop(0, "#6aa9ff");
+blueGrad.addColorStop(1, "#1e3c72");
+
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: ["Baseline (Before)", "After Apomorphine"],
+    datasets: [{
+      data: [data.A, data.B],
+      backgroundColor: [blueGrad, blueGrad],
+      borderRadius: 10,
+      barThickness: 55,
+      categoryPercentage: 0.5,   // 🔥 MORE GAP
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Stereotypy Score"
+        },
+        grid: {
+          color: "rgba(255,255,255,0.1)"
+        }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dose Response Curve – Result & Conclusion</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The cumulative dose-response curve of 
+      <strong>histamine</strong> on isolated guinea pig ileum 
+      was found to be sigmoid in nature when plotted as 
+      log concentration versus % maximum response.
+    </p>
+
+    <p>
+      The calculated <strong>pD₂ value</strong> of histamine on 
+      guinea pig ileum is:
+    </p>
+
+    <h2 style="text-align:center; color:#ff2e2e;">
+      pD₂ = 6.7
+    </h2>
+
+    <p>
+      This indicates the high potency of histamine on 
+      <strong>H₁ receptors</strong> of guinea pig ileum.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      The experiment successfully demonstrates the 
+      quantitative relationship between agonist concentration 
+      and tissue response.
+    </p>
+
+    <p>
+      The sigmoidal nature of the curve confirms 
+      receptor-mediated graded response and follows 
+      the principles of receptor occupancy theory.
+    </p>
+
+    <p>
+      Guinea pig ileum serves as a reliable model for 
+      studying histaminergic responses and determining 
+      drug potency using pD₂ values.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()">
+      Download Practical PDF 📄
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment: "Dose Response Curve – Histamine"
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "DRC_Histamine_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        experiment: "Dose Response Curve – Histamine"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

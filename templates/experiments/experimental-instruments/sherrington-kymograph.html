@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sherrington's Rotating Drum (Kymograph) | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Sherrington's Rotating Drum (Kymograph)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/sherrington-kymograph.glb' %}"
+        alt="Sherrington's Kymograph 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        <strong>Sherrington's Rotating Drum</strong>, also known as the
+        <em>Sherrington's Kymograph</em>, <em>Student Kymograph</em>, or
+        <em>Recording Drum</em>, is a traditional recording instrument used
+        in experimental pharmacology to graphically record physiological
+        responses such as <strong>muscle contractions</strong> and
+        <strong>heart beats</strong> over time.
+      </p>
+      <p>
+        Popularized by <strong>Sir Charles Sherrington</strong>, it remains
+        a core teaching tool in undergraduate pharmacology practicals,
+        especially for <strong>in vitro isolated tissue experiments</strong>.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+        A smoked paper (kymograph paper) is tightly wrapped around a rotating
+        cylindrical drum. A lever or stylus connected to the tissue writes on
+        the smoked paper as the drum rotates at a constant speed, producing
+        a <strong>time-based tracing</strong> of contractions or relaxations.
+    </p>
+    <p>
+        By changing the rotation speed using gears, both slow and fast
+        physiological events can be recorded. In modern digital kymographs,
+        smoked paper is replaced by <strong>sensors and computer software</strong>.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Drum / Cylinder:</strong> Vertical brass or stainless steel drum
+        (height ~15–20 cm, diameter ~15 cm) with interchangeable gears allowing
+        speeds from approximately 0.12 to 640 mm/sec.
+      </li>
+      <li>
+        <strong>Motor:</strong> Electrically driven motor with 8–10 speed gearbox,
+        start/stop clutch, and neutral position.
+      </li>
+      <li>
+        <strong>Base:</strong> Heavy cast iron base to provide mechanical stability
+        and vibration-free recording.
+      </li>
+      <li>
+        <strong>Accessories:</strong>
+        <ul>
+          <li>Smoked kymograph paper</li>
+          <li>Varnish for fixing tracings</li>
+          <li>Frontal writing levers (isotonic or isometric)</li>
+          <li>Tuning fork for time marking</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Digital Variants:</strong> Sensor-based systems with direct
+        computer recording, eliminating the need for smoked paper.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Recording isolated tissue contractions</li>
+      <li>Studying drug effects on smooth and cardiac muscle</li>
+      <li>Demonstration of agonist and antagonist responses</li>
+      <li>Time-response relationship analysis</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Students | Admin{% endblock %}
+
+{% block content %}
+
+<div style="padding:20px;">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">Students</h2>
+      <p style="margin:4px 0; color:gray;">
+        Manage all students in your college
+      </p>
+    </div>
+
+    <!-- CSV EXPORT -->
+    <a href="/admin/export/students/"
+       style="background:#007bff; color:white; padding:8px 14px; border-radius:6px; text-decoration:none;">
+       ⬇ Export Students
+    </a>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#f5f5f5; text-align:left;">
+          <th style="padding:12px;">#</th>
+          <th style="padding:12px;">Name</th>
+          <th style="padding:12px;">Email</th>
+          <th style="padding:12px;">Created By</th>
+          <th style="padding:12px;">Status</th>
+          <th style="padding:12px;">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        {% for student in students %}
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:12px;">{{ forloop.counter }}</td>
+          <td style="padding:12px;">{{ student.first_name }}</td>
+          <td style="padding:12px;">{{ student.email }}</td>
+          <td style="padding:12px;">
+            {{ student.created_by.first_name }}
+          </td>
+
+          <!-- STATUS -->
+          <td style="padding:12px;">
+            {% if student.is_active %}
+              <span style="background:#d4edda; color:#155724; padding:5px 10px; border-radius:20px; font-size:12px;">
+                ACTIVE
+              </span>
+            {% else %}
+              <span style="background:#f8d7da; color:#721c24; padding:5px 10px; border-radius:20px; font-size:12px;">
+                INACTIVE
+              </span>
+            {% endif %}
+          </td>
+
+          <!-- ACTION -->
+          <td style="padding:12px;">
+            <a href="/admin/toggle-user/{{ student.id }}/"
+               style="padding:6px 12px; border-radius:6px; text-decoration:none;
+               background:{% if student.is_active %}#dc3545{% else %}#28a745{% endif %};
+               color:white; font-size:13px;"
+               onclick="return confirm('Change status for this student?')">
+
+               {% if student.is_active %}
+                 Deactivate
+               {% else %}
+                 Activate
+               {% endif %}
+            </a>
+          </td>
+
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="6" style="padding:20px; text-align:center; color:gray;">
+            No students found
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock %}

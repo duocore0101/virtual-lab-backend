@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Common Routes of Drug Administration – Theory</title>
+
+  <!-- 🔥 USE ROTAROD INTRO CSS FOR SLIDE FLOW -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- MAIN TITLE -->
+  <h1 class="title">Theory</h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <div class="info-box slide active">
+      <h2>Routes of Drug Administration in Experimental Animals</h2>
+      <p>
+        Drug administration in experimental animals is a fundamental component 
+        of <strong>preclinical pharmacological and toxicological studies</strong>. 
+        The choice of route depends on the objective of the study and the 
+        experimental design.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Factors Influencing Route Selection</h2>
+      <p>
+        The selected route is determined by the 
+        <strong>physicochemical properties of the drug</strong>, 
+        desired onset and duration of action, required bioavailability, 
+        and ethical considerations related to animal welfare.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Pharmacokinetic Considerations (ADME)</h2>
+      <p>
+        Different routes significantly influence 
+        <strong>absorption, distribution, metabolism, and excretion (ADME)</strong> 
+        of drugs. These factors ultimately affect systemic exposure and 
+        pharmacokinetic behavior.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Impact on Bioavailability</h2>
+      <p>
+        The route of administration directly determines the 
+        <strong>bioavailability</strong> of a drug. For example, oral 
+        administration may undergo first-pass metabolism, whereas 
+        intravenous administration provides complete systemic availability.
+      </p>
+    </div>
+
+    <div class="info-box slide">
+      <h2>Scientific & Ethical Importance</h2>
+      <p>
+        Proper selection and execution of drug administration routes ensure 
+        accurate experimental outcomes while maintaining compliance with 
+        ethical guidelines and minimizing stress or harm to experimental animals.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → INTRO PAGE
+    location.href = "/experiment/{{ experiment.slug }}/";
+  }
+}
+
+/* KEYBOARD SUPPORT */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

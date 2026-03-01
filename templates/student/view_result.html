@@ -1,0 +1,199 @@
+{% extends "student/base.html" %}
+{% block title %}Exam Result{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ========================= */
+/* WRAPPER */
+/* ========================= */
+.result-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+.result-header {
+    margin-bottom: 25px;
+}
+
+.result-header h2 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* ========================= */
+/* MAIN CARD */
+/* ========================= */
+.result-card {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* DARK MODE SUPPORT */
+body.dark-mode .result-card {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    color: #f3f4f6;
+}
+
+/* ========================= */
+/* SECTION GRID */
+/* ========================= */
+.score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+/* ========================= */
+/* SCORE BOX */
+/* ========================= */
+.score-box {
+    background: #f1f5f9;
+    padding: 18px 20px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+.score-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .score-box {
+    background: #0f172a;
+    color: #f3f4f6;
+}
+
+.score-box h5 {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.score-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ========================= */
+/* TOTAL SECTION */
+/* ========================= */
+.total-section {
+    margin-top: 35px;
+    padding: 25px;
+    border-radius: 16px;
+    text-align: center;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    box-shadow: 0 15px 35px rgba(239,68,68,0.3);
+}
+
+.total-section h3 {
+    margin: 0;
+    font-size: 26px;
+}
+
+/* ========================= */
+/* STATUS BADGE */
+/* ========================= */
+.status-badge {
+    margin-top: 12px;
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.pass {
+    background: #16a34a;
+    color: white;
+}
+
+.fail {
+    background: #dc2626;
+    color: white;
+}
+
+/* ========================= */
+/* PERCENTAGE */
+/* ========================= */
+.percentage-text {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+</style>
+
+<div class="result-wrapper">
+
+    <div class="result-header">
+        <h2>{{ exam.title }}</h2>
+        <p>Examination Result Summary</p>
+        <hr>
+    </div>
+
+    <div class="result-card">
+
+        <h4>Section Scores</h4>
+
+        <div class="score-grid">
+
+            <div class="score-box">
+                <h5>MCQ</h5>
+                <div class="score-value">{{ attempt.mcq_score }}</div>
+            </div>
+
+            <div class="score-box">
+                <h5>Short Answer</h5>
+                <div class="score-value">{{ attempt.short_score }}</div>
+            </div>
+
+            <div class="score-box">
+                <h5>Practical</h5>
+                <div class="score-value">{{ attempt.practical_score }}</div>
+            </div>
+
+            <div class="score-box">
+                <h5>Viva</h5>
+                <div class="score-value">{{ attempt.viva_score }}</div>
+            </div>
+
+        </div>
+
+        <!-- TOTAL -->
+        <div class="total-section">
+
+            <h3>Total Score: {{ attempt.total_score }}</h3>
+
+            {% if attempt.total_score >= 40 %}
+                <div class="status-badge pass">PASS</div>
+            {% else %}
+                <div class="status-badge fail">FAIL</div>
+            {% endif %}
+
+            {% if exam.total_marks %}
+                <div class="percentage-text">
+                    Percentage:
+                    {{ attempt.total_score|floatformat:2|add:"0" }}
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

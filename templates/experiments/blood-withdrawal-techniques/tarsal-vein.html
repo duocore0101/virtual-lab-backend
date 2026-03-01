@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tarsal Vein | Blood Withdrawal Techniques</title>
+
+  <link rel="stylesheet"
+      href="{% static 'experiments/blood-withdrawal-techniques/css/experiment.css' %}">
+
+  <!-- 🔝 TOP RIGHT ACTIONS + POPUP -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ================= POPUP ================= */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-card {
+      background: #111;
+      color: #fff;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 16px;
+      padding: 25px;
+      animation: popIn 0.3s ease;
+      box-shadow: 0 0 25px rgba(255,0,0,0.6);
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .popup-header h2 {
+      margin: 0;
+      color: #ff4d4d;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .popup-card ul {
+      padding-left: 18px;
+    }
+
+    .popup-card li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <button onclick="openProcedure()">🧪 Procedure</button>
+</div>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedurePopup" onclick="closeProcedure(event)">
+  <div class="popup-card">
+    <div class="popup-header">
+      <h2>Tarsal Vein – Procedure</h2>
+      <button class="close-btn" onclick="closeProcedure()">✖</button>
+    </div>
+
+    <ul>
+      <li>Restrain the animal manually (scruff for mice/rats; towel wrap for guinea pigs).</li>
+      <li>Clip or shave hair over the hind limb and clean with alcohol.</li>
+      <li>Warm the limb or apply topical vasodilator to dilate the vein.</li>
+      <li>Extend the hind leg and occlude the vein proximally above the hock.</li>
+      <li>Puncture the vein transversely near the tarsal region.</li>
+      <li>Collect blood by gravity or gentle aspiration.</li>
+    </ul>
+
+    <hr style="margin:15px 0; opacity:0.3;">
+
+    <p>
+      <strong>Post-Procedure:</strong> Apply firm pressure for 1–3 minutes to
+      achieve hemostasis. Monitor for bruising or lameness and alternate limbs
+      during repeat sampling.
+    </p>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Tarsal Vein Blood Collection</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/blood-withdrawal-techniques/videos/tarsal-vein.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The tarsal vein (lateral or medial saphenous vein) is a superficial vein
+        located around the tarsal (hock) region of the hind limb. It is one of
+        the most refined non-terminal blood collection sites in rodents and
+        guinea pigs for serial sampling in experimental pharmacology.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🧬 BASIC DETAILS -->
+  <div class="exp-card">
+    <h2>Key Guidelines and Welfare Considerations</h2>
+    <ul>
+      <li><strong>Primary Species:</strong> Mice, rats, guinea pigs</li>
+      <li><strong>Blood Volume:</strong> 0.1–0.5 ml per sample (up to 1 ml in larger animals)</li>
+      <li><strong>Anesthesia:</strong> Not usually required (conscious sampling)</li>
+      <li><strong>Advantages:</strong> Low stress, suitable for frequent serial sampling</li>
+      <li><strong>Ethics:</strong> Strong refinement under the 3Rs principle</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 ADVANTAGES & LIMITATIONS -->
+  <div class="exp-card">
+    <h2>Needle and Collection Details</h2>
+    <ul>
+      <li>23–25G needle for mice</li>
+      <li>21–23G needle for rats and guinea pigs</li>
+      <li>Capillary tubes or microtainers for microsampling</li>
+      <li>Avoid excessive suction to prevent hemolysis</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Technique List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function openProcedure() {
+  document.getElementById("procedurePopup").classList.add("active");
+}
+
+function closeProcedure(e) {
+  if (!e || e.target.id === "procedurePopup") {
+    document.getElementById("procedurePopup").classList.remove("active");
+  }
+}
+</script>
+
+</body>
+</html>

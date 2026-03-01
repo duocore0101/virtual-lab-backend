@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Catatonic Activity – Theory</title>
+
+  <!-- SAME THEME AS ROTAROD / ACTOPHOTOMETER -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory – Anti-Catatonic (Anti-Cataleptic) Activity
+  </h1>
+
+  <!-- PRINCIPLE -->
+  <div class="info-box">
+    <h2>Principle</h2>
+    <p>
+      Catalepsy is a behavioral condition characterized by
+      <strong>immobility, muscle rigidity, and maintenance of imposed posture</strong>.
+      In experimental pharmacology, catalepsy is commonly produced by
+      <strong>typical antipsychotic drugs</strong>.
+    </p>
+    <p>
+      Drugs such as <strong>haloperidol</strong> block
+      <strong>dopamine D<sub>2</sub> receptors</strong> in the
+      <strong>nigrostriatal pathway</strong>, resulting in
+      <strong>extrapyramidal side effects (EPS)</strong>.
+      This experimentally induced catalepsy closely resembles
+      Parkinsonism and catatonia observed in humans.
+    </p>
+  </div>
+
+  <!-- PHARMACOLOGICAL BASIS -->
+  <div class="info-box">
+    <h2>Pharmacological Basis</h2>
+    <ul>
+      <li>
+        <strong>Typical Antipsychotics:</strong>
+        Drugs like haloperidol and perphenazine induce catalepsy by
+        blocking dopamine receptors in the nigrostriatal pathway.
+      </li>
+      <li>
+        <strong>Anti-Catatonic Drugs:</strong>
+        Anticholinergic drugs (e.g., scopolamine, trihexyphenidyl)
+        and dopaminergic agents reduce catalepsy by restoring the
+        balance between dopamine and acetylcholine in the brain.
+      </li>
+      <li>
+        <strong>Atypical Antipsychotics:</strong>
+        These drugs produce minimal or no catalepsy, indicating
+        a lower liability for extrapyramidal side effects.
+      </li>
+    </ul>
+  </div>
+
+  <!-- SIGNIFICANCE -->
+  <div class="info-box">
+    <h2>Significance</h2>
+    <p>
+      The anti-catatonic activity model is widely used to evaluate
+      the <strong>extrapyramidal side-effect liability</strong> of
+      antipsychotic drugs and to screen
+      <strong>anti-parkinsonian agents</strong>.
+    </p>
+    <p>
+      A significant reduction in cataleptic score or duration by a
+      test drug indicates potential
+      <strong>anti-catatonic or anti-parkinsonian activity</strong>
+      and suggests a safer pharmacological profile.
+    </p>
+  </div>
+
+  <!-- NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/'">
+      ⬅ Previous
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next: Requirements ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE (CONSISTENT ACROSS ALL PAGES) -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

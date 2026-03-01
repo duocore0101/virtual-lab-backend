@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Requirements – Anticonvulsant Activity by MES or PTZ Method
+  </title>
+
+  <!-- Reuse Intro / Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Requirements: Anticonvulsant Activity by MES or PTZ Method
+  </h1>
+
+  <!-- ================= COMMON REQUIREMENTS ================= -->
+  <div class="info-box">
+    <h2>Common Requirements</h2>
+
+    <ul>
+      <li>Healthy experimental animals</li>
+      <li>Proper animal housing and acclimatization facilities</li>
+      <li>Stopwatch</li>
+      <li>Individual observation cages</li>
+      <li>Normal saline / distilled water (vehicle)</li>
+    </ul>
+  </div>
+
+  <!-- ================= MES REQUIREMENTS ================= -->
+  <div class="info-box">
+    <h2>A) Requirements for MES Method</h2>
+
+    <h3>Animals</h3>
+    <ul>
+      <li>Swiss albino mice (18–30 g) <strong>or</strong></li>
+      <li>Wistar rats (150–250 g)</li>
+      <li>Grouped (n = 6 per group)</li>
+    </ul>
+
+    <h3>Equipment</h3>
+    <ul>
+      <li>Electroconvulsiometer</li>
+      <li>Corneal or ear clip electrodes</li>
+    </ul>
+
+    <h3>Electrical Parameters</h3>
+    <ul>
+      <li>Mice: 50–60 mA, 0.2 sec duration, 50–60 Hz</li>
+      <li>Rats: 150 mA, 0.2 sec duration</li>
+    </ul>
+
+    <h3>Drugs</h3>
+    <ul>
+      <li>Standard drug: <strong>Phenytoin (20–30 mg/kg, i.p.)</strong></li>
+      <li>Test drug (various doses)</li>
+      <li>Vehicle: Normal saline / distilled water</li>
+    </ul>
+
+    <h3>Other Materials</h3>
+    <ul>
+      <li>Electrolyte gel or saline</li>
+      <li>Soft cloth for gentle restraint</li>
+    </ul>
+  </div>
+
+  <!-- ================= PTZ REQUIREMENTS ================= -->
+  <div class="info-box">
+    <h2>B) Requirements for PTZ Method</h2>
+
+    <h3>Animals</h3>
+    <ul>
+      <li>Swiss albino mice (18–30 g)</li>
+      <li>Grouped (n = 6 per group)</li>
+    </ul>
+
+    <h3>Drugs</h3>
+    <ul>
+      <li>
+        Convulsant agent:
+        <strong>Pentylenetetrazol (PTZ) 80–90 mg/kg, s.c.</strong>
+      </li>
+      <li>
+        Standard drug:
+        <strong>Diazepam (4–5 mg/kg, i.p.)</strong>
+      </li>
+      <li>Test drug (various doses)</li>
+      <li>Vehicle: Normal saline</li>
+    </ul>
+
+    <h3>Other Materials</h3>
+    <ul>
+      <li>Stopwatch</li>
+      <li>Individual transparent observation cages</li>
+      <li>Syringes and needles</li>
+    </ul>
+  </div>
+
+  <!-- ================= ETHICAL NOTE ================= -->
+  <div class="info-box">
+    <h2>Ethical Considerations</h2>
+
+    <ul>
+      <li>Approval from Institutional Animal Ethics Committee (IAEC)</li>
+      <li>Minimum number of animals should be used</li>
+      <li>Animal discomfort and stress should be minimized</li>
+      <li>Proper post-experimental care should be provided</li>
+    </ul>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      Next: Procedure ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rabbit Eye Experiment – Mydriatic</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS (LIKE ROTAROD) */
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 12px;
+      z-index: 50;
+    }
+
+    .dropdown-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.3s;
+    }
+
+    .dropdown-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===== EXISTING LAYOUT (UNCHANGED) ===== */
+    .lab-window {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: 24px;
+      margin-top: 14px;
+      align-items: flex-start;
+    }
+
+    .video-panel video {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #000;
+      box-shadow: 0 0 24px rgba(255,0,0,0.35);
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .observation-panel h3 {
+      text-align: center;
+      color: #ff3b3b;
+      margin-bottom: 10px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .lab-btn {
+      padding: 10px 14px;
+      border-radius: 28px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lab-btn.red { background:#ff4d4d; color:#fff; }
+    .lab-btn.darkred { background:#c70000; color:#fff; }
+    .lab-btn.amber { background:#ffb347; color:#000; }
+    .lab-btn.gray { background:#e6e6e6; color:#000; }
+
+    .lab-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔥 INSTRUCTIONS MODAL -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Place rabbit in restrainer</li>
+      <li>Record baseline pupil diameter</li>
+      <li>Test corneal and light reflex</li>
+      <li>Instill atropine and observe mydriasis</li>
+    </ol>
+  </div>
+</div>
+<!-- 🔬 PROCEDURE MODAL (NEW LIKE ROTAROD) -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+
+      <li>
+        <b>Select and restrain the animal:</b>
+        Gently place the rabbit in a restrainer without causing stress.
+        Ensure the head is steady and eyes are accessible.
+      </li>
+
+      <li>
+        <b>Observe baseline parameters:</b>
+        <ul>
+          <li>Pupil size (~4–6 mm)</li>
+          <li>Direct light reflex</li>
+          <li>Consensual light reflex</li>
+          <li>Measure horizontal pupil diameter</li>
+        </ul>
+      </li>
+
+      <li>
+        <b>Instill the test drug:</b>
+        <ul>
+          <li>Use one eye as treated, other as control</li>
+          <li>Instill 1–2 drops into conjunctival sac</li>
+          <li>Avoid touching cornea</li>
+        </ul>
+      </li>
+
+      <li>
+        <b>Observe at intervals:</b>
+        0, 5, 10, 15, 30, 45, 60 minutes  
+        Measure pupil diameter and reflexes.
+      </li>
+
+      <li>
+        <b>Repeat with different drugs</b>
+        Allow recovery before next drug.
+      </li>
+
+      <li>
+        <b>Wash eye if needed</b>
+        Flush with normal saline at end.
+      </li>
+
+    </ol>
+  </div>
+</div>
+<div class="exp-container">
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>
+    Rabbit Eye Experiment – Virtual Simulator<br>
+    <small>Mydriatic (Atropine)</small>
+  </h1>
+
+  <!-- TOGGLE -->
+  <div class="exp-toggle">
+    <button class="toggle-btn active">Mydriatic</button>
+    <button class="toggle-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+      Miotic
+    </button>
+  </div>
+
+  <!-- THEME -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- ===== LAB WINDOW ===== -->
+  <div class="lab-window">
+
+    <!-- VIDEO -->
+    <div class="video-panel">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/rabbit-eye-drug-effects/videos/idle.mp4' %}">
+      </video>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+
+      <!-- OBS TABLE -->
+      <div class="observation-panel">
+        <h3>Observation Table – Effect of Atropine</h3>
+
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Before Drug</th>
+              <th>After Atropine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pupil diameter</td>
+              <td id="before_pupil_diameter">—</td>
+              <td id="after_pupil_diameter">—</td>
+            </tr>
+            <tr>
+              <td>Pupil size</td>
+              <td id="before_pupil_size">—</td>
+              <td id="after_pupil_size">—</td>
+            </tr>
+            <tr>
+              <td>Cotton touch reflex</td>
+              <td id="before_cotton">—</td>
+              <td id="after_cotton">—</td>
+            </tr>
+            <tr>
+              <td>Light reflex</td>
+              <td id="before_light">—</td>
+              <td id="after_light">—</td>
+            </tr>
+            <tr>
+              <td>Effect</td>
+              <td id="before_effect">—</td>
+              <td id="after_effect">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BUTTONS UNDER TABLE -->
+      <div class="action-grid">
+
+        <button class="lab-btn red" onclick="playStep('restrainer')">Place rabbit in restrainer</button>
+        <button class="lab-btn red" onclick="playStep('measure_initial')">Measure pupil diameter</button>
+
+        <button class="lab-btn amber" onclick="playStep('cotton_test')">Cotton test</button>
+        <button class="lab-btn darkred" onclick="playStep('torch_test')">Torch light test</button>
+
+        <button class="lab-btn gray" onclick="playStep('instill_atropine')">Instill Atropine</button>
+        <button class="lab-btn red" onclick="playStep('measure_final')">Measure pupil diameter again</button>
+
+        <button class="lab-btn amber" onclick="playStep('cotton_test_after')">Cotton test again</button>
+        <button class="lab-btn darkred" onclick="playStep('torch_test_after')">Torch light test again</button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">⬅ Back</button>
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">Next ▶</button>
+
+</div>
+
+<!-- ===== SCRIPT (UNCHANGED LOGIC) ===== -->
+<script>
+const video = document.getElementById("expVideo");
+
+const videos = {
+  restrainer: "{% static 'experiments/rabbit-eye-drug-effects/videos/restrainer.mp4' %}",
+  measure_initial: "{% static 'experiments/rabbit-eye-drug-effects/videos/measure_initial.mp4' %}",
+  cotton_test: "{% static 'experiments/rabbit-eye-drug-effects/videos/cotton_test.mp4' %}",
+  torch_test: "{% static 'experiments/rabbit-eye-drug-effects/videos/torch_test.mp4' %}",
+  instill_atropine: "{% static 'experiments/rabbit-eye-drug-effects/videos/instill_atropine.mp4' %}",
+  measure_final: "{% static 'experiments/rabbit-eye-drug-effects/videos/measure_final.mp4' %}",
+  cotton_test_after: "{% static 'experiments/rabbit-eye-drug-effects/videos/cotton_test_after.mp4' %}",
+  torch_test_after: "{% static 'experiments/rabbit-eye-drug-effects/videos/torch_test_after.mp4' %}",
+};
+
+let atropineGiven = false;
+
+function playStep(step) {
+  video.src = videos[step];
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+    switch (step) {
+      case "measure_initial":
+        before_pupil_diameter.innerText = "4–5 mm";
+        before_pupil_size.innerText = "Normal";
+        break;
+      case "cotton_test":
+        before_cotton.innerText = "Present (+ve)";
+        break;
+      case "torch_test":
+        before_light.innerText = "Present (+ve)";
+        break;
+      case "instill_atropine":
+        atropineGiven = true;
+        break;
+      case "measure_final":
+        if (atropineGiven) {
+          after_pupil_diameter.innerText = "7–9 mm";
+          after_pupil_size.innerText = "Dilated (mydriasis)";
+        }
+        break;
+      case "cotton_test_after":
+        if (atropineGiven) after_cotton.innerText = "Absent (−ve)";
+        break;
+      case "torch_test_after":
+        if (atropineGiven) {
+          after_light.innerText = "Absent (−ve)";
+          before_effect.innerText = "Normal eye";
+          after_effect.innerText = "Mydriatic effect";
+        }
+        break;
+    }
+  };
+}
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+<!-- 🔥 SAFE EXTENSIONS -->
+<script>
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+</body>
+</html>

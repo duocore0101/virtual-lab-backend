@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay of Oxytocin – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      The bioassay of <strong>oxytocin</strong> on isolated rat uterine horn
+      produced a graded dose-dependent contraction. The dose-response curve
+      plotted between log dose and response height was sigmoid in shape,
+      confirming receptor-mediated smooth muscle contraction.
+    </p>
+
+    <p>
+      From the standard curve:
+    </p>
+
+    <ul>
+      <li><strong>Threshold dose</strong> ≈ 0.1 mL</li>
+      <li><strong>Maximum response</strong> observed at 0.8 mL</li>
+      <li><strong>Linear working range</strong> ≈ 20–80% response</li>
+    </ul>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The bioassay of oxytocin was successfully performed on the isolated
+      rat uterine horn using the <strong>interpolation method</strong>.
+      A standard dose-response curve was plotted, and the concentration
+      of the unknown sample was determined by interpolating its response
+      on the linear portion of the curve.
+    </p>
+
+    <p>
+      The experiment demonstrates that oxytocin produces dose-dependent
+      uterine contractions and that the interpolation method provides
+      an accurate estimation of its biological potency.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()">
+      Download Practical PDF 📄
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment: "Bioassay of Oxytocin – Interpolation Method"
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Bioassay_Oxytocin_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        experiment: "Bioassay of Oxytocin – Interpolation Method"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

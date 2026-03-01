@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frog Heart Experiment – Theory</title>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+    /* ===== SLIDE IMAGE ===== */
+.slide-image {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.slide-image img {
+  max-width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- AIM AS MAIN TITLE -->
+  <h1 class="title">
+    Theory/Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+      <p>
+        Drugs can be tested on isolated preparations of experimental animals
+        such as frog’s heart. Even though the frog’s heart differs from the
+        mammalian heart, the fundamental properties of cardiac muscle are
+        common to both.
+      </p>
+      <p>
+        Frog’s heart is sturdier than the mammalian heart and hence is widely
+        used for experimental purposes.
+      </p>
+    </div>
+<!-- SLIDE 2 -->
+<div class="info-box slide">
+  <h2>Structure of Frog’s Heart</h2>
+  <p>
+    Frog’s heart consists of three chambers: two atria and one ventricle.
+    The sinus venosus of the frog’s heart acts as the
+    <strong>pacemaker</strong>.
+  </p>
+  <p>
+    Impulses generated from the sinus venosus spread over both atria and
+    ventricle, producing coordinated contractions.
+  </p>
+
+  <!-- 🖼 Image -->
+  <div class="slide-image">
+    <img src="{% static 'experiments/frog-heart/images/frog_heart_structure.png' %}"
+         alt="Structure of Frog Heart">
+  </div>
+</div>
+
+
+    <!-- SLIDE 3 -->
+    <div class="info-box slide">
+      <h2>Recording of Cardiac Activity</h2>
+      <p>
+        With the help of Starling’s heart lever as a recording device, one can
+        easily record the normal activity of frog’s heart and also study the
+        effect of drugs on it.
+      </p>
+      <p>
+        The heart contractions are recorded in the form of waves showing force
+        of contraction against time.
+      </p>
+    </div>
+
+   <!-- SLIDE 4 -->
+<div class="info-box slide">
+  <h2>Normal Activity of Frog’s Heart</h2>
+  <p>
+    The normal activity of frog’s heart is represented by rhythmic
+    contractions with a constant heart rate and force of contraction.
+  </p>
+  <p>
+    The height of the wave indicates the force of contraction, while the
+    frequency of waves represents heart rate (beats per minute).
+  </p>
+
+  <!-- 🖼 Image -->
+  <div class="slide-image">
+    <img src="{% static 'experiments/frog-heart/images/normal_frog_heart_trace.png' %}"
+         alt="Normal Activity of Frog Heart">
+  </div>
+</div>
+
+    <!-- SLIDE 5 -->
+    <div class="info-box slide">
+      <h2>Effect of Drugs on Frog’s Heart</h2>
+      <p>
+        Drugs may increase or decrease heart rate and force of contraction.
+        Increase in heart rate and force of contraction is termed as
+        <strong>positive chronotropic</strong> and
+        <strong>positive inotropic</strong> effects respectively.
+      </p>
+      <p>
+        Decrease in heart rate and force of contraction is termed as
+        <strong>negative chronotropic</strong> and
+        <strong>negative inotropic</strong> effects.
+      </p>
+      <p>
+        Drugs showing positive effects may be useful in
+        <strong>bradycardia</strong>, whereas drugs showing negative effects may
+        be useful in <strong>tachycardia</strong>.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

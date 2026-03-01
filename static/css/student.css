@@ -1,0 +1,346 @@
+/* =====================================================
+   🌗 THEME VARIABLES (ADDED – SAFE)
+   Default = Red–Black
+===================================================== */
+:root {
+  --bg-main: #000;
+  --bg-header: rgba(0,0,0,0.85);
+  --bg-card: #111;
+  --text-main: #fff;
+  --text-muted: #ccc;
+  --border-soft: #1f1f1f;
+  --accent-red: #e50914;
+}
+
+/* 🌕 RED–WHITE THEME */
+html[data-theme="light"] {
+  --bg-main: #ffffff;
+  --bg-header: rgba(255,255,255,0.95);
+  --bg-card: #f6f6f6;
+  --text-main: #111;
+  --text-muted: #555;
+  --border-soft: #ddd;
+  --accent-red: #e50914;
+}
+
+/* =========================
+   RESET (UNCHANGED)
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* 🔁 BODY COLOR OVERRIDE (SAFE) */
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* =========================
+   HEADER (UNCHANGED LOGIC)
+========================= */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-soft);
+  backdrop-filter: blur(12px);
+}
+
+/* LOGO – ⚠ DO NOT TOUCH */
+.logo {
+  height: 200px;
+  max-width: 600px;
+  object-fit: contain;
+  cursor: pointer;
+
+  filter:
+    drop-shadow(0 0 8px rgba(0, 180, 255, 0.35))
+    drop-shadow(0 0 18px rgba(0, 120, 255, 0.25));
+
+  animation:
+    logoPulse 3.8s ease-in-out infinite,
+    lightningFlicker 6s infinite;
+
+  transition: transform 0.4s ease;
+}
+
+.logo:hover {
+  transform: scale(1.06);
+  filter:
+    drop-shadow(0 0 14px rgba(0, 220, 255, 0.6))
+    drop-shadow(0 0 30px rgba(0, 140, 255, 0.5))
+    drop-shadow(0 0 45px rgba(255, 255, 255, 0.18));
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.student-name {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background: var(--accent-red);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #ff2c2c;
+  box-shadow: 0 0 12px rgba(229,9,20,0.8);
+}
+
+/* =========================
+   🌗 THEME TOGGLE (ADDED)
+========================= */
+.theme-toggle input {
+  display: none;
+}
+
+.theme-toggle label {
+  width: 54px;
+  height: 26px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #222, #444);
+  position: relative;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.theme-toggle label::after {
+  content: "🌙";
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: 0.4s;
+}
+
+.theme-toggle input:checked + label {
+  background: linear-gradient(135deg, #e50914, #ff2c2c);
+}
+
+.theme-toggle input:checked + label::after {
+  transform: translateX(28px);
+  content: "☀️";
+}
+
+/* =========================
+   HERO (UNCHANGED)
+========================= */
+.dashboard-hero {
+  height: 45vh;
+  background: url("../images/pharma-bg.jpg") center/cover no-repeat;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.9),
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0.9)
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+/* =========================
+   PRACTICALS SECTION
+========================= */
+.practicals-section {
+  padding: 50px 60px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+/* LIST */
+.practicals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* CARD – GLASS UPGRADE (SAFE) */
+.practical-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+
+html[data-theme="light"] .practical-card {
+  border: 1px solid #ddd;
+}
+
+.practical-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 35px rgba(229,9,20,0.6);
+}
+
+/* CARD HEADER */
+.card-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.badge {
+  background: rgba(229,9,20,0.15);
+  color: var(--accent-red);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* TEXT */
+.practical-card h3 {
+  margin-top: 15px;
+  font-size: 1.3rem;
+}
+
+.status {
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.active {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+/* BUTTONS */
+.start-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #e50914, #ff2c2c);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 20px rgba(229,9,20,0.9);
+}
+
+.exam-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #00ff9c, #00cfff);
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 25px rgba(0,255,156,0.6);
+  transition: 0.3s;
+}
+
+.exam-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 40px rgba(0,255,156,0.9);
+}
+
+.card-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   RESPONSIVE (UNCHANGED)
+========================= */
+@media (max-width: 600px) {
+  .dashboard-header {
+    padding: 16px 25px;
+  }
+
+  .practicals-section {
+    padding: 35px 25px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+}
+/* =====================================================
+   🌗 THEME TOGGLE ICON BUTTON (FIXED CORNER)
+===================================================== */
+.theme-btn {
+  position: fixed;
+  top: 18px;
+  right: 90px; /* keeps distance from Logout */
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  background: linear-gradient(135deg, #e50914, #ff2c2c);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(229,9,20,0.6);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  z-index: 9999;
+}
+
+.theme-btn:hover {
+  transform: scale(1.12) rotate(10deg);
+  box-shadow: 0 0 25px rgba(229,9,20,0.9);
+}
+
+/* Light mode adjustment */
+html[data-theme="light"] .theme-btn {
+  background: linear-gradient(135deg, #111, #333);
+  color: #fff;
+}

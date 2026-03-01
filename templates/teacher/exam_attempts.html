@@ -1,0 +1,39 @@
+{% extends "teacher/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3>{{ exam.title }} - Submitted Attempts</h3>
+    <hr>
+
+    {% if attempts %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>MCQ Score</th>
+                    <th>Submitted At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                <tr>
+                    <td>{{ attempt.student.first_name }}</td>
+                    <td>{{ attempt.mcq_score }}</td>
+                    <td>{{ attempt.submitted_at }}</td>
+                    <td>
+                        <a href="{% url 'evaluate-attempt' attempt.id %}" 
+                           class="btn btn-sm btn-primary">
+                           Evaluate
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No submissions yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

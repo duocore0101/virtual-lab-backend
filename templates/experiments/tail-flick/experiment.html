@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tail Flick Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+<style>
+  .top-actions {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 12px;
+    z-index: 50;
+  }
+
+  .dropdown-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: #ff2e2e;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    transition: 0.3s;
+  }
+
+  .dropdown-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .video-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .main-video {
+    width: 75%;
+    max-width: 1100px;
+  }
+
+  .main-video video {
+    width: 80%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  }
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe tail flick apparatus.</li>
+      <li>Record baseline latency.</li>
+      <li>Inject test drug.</li>
+      <li>Record latency after drug administration.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+
+    <h2>Procedure</h2>
+
+    <ol class="instruction-list">
+      <li>Focus radiant heat on marked tail spot (2–5 cm from tip).</li>
+      <li>Adjust intensity to obtain baseline 3–5 seconds.</li>
+      <li>Record baseline latency (Cut-off time: 10–15 sec).</li>
+      <li>Group animals and administer drugs.</li>
+      <li>Record latency at 30, 60, 90, and 120 minutes post-drug.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:900px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+
+    <h2>Observation Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Treatment</th>
+          <th>Dose (mg/kg)</th>
+          <th>Before</th>
+          <th>30 min</th>
+          <th>60 min</th>
+          <th>90 min</th>
+          <th>120 min</th>
+        </tr>
+      </thead>
+      <tbody>
+  <tr>
+    <td>I</td>
+    <td>Control</td>
+    <td>—</td>
+    <td>3.1</td>
+    <td>3.2</td>
+    <td>3.1</td>
+    <td>3.0</td>
+    <td>3.1</td>
+  </tr>
+
+  <tr>
+    <td>II</td>
+    <td>Standard (Tramadol)</td>
+    <td>20</td>
+    <td>3.2</td>
+    <td>6.5</td>
+    <td>8.2</td>
+    <td>7.6</td>
+    <td>6.8</td>
+  </tr>
+
+  <tr>
+    <td>III</td>
+    <td>Test Low Dose</td>
+    <td>100</td>
+    <td>3.0</td>
+    <td>5.1</td>
+    <td>6.4</td>
+    <td>6.0</td>
+    <td>5.2</td>
+  </tr>
+
+  <tr>
+    <td>IV</td>
+    <td>Test High Dose</td>
+    <td>200</td>
+    <td>3.1</td>
+    <td>6.0</td>
+    <td>7.5</td>
+    <td>7.0</td>
+    <td>6.1</td>
+  </tr>
+</tbody>
+
+    </table>
+
+    <p><strong>Parameter:</strong> Tail withdrawal latency (seconds)</p>
+
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Tail Flick Method – Virtual Simulator</h1>
+
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 MAIN VIDEO -->
+  <div class="video-grid">
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/tail-flick/videos/setup.mp4' %}">
+      </video>
+    </div>
+  </div>
+
+  <!-- 🎛 CONTROLS -->
+  <div class="control-panel">
+    <button onclick="runBeforeDrug()">Before Drug</button>
+    <button onclick="injectDrug()">Inject Drug</button>
+    <button onclick="runAfterDrug()">After Drug</button>
+  </div>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<script>
+const mainVideo = document.getElementById("expVideo");
+
+function injectDrug() {
+  mainVideo.src = "{% static 'experiments/tail-flick/videos/inject_drug.mp4' %}";
+  mainVideo.loop = false;
+  mainVideo.play();
+}
+
+function runBeforeDrug() {
+  mainVideo.src = "{% static 'experiments/tail-flick/videos/before.mp4' %}";
+  mainVideo.play();
+}
+
+function runAfterDrug() {
+  mainVideo.src = "{% static 'experiments/tail-flick/videos/after.mp4' %}";
+  mainVideo.play();
+}
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+const toggle = document.getElementById("themeToggle");
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

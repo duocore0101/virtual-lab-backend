@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Acute Oral Toxicity Test – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 280px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory/Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="info-box slide active">
+      <h2>Pre-test Preparation (24 h Before)</h2>
+      <ul>
+        <li>Animals are acclimatised to laboratory conditions.</li>
+        <li>Examine animals for pre-existing abnormalities or illness.</li>
+        <li>Only healthy, fasted animals are selected for dosing.</li>
+        <li>Unsuitable animals are excluded from the study.</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="info-box slide">
+      <h2>Dose Selection & Administration</h2>
+      <ul>
+        <li>OECD 423 follows a stepwise dose progression method.</li>
+        <li>Common fixed doses: 5, 50, 300, 2000 mg/kg.</li>
+        <li>Test substance administered orally using gavage needle.</li>
+        <li>Animals are fasted overnight prior to dosing.</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="info-box slide">
+      <h2>Sequential Testing Procedure</h2>
+      <ul>
+        <li>Initial test: 3 female rats at selected dose.</li>
+        <li>If mortality observed → proceed to lower dose.</li>
+        <li>If no mortality → proceed to higher dose.</li>
+        <li>Stepwise testing reduces animal usage.</li>
+        <li>LD₅₀ range is estimated based on mortality pattern.</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="info-box slide">
+      <h2>Observation Period (14 Days)</h2>
+      <ul>
+        <li>Observe animals continuously for first 4 hours.</li>
+        <li>Daily monitoring for 14 days.</li>
+        <li>Record clinical signs: tremors, convulsions, salivation, lethargy.</li>
+        <li>Monitor body weight and food intake.</li>
+        <li>Record mortality, if any.</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="info-box slide">
+      <h2>Data Analysis & Classification</h2>
+      <ul>
+        <li>Calculate percentage mortality at each dose.</li>
+        <li>Estimate approximate LD₅₀ value.</li>
+        <li>Classify substance according to GHS toxicity categories.</li>
+        <li>Category 1–5 based on LD₅₀ range.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/conclusion/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

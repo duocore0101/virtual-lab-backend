@@ -1,0 +1,382 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dog Blood Pressure Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
+
+ <style>
+   
+    .exp-container { padding: 30px; }
+
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* 🎥 VIDEO */
+    .video-box video {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 0 28px rgba(0,0,0,0.6);
+    }
+
+    /* 📊 OBSERVATION PANEL */
+    .observation-box {
+      background: #1e1e1e;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04),
+                  0 0 22px rgba(0,0,0,0.6);
+    }
+
+    .observation-box h2 {
+      text-align: center;
+      margin-bottom: 14px;
+      color: #ff5252;
+      letter-spacing: 0.4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th {
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,46,46,0.12);
+      transform: scale(1.01);
+    }
+
+    /* 🎛 RIGHT CONTROLS */
+    .right-controls {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .right-controls button {
+      padding: 12px 18px;
+      border-radius: 26px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255,0,0,0.6);
+      transition: 0.25s;
+    }
+
+    .right-controls button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(255,0,0,0.9);
+    }
+
+    /* 🎯 DROPDOWN */
+    select {
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: none;
+      width: 100%;
+      font-size: 14px;
+      background: #2a2a2a;
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08),
+                  0 0 10px rgba(0,0,0,0.6);
+      transition: box-shadow 0.25s;
+    }
+
+    select:hover,
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 14px rgba(255,46,46,0.9);
+    }
+
+    /* ⬅ ▶ NAVIGATION */
+    .nav-buttons {
+      margin-top: 35px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .nav-buttons button {
+      padding: 12px 26px;
+      border-radius: 26px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255,0,0,0.7);
+      transition: 0.25s;
+    }
+
+    .nav-buttons button:hover {
+      transform: scale(1.08);
+    }
+
+    /* 🌗 LIGHT MODE */
+    body.light-mode {
+      background: #f4f4f4;
+      color: #111;
+    }
+    body.light-mode .observation-box {
+      background: #ffffff;
+    }
+  
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT -->
+<div class="top-actions">
+  <button onclick="openProcedure()">Procedure</button>
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<!-- 🔬 PROCEDURE MODAL -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+      <li>Anesthetize the dog with pentobarbitone sodium intravenously.</li>
+      <li>Secure the dog on the operating table in supine position.</li>
+      <li>Cannulate the femoral vein for drug administration.</li>
+      <li>Cannulate the carotid artery and connect to a pressure transducer.</li>
+      <li>Record baseline BP and heart rate.</li>
+      <li>Inject drugs intravenously with adequate washout periods.</li>
+      <li>Record BP and HR after each injection.</li>
+      <li>In simulation, observe real-time BP and HR graphs.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <h1>Dog Blood Pressure – Virtual Experiment</h1>
+
+  <div class="main-layout">
+
+    <!-- 🎥 VIDEO -->
+    <div class="video-box">
+      <video id="expVideo" preload="metadata"></video>
+    </div>
+
+    <!-- 📊 OBSERVATION -->
+    <div class="observation-box">
+      <h2>Observation Table</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Sr</th>
+            <th>Drug / Condition</th>
+            <th>Time (min)</th>
+            <th>SBP</th>
+            <th>DBP</th>
+            <th>Mean BP</th>
+            <th>HR</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="obsBody">
+          <tr><td colspan="8">—</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 🎛 CONTROLS -->
+      <div class="right-controls">
+
+        <button onclick="showDrugSelect()">🔽 Select Drug</button>
+
+        <select id="drugSelect" style="display:none;" onchange="selectDrug()">
+          <option value="">Select Drug</option>
+          <option value="baseline">Baseline</option>
+          <option value="acetylcholine">Acetylcholine</option>
+          <option value="adrenaline">Adrenaline</option>
+          <option value="noradrenaline">Noradrenaline</option>
+        </select>
+
+        <button onclick="injectDrug()">💉 Inject Drug</button>
+        <button onclick="checkResponse()">📈 Check Response</button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ⬅ ▶ NAV -->
+  <div class="nav-buttons">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<script>
+const video = document.getElementById("expVideo");
+const obsBody = document.getElementById("obsBody");
+const drugSelect = document.getElementById("drugSelect");
+
+let selectedDrug = null;
+let stage = "idle"; // idle | injected | response
+let completed = new Set();
+
+const tableData = {
+  baseline: [
+    [1,"Normal (Baseline)",0,130,90,103,110,"Stable baseline"]
+  ],
+  acetylcholine: [
+    [2,"Acetylcholine (10 µg/kg)",2,80,50,60,70,"Marked fall in BP, bradycardia"],
+    [3,"Recovery",10,128,88,101,108,"Near baseline recovery"]
+  ],
+  adrenaline: [
+    [4,"Adrenaline (1 µg/kg)",12,180,120,140,150,"Sharp rise in BP, tachycardia"],
+    [5,"Recovery",20,132,92,105,112,"Recovery"]
+  ],
+  noradrenaline: [
+    [6,"Noradrenaline (1 µg/kg)",22,200,140,160,80,"Reflex bradycardia"],
+    [7,"Recovery",30,130,90,103,110,"Back to baseline"]
+  ]
+};
+
+/* SELECT DRUG */
+function showDrugSelect() {
+  drugSelect.style.display = "block";
+}
+function selectDrug() {
+  selectedDrug = drugSelect.value;
+  stage = "idle";
+}
+
+/* INJECT DRUG (NO TABLE UPDATE HERE) */
+function injectDrug() {
+  if (!selectedDrug) {
+    alert("Please select a drug first");
+    return;
+  }
+
+  if (selectedDrug === "baseline") {
+    alert("Injection not required for baseline. Click Check Response.");
+    return;
+  }
+
+  stage = "injected";
+  video.onended = null; // 🚫 clear any previous handler
+
+  video.src = "{% static 'experiments/dog-bp-drugs/videos/dog_bp_inject.mp4' %}";
+  video.currentTime = 0;
+  video.play();
+}
+
+/* CHECK RESPONSE (TABLE FILLS ONLY HERE) */
+function checkResponse() {
+  if (!selectedDrug) {
+    alert("Please select a drug first");
+    return;
+  }
+
+  if (selectedDrug !== "baseline" && stage !== "injected") {
+    alert("Please inject the drug first");
+    return;
+  }
+
+  stage = "response";
+  video.onended = null;
+
+  video.src = "{% static 'experiments/dog-bp-drugs/videos/dog_bp_response.mp4' %}";
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+    if (stage !== "response") return;   // ✅ SAFETY CHECK
+    if (completed.has(selectedDrug)) return;
+
+    if (obsBody.innerText.includes("—")) obsBody.innerHTML = "";
+
+    tableData[selectedDrug].forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = row.map(c => `<td>${c}</td>`).join("");
+      obsBody.appendChild(tr);
+    });
+
+    completed.add(selectedDrug);
+    stage = "idle";
+  };
+}
+
+/* UI HELPERS */
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Adrenaline on Frog’s Heart – Experiment</title>
+
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
+
+  <style>
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
+      width: 100%;
+      height: 480px;
+      background: #000;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+    }
+
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= POPUP OVERLAY ================= */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 950px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 28px 34px;
+      box-shadow:
+        0 0 0 2px #ff3b3b,
+        0 0 35px rgba(255, 59, 59, 0.55);
+      position: relative;
+      animation: popIn 0.35s ease;
+    }
+
+    .popup-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 20px;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    .procedure-list {
+      padding-left: 22px;
+    }
+
+    .procedure-list > li {
+      margin-bottom: 14px;
+      font-size: 16px;
+    }
+
+    .procedure-list ul {
+      margin-left: 18px;
+      list-style: disc;
+    }
+
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .observation-table th {
+      background: #1f2937;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    To Effect of Adrenaline (Epinephrine) on Isolated Frog Heart Experiment
+  </h1>
+
+  <!-- TOP ACTIONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+    <button class="dropdown-btn" onclick="openObservation()">📊 Observation</button>
+    <button class="dropdown-btn" onclick="openGraph()">📈 Graph</button>
+  </div>
+
+  <!-- ================= VIDEO ================= -->
+  <div class="video-frame">
+    <video controls>
+      <source src="{% static 'experiments/adrenaline-frog-heart/videos/adrenaline_frog_heart.mp4' %}">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row" style="justify-content:center; margin-top:25px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🌗 THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedureModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeProcedure()">✖</span>
+    <h2 class="popup-title">Procedure</h2>
+
+    <ol class="procedure-list">
+      <li>Prepare the isolated perfused frog heart (pith frog, cannulate sinus venosus, attach to kymograph lever).</li>
+      <li>Perfuse the heart with aerated Frog Ringer’s solution.</li>
+      <li>Record normal baseline tracing (regular contractions, heart rate ~60–80 bpm).</li>
+      <li>Prepare adrenaline solutions using serial dilutions.</li>
+      <li>
+        Administer adrenaline:
+        <ul>
+          <li>Inject small volumes (0.1–0.5 ml) of increasing concentrations via cannula.</li>
+          <li>Record kymograph tracing after each dose.</li>
+        </ul>
+      </li>
+      <li>Wash with normal Ringer’s solution to restore baseline.</li>
+      <li>
+        Optional: Pre-treat with propranolol (β-blocker), re-administer adrenaline,
+        and observe reduced or blocked response.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ================= OBSERVATION POPUP ================= -->
+<div class="popup-overlay" id="observationModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeObservation()">✖</span>
+    <h2 class="popup-title">Observation</h2>
+
+    <table class="observation-table">
+      <tr>
+        <th>Parameter</th>
+        <th>Effect of Adrenaline</th>
+        <th>Mechanism</th>
+      </tr>
+      <tr>
+        <td>Heart Rate</td>
+        <td>Increased (positive chronotropic)</td>
+        <td>↑ Pacemaker activity via cAMP</td>
+      </tr>
+      <tr>
+        <td>Force of Contraction</td>
+        <td>Increased (positive inotropic)</td>
+        <td>↑ Ca²⁺ handling</td>
+      </tr>
+      <tr>
+        <td>Tone</td>
+        <td>Increased</td>
+        <td>β₁ receptor activation</td>
+      </tr>
+      <tr>
+        <td>High Dose</td>
+        <td>Marked excitation</td>
+        <td>Excessive stimulation</td>
+      </tr>
+      <tr>
+        <td>After β-Blocker</td>
+        <td>Blocked / Reduced</td>
+        <td>Competitive antagonism</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================= GRAPH POPUP ================= -->
+<div class="popup-overlay" id="graphModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeGraph()">✖</span>
+    <h2 class="popup-title">Graphical Representation</h2>
+
+    <div style="text-align:center;">
+      
+      <img
+        src="{% static 'experiments/adrenaline-frog-heart/images/adrenaline_kymograph.png' %}"
+        alt="Adrenaline kymograph tracing"
+        style="max-width:80%; border-radius:12px; box-shadow:0 8px 22px rgba(0,0,0,0.35);"
+      >
+    </div>
+  </div>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openGraph() {
+  document.getElementById("graphModal").style.display = "flex";
+}
+function closeGraph() {
+  document.getElementById("graphModal").style.display = "none";
+}
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

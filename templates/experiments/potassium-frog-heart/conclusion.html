@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Potassium Ions on Frog’s Heart – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT & DISCUSSION -->
+  <div class="info-box">
+    <h2>Result & Discussion</h2>
+
+    <p><strong>A. Diastolic Arrest (Excess Potassium)</strong></p>
+    <p>
+      When extracellular potassium concentration increases, the potassium
+      concentration gradient across the cardiac cell membrane decreases.
+    </p>
+    <ul>
+      <li>
+        <strong>Depolarization:</strong>
+        The resting membrane potential becomes less negative
+        (partial depolarization).
+      </li>
+      <li>
+        <strong>Inactivation:</strong>
+        Sustained partial depolarization inactivates voltage-gated
+        sodium (Na⁺) channels. Without functional Na⁺ channels, the heart
+        cannot generate a new action potential.
+      </li>
+      <li>
+        <strong>Result:</strong>
+        The heart loses excitability and fails to contract, stopping in a
+        relaxed, dilated state known as
+        <strong>diastolic arrest</strong>.
+      </li>
+    </ul>
+
+    <p><strong>B. Systolic Arrest (Lack of Potassium)</strong></p>
+    <p>
+      When extracellular potassium is removed using potassium-free
+      Ringer’s solution, the Na⁺/K⁺-ATPase pump is inhibited because it
+      requires extracellular potassium for normal function.
+    </p>
+    <ul>
+      <li>
+        <strong>Sodium Accumulation:</strong>
+        Intracellular sodium accumulates as it is not pumped out of the cell.
+      </li>
+      <li>
+        <strong>Calcium Overload:</strong>
+        Elevated intracellular sodium inhibits the Na⁺/Ca²⁺ exchanger (NCX),
+        preventing calcium extrusion and causing intracellular calcium to rise.
+      </li>
+      <li>
+        <strong>Result:</strong>
+        Excess intracellular calcium produces sustained contraction (rigor),
+        similar to the effect of digitalis or excess calcium, leading to
+        <strong>systolic arrest</strong>.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <ul>
+      <li>
+        <strong>Excess potassium</strong> acts as a cardiac depressant,
+        causing the heart to stop in
+        <strong>diastole (relaxation)</strong>.
+      </li>
+      <li>
+        <strong>Lack of potassium</strong> paradoxically increases muscle tone
+        due to inhibition of membrane pumps and calcium accumulation, eventually
+        causing the heart to stop in
+        <strong>systole (contraction)</strong>.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <!-- ✅ FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        status: "completed"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // 🔥 BACKEND DECIDES REDIRECT (dashboard / exam)
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

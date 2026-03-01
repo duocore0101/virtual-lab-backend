@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rabbit Eye Experiment – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 280px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Theory / Principle</h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- Slide 1 -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+      <p>
+        When mydriatic or miotic drugs are instilled into the rabbit eye,
+        they interact with specific receptors present on the iris muscles,
+        resulting in changes in pupil diameter.
+      </p>
+      <p>
+        The extent and duration of pupillary response depend on the type
+        of drug used, its mechanism of action, and the receptors involved.
+        These changes can be easily observed and measured in the rabbit eye.
+      </p>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="info-box slide">
+      <h2>Mydriatics (Pupil Dilators)</h2>
+      <p>
+        Mydriatic drugs produce dilation of the pupil either by stimulating
+        sympathetic activity or by blocking parasympathetic activity.
+      </p>
+      <ul>
+        <li>
+          <strong>Parasympatholytic (Anticholinergic):</strong>
+          Atropine, Homatropine, Tropicamide, Cyclopentolate block
+          muscarinic (M₃) receptors, causing relaxation of the
+          sphincter pupillae and abolition of light reflex (cycloplegia).
+        </li>
+        <li>
+          <strong>Sympathomimetic:</strong>
+          Phenylephrine and Adrenaline stimulate α₁ receptors on the
+          dilator pupillae muscle, producing dilation while preserving
+          the light reflex.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="info-box slide">
+      <h2>Miotics (Pupil Constrictors)</h2>
+      <p>
+        Miotic drugs cause constriction of the pupil (miosis) by
+        contracting the sphincter pupillae muscle through stimulation
+        of muscarinic receptors.
+      </p>
+      <ul>
+        <li>
+          <strong>Direct-acting cholinergics:</strong>
+          Pilocarpine directly stimulates muscarinic (M₃) receptors,
+          producing miosis and exaggeration of light reflex.
+        </li>
+        <li>
+          <strong>Indirect-acting cholinergics:</strong>
+          Physostigmine and Neostigmine inhibit acetylcholinesterase,
+          increasing acetylcholine levels and enhancing parasympathetic
+          effects on the eye.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="info-box slide">
+      <h2>Mechanism of Receptor Interaction</h2>
+      <p>
+        The iris contains two muscles:
+      </p>
+      <ul>
+        <li><strong>Sphincter pupillae</strong> – controlled by parasympathetic (M₃) receptors</li>
+        <li><strong>Dilator pupillae</strong> – controlled by sympathetic (α₁) receptors</li>
+      </ul>
+      <p>
+        Depending on whether parasympathetic activity is blocked or stimulated,
+        the pupil undergoes dilation (mydriasis) or constriction (miosis).
+      </p>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="info-box slide">
+      <h2>Significance</h2>
+      <p>
+        The rabbit eye serves as a reliable experimental model for studying
+        autonomic drugs. Observation of pupil size and light reflex helps
+        in understanding receptor mechanisms and differentiating between
+        mydriatic and miotic drugs.
+      </p>
+      <p>
+        These observations have important clinical relevance in
+        glaucoma management, ophthalmic examinations, and disorders
+        of the autonomic nervous system.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/experiment/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* Keyboard Controls */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* Theme */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* Fullscreen */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

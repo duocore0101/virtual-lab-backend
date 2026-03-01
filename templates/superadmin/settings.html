@@ -1,0 +1,121 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Settings | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Platform Settings</h1>
+      <p>Global configuration & administrative controls</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= SETTINGS GRID ================= -->
+  <section class="settings-grid">
+
+    <!-- ===== GENERAL SETTINGS ===== -->
+    <div class="panel settings-card">
+      <h2>General Settings</h2>
+      <p class="text-muted">System-wide preferences</p>
+
+      <div class="settings-item">
+        <span>Platform Name</span>
+        <span class="settings-value">G-MARS Virtual Lab</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Default Theme</span>
+        <span class="settings-value">Dark / Light Toggle</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Maintenance Mode</span>
+        <span class="status-badge inactive">Disabled</span>
+      </div>
+    </div>
+
+    <!-- ===== USER & ACCESS SETTINGS ===== -->
+    <div class="panel settings-card">
+      <h2>User & Access Control</h2>
+      <p class="text-muted">Security & role management</p>
+
+      <div class="settings-item">
+        <span>Auto-Deactivate Inactive Users</span>
+        <span class="status-badge active">Enabled</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Role-Based Access</span>
+        <span class="status-badge active">Enabled</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Multiple College Admins</span>
+        <span class="status-badge active">Allowed</span>
+      </div>
+    </div>
+
+    <!-- ===== EXPERIMENT & EXAM SETTINGS ===== -->
+    <div class="panel settings-card">
+      <h2>Experiments & Exams</h2>
+      <p class="text-muted">Academic controls</p>
+
+      <div class="settings-item">
+        <span>Exam Module</span>
+        <span class="status-badge active">Enabled</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Auto-Evaluation</span>
+        <span class="status-badge inactive">Disabled</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Experiment Attempts Limit</span>
+        <span class="settings-value">Unlimited</span>
+      </div>
+    </div>
+
+    <!-- ===== SECURITY SETTINGS ===== -->
+    <div class="panel settings-card">
+      <h2>Security & Logs</h2>
+      <p class="text-muted">Audit & compliance</p>
+
+      <div class="settings-item">
+        <span>Audit Logs</span>
+        <span class="status-badge active">Enabled</span>
+      </div>
+
+      <div class="settings-item">
+        <span>Session Timeout</span>
+        <span class="settings-value">30 Minutes</span>
+      </div>
+
+      <div class="settings-item">
+        <span>IP Tracking</span>
+        <span class="status-badge active">Enabled</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================= INFO BOX ================= -->
+  <section class="panel info-panel">
+    <h3>⚙ Configuration Notice</h3>
+    <p>
+      These settings are currently displayed in **read-only mode**.
+      Functional toggles and persistence will be enabled in the next phase.
+    </p>
+    <span class="text-muted">
+      Designed for enterprise SaaS compliance & scalability
+    </span>
+  </section>
+
+</div>
+
+{% endblock %}

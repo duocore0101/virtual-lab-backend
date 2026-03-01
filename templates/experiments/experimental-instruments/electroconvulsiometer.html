@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Electroconvulsiometer (Convulsiometer) | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Electroconvulsiometer (Convulsiometer)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/electroconvulsiometer.glb' %}"
+        alt="Electroconvulsiometer 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Electroconvulsiometer</strong>, also called a
+        <em>Convulsiometer</em>, is a specialized instrument in experimental
+        pharmacology used to induce
+        <strong>controlled electrical seizures</strong> in laboratory animals
+        such as mice or rats.
+      </p>
+      <p>
+        It is primarily employed for screening
+        <strong>anticonvulsant drugs</strong> by modeling
+        <strong>generalized tonic–clonic (grand mal) seizures</strong>.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      The test is based on the delivery of a
+      <strong>supramaximal electroshock (MES)</strong>
+      through corneal or ear clip electrodes. This electrical stimulus
+      induces a characteristic seizure pattern, with
+      <strong>tonic hindlimb extension (THE)</strong>
+      serving as the primary endpoint.
+    </p>
+    <p>
+      Effective anticonvulsant drugs (e.g., phenytoin, carbamazepine)
+      abolish or significantly reduce the duration of tonic hindlimb
+      extension, indicating protection against seizure spread.
+    </p>
+    <p>
+      The MES test is highly predictive for drugs effective in treating
+      generalized tonic–clonic seizures in humans.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Power Supply:</strong> Adjustable parameters including
+        current (mA), voltage, frequency (typically 50–60 Hz),
+        and shock duration (approximately 0.1–1 second).
+      </li>
+      <li>
+        <strong>Electrodes:</strong> Corneal electrodes or padded ear clip
+        electrodes; saline or electrode gel is used to ensure proper
+        electrical conductivity.
+      </li>
+      <li>
+        <strong>Controls:</strong> Digital display for stimulus parameters,
+        timer control, and optional force stimulator.
+      </li>
+      <li>
+        <strong>Safety Features:</strong> Constant current source to deliver
+        a consistent stimulus despite variations in animal resistance.
+      </li>
+      <li>
+        <strong>Modern Features:</strong> Programmable stimulation protocols,
+        data logging, automatic cut-off, and enhanced safety controls.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Screening of anticonvulsant and antiepileptic drugs</li>
+      <li>Evaluation of seizure severity and seizure spread</li>
+      <li>Preclinical epilepsy research</li>
+      <li>Pharmacological profiling of CNS-active drugs</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

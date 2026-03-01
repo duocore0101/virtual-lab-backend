@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elevated Plus Maze – Requirements</title>
+
+  <!-- Reuse SAME CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    Requirements – Elevated Plus Maze (EPM) Experiment
+  </h1>
+
+  <!-- REQUIREMENTS LIST -->
+  <div class="info-box">
+    <h2>Materials Required</h2>
+    <ul>
+      <li>
+        Healthy mice or rats (either sex, 20–30 g for mice / 150–250 g for rats)
+      </li>
+      <li>
+        Elevated Plus Maze apparatus consisting of:
+        <ul>
+          <li>Two open arms</li>
+          <li>Two closed arms with side walls</li>
+          <li>Central platform</li>
+        </ul>
+      </li>
+      <li>
+        Standard anxiolytic drug (e.g. Diazepam)
+      </li>
+      <li>
+        Test drug solution
+      </li>
+      <li>
+        Normal saline or suitable vehicle (control)
+      </li>
+      <li>
+        Stopwatch or digital timer
+      </li>
+      <li>
+        Observation sheet or data recording table
+      </li>
+      <li>
+        Quiet, well-lit experimental room
+      </li>
+    </ul>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Previous
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      Next: Experiment ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+/* Load saved theme */
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

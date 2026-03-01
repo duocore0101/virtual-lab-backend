@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tail Vein | Blood Withdrawal Techniques</title>
+<link rel="stylesheet"
+      href="{% static 'experiments/blood-withdrawal-techniques/css/experiment.css' %}">
+
+  <!-- 🔝 TOP RIGHT ACTIONS + POPUP -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ================= POPUP ================= */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-card {
+      background: #111;
+      color: #fff;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 16px;
+      padding: 25px;
+      animation: popIn 0.3s ease;
+      box-shadow: 0 0 25px rgba(255,0,0,0.6);
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .popup-header h2 {
+      margin: 0;
+      color: #ff4d4d;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .popup-card ul {
+      padding-left: 18px;
+    }
+
+    .popup-card li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <button onclick="openProcedure()">🧪 Procedure</button>
+</div>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedurePopup" onclick="closeProcedure(event)">
+  <div class="popup-card">
+    <div class="popup-header">
+      <h2>Tail Vein – Procedure</h2>
+      <button class="close-btn" onclick="closeProcedure()">✖</button>
+    </div>
+
+    <ul>
+      <li>Restrain animal using a tube restrainer or manual scruff/towel wrap.</li>
+      <li>Warm the tail gently (lamp, warm pad, or water at ~40°C).</li>
+      <li>Clean tail with alcohol and identify the lateral vein.</li>
+      <li>Puncture the vein distally with a shallow angle (10–30°).</li>
+      <li>Collect blood by gentle aspiration or capillary action.</li>
+    </ul>
+
+    <hr style="margin:15px 0; opacity:0.3;">
+
+    <p>
+      <strong>Post-Procedure:</strong> Apply firm pressure for 1–2 minutes to
+      achieve hemostasis. Monitor tail for bruising or bleeding.
+    </p>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Tail Vein Blood Collection</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/blood-withdrawal-techniques/videos/tail-vein.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        Tail vein blood collection is a common non-terminal survival technique
+        used in mice and rats for serial sampling in pharmacokinetic,
+        glucose-monitoring, and biomarker studies. Lateral tail veins are
+        preferred to minimize complications.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🧬 BASIC DETAILS -->
+  <div class="exp-card">
+    <h2>Key Guidelines and Welfare Considerations</h2>
+    <ul>
+      <li><strong>Species:</strong> Mice and rats</li>
+      <li><strong>Blood Volume:</strong> Mice 0.05–0.2 ml; Rats 0.2–1.5 ml</li>
+      <li><strong>Advantages:</strong> Serial sampling, minimal equipment</li>
+      <li><strong>Risks:</strong> Vein collapse, bruising, hemolysis</li>
+      <li><strong>Refinement:</strong> Warming, acclimatization, limited attempts</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 ADVANTAGES & LIMITATIONS -->
+  <div class="exp-card">
+    <h2>Needle Selection</h2>
+    <ul>
+      <li>Mice: 25–27G needle or butterfly</li>
+      <li>Rats: 23–25G needle</li>
+      <li>Avoid scalpel cuts; needle puncture preferred</li>
+      <li>Limit to ≤3 attempts per session</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Technique List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function openProcedure() {
+  document.getElementById("procedurePopup").classList.add("active");
+}
+
+function closeProcedure(e) {
+  if (!e || e.target.id === "procedurePopup") {
+    document.getElementById("procedurePopup").classList.remove("active");
+  }
+}
+</script>
+
+</body>
+</html>

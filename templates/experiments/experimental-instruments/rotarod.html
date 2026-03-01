@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rota-Rod Apparatus (Rotarod) | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Rota-Rod Apparatus (Rotarod)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/rotarod.glb' %}"
+        alt="Rota-Rod Apparatus 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Rota-Rod apparatus</strong> (commonly called
+        <em>Rotarod</em>) is a widely used instrument in experimental
+        pharmacology and neuroscience to assess
+        <strong>motor coordination, balance, grip strength,</strong>
+        and <strong>motor learning</strong> in laboratory rodents
+        such as mice and rats.
+      </p>
+      <p>
+        It is especially sensitive for detecting the effects of
+        <strong>CNS depressants, muscle relaxants, neurotoxic agents,</strong>
+        and neurological deficits seen in disease models such as
+        Parkinson’s disease or cerebellar ataxia.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      The test is based on the rodent’s natural instinct to walk
+      forward on a rotating rod to avoid falling. Animals with intact
+      neuromuscular coordination can maintain balance by coordinating
+      grip, posture, and motor planning.
+    </p>
+    <p>
+      Drugs or pathological conditions that impair motor function
+      reduce the <strong>latency to fall</strong> (time spent on the rod).
+      The rod may rotate at a constant speed or accelerate gradually;
+      accelerating modes are more sensitive for detecting subtle
+      motor deficits and motor learning.
+    </p>
+    <p>
+      <strong>CNS depressants or muscle relaxants</strong>
+      (e.g., diazepam) decrease latency, whereas normal or increased
+      latency helps rule out gross motor impairment in other behavioral tests.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Rod:</strong> Horizontal rotating cylinder
+        (3–7 cm diameter for mice or rats), often grooved or knurled
+        to provide grip; smooth rods increase task difficulty.
+      </li>
+      <li>
+        <strong>Lanes:</strong> Usually 4–5 compartments separated by
+        dividers, allowing simultaneous testing of multiple animals.
+      </li>
+      <li>
+        <strong>Motor:</strong> Adjustable rotation speed:
+        <ul>
+          <li>Constant speed: ~4–40 rpm</li>
+          <li>Accelerating mode: e.g., 4–40 rpm over 300 seconds</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Fall Detection:</strong> Automatic sensors or trip plates
+        stop individual timers when the animal falls; a soft padded base
+        prevents injury.
+      </li>
+      <li>
+        <strong>Display:</strong> Digital timers with ~0.1 second
+        resolution; cut-off time usually 180–300 seconds.
+      </li>
+      <li>
+        <strong>Modern Versions:</strong> Computer software for data
+        logging, multiple trial analysis, and variable acceleration modes.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Screening CNS depressants and muscle relaxants</li>
+      <li>Assessment of neurotoxicity and motor impairment</li>
+      <li>Evaluation of motor learning and coordination</li>
+      <li>Behavioral studies in neurological disease models</li>
+      <li>Teaching experimental pharmacology and neuroscience practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

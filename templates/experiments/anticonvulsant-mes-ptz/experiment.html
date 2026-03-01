@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MES Experiment – Anticonvulsant Activity</title>
+
+  <!-- SAME CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <!-- 🔹 SMALL INLINE UI FIX (SAFE) -->
+  <style>
+    /* Bigger video card */
+    .video-grid {
+      grid-template-columns: 1fr !important;
+      margin-top: 30px;
+    }
+
+    .main-video {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .main-video video {
+      width: 100%;
+      height: 520px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔔 INSTRUCTIONS -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions (MES Method)</h2>
+    <ol class="instruction-list">
+      <li>Click on Start Experiment</li>
+      <li>Observe MES induced convulsions</li>
+      <li>Observation table will be filled automatically</li>
+    </ol>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <h1>
+    Anticonvulsant Activity – Virtual Simulator<br>
+    <small>Maximal Electroshock Seizure (MES) Method</small>
+  </h1>
+
+  <!-- 🔁 METHOD TOGGLE -->
+  <div class="exp-toggle">
+    <button class="toggle-btn active">MES Method</button>
+    <button class="toggle-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+      PTZ Method
+    </button>
+  </div>
+
+  <!-- 🌗 THEME TOGGLE (RESTORED) -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 SINGLE BIG VIDEO -->
+  <div class="video-grid">
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/anticonvulsant-mes-ptz/videos/mes_convulsion.mp4' %}">
+      </video>
+    </div>
+  </div>
+
+  <!-- ▶️ SINGLE CONTROL BUTTON -->
+  <div class="control-panel">
+    <button onclick="startExperiment()">Start Experiment</button>
+  </div>
+
+  <!-- 📊 OBSERVATION TABLE -->
+  <div class="observation-section">
+    <h2>MES Induced Convulsion Observation Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Treatment</th>
+          <th>Tonic (sec)</th>
+          <th>Clonic (sec)</th>
+          <th>Stupor (sec)</th>
+          <th>Recovery / Death</th>
+        </tr>
+      </thead>
+      <tbody id="obsBody">
+        <tr>
+          <td colspan="5" style="text-align:center;">
+            — Data will appear after experiment —
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- ================= SCRIPT (UNCHANGED LOGIC) ================= -->
+<script>
+const video = document.getElementById("expVideo");
+const tableBody = document.getElementById("obsBody");
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function startExperiment() {
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+    loadObservationData();
+  };
+}
+
+function loadObservationData() {
+  tableBody.innerHTML = `
+    <tr><td>Vehicle Treated</td><td>6</td><td>8</td><td>5</td><td>Recovery</td></tr>
+    <tr><td>Vehicle Treated</td><td>7</td><td>9</td><td>6</td><td>Recovery</td></tr>
+    <tr><td>Vehicle Treated</td><td>7</td><td>6</td><td>4</td><td>Recovery</td></tr>
+    <tr style="font-weight:bold;color:#22c55e;">
+      <td>Average</td><td>6.6</td><td>7.6</td><td>5</td><td>Recovery</td>
+    </tr>
+    <tr><td>Phenytoin Treated</td><td>4</td><td>6</td><td>4</td><td>Recovery</td></tr>
+    <tr><td>Phenytoin Treated</td><td>4</td><td>6</td><td>5</td><td>Recovery</td></tr>
+    <tr><td>Phenytoin Treated</td><td>5</td><td>4</td><td>3</td><td>Recovery</td></tr>
+    <tr style="font-weight:bold;color:#22c55e;">
+      <td>Average</td><td>4.3</td><td>5.3</td><td>4</td><td>Recovery</td>
+    </tr>
+  `;
+}
+</script>
+
+<!-- 🌗 THEME TOGGLE SCRIPT (RESTORED) -->
+<script>
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+
+</body>
+</html>

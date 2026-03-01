@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Langendorff Apparatus | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Langendorff Apparatus
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/langendorff.glb' %}"
+        alt="Langendorff Apparatus 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Langendorff Apparatus</strong>, also known as the
+        <em>Langendorff Isolated Heart Perfusion System</em>, is a classic
+        <strong>ex vivo</strong> instrument used in experimental pharmacology
+        and cardiovascular research for studying the
+        <strong>isolated perfused heart</strong>.
+      </p>
+      <p>
+        It enables detailed evaluation of cardiac function such as
+        <strong>contractility, heart rate, rhythm,</strong> and
+        <strong>coronary flow</strong> independent of systemic influences,
+        making it ideal for studying cardioactive drugs and myocardial injury.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      Named after <strong>Oskar Langendorff (1895)</strong>, this system is
+      based on <strong>retrograde perfusion</strong> of the isolated heart.
+      Oxygenated physiological solution (commonly
+      <em>Krebs–Henseleit buffer</em>) is pumped into the aorta, causing the
+      aortic valve to close and directing the perfusate backward into the
+      coronary arteries.
+    </p>
+    <p>
+      The heart beats spontaneously (or can be electrically paced) in the
+      absence of external workload (<strong>non-working mode</strong>).
+      Alternatively, the system can be configured to a
+      <strong>working heart mode</strong>, where the heart ejects against
+      defined preload and afterload pressures.
+    </p>
+    <p>
+      Drugs added to the perfusate directly act on the myocardium,
+      allowing precise assessment of cardiac pharmacodynamics.
+    </p>
+    <p>
+      <strong>Perfusion modes:</strong>
+    </p>
+    <ul>
+      <li><strong>Constant pressure:</strong> Physiological mode with variable flow</li>
+      <li><strong>Constant flow:</strong> Fixed flow with variable perfusion pressure</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Reservoir / Jacketed Oxygenator:</strong> Maintains perfusate
+        at 37°C and continuously bubbles carbogen (95% O₂ + 5% CO₂) to
+        ensure oxygenation and pH stability.
+      </li>
+      <li>
+        <strong>Peristaltic Pump:</strong> Provides controlled delivery of
+        perfusate at constant flow rates.
+      </li>
+      <li>
+        <strong>Aortic Cannula:</strong> Site where the excised heart is
+        mounted for retrograde perfusion.
+      </li>
+      <li>
+        <strong>Sensors:</strong>
+        <ul>
+          <li>Pressure transducers (aortic and left ventricular)</li>
+          <li>Flow meters for coronary flow measurement</li>
+          <li>Force transducer or intraventricular balloon for contractility</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Modern Features:</strong> Integrated temperature control,
+        pH monitoring, bubble traps, and computerized data acquisition software.
+      </li>
+      <li>
+        <strong>Variants:</strong> Working heart systems and compact
+        student-friendly versions for teaching laboratories.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Evaluation of cardioactive and antiarrhythmic drugs</li>
+      <li>Study of myocardial contractility and coronary circulation</li>
+      <li>Ischemia–reperfusion injury research</li>
+      <li>Assessment of myocardial preservation techniques</li>
+      <li>Teaching experimental pharmacology and cardiovascular physiology</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+</body>
+</html>

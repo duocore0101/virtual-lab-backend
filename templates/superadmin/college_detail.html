@@ -1,0 +1,61 @@
+{% extends "superadmin/base.html" %}
+{% block title %}College Detail{% endblock %}
+
+{% block content %}
+
+<style>
+.table-wrapper { margin-top:20px; }
+.table { width:100%; border-collapse:collapse; }
+.table th, .table td { padding:12px; border-bottom:1px solid #eee; }
+.table tr:hover { background:#f9fbff; }
+.count-box {
+  background:#f4f6ff;
+  padding:12px 18px;
+  border-radius:8px;
+  font-weight:600;
+  margin-top:10px;
+  display:inline-block;
+}
+</style>
+
+<h2>{{ college.name }}</h2>
+
+<div class="count-box">
+  Total Teachers: {{ total_teachers }}
+</div>
+
+<div class="table-wrapper">
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Teacher Name</th>
+      <th>Email</th>
+      <th>Students</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for teacher in teachers %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>
+        <a href="/superadmin/teacher/{{ teacher.id }}/"
+           style="text-decoration:none;">
+           {{ teacher.first_name }}
+        </a>
+      </td>
+      <td>{{ teacher.email }}</td>
+      <td>
+        {{ teacher.created_users.count }}
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4" style="text-align:center;">No teachers found</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

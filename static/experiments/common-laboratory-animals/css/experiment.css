@@ -1,0 +1,393 @@
+/* ===============================
+   BASE RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===============================
+   DARK THEME (DEFAULT)
+================================ */
+body.theme-dark {
+  background: radial-gradient(circle at top, #1a0000, #000000);
+  color: #ffffff;
+}
+
+/* ===============================
+   LIGHT THEME
+================================ */
+body.theme-light {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* ===============================
+   THEME TOGGLE BUTTON
+================================ */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ff1a1a;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+  background: #ff3333;
+}
+
+/* ===============================
+   MAIN CONTAINER
+================================ */
+.exp-container {
+  max-width: 1000px;
+  margin: 120px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* ===============================
+   TITLE
+================================ */
+.exp-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ff2b2b;
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+/* ===============================
+   CONTENT CARD
+================================ */
+.exp-card {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  line-height: 1.8;
+  font-size: 18px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+body.theme-light .exp-card {
+  background: #ffffff;
+  color: #111;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ===============================
+   ACTION BUTTON
+================================ */
+.exp-actions {
+  margin-top: 40px;
+}
+
+.btn-start {
+  display: inline-block;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+  transition: all 0.3s ease;
+}
+
+.btn-start:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.9);
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .exp-title {
+    font-size: 24px;
+  }
+
+  .exp-card {
+    font-size: 16px;
+    padding: 20px;
+  }
+}
+/* ===============================
+   ANIMAL BUTTON LIST
+================================ */
+.animal-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 50px;
+}
+
+/* ===============================
+   ANIMAL BUTTON
+================================ */
+.animal-btn {
+  padding: 18px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 14px;
+  border: 2px solid #ff2b2b;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 18px rgba(255, 0, 0, 0.35);
+}
+
+.animal-btn:hover {
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.8);
+}
+
+/* LIGHT THEME SUPPORT */
+body.theme-light .animal-btn {
+  background: #ffffff;
+  color: #111;
+  border-color: #cc0000;
+}
+
+body.theme-light .animal-btn:hover {
+  color: #ffffff;
+}
+/* REMOVE LINK UNDERLINE */
+.animal-btn {
+  text-decoration: none;
+}
+
+.animal-btn:hover,
+.animal-btn:focus,
+.animal-btn:active {
+  text-decoration: none;
+}
+/* ===============================
+   VIDEO SECTION
+================================ */
+.video-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto 40px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===============================
+   TABLE STYLING
+================================ */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0 30px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  text-align: center;
+}
+
+.comparison-table th {
+  background: rgba(255, 0, 0, 0.2);
+  font-weight: 700;
+}
+
+body.theme-light .comparison-table th {
+  background: #ffe5e5;
+}
+/* SPACE BETWEEN MULTIPLE CARDS */
+.exp-card {
+  margin-bottom: 30px;
+}
+
+/* CARD HEADING */
+.exp-card h2 {
+  color: #ff2b2b;
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px rgba(255,0,0,0.4);
+}
+/* ===============================
+   SMALL VIDEO CARD
+================================ */
+/* BIGGER VIDEO CARD */
+.video-container.small-video {
+  flex: 1;
+  height: 320px;              /* 🔥 force height */
+  max-width: 620px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.6);
+  background: #000;
+}
+
+
+.video-container.small-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* 🔥 makes it fill cleanly */
+}
+
+.top-flex-row {
+  display: flex;
+  gap: 60px;                  /* more breathing space */
+  align-items: stretch;       /* 🔥 critical */
+  margin-bottom: 50px;
+}
+
+
+
+/* LEFT VIDEO */
+.top-flex-row .video-container {
+  flex: 1.3;
+}
+
+/* MATCH OVERVIEW HEIGHT VISUALLY */
+.overview-card {
+  flex: 1;
+  min-height: 320px;          /* 🔥 match video height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* RESPONSIVE: STACK ON MOBILE */
+@media (max-width: 900px) {
+  .top-flex-row {
+    flex-direction: column;
+  }
+}
+/* ===============================
+   EXPERIMENT NAV BUTTONS (FIXED)
+================================ */
+
+.exp-actions {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* COMMON BUTTON STYLE */
+.exp-nav-btn {
+  text-decoration: none !important;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  border: 2px solid #ff2b2b;
+  color: #ffffff !important;
+  background: transparent;
+}
+
+.back-btn:hover {
+  background: rgba(255, 0, 0, 0.15);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  transform: translateY(-2px);
+}
+
+/* FINISH PRACTICAL BUTTON */
+.finish-btn {
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
+  color: #ffffff !important;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+}
+
+.finish-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 40px rgba(255, 0, 0, 1);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .exp-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+/* =====================================================
+   REMOVE BACKGROUND CARD BEHIND MODELS / IMAGES
+   (ALL INSTRUMENT PAGES)
+===================================================== */
+
+/* Model / Image container */
+.video-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure model-viewer / img floats cleanly */
+.video-container model-viewer,
+.video-container img {
+  background: transparent !important;
+}
+/* =====================================================
+   REMOVE MODEL BACKGROUND CARD COMPLETELY
+   (FOR ALL INSTRUMENT PAGES)
+===================================================== */
+
+/* Kill any card-style background on model side */
+.top-flex-row .video-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Remove inherited glow / card illusion */
+.top-flex-row .video-container::before,
+.top-flex-row .video-container::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Ensure model/image itself has no box */
+.top-flex-row model-viewer,
+.top-flex-row img {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* OPTIONAL: remove red glow around model area */
+.top-flex-row {
+  background: transparent !important;
+}

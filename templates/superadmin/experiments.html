@@ -1,0 +1,78 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Experiments | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Experiments</h1>
+      <p>View and manage all experiments across colleges</p>
+    </div>
+
+   
+  </section>
+
+  <!-- ================= EXPERIMENTS TABLE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Experiment List</h2>
+      <span class="text-muted">
+        Total: {{ experiments|length }}
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Experiment Name</th>
+            <th>Assigned Teacher</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for exp in experiments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              <strong>{{ exp.name }}</strong>
+            </td>
+
+            <td>
+              {% if exp.teacher %}
+                {{ exp.teacher.first_name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td>
+              {% if exp.is_active %}
+                <span class="status-badge active">ACTIVE</span>
+              {% else %}
+                <span class="status-badge inactive">INACTIVE</span>
+              {% endif %}
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="4" style="text-align:center; color:var(--text-muted);">
+              No experiments found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Histamine DRC – Requirements</title>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐹 Animal -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li>Guinea pig (250–400 g)</li>
+      <li>Either sex</li>
+      <li>Fasted overnight (water ad libitum)</li>
+    </ul>
+  </div>
+
+  <!-- 💊 Agonist -->
+  <div class="info-box">
+    <h2>Agonist</h2>
+    <ul>
+      <li><strong>Histamine dihydrochloride</strong></li>
+      <li>Stock concentration: 100 µg/mL or 10⁻³ M</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 Physiological Salt Solution -->
+  <div class="info-box">
+    <h2>Physiological Salt Solution (Tyrode’s Solution)</h2>
+    <p><strong>pH:</strong> 7.4</p>
+
+    <h3>Composition (per litre)</h3>
+    <ul>
+      <li>NaCl – 8.0 g</li>
+      <li>KCl – 0.2 g</li>
+      <li>CaCl₂ – 0.2 g</li>
+      <li>MgCl₂ – 0.1 g</li>
+      <li>NaH₂PO₄ – 0.05 g</li>
+      <li>NaHCO₃ – 1.0 g</li>
+      <li>Glucose – 1.0 g</li>
+    </ul>
+
+    <p>
+      Dissolve in double-distilled water.  
+      Add CaCl₂ last and aerate properly before use.
+    </p>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>Apparatus and Instruments</h2>
+    <ul>
+      <li>Student organ bath (20–25 mL) or PowerLab system</li>
+      <li>Isotonic transducer + digital recorder</li>
+      <li>OR Frontal writing lever + kymograph (5–10× magnification)</li>
+      <li>Aeration: Air or carbogen (95% O₂ + 5% CO₂)</li>
+      <li>Temperature: 37 ± 0.5 °C</li>
+      <li>Resting tension: 0.5–1.0 g</li>
+    </ul>
+  </div>
+
+  <!-- 🔬 Accessories -->
+  <div class="info-box">
+    <h2>Accessories</h2>
+    <ul>
+      <li>Dissecting instruments</li>
+      <li>Thread</li>
+      <li>Petri dish</li>
+      <li>Stopwatch</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

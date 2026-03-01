@@ -1,0 +1,114 @@
+{% extends "teacher/base.html" %}
+{% block title %}Edit Batch{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================= PAGE WRAPPER ================= */
+.batch-container {
+    padding: 40px;
+}
+
+/* ================= PAGE TITLE ================= */
+.batch-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.batch-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* ================= CARD DESIGN ================= */
+.batch-card {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ================= INPUT FIELDS ================= */
+.batch-input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.batch-input:focus {
+    outline: none;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 3px rgba(255,0,0,0.08);
+}
+
+/* ================= BUTTON ================= */
+.batch-btn {
+    padding: 10px 22px;
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.batch-btn:hover {
+    background: var(--accent-red-dark);
+    transform: translateY(-1px);
+}
+
+</style>
+
+<div class="batch-container">
+
+    <div class="batch-title">Edit Batch</div>
+
+    <div class="batch-subtitle">
+        Updating: <strong>{{ batch.name }}</strong>
+    </div>
+
+    <div class="batch-card">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" 
+                   name="name"
+                   value="{{ batch.name }}"
+                   class="batch-input"
+                   required>
+
+            <input type="number" 
+                   name="start_roll"
+                   value="{{ batch.start_roll }}"
+                   class="batch-input"
+                   required>
+
+            <input type="number" 
+                   name="end_roll"
+                   value="{{ batch.end_roll }}"
+                   class="batch-input"
+                   required>
+
+            <button type="submit" class="batch-btn">
+                Update Batch
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

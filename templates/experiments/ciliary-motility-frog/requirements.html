@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ciliary Motility Experiment – Requirements</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing Rotarod intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐸 Animal -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li>Frog (<strong>Rana tigrina</strong> or similar species)</li>
+      <li>Healthy adult frog of either sex</li>
+      <li>
+        <strong>Note:</strong> Use of wild frogs is restricted/banned in many
+        regions (e.g., India) as per <strong>CPCSEA guidelines</strong>.
+      </li>
+      <li>
+        Hence, this experiment is commonly performed using
+        <strong>virtual pharmacology simulation</strong>.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>Apparatus and Instruments</h2>
+    <ul>
+      <li>Frog board</li>
+      <li>Dissection instruments</li>
+      <li>Dissecting pins</li>
+      <li>Stopwatch</li>
+      <li>Dropper / Pasteur pipette</li>
+    </ul>
+  </div>
+
+  <!-- 💊 Drugs -->
+  <div class="info-box">
+    <h2>Drugs and Solutions</h2>
+    <ul>
+      <li>
+        <strong>Frog Ringer's solution / Normal saline:</strong>
+        Control solution
+      </li>
+      <li>
+        <strong>Acetylcholine:</strong>
+        0.1% solution or stock (1&nbsp;µg/ml)
+      </li>
+      <li>
+        <strong>Physostigmine (Eserine):</strong>
+        0.1–1% solution or stock (1&nbsp;µg/ml)
+      </li>
+      <li>
+        <strong>Atropine:</strong>
+        0.1% solution or stock (1&nbsp;µg/ml)
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧂 Indicator -->
+  <div class="info-box">
+    <h2>Indicator Particles</h2>
+    <ul>
+      <li>Small poppy seeds</li>
+      <li>Cork dust</li>
+      <li>Carmine particles</li>
+      <li>Particles should be of <strong>uniform size</strong></li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

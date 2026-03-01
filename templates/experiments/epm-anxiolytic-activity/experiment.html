@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elevated Plus Maze Experiment</title>
+
+  <link rel="stylesheet"
+      href="{% static 'experiments/epm-anxiolytic-activity/css/experiment.css' %}?v=10001">
+
+
+  <!-- 🔧 EXTRA LAYOUT STYLES (SAFE ADDITION) -->
+  <style>
+    .epm-layout {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+      align-items: stretch;
+    }
+
+    .epm-video video {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .epm-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .epm-controls button {
+      padding: 14px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe animal behavior in Elevated Plus Maze</li>
+      <li>Record time spent in open and closed arms (before drug)</li>
+      <li>Administer anxiolytic drug</li>
+      <li>Record time spent in open and closed arms (after drug)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="exp-container">
+  <h1>Elevated Plus Maze – Virtual Simulator</h1>
+
+  <!-- 🌗 THEME TOGGLE -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 VIDEO + CONTROLS LAYOUT -->
+  <div class="epm-layout">
+
+    <!-- LEFT: VIDEO -->
+    <div class="epm-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/epm-anxiolytic-activity/videos/empty_maze.mp4' %}">
+      </video>
+    </div>
+
+    <!-- RIGHT: CONTROLS (VERTICAL) -->
+    <div class="epm-controls">
+      <button onclick="runBeforeDrug()">▶ Before Drug</button>
+      <button onclick="injectDrug()">💉 Inject Drug</button>
+      <button onclick="runAfterDrug()">▶ After Drug</button>
+    </div>
+
+  </div>
+
+  <!-- 📊 OBSERVATION TABLE -->
+  <div class="observation-section">
+    <h2>Observation Table (One Mouse)</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Condition</th>
+          <th>Time in Closed Arm (sec)</th>
+          <th>Time in Open Arm (sec)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Before Drug</td>
+          <td id="A1">—</td>
+          <td id="A2">—</td>
+        </tr>
+        <tr>
+          <td>After Drug</td>
+          <td id="B1">—</td>
+          <td id="B2">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- 🧠 SCRIPT (UNCHANGED LOGIC EXCEPT START REMOVED) -->
+<script>
+const mainVideo = document.getElementById("expVideo");
+
+// Example timings (ONE MOUSE ONLY)
+const beforeClosed = 34;
+const beforeOpen = 18;
+const afterClosed  = 9;
+const afterOpen = 43;
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+/* ▶ BEFORE DRUG */
+function runBeforeDrug() {
+  mainVideo.src = "{% static 'experiments/epm-anxiolytic-activity/videos/before_drug.mp4' %}";
+  mainVideo.play();
+
+  runCountdown("A1", beforeClosed);
+  runCountdown("A2", beforeOpen);
+}
+
+/* ▶ INJECT DRUG */
+function injectDrug() {
+  mainVideo.src = "{% static 'experiments/epm-anxiolytic-activity/videos/inject_drug.mp4' %}";
+  mainVideo.play();
+}
+
+/* ▶ AFTER DRUG */
+function runAfterDrug() {
+  mainVideo.src = "{% static 'experiments/epm-anxiolytic-activity/videos/after_drug.mp4' %}";
+  mainVideo.play();
+
+  runCountdown("B1", afterClosed);
+  runCountdown("B2", afterOpen);
+}
+
+/* ▶ COUNTDOWN */
+function runCountdown(cellId, endTime) {
+  let val = 0;
+  const cell = document.getElementById(cellId);
+
+  const timer = setInterval(() => {
+    cell.innerText = val;
+    val++;
+
+    if (val >= endTime) {
+      clearInterval(timer);
+      cell.innerText = endTime;
+    }
+  }, 100);
+}
+</script>
+
+<!-- 🌗 THEME SCRIPT -->
+<script>
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+
+  if (document.body.classList.contains("light-theme")) {
+    localStorage.setItem("expTheme", "light");
+  } else {
+    localStorage.setItem("expTheme", "dark");
+  }
+});
+</script>
+
+</body>
+</html>

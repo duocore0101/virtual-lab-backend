@@ -1,0 +1,348 @@
+/* ----------------------------------------------------------
+   GLOBAL – RED BLACK LAB THEME (ROTAROD MATCH)
+----------------------------------------------------------- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #0b0b0b, #000);
+  color: #ffffff;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.exp-container {
+  text-align: center;
+  padding: 40px;
+}
+
+/* ----------------------------------------------------------
+   TITLE
+----------------------------------------------------------- */
+.exp-container h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #ff2e2e;
+  text-shadow: 0 0 18px rgba(255,0,0,0.7);
+}
+
+/* ----------------------------------------------------------
+   THEME TOGGLE (TOP RIGHT)
+----------------------------------------------------------- */
+.theme-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: #ff4d4d;
+  font-weight: 600;
+}
+
+/* SWITCH */
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background: #222;
+  border-radius: 999px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(255,0,0,0.4);
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background: #ff2e2e;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch input:checked + .slider {
+  background: #ff4d4d;
+}
+
+.toggle-switch input:checked + .slider::before {
+  transform: translateX(24px);
+  background: #fff;
+}
+
+/* ----------------------------------------------------------
+   VIDEO GRID (EXACT ROTAROD LAYOUT)
+----------------------------------------------------------- */
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 24px;
+  align-items: center;
+  margin: 35px 0;
+}
+
+/* ----------------------------------------------------------
+   MAIN VIDEO
+----------------------------------------------------------- */
+.main-video {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-video video {
+  width: 720px;
+  height: 405px;
+  object-fit: cover;
+  background: black;
+  border-radius: 16px;
+  border: 1px solid rgba(255,0,0,0.25);
+  box-shadow:
+    0 0 35px rgba(255,0,0,0.35),
+    0 0 60px rgba(255,0,0,0.2);
+}
+
+/* ----------------------------------------------------------
+   SIDE CONTAINERS (LEFT + RIGHT)
+----------------------------------------------------------- */
+.side-video {
+  background: linear-gradient(180deg, #111, #050505);
+  padding: 14px;
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,0,0,0.25);
+  box-shadow: 0 0 22px rgba(255,0,0,0.25);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.side-video:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 35px rgba(255,0,0,0.6);
+}
+
+.side-video h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #ff6b6b;
+  text-shadow: 0 0 8px rgba(255,0,0,0.7);
+}
+
+.side-video video {
+  width: 100%;
+  border-radius: 10px;
+  opacity: 0.95;
+}
+
+/* ----------------------------------------------------------
+   CONTROL BUTTONS (ROTAROD STYLE)
+----------------------------------------------------------- */
+.control-panel {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.control-panel button {
+  padding: 13px 28px;
+  font-size: 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.control-panel button:nth-child(1) {
+  background: linear-gradient(135deg, #ff2e2e, #ff5f5f);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,0,0,0.6);
+}
+
+.control-panel button:nth-child(2) {
+  background: linear-gradient(135deg, #ff4444, #ff7777);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,60,60,0.6);
+}
+
+.control-panel button:nth-child(3) {
+  background: linear-gradient(135deg, #ff8c42, #ffc085);
+  color: #2b1500;
+  box-shadow: 0 0 18px rgba(255,140,66,0.6);
+}
+
+.control-panel button:hover {
+  transform: scale(1.08);
+}
+
+/* ----------------------------------------------------------
+   OBSERVATION TABLE
+----------------------------------------------------------- */
+.observation-section {
+  margin-top: 45px;
+}
+
+.observation-section h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff4d4d;
+}
+
+.observation-table {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  border-collapse: collapse;
+  background: #0b0b0b;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,0,0,0.35);
+}
+
+.observation-table thead {
+  background: linear-gradient(135deg, #ff2e2e, #ff5f5f);
+}
+
+.observation-table th,
+.observation-table td {
+  padding: 14px;
+  text-align: center;
+  font-size: 15px;
+  color: #eee;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ----------------------------------------------------------
+   BACK / NEXT BUTTONS
+----------------------------------------------------------- */
+.exp-container > button {
+  margin-top: 35px;
+  padding: 13px 30px;
+  background: transparent;
+  border: 1px solid #ff2e2e;
+  color: #ff2e2e;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 20px rgba(255,0,0,0.4);
+}
+
+.exp-container > button:hover {
+  background: rgba(255,0,0,0.15);
+  transform: scale(1.06);
+  box-shadow: 0 0 35px rgba(255,0,0,0.8);
+}
+
+/* ----------------------------------------------------------
+   INSTRUCTIONS MODAL
+----------------------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: linear-gradient(180deg, #111, #050505);
+  width: 70%;
+  max-width: 650px;
+  padding: 30px;
+  border-radius: 16px;
+  color: #fff;
+  position: relative;
+  border: 1px solid rgba(255,0,0,0.35);
+  box-shadow: 0 0 45px rgba(255,0,0,0.7);
+  animation: fadeIn 0.35s ease;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ff4d4d;
+}
+
+/* ----------------------------------------------------------
+   LIGHT THEME
+----------------------------------------------------------- */
+body.light-theme {
+  background: #f7f7f7;
+  color: #111;
+}
+
+body.light-theme .exp-container h1 {
+  color: #c30000;
+  text-shadow: none;
+}
+
+body.light-theme .side-video,
+body.light-theme .modal-content {
+  background: #ffffff;
+  color: #111;
+  border: 1px solid #ff4d4d;
+}
+
+body.light-theme .toggle-label {
+  color: #c30000;
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .side-video {
+    display: none;
+  }
+
+  .main-video video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ----------------------------------------------------------
+   ANIMATION
+----------------------------------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

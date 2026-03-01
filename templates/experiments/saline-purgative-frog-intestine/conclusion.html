@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saline Purgatives Experiment – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The experiment demonstrates the effect of different osmotic solutions
+      on the frog intestine by observing changes in volume due to osmosis.
+    </p>
+
+    <p>
+      The hypotonic solution caused <strong>shrinkage</strong> of the intestinal
+      segment, the isotonic solution showed <strong>no visible change</strong>,
+      and the hypertonic magnesium sulphate solution produced
+      <strong>marked swelling (distension)</strong>.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <h3>Interpretation of the Graph</h3>
+
+    <ol>
+      <li>
+        <strong>Hypotonic Solution (0.9% NaCl / Dilute Saline):</strong>
+        <ul>
+          <li><strong>Observation:</strong> Negative bar indicating shrinkage.</li>
+          <li>
+            <strong>Mechanism:</strong> The solution inside the intestine is less
+            concentrated than frog body fluids. Water moves by osmosis from
+            lumen/blood into surrounding tissues.
+          </li>
+          <li>
+            <strong>Result:</strong> The intestinal segment becomes shriveled.
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Isotonic Solution (Frog Ringer's Solution):</strong>
+        <ul>
+          <li><strong>Observation:</strong> Zero change.</li>
+          <li>
+            <strong>Mechanism:</strong> The solution has the same osmolarity as
+            body fluids. No net movement of water occurs.
+          </li>
+          <li>
+            <strong>Result:</strong> The intestinal segment retains its normal
+            tone and size.
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Hypertonic Solution (27% Magnesium Sulphate – Saline Purgative):</strong>
+        <ul>
+          <li>
+            <strong>Observation:</strong> Positive bar showing swelling/distension.
+          </li>
+          <li>
+            <strong>Mechanism:</strong> High concentration of non-absorbable ions
+            (MgSO₄) creates high osmotic pressure, drawing water from blood/tissues
+            into the intestinal lumen.
+          </li>
+          <li>
+            <strong>Result:</strong> Fluid accumulation stretches the intestinal wall.
+            In living systems, this stretch increases peristalsis and produces
+            a laxative (purgative) effect.
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <!-- ✅ FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        hypotonic: "-20%",
+        isotonic: "0%",
+        hypertonic: "+40%"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

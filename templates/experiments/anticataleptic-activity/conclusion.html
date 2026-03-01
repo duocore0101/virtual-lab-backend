@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Catatonic Activity – Conclusion</title>
+
+  <!-- SAME THEME AS OTHER PAGES -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Conclusion – Anti-Catatonic (Anti-Cataleptic) Activity
+  </h1>
+
+  <!-- RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      Administration of haloperidol produced marked catalepsy in rats/mice,
+      as evidenced by prolonged maintenance of imposed posture.
+      The cataleptic duration was recorded using standard observation methods.
+    </p>
+    <p>
+      Following administration of the test drug, a
+      <strong>reduction in cataleptic time</strong> was observed
+      when compared to the control group.
+    </p>
+  </div>
+
+  <!-- INTERPRETATION -->
+  <div class="info-box">
+    <h2>Interpretation</h2>
+    <p>
+      Haloperidol-induced catalepsy is primarily due to blockade of
+      <strong>dopamine D<sub>2</sub> receptors</strong> in the
+      <strong>nigrostriatal pathway</strong>, leading to
+      extrapyramidal motor impairment.
+    </p>
+    <p>
+      The observed reduction in cataleptic duration after drug treatment
+      indicates restoration of dopaminergic–cholinergic balance in the
+      central nervous system.
+    </p>
+  </div>
+
+  <!-- FINAL CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The test drug exhibited significant
+      <strong>anti-catatonic (anti-cataleptic) activity</strong>
+      by reducing haloperidol-induced catalepsy in experimental animals.
+    </p>
+    <p>
+      Hence, the drug may possess
+      <strong>anti-parkinsonian properties</strong> or a
+      <strong>lower liability for extrapyramidal side effects</strong>,
+      making it pharmacologically safer for clinical use.
+    </p>
+  </div>
+
+  <!-- NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+      ⬅ Back to Experiment
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/student/dashboard/'">
+      Finish Practical ✔
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

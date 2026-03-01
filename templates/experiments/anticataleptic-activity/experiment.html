@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Catatonic Activity – Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+
+  <style>
+    .video-box {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    video {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(255,0,0,0.5);
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-accent);
+    }
+
+    th {
+      background: rgba(255,0,0,0.2);
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Experiment – Anti-Catatonic Activity
+  </h1>
+
+  <!-- ACTION BUTTONS -->
+  <div class="button-row">
+    <button class="action-btn" onclick="showInjectVideo()">
+      Inject Drug
+    </button>
+
+    <button class="action-btn" onclick="showAfterVideo()">
+      After Drug
+    </button>
+  </div>
+
+  <!-- VIDEO AREA -->
+  <div class="video-box">
+    <video id="experimentVideo" controls></video>
+  </div>
+
+  <!-- OBSERVATION TABLE -->
+  <div class="info-box">
+    <h2>Observation Table</h2>
+
+    <table>
+      <tr>
+        <th>Condition</th>
+        <th>Cataleptic Time (seconds)</th>
+      </tr>
+      <tr>
+        <td>Before Drug</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>After Drug</td>
+        <td id="afterTime">---</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      ⬅ Previous
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next: Conclusion ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+const video = document.getElementById("experimentVideo");
+const afterTimeCell = document.getElementById("afterTime");
+
+// Video sources
+const videoData = {
+  inject: "{% static 'experiments/anticataleptic-activity/videos/inject.mp4' %}",
+  after: "{% static 'experiments/anticataleptic-activity/videos/after.mp4' %}"
+};
+
+function showInjectVideo() {
+  video.src = videoData.inject;
+  video.style.display = "block";
+  video.load();
+  video.play();
+
+  // Reset observation
+  afterTimeCell.innerText = "---";
+}
+
+function showAfterVideo() {
+  video.src = videoData.after;
+  video.style.display = "block";
+  video.load();
+  video.play();
+
+  // When video metadata is loaded, get actual duration
+  video.onloadedmetadata = () => {
+    const durationSeconds = Math.round(video.duration);
+    afterTimeCell.innerText = durationSeconds + " sec";
+  };
+}
+
+// Theme toggle
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+
+</body>
+</html>

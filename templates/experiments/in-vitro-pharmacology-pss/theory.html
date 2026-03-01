@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>In-Vitro Pharmacology – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 100px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* ================= FULLSCREEN BUTTON ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
+    }
+
+    :fullscreen .top-actions {
+      top: 14px;
+      left: 18px;
+    }
+
+    /* ================= WIDER CONTENT CARD ================= */
+    .info-box {
+      max-width: 1200px;
+      width: 95%;
+      margin: 0 auto;
+      padding: 24px 28px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h3 class="title">
+    Introduction to In-Vitro Pharmacology and Physiological Salt Solutions
+  </h3>
+
+  <!-- FULL SCREEN BUTTON -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="info-box slide active">
+      <h2>Introduction to In-Vitro Pharmacology</h2>
+      <p>
+        In-vitro pharmacology is the study of how drugs or chemical compounds
+        interact with biological systems outside a living organism.
+        The term <strong>“in-vitro”</strong> means “in glass” and refers to
+        experiments performed in controlled laboratory environments.
+      </p>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="info-box slide">
+      <h2>Scope of In-Vitro Studies</h2>
+      <p>
+        In-vitro pharmacology focuses on studying drug effects on isolated
+        cells, tissues, enzymes, receptors, or biochemical pathways to
+        understand mechanisms of action, potency, efficacy, and toxicity
+        at cellular or molecular levels.
+      </p>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="info-box slide">
+      <h2>Common In-Vitro Experimental Setups</h2>
+      <ul>
+        <li>Organ bath systems for isolated tissues</li>
+        <li>Multi-well plates for cell-based assays</li>
+        <li>Receptor and enzyme assay platforms</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="info-box slide">
+      <h2>Methods and Assays</h2>
+      <ul>
+        <li>Cell-based assays for proliferation and toxicity</li>
+        <li>Receptor binding assays</li>
+        <li>Enzyme inhibition assays</li>
+        <li>Isolated tissue contraction studies</li>
+        <li>High-throughput screening (HTS)</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="info-box slide">
+      <h2>Dose–Response Relationship</h2>
+      <p>
+        A dose–response curve plots drug concentration against biological
+        response to determine:
+      </p>
+      <ul>
+        <li><strong>EC<sub>50</sub></strong> – concentration producing 50% response</li>
+        <li><strong>Emax</strong> – maximum effect</li>
+        <li>Comparison of agonists and antagonists</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="info-box slide">
+      <h2>Role in Drug Discovery</h2>
+      <ul>
+        <li>Hit identification and screening</li>
+        <li>Lead optimization</li>
+        <li>Safety and toxicity assessment</li>
+        <li>Preclinical evaluation before animal studies</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="info-box slide">
+      <h2>Physiological Salt Solutions (PSS)</h2>
+      <p>
+        Physiological Salt Solutions are artificial isotonic solutions designed
+        to mimic extracellular fluid and maintain viability of isolated tissues
+        during in-vitro experiments.
+      </p>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="info-box slide">
+      <h2>Functions of PSS</h2>
+      <ul>
+        <li>Provide essential ions</li>
+        <li>Maintain osmotic balance</li>
+        <li>Supply energy (glucose)</li>
+        <li>Maintain physiological pH</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="info-box slide">
+      <h2>Types of Physiological Salt Solutions</h2>
+      <ul>
+        <li>Frog Ringer – amphibian tissues</li>
+        <li>Tyrode solution – mammalian smooth muscle</li>
+        <li>Krebs-Henseleit solution – innervated tissues</li>
+        <li>Ringer-Locke – isolated heart</li>
+        <li>De Jalon – rat uterus</li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="info-box slide">
+      <h2>Preparation and Precautions</h2>
+      <ul>
+        <li>Prepare fresh solutions daily</li>
+        <li>Add calcium salts last</li>
+        <li>Maintain pH around 7.4</li>
+        <li>Aerate with oxygen or carbogen</li>
+        <li>Maintain appropriate temperature</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 10
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/intro/";
+  }
+}
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

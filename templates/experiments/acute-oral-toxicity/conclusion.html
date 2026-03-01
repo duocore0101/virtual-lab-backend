@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Acute Oral Toxicity (OECD 423) – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      The acute oral toxicity of the given test substance was evaluated 
+      in rats according to <strong>OECD Test Guideline 423</strong>.
+    </p>
+    <p>
+      Mortality and clinical signs were observed for <strong>14 days</strong> 
+      following a single oral administration of the test substance.
+    </p>
+    <p>
+      Based on the mortality data and LD₅₀ calculation 
+      (by <strong>Miller & Tainter</strong> or <strong>Karber’s method</strong>), 
+      the LD₅₀ was determined to be 
+      <strong>______ mg/kg (oral)</strong>.
+    </p>
+  </div>
+
+  <!-- 🧾 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The present study demonstrates the acute toxicity profile of the 
+      test substance following single-dose oral administration in rats.
+    </p>
+    <p>
+      According to the Globally Harmonized System (GHS) classification, 
+      the substance falls under <strong>Category ______</strong>.
+    </p>
+    <p>
+      This study is essential for hazard identification, regulatory classification, 
+      dose selection for further studies and assessment of the safety margin 
+      of the test compound.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()">
+      Download Practical PDF 📄
+    </button>
+
+    <!-- ✅ FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "OECD_423_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {}
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

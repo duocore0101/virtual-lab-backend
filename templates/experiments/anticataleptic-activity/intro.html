@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ experiment.name }} | Virtual Lab</title>
+
+    <link rel="stylesheet"
+      href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+</head>
+<body>
+
+<div class="experiment-container">
+
+    <!-- HEADER -->
+    <div class="experiment-header">
+        <h1>{{ experiment.name }}</h1>
+    </div>
+
+    <!-- INTRODUCTION -->
+    <section class="experiment-section">
+        <h2>Introduction</h2>
+
+        <p>
+            Catalepsy is a state of immobility characterized by
+            maintenance of imposed posture and muscular rigidity.
+            In experimental pharmacology, catalepsy is commonly used
+            as a behavioral model to evaluate the motor side effects
+            produced by antipsychotic drugs.
+        </p>
+
+        <p>
+            The anti-catatonic (anti-cataleptic) activity test is used
+            to assess the ability of drugs to reduce or reverse
+            drug-induced catalepsy in laboratory animals such as
+            rats or mice.
+        </p>
+
+        <p>
+            This virtual experiment introduces the concept of
+            haloperidol-induced catalepsy and provides an overview
+            of how anti-catatonic activity is evaluated using
+            standard experimental methods.
+        </p>
+    </section>
+
+    <!-- LEARNING OBJECTIVES -->
+    <section class="experiment-section">
+        <h2>Learning Objectives</h2>
+        <ul>
+            <li>Understand the concept of catalepsy in experimental pharmacology</li>
+            <li>Learn the purpose of anti-catatonic activity studies</li>
+            <li>Become familiar with haloperidol-induced catalepsy models</li>
+            <li>Prepare for experimental evaluation using bar and block tests</li>
+        </ul>
+    </section>
+
+    <!-- NAVIGATION BUTTONS -->
+    <div class="experiment-navigation">
+        <a href="/student/dashboard/" class="btn btn-secondary">
+            ← Back to Dashboard
+        </a>
+
+        <a href="/experiment/anticataleptic-activity/theory/"
+           class="btn btn-primary">
+            Start Practical →
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

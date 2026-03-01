@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ experiment.name }} – Exam</title>
+
+  <link rel="stylesheet" href="{% static 'css/student.css' %}">
+  <style>
+    .exam-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 30px;
+      background: rgba(0,0,0,0.85);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255,0,0,0.4);
+    }
+
+    .question-card {
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #111, #050505);
+      border: 1px solid rgba(255,0,0,0.2);
+    }
+
+    .question-card h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #ff4d4d;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+      color: #ddd;
+    }
+
+    .submit-btn {
+      margin-top: 30px;
+      padding: 14px 40px;
+      border-radius: 999px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff2e2e, #ff5f5f);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255,0,0,0.8);
+    }
+
+    .result-box {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(0,255,156,0.12);
+      border: 1px solid rgba(0,255,156,0.4);
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="exam-container">
+  <h1>{{ experiment.name }} – Examination</h1>
+  <p>Answer all questions. This exam is optional.</p>
+
+  <!-- ================= QUESTIONS ================= -->
+  <form id="examForm">
+
+    {% for q in mcqs %}
+    <div class="question-card">
+      <h3>Q{{ forloop.counter }}. {{ q.question }}</h3>
+
+      <div class="options">
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="A"> {{ q.option_a }}
+        </label>
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="B"> {{ q.option_b }}
+        </label>
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="C"> {{ q.option_c }}
+        </label>
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="D"> {{ q.option_d }}
+        </label>
+      </div>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="submit-btn">
+      Submit Exam
+    </button>
+  </form>
+
+  <!-- ================= RESULT ================= -->
+  <div id="resultBox" class="result-box">
+    <h2>Exam Result</h2>
+    <p id="resultText"></p>
+    <button onclick="location.href='/student/dashboard/'" class="submit-btn">
+      Back to Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- ================= SAFE DATA FOR JS ================= -->
+{{ mcqs|json_script:"mcq-data" }}
+
+<script>
+  // ✅ SAFE: Read Django data via json_script
+  const MCQS = JSON.parse(
+    document.getElementById("mcq-data").textContent
+  );
+
+  const form = document.getElementById("examForm");
+  const resultBox = document.getElementById("resultBox");
+  const resultText = document.getElementById("resultText");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let score = 0;
+    let total = MCQS.length;
+
+    MCQS.forEach(q => {
+      const selected = document.querySelector(
+        `input[name="q${q.id}"]:checked`
+      );
+      if (selected && selected.value === q.correct_option) {
+        score++;
+      }
+    });
+
+    resultText.innerHTML = `
+      You scored <strong>${score}</strong> out of <strong>${total}</strong>
+    `;
+
+    form.style.display = "none";
+    resultBox.style.display = "block";
+  });
+</script>
+
+</body>
+</html>

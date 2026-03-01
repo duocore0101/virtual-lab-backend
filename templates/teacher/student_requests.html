@@ -1,0 +1,123 @@
+{% extends "teacher/base.html" %}
+{% load static %}
+
+{% block title %}Student Requests | Teacher{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header" style="margin-bottom:30px;">
+    <div>
+      <h1>Student Approval Requests</h1>
+      <p style="color:var(--text-muted);">
+        Review and approve students assigned to you
+      </p>
+    </div>
+
+    <div>
+      <span style="
+          background: var(--accent-red);
+          padding:8px 14px;
+          border-radius:20px;
+          font-size:13px;
+          box-shadow: var(--shadow-red);
+      ">
+        Pending: {{ pending_approvals|length }}
+      </span>
+    </div>
+  </section>
+
+
+  <!-- ================= REQUEST TABLE PANEL ================= -->
+  <section class="panel">
+
+    <div class="panel-header">
+      <h2>Pending Requests</h2>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>College</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {% for approval in pending_approvals %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              <strong>{{ approval.student.first_name }}</strong>
+            </td>
+
+            <td>{{ approval.student.email }}</td>
+
+            <td>
+              {% if approval.student.college %}
+                {{ approval.student.college.name }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+
+            <td>
+              <span style="
+                  background: rgba(255,165,0,0.2);
+                  color: orange;
+                  padding:6px 12px;
+                  border-radius:20px;
+                  font-size:12px;
+                  font-weight:600;
+              ">
+                Pending
+              </span>
+            </td>
+
+            <td style="display:flex; gap:10px; flex-wrap:wrap;">
+
+              <!-- APPROVE BUTTON -->
+              <a href="/teacher/student-requests/approve/{{ approval.student.id }}/"
+                 class="activate-btn"
+                 onclick="return confirm('Approve this student?')">
+                 ✅ Approve
+              </a>
+
+              <!-- REJECT BUTTON -->
+              <a href="/teacher/student-requests/reject/{{ approval.student.id }}/"
+                 class="deactivate-btn"
+                 onclick="return confirm('Reject this student?')">
+                 ❌ Reject
+              </a>
+
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="6" style="text-align:center; padding:30px; color:var(--text-muted);">
+              🎉 No pending student requests
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+
+  </section>
+
+</div>
+
+{% endblock %}

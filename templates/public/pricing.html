@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing Plans</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    background:#060b16;
+    color:white;
+    padding:60px 8%;
+}
+
+/* ===== HEADER ===== */
+.pricing-header small{
+    color:#f4b400;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+.pricing-header h1{
+    font-size:48px;
+    margin-top:10px;
+    font-weight:700;
+}
+
+.pricing-header h1 span{
+    color:#f4b400;
+}
+
+.pricing-header p{
+    margin-top:15px;
+    color:#9aa4b2;
+    max-width:500px;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* Toggle */
+.toggle{
+    margin-top:30px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    font-size:13px;
+    color:#9aa4b2;
+}
+
+.switch{
+    width:50px;
+    height:25px;
+    background:#111827;
+    border-radius:30px;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch::before{
+    content:'';
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:#f4b400;
+    border-radius:50%;
+    top:3.5px;
+    left:4px;
+}
+
+/* ===== CARDS ===== */
+.pricing-container{
+    display:flex;
+    justify-content:space-between;
+    margin-top:50px;
+    gap:30px;
+}
+
+.card{
+    background:#0c1222;
+    padding:40px 30px;
+    border-radius:20px;
+    flex:1;
+    border:1px solid #1f2937;
+    transition:0.3s;
+    position:relative;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 40px rgba(244,180,0,0.2);
+}
+
+.card h3{
+    font-size:14px;
+    letter-spacing:1px;
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+.price{
+    font-size:48px;
+    font-weight:700;
+    margin:20px 0;
+}
+
+.price span{
+    font-size:14px;
+    color:#9aa4b2;
+    font-weight:400;
+}
+
+.features{
+    margin:25px 0;
+}
+
+.features li{
+    list-style:none;
+    margin-bottom:12px;
+    font-size:14px;
+    color:#9aa4b2;
+}
+
+.features li::before{
+    content:"✔";
+    color:#00ff95;
+    margin-right:8px;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #1f2937;
+    background:transparent;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#f4b400;
+    color:black;
+    border:none;
+}
+
+/* ===== PROFESSIONAL CARD ===== */
+.popular{
+    border:2px solid #f4b400;
+    box-shadow:0 0 40px rgba(244,180,0,0.4);
+}
+
+.popular-badge{
+    position:absolute;
+    top:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#f4b400;
+    color:black;
+    padding:5px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.popular .btn{
+    background:#f4b400;
+    color:black;
+    border:none;
+}
+
+.popular .btn:hover{
+    background:#ffd84d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="pricing-header">
+    <small>SUBSCRIPTION PLANS</small>
+    <h1>Simple, Transparent<br>
+    <span>Pricing For Every College</span></h1>
+    <p>Choose the plan that fits your institution. No hidden fees, no surprises — just powerful pharmacology simulation at a price that makes sense.</p>
+
+    <div class="toggle">
+        <span>MONTHLY</span>
+        <div class="switch"></div>
+        <span>YEARLY</span>
+    </div>
+</div>
+
+<div class="pricing-container">
+
+    <!-- Starter -->
+    <div class="card">
+        <h3>STARTER</h3>
+        <div class="price">₹1,999 <span>/month billed monthly</span></div>
+        <ul class="features">
+            <li>Upto 50 Students</li>
+            <li>1 Teacher Account</li>
+            <li>5 Core Experiments</li>
+            <li>Practical Journal PDF</li>
+            <li>Basic Performance Reports</li>
+        </ul>
+        <button class="btn">GET STARTED FREE</button>
+    </div>
+
+    <!-- Professional -->
+    <div class="card popular">
+        <div class="popular-badge">MOST POPULAR</div>
+        <h3>PROFESSIONAL</h3>
+        <div class="price">₹4,999 <span>/month billed monthly</span></div>
+        <ul class="features">
+            <li>Upto 300 Students</li>
+            <li>5 Teacher Accounts</li>
+            <li>All 7 Experiments + Viva</li>
+            <li>Live Analytics Dashboard</li>
+            <li>Auto Certificate + QR</li>
+            <li>Student Dashboard</li>
+        </ul>
+        <button class="btn">START 14-DAYS FREE TRIAL</button>
+    </div>
+
+    <!-- Campus -->
+    <div class="card">
+        <h3>CAMPUS</h3>
+        <div class="price">₹9,999 <span>/month billed monthly</span></div>
+        <ul class="features">
+            <li>Unlimited Students</li>
+            <li>Unlimited Teacher Accounts</li>
+            <li>AI Evaluation & Reports</li>
+            <li>Advanced Rank Intelligence</li>
+            <li>Full Viva + Exam Auto-Grade</li>
+            <li>Priority Support</li>
+        </ul>
+        <button class="btn">CONTACT SALES</button>
+    </div>
+
+</div>
+
+</body>
+</html>

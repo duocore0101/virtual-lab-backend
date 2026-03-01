@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mean Contractile Response – Graph</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f0f;
+      color: white;
+      transition: 0.3s ease;
+    }
+
+    body.light-theme {
+      background: #f4f6f9;
+      color: #111;
+    }
+
+    .graph-card {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 35px;
+      border-radius: 16px;
+      position: relative;
+
+      /* GREEN GRAPH PAPER */
+      background:
+        linear-gradient(#b9d8b9 1px, transparent 1px),
+        linear-gradient(90deg, #b9d8b9 1px, transparent 1px),
+        linear-gradient(#8fbf8f 2px, transparent 2px),
+        linear-gradient(90deg, #8fbf8f 2px, transparent 2px),
+        #dff3df;
+
+      background-size:
+        20px 20px,
+        20px 20px,
+        100px 100px,
+        100px 100px;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .graph-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0a3d0a;
+    }
+
+    .graph-subtitle {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #145214;
+      font-weight: 500;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    .fullscreen-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+
+    .next-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 25px;
+    }
+
+    .next-btn button {
+      padding: 10px 30px;
+      font-weight: 600;
+      border-radius: 25px;
+      border: 2px solid #0a3d0a;
+      background: transparent;
+      color: #0a3d0a;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .next-btn button:hover {
+      background: #0a3d0a;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="theme-toggle">
+  <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+
+<div class="graph-card">
+
+  <div class="graph-title">
+    Mean Contractile Response for Standard and Test Doses
+  </div>
+
+  <div class="graph-subtitle">
+    Bioassay of Acetylcholine (ACh) using Isolated Rat Ileum
+  </div>
+
+  <canvas id="achChart" height="120"></canvas>
+
+  <div class="next-btn">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+
+/* =========================
+   MEAN VALUES FROM PRACTICAL
+========================== */
+
+const labels = [
+  "S1 (0.1 ml)",
+  "S2 (0.4 ml)",
+  "T1 (0.2 ml)",
+  "T2 (0.8 ml)"
+];
+
+const meanResponses = [
+  10.5,
+  14.75,
+  13,
+  15.5
+];
+
+const ctx = document.getElementById("achChart").getContext("2d");
+
+new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        label: "Mean Response (mm)",
+        data: meanResponses,
+        borderColor: "#1f77b4",
+        backgroundColor: "#1f77b4",
+        borderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        fill: false,
+        tension: 0.2
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Dose",
+          color: "#003d1f",
+          font: { weight: "bold" }
+        },
+        ticks: {
+          color: "#003d1f"
+        },
+        grid: { display: false }
+      },
+      y: {
+        min: 10,
+        max: 16,
+        title: {
+          display: true,
+          text: "Mean Response (mm)",
+          color: "#003d1f",
+          font: { weight: "bold" }
+        },
+        ticks: {
+          color: "#003d1f"
+        },
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,806 @@
+{% extends "teacher/base.html" %}
+{% block title %}Paper Builder{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<style>
+
+/* ============================= */
+/* PAGE WRAPPER */
+/* ============================= */
+.builder-wrapper {
+    padding: 40px;
+    background: linear-gradient(135deg, #f4f6fb, #eef2ff);
+    min-height: 100vh;
+}
+
+/* ============================= */
+/* SECTION CARD (GLASS STYLE) */
+/* ============================= */
+.section-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 35px;
+    border: 1px solid rgba(0,0,0,0.05);
+
+    /* 🔥 Strong Multi-Layer Shadow */
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08),
+        0 25px 60px rgba(79, 70, 229, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+
+    transition: all 0.35s ease;
+}
+
+.section-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.12),
+        0 35px 80px rgba(79, 70, 229, 0.12),
+        0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* ============================= */
+/* HEADER ROW */
+/* ============================= */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-card h3,
+.section-card h4 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+/* ============================= */
+/* TOTAL BADGES */
+/* ============================= */
+.total-questions {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+.btn-custom {
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.btn-secondary {
+    background: #374151;
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-custom:hover {
+    transform: translateY(-3px);
+    opacity: 0.95;
+}
+
+/* ============================= */
+/* BUILDER BOX */
+/* ============================= */
+.builder-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9fafc;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+}
+
+/* ============================= */
+/* INPUTS */
+/* ============================= */
+textarea,
+input,
+select {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    margin-top: 12px;
+    font-size: 14px;
+    transition: 0.25s ease;
+    background: #fff;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ============================= */
+/* OPTION GRID */
+/* ============================= */
+.option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ============================= */
+/* QUESTION CARD */
+/* ============================= */
+.question-card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 16px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #e5e7eb;
+
+    /* 🔥 Elevated Card Shadow */
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08),
+        0 15px 40px rgba(99, 102, 241, 0.08);
+
+    transition: all 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.12),
+        0 25px 60px rgba(99, 102, 241, 0.15);
+}
+/* ============================= */
+/* BADGES */
+/* ============================= */
+.badge {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+/* ============================= */
+/* BANK LIST SCROLL */
+/* ============================= */
+.bank-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+}
+
+.bank-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.bank-list::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 10px;
+}
+
+/* ============================= */
+/* SPOT IMAGE */
+/* ============================= */
+.spot-image,
+.question-card img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+}
+
+/* ============================= */
+/* VIDEO STYLE */
+/* ============================= */
+video {
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+@media (max-width: 768px) {
+    .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .question-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .option-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ================================= */
+/* DARK MODE – SECTION CARD FIX */
+/* ================================= */
+body.dark-mode .section-card {
+    background: #1e1e2f;
+    border: 1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.6),
+        0 25px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255,255,255,0.03);
+}
+
+/* Hover in Dark Mode */
+body.dark-mode .section-card:hover {
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.7),
+        0 35px 80px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* ================================= */
+/* DARK MODE – QUESTION CARD FIX */
+/* ================================= */
+body.dark-mode .question-card {
+    background: #26263a;
+    border: 1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .question-card:hover {
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.65),
+        0 25px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* ================================= */
+/* DARK MODE – BUILDER BOX */
+/* ================================= */
+body.dark-mode .builder-box {
+    background: #2c2c42;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ================================= */
+/* DARK MODE – INPUTS */
+/* ================================= */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: #1c1c2b;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #f1f1f1;
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+}
+
+</style>
+
+<div class="builder-wrapper">
+
+    <!-- ========================= -->
+    <!-- EXAM INFO -->
+    <!-- ========================= -->
+    <div class="section-card">
+        <div class="header-row">
+            <div>
+                <h3>{{ exam.title }}</h3>
+                <p><strong>Year:</strong> {{ exam.get_year_display }}</p>
+                <p><strong>Duration:</strong> {{ exam.duration_minutes }} Minutes</p>
+            </div>
+            <div class="total-questions">
+                Total:
+                    {% if exam.year == "dpharm_2" %}
+                    {{ exam.mcqs.count|add:exam.short_answers.count|add:exam.spotting_questions.count }}
+                    {% else %}
+                    {{ exam.mcqs.count|add:exam.short_answers.count }}
+                    {% endif %}
+                    Questions
+            </div>
+            <div class="total-questions" id="liveTotalMarks" style="margin-top:8px; background:#28a745;">
+                Total Marks: 0
+            </div>
+        </div>
+    </div>
+{% if exam.year == "dpharm_2" %}
+<!-- ========================= -->
+<!-- QUESTION 1 – SPOTTING -->
+<!-- ========================= -->
+<div class="section-card">
+    <h4>Question 1 – Spotting</h4>
+
+    <div class="builder-box">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_spotting">
+
+            <input type="file" name="image" required>
+            <input type="number" name="marks" value="1" required>
+
+            <button type="submit"
+                    class="btn-custom btn-success"
+                    style="margin-top:10px;">
+                Add Spotting
+            </button>
+        </form>
+    </div>
+
+    <!-- DISPLAY SPOTTING QUESTIONS -->
+    <div style="margin-top:20px;">
+        <h5>Added Spotting Questions</h5>
+
+        {% for spot in spotting_questions %}
+            <div class="question-card" data-marks="{{ spot.marks }}">
+
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <img src="{{ spot.image.url }}"
+                         width="70"
+                         height="70"
+                         style="object-fit:cover; border-radius:8px;">
+
+                    <span class="badge">Spotting</span>
+                </div>
+
+                <div style="display:flex; gap:10px; align-items:center;">
+
+                    <!-- UPDATE MARKS -->
+                    <form method="POST" style="display:flex; gap:5px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="update_spotting_marks">
+                        <input type="hidden" name="spot_id" value="{{ spot.id }}">
+                        <input type="number"
+                               name="marks"
+                               value="{{ spot.marks }}"
+                               style="width:60px;">
+                        <button type="submit"
+                                class="btn-custom btn-success">
+                            ✔
+                        </button>
+                    </form>
+
+                    <!-- DELETE -->
+                    <a href="{% url 'delete-exam-spotting' spot.id %}"
+                       class="btn-custom btn-danger">
+                        Delete
+                    </a>
+
+                </div>
+            </div>
+        {% empty %}
+            <p>No spotting images added yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+    <!-- ========================= -->
+    <!-- BUILDER SECTION -->
+    <!-- ========================= -->
+    <div class="section-card">
+
+        <h4>Question 2 – Add Questions</h4>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+            <button class="btn-custom btn-primary" onclick="toggleSection('manual-mcq')">+ Manual MCQ</button>
+            <button class="btn-custom btn-primary" onclick="toggleSection('manual-short')">+ Manual Short</button>
+            <button class="btn-custom btn-secondary" onclick="toggleSection('bank-mcq')">+ MCQ From Bank</button>
+            <button class="btn-custom btn-secondary" onclick="toggleSection('bank-short')">+ Short From Bank</button>
+        </div>
+
+
+        <!-- MANUAL MCQ -->
+        <div id="manual-mcq" class="builder-box" style="display:none;">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_manual_mcq">
+
+                <textarea name="question_text" placeholder="Enter Question" required></textarea>
+
+                <div class="option-grid">
+                    <input type="text" name="option_a" placeholder="Option A" required>
+                    <input type="text" name="option_b" placeholder="Option B" required>
+                    <input type="text" name="option_c" placeholder="Option C" required>
+                    <input type="text" name="option_d" placeholder="Option D" required>
+                </div>
+
+                <select name="correct_option" required>
+                    <option value="">Correct Option</option>
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                </select>
+
+                <input type="number" name="marks" value="1" required>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">Save MCQ</button>
+            </form>
+        </div>
+
+        <!-- MANUAL SHORT -->
+        <div id="manual-short" class="builder-box" style="display:none;">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_manual_short">
+
+                <textarea name="question_text" placeholder="Enter Short Question" required></textarea>
+                <input type="number" name="marks" value="5" required>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">Save Short</button>
+            </form>
+        </div>
+
+        <!-- BANK MCQ -->
+        <div id="bank-mcq" class="builder-box" style="display:none;">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_bank_mcq">
+
+                <input type="text" id="mcqSearch" placeholder="Search MCQs..." onkeyup="filterMCQ()">
+
+                <div id="mcqList" class="bank-list">
+                    {% for q in mcq_bank %}
+                        <div class="question-card">
+                            <label style="display:flex; gap:10px;">
+                                <input type="checkbox" name="selected_mcqs" value="{{ q.id }}">
+                                {{ q.question_text|truncatechars:100 }}
+                            </label>
+                        </div>
+                    {% empty %}
+                        <p>No MCQs available.</p>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
+                    Add Selected
+                </button>
+            </form>
+        </div>
+
+        <!-- BANK SHORT -->
+        <div id="bank-short" class="builder-box" style="display:none;">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_bank_short">
+
+                <input type="text" id="shortSearch" placeholder="Search Short Questions..." onkeyup="filterShort()">
+
+                <div id="shortList" class="bank-list">
+                    {% for q in short_bank %}
+                        <div class="question-card">
+                            <label style="display:flex; gap:10px;">
+                                <input type="checkbox" name="selected_shorts" value="{{ q.id }}">
+                                {{ q.question_text|truncatechars:100 }}
+                            </label>
+                        </div>
+                    {% empty %}
+                        <p>No Short Questions available.</p>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
+                    Add Selected
+                </button>
+            </form>
+        </div>
+
+        <!-- DISPLAY QUESTIONS -->
+        <div style="margin-top:30px;">
+            <h4>Added Questions</h4>
+
+            {% for mcq in exam.mcqs.all %}
+    <div class="question-card" data-marks="{{ mcq.marks }}">
+        
+        <div style="flex:1; min-width:250px;">
+            {{ mcq.question_text }}
+            <span class="badge">MCQ</span>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+            <form method="POST" style="display:flex; gap:5px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_mcq_marks">
+                <input type="hidden" name="mcq_id" value="{{ mcq.id }}">
+                <input type="number" name="marks"
+                       value="{{ mcq.marks }}"
+                       style="width:70px;">
+                <button type="submit" class="btn-custom btn-success">✔</button>
+            </form>
+
+            <a href="{% url 'delete-exam-mcq' mcq.id %}"
+               class="btn-custom btn-danger">
+                Delete
+            </a>
+        </div>
+
+    </div>
+{% endfor %}
+
+            {% for short in exam.short_answers.all %}
+                <div class="question-card" data-marks="{{ short.marks }}">
+                    <div style="width:60%;">
+                        {{ short.question_text }}
+                        <span class="badge">Short</span>
+                    </div>
+
+                    <div style="display:flex; gap:10px;">
+                        <form method="POST" style="display:flex; gap:5px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="update_short_marks">
+                            <input type="hidden" name="short_id" value="{{ short.id }}">
+                            <input type="number" name="marks" value="{{ short.marks }}" style="width:60px;">
+                            <button type="submit" class="btn-custom btn-success">✔</button>
+                        </form>
+
+                        <a href="{% url 'delete-exam-short' short.id %}" class="btn-custom btn-danger">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<!-- ========================= -->
+<!-- QUESTION 3 & 4 – PRACTICALS -->
+<!-- ========================= -->
+<div class="section-card">
+
+    <h4>Question 3 – Major Experiment</h4>
+
+    {% if not major_practical %}
+        <div class="builder-box">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_practical">
+                <input type="hidden" name="practical_type" value="major">
+
+                <select name="experiment_id" required>
+                    <option value="">Select Experiment</option>
+                    {% for exp in experiments_list %}
+                        <option value="{{ exp.id }}">{{ exp.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="number" name="marks" value="20" required>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
+                    Add Major Experiment
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% for p in practicals %}
+        {% if p.practical_type == "major" %}
+            <div class="question-card" data-marks="{{ p.marks }}">
+                <div>
+                    <strong>{{ p.title }}</strong>
+                    <span class="badge">Major</span>
+                    <p style="font-size:13px; opacity:0.7;">Aim: {{ p.aim }}</p>
+                </div>
+                {% if p.experiment.slug %}
+                    <div style="margin-top:10px;">
+                        <video width="100%" controls style="max-width:400px; border-radius:10px;">
+                            <source src="{% static 'experiment_videos/' %}{{ p.experiment.slug }}.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                {% endif %}
+                <div style="display:flex; gap:10px;">
+                    <form method="POST" style="display:flex; gap:5px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="update_practical_marks">
+                        <input type="hidden" name="practical_id" value="{{ p.id }}">
+                        <input type="number" name="marks" value="{{ p.marks }}" style="width:60px;">
+                        <button type="submit" class="btn-custom btn-success">✔</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+
+<div class="section-card">
+
+    <h4>Question 4 – Minor Experiment</h4>
+
+    {% if not minor_practical %}
+        <div class="builder-box">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_practical">
+                <input type="hidden" name="practical_type" value="minor">
+
+                <select name="experiment_id" required>
+                    <option value="">Select Experiment</option>
+                    {% for exp in experiments_list %}
+                        <option value="{{ exp.id }}">{{ exp.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="number" name="marks" value="10" required>
+
+                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
+                    Add Minor Experiment
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% for p in practicals %}
+        {% if p.practical_type == "minor" %}
+            <div class="question-card" data-marks="{{ p.marks }}">
+                <div>
+                    <strong>{{ p.title }}</strong>
+                    <span class="badge">Minor</span>
+                    <p style="font-size:13px; opacity:0.7;">Aim: {{ p.aim }}</p>
+                </div>
+                {% if p.experiment.slug %}
+                    <div style="margin-top:10px;">
+                        <video width="100%" controls style="max-width:400px; border-radius:10px;">
+                            <source src="{% static 'experiment_videos/' %}{{ p.experiment.slug }}.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                {% endif %}
+                <div style="display:flex; gap:10px;">
+                    <form method="POST" style="display:flex; gap:5px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="update_practical_marks">
+                        <input type="hidden" name="practical_id" value="{{ p.id }}">
+                        <input type="number" name="marks" value="{{ p.marks }}" style="width:60px;">
+                        <button type="submit" class="btn-custom btn-success">✔</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+<!-- ========================= -->
+<!-- QUESTION 5 – VIVA -->
+<!-- ========================= -->
+<div class="section-card question-card" data-marks="{{ exam.viva_marks|default:0 }}">
+
+    <h4>Question 5 – Viva</h4>
+
+    <div class="builder-box">
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="update_viva_marks">
+
+            <label><strong>Maximum Viva Marks</strong></label>
+
+            <input type="number"
+                   name="viva_marks"
+                   value="{{ exam.viva_marks }}"
+                   min="0"
+                   required>
+
+            <button type="submit"
+                    class="btn-custom btn-success"
+                    style="margin-top:10px;">
+                Save Viva Marks
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSection(id) {
+    const sections = ["manual-mcq","manual-short","bank-mcq","bank-short"];
+    sections.forEach(sec => {
+        const el = document.getElementById(sec);
+        if (el) el.style.display = "none";
+    });
+    document.getElementById(id).style.display = "block";
+}
+
+function filterMCQ() {
+    let input = document.getElementById("mcqSearch").value.toLowerCase();
+    let items = document.querySelectorAll("#mcqList .question-card");
+
+    items.forEach(item => {
+        item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+    });
+}
+
+function filterShort() {
+    let input = document.getElementById("shortSearch").value.toLowerCase();
+    let items = document.querySelectorAll("#shortList .question-card");
+
+    items.forEach(item => {
+        item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+    });
+}
+
+// ===============================
+// LIVE TOTAL MARKS CALCULATION
+// ===============================
+function calculateLiveTotal() {
+    let total = 0;
+
+    document.querySelectorAll(".question-card").forEach(card => {
+        let mark = parseInt(card.getAttribute("data-marks")) || 0;
+        total += mark;
+    });
+
+    const badge = document.getElementById("liveTotalMarks");
+    if (badge) {
+        badge.innerText = "Total Marks: " + total;
+    }
+}
+
+// Update total when marks input changes
+document.addEventListener("input", function(e) {
+    if (e.target.name === "marks" || e.target.name === "viva_marks") {
+        let card = e.target.closest(".question-card");
+        if (card) {
+            card.setAttribute("data-marks", e.target.value);
+            calculateLiveTotal();
+        }
+    }
+});
+
+// Calculate on page load
+document.addEventListener("DOMContentLoaded", function() {
+    calculateLiveTotal();
+});
+</script>
+
+
+{% endblock %}

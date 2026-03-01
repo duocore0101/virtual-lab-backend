@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pA₂ Determination – Requirements</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐀 Animal -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li>Albino rat (150–250 g)</li>
+      <li>Either sex</li>
+      <li>Overnight fasted (water ad libitum)</li>
+    </ul>
+  </div>
+
+  <!-- 💊 Drugs -->
+  <div class="info-box">
+    <h2>Drugs and Chemicals</h2>
+    <ul>
+      <li><strong>Noradrenaline (NA)</strong> stock (10⁻³ M or appropriate dilution) – Agonist</li>
+      <li><strong>Prazosin</strong> stock (10⁻⁴ M or 1 mg/mL) – Selective α₁ antagonist</li>
+      <li><strong>Physiological Salt Solution (PSS)</strong> – Krebs solution (preferred) or Tyrode’s solution</li>
+      <li>pH maintained at 7.4</li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>Apparatus and Instruments</h2>
+    <ul>
+      <li>Student organ bath (20–25 mL) or thermostatically controlled isolated tissue bath</li>
+      <li>Isometric force transducer with digital recorder</li>
+      <li>OR Frontal writing lever with kymograph (magnification 7–10×)</li>
+      <li>Aeration with carbogen (95% O₂ + 5% CO₂)</li>
+      <li>Temperature maintained at 37 ± 0.5°C</li>
+      <li>Resting tension: 0.5–1 g</li>
+    </ul>
+  </div>
+
+  
+
+  <!-- 🔬 Accessories -->
+  <div class="info-box">
+    <h2>Accessories</h2>
+    <ul>
+      <li>Dissecting instruments</li>
+      <li>Petri dish</li>
+      <li>Thread for mounting tissue</li>
+      <li>Aerator setup</li>
+      <li>Stopwatch</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

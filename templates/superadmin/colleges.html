@@ -1,0 +1,228 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Colleges | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header"
+           style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              background:#ffffff;
+              padding:20px 25px;
+              border-radius:12px;
+              box-shadow:0 8px 20px rgba(0,0,0,0.05);
+              margin-bottom:25px;
+           ">
+
+    <!-- LEFT SIDE -->
+    <div>
+      <h1 style="margin:0; font-size:24px; font-weight:600;">
+        Colleges
+      </h1>
+      <p style="margin:5px 0 0; color:#777; font-size:14px;">
+        Manage all registered colleges across the platform
+      </p>
+    </div>
+
+    <!-- RIGHT SIDE SEARCH -->
+    <div style="position:relative;">
+      <input type="text"
+             id="liveSearch"
+             placeholder="🔍 Search college..."
+             style="
+                padding:10px 40px 10px 15px;
+                border:1px solid #ddd;
+                border-radius:30px;
+                width:260px;
+                font-size:14px;
+                outline:none;
+                transition:0.3s;
+                box-shadow:0 3px 10px rgba(0,0,0,0.05);
+             "
+             onfocus="this.style.borderColor='#007bff'"
+             onblur="this.style.borderColor='#ddd'">
+    </div>
+
+  </section>
+
+  <!-- ================= COLLEGES TABLE ================= -->
+  <section class="panel"
+           style="
+              background:#ffffff;
+              padding:25px;
+              border-radius:12px;
+              box-shadow:0 10px 25px rgba(0,0,0,0.05);
+           ">
+
+    <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:15px;">
+      <h2 style="margin:0; font-size:18px;">College List</h2>
+      <span style="color:#888; font-size:14px;">
+        Total: {{ colleges|length }}
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table style="
+              width:100%;
+              border-collapse:collapse;
+              font-size:14px;">
+        <thead>
+          <tr style="background:#f8f9fc;">
+            <th style="padding:12px; text-align:left;">#</th>
+            <th style="padding:12px; text-align:left;">College Name</th>
+            <th style="padding:12px; text-align:left;">Status</th>
+            <th style="padding:12px; text-align:left;">Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="collegeTableBody">
+          {% for college in colleges %}
+          <tr style="border-bottom:1px solid #eee; transition:0.2s;"
+              onmouseover="this.style.background='#f9fbff'"
+              onmouseout="this.style.background='transparent'">
+
+            <td style="padding:12px;">{{ forloop.counter }}</td>
+
+            <td style="padding:12px;">
+              <strong>
+                <a href="/superadmin/college/{{ college.id }}/"
+                   style="text-decoration:none; color:#333;">
+                  {{ college.name }}
+                </a>
+              </strong>
+            </td>
+
+            <td style="padding:12px;">
+              {% if college.is_active %}
+                <span style="
+                    background:#d4edda;
+                    color:#155724;
+                    padding:5px 12px;
+                    border-radius:20px;
+                    font-size:12px;
+                    font-weight:600;">
+                    ACTIVE
+                </span>
+              {% else %}
+                <span style="
+                    background:#f8d7da;
+                    color:#721c24;
+                    padding:5px 12px;
+                    border-radius:20px;
+                    font-size:12px;
+                    font-weight:600;">
+                    INACTIVE
+                </span>
+              {% endif %}
+            </td>
+
+            <td style="padding:12px;">
+                <a href="/superadmin/toggle-college/{{ college.id }}/"
+                  onclick="return confirm('Are you sure? This will affect all users under this college.')"
+                  style="
+                      padding:6px 14px;
+                      border-radius:6px;
+                      text-decoration:none;
+                      font-size:13px;
+                      color:white;
+                      background: {% if college.is_active %}#dc3545{% else %}#28a745{% endif %};
+                      transition:0.3s;
+                  ">
+                {% if college.is_active %}
+                  Deactivate
+                {% else %}
+                  Activate
+                {% endif %}
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" style="text-align:center; padding:20px; color:#999;">
+              No colleges found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ================= LIVE SEARCH SCRIPT ================= -->
+<script>
+document.getElementById("liveSearch").addEventListener("keyup", function() {
+
+    let query = this.value;
+
+    fetch(`/superadmin/colleges/?q=${query}`, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        let tableBody = document.getElementById("collegeTableBody");
+        tableBody.innerHTML = "";
+
+        if (data.colleges.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align:center; padding:20px;">
+                        No colleges found
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        data.colleges.forEach((college, index) => {
+
+            let statusBadge = college.is_active
+                ? `<span style="background:#d4edda;color:#155724;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;">ACTIVE</span>`
+                : `<span style="background:#f8d7da;color:#721c24;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;">INACTIVE</span>`;
+
+            let actionBtn = college.is_active
+                ? `<a href="/superadmin/toggle-college/${college.id}/"
+                      style="padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:#dc3545;">
+                      Deactivate
+                   </a>`
+                : `<a href="/superadmin/toggle-college/${college.id}/"
+                      style="padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:#28a745;">
+                      Activate
+                   </a>`;
+
+            tableBody.innerHTML += `
+                <tr style="border-bottom:1px solid #eee;">
+                    <td style="padding:12px;">${index + 1}</td>
+                    <td style="padding:12px;">
+                        <strong>
+                          <a href="/superadmin/college/${college.id}/"
+                             style="text-decoration:none; color:#333;">
+                             ${college.name}
+                          </a>
+                        </strong>
+                    </td>
+                    <td style="padding:12px;">${statusBadge}</td>
+                    <td style="padding:12px;">${actionBtn}</td>
+                </tr>
+            `;
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

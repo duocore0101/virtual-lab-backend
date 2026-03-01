@@ -1,0 +1,52 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Teacher Detail{% endblock %}
+
+{% block content %}
+
+<style>
+.table-wrapper { margin-top:20px; }
+.table { width:100%; border-collapse:collapse; }
+.table th, .table td { padding:12px; border-bottom:1px solid #eee; }
+.table tr:hover { background:#f9fbff; }
+.count-box {
+  background:#e8fff4;
+  padding:12px 18px;
+  border-radius:8px;
+  font-weight:600;
+  margin-top:10px;
+  display:inline-block;
+}
+</style>
+
+<h2>{{ teacher.first_name }}</h2>
+
+<div class="count-box">
+  Total Students: {{ total_students }}
+</div>
+
+<div class="table-wrapper">
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Student Name</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ student.first_name }}</td>
+      <td>{{ student.email }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3" style="text-align:center;">No students found</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Actophotometer (Activity Cage) | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Actophotometer (Activity Cage)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/actophotometer.glb' %}"
+        alt="Actophotometer 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Actophotometer</strong>, also known as an
+        <em>activity cage</em> or <em>locomotor activity meter</em>,
+        is a standard instrument in experimental pharmacology used to
+        measure <strong>spontaneous locomotor activity</strong> in
+        laboratory rodents such as mice and rats.
+      </p>
+      <p>
+        It is widely used for screening
+        <strong>central nervous system (CNS) acting drugs</strong>,
+        where locomotor activity serves as an index of
+        alertness, wakefulness, and CNS excitability.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      The actophotometer operates on the principle of
+      <strong>photoelectric cell interruption</strong>.
+      Infrared or visible light beams are arranged around a square or
+      circular arena. When the animal moves and interrupts a beam,
+      the photocell detects the interruption and registers it as a
+      <strong>count</strong> on a digital counter.
+    </p>
+    <p>
+      Increased movement results in higher activity counts.
+      <strong>CNS depressants</strong> (e.g., diazepam, chlorpromazine)
+      reduce the counts, whereas <strong>CNS stimulants</strong>
+      (e.g., caffeine, amphetamine) increase the activity score.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Chamber:</strong> Transparent Perspex (acrylic) cage,
+        usually square in shape, sometimes provided with a grid floor.
+      </li>
+      <li>
+        <strong>Sensors:</strong> Typically 6 built-in photocells or
+        infrared beams arranged along the sides of the cage.
+      </li>
+      <li>
+        <strong>Display:</strong> 4-digit digital counter displaying
+        total activity counts.
+      </li>
+      <li>
+        <strong>Additional Features:</strong>
+        <ul>
+          <li>Reset button for zeroing counts</li>
+          <li>Timer (commonly 5–10 minutes)</li>
+          <li>
+            Optional mild electric shock stimulator
+            (up to 100 V, low current) in older models
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Modern Versions:</strong> Fully digital systems providing
+        precise, automated counting without manual intervention.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Screening of CNS stimulant and depressant drugs</li>
+      <li>Evaluation of sedative and anxiolytic agents</li>
+      <li>Assessment of drug-induced hyperactivity or sedation</li>
+      <li>Behavioral pharmacology research</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+</body>
+</html>

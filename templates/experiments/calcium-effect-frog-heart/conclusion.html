@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Calcium Ions on Frog’s Heart – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT & DISCUSSION -->
+  <div class="info-box">
+    <h2>Result & Discussion</h2>
+    <ul>
+      <li>
+        <strong>Positive Inotropic Effect:</strong>
+        An increase in extracellular <strong>Ca²⁺</strong> increases the
+        concentration gradient, leading to greater calcium influx during
+        the cardiac action potential. This saturates
+        <strong>Troponin-C</strong> binding sites and increases the
+        <strong>force of contraction</strong>.
+      </li>
+      <li>
+        <strong>Systolic Arrest (Calcium Rigor):</strong>
+        At very high calcium concentrations, the heart fails to relax and
+        stops in a fully contracted state.
+        <ul>
+          <li>
+            <strong>Mechanism:</strong> Relaxation requires removal of Ca²⁺
+            from the cytoplasm using ATP. Excess intracellular calcium
+            exceeds the pumping capacity, resulting in sustained
+            actin–myosin cross-bridge formation (rigor).
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Diastolic Arrest:</strong>
+        In the absence of calcium (calcium-free Ringer’s solution),
+        excitation–contraction coupling cannot occur. The heart becomes
+        flaccid and stops in the relaxed (diastolic) state.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <ul>
+      <li>Calcium ions are <strong>essential</strong> for cardiac muscle contraction.</li>
+      <li>
+        A <strong>moderate increase</strong> in Ca²⁺ produces a stronger and
+        faster heartbeat (positive inotropic and chronotropic effects).
+      </li>
+      <li>
+        <strong>Excessive Ca²⁺</strong> leads to cardiac arrest in
+        <strong>systole</strong> (calcium rigor).
+      </li>
+      <li>
+        <strong>Absence of Ca²⁺</strong> results in cardiac arrest in
+        <strong>diastole</strong>.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <!-- ✅ FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        status: "completed"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // 🔥 BACKEND DECIDES REDIRECT (dashboard / exam)
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

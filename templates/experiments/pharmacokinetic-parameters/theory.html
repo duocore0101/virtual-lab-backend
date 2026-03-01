@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pharmacokinetic Parameters – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory / Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- Slide 1 -->
+    <div class="info-box slide active">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Plot semi-log plasma concentration–time profile.</li>
+        <li>Determine elimination rate constant (Kₑₗ), half-life (t₁/₂), volume of distribution (Vd), clearance (Cl), and AUC.</li>
+        <li>Understand clinical significance of each parameter.</li>
+        <li>Compare manual graphical method vs Excel calculation.</li>
+      </ul>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="info-box slide">
+      <h2>Basic Theory of Pharmacokinetics</h2>
+      <p>
+        Pharmacokinetics studies ADME — Absorption, Distribution, 
+        Metabolism and Excretion of drugs.
+      </p>
+      <p>
+        In a <strong>one-compartment IV bolus model</strong>, the body is treated 
+        as a single compartment with instantaneous distribution 
+        and first-order elimination.
+      </p>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="info-box slide">
+      <h2>Mathematical Model</h2>
+      <p><strong>Equation:</strong></p>
+      <p style="text-align:center; font-size:18px;">
+        Cₚ = C₀ × e<sup>(–Kₑₗ × t)</sup>
+      </p>
+
+      <p><strong>Log Form (Semi-log plot):</strong></p>
+      <p style="text-align:center; font-size:18px;">
+        log Cₚ = log C₀ – (Kₑₗ × t) / 2.303
+      </p>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="info-box slide">
+      <h2>Key Parameters & Significance (Part 1)</h2>
+      <ul>
+        <li><strong>C₀:</strong> Initial concentration (extrapolated at t=0).</li>
+        <li><strong>Kₑₗ (h⁻¹):</strong> Elimination rate constant from slope × –2.303.</li>
+        <li><strong>t₁/₂:</strong> 0.693 / Kₑₗ (time for 50% elimination).</li>
+      </ul>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="info-box slide">
+      <h2>Key Parameters & Significance (Part 2)</h2>
+      <ul>
+        <li><strong>Vd (L):</strong> Dose / C₀ — distribution extent.</li>
+        <li><strong>AUC₀–∞:</strong> Total drug exposure (C₀ / Kₑₗ or trapezoidal rule).</li>
+        <li><strong>Cl (L/h):</strong> Kₑₗ × Vd = Dose / AUC.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

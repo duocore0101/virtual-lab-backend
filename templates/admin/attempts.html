@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Practical Attempts | Admin{% endblock %}
+
+{% block content %}
+
+<div style="padding:20px;">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">Practical Attempts</h2>
+      <p style="margin:4px 0; color:gray;">
+        View all completed experiment attempts in your college
+      </p>
+    </div>
+
+    <!-- CSV EXPORT -->
+    <a href="/admin/export/attempts/"
+       style="background:#007bff; color:white; padding:8px 14px; border-radius:6px; text-decoration:none;">
+       ⬇ Export Attempts
+    </a>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#f5f5f5; text-align:left;">
+          <th style="padding:12px;">#</th>
+          <th style="padding:12px;">Student</th>
+          <th style="padding:12px;">Experiment</th>
+          <th style="padding:12px;">Teacher</th>
+          <th style="padding:12px;">Completed On</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        {% for attempt in attempts %}
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:12px;">{{ forloop.counter }}</td>
+          <td style="padding:12px;">{{ attempt.student.first_name }}</td>
+          <td style="padding:12px;">{{ attempt.experiment.name }}</td>
+          <td style="padding:12px;">{{ attempt.experiment.teacher.first_name }}</td>
+          <td style="padding:12px;">
+            {{ attempt.completed_at|date:"d M Y, H:i" }}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="padding:20px; text-align:center; color:gray;">
+            No attempts found
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock %}

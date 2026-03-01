@@ -1,0 +1,419 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Infiltration Anaesthetic Activity – Virtual Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
+
+<style>
+
+.exp-container { padding: 30px; }
+
+/* 🔝 TOP RIGHT */
+.top-actions {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  display: flex;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.top-actions button {
+  padding: 10px 18px;
+  border-radius: 22px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #ff2e2e;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255,0,0,0.6);
+  transition: 0.25s;
+}
+
+.top-actions button:hover { transform: scale(1.08); }
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 25px;
+  align-items: start;
+}
+
+/* 🎥 VIDEO */
+.video-box video {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.6);
+}
+
+/* 📊 OBSERVATION */
+.observation-box {
+  background: #1e1e1e;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 0 22px rgba(0,0,0,0.6);
+}
+
+.observation-box h2 {
+  text-align: center;
+  margin-bottom: 14px;
+  color: #ff5252;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+  color: #fff;
+  padding: 8px;
+  font-size: 12px;
+}
+
+td {
+  padding: 8px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* CONTROLS */
+.right-controls {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.right-controls button,
+select {
+  padding: 10px;
+  border-radius: 22px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.right-controls button {
+  background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+  color: white;
+}
+
+select {
+  background: #2a2a2a;
+  color: white;
+}
+
+/* NAV */
+.nav-buttons {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.nav-buttons button {
+  padding: 12px 26px;
+  border-radius: 26px;
+  border: none;
+  background: #ff2e2e;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+body.light-mode {
+  background: #f4f4f4;
+  color: #111;
+}
+body.light-mode .observation-box {
+  background: #ffffff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="openProcedure()">Procedure</button>
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<!-- 🔬 PROCEDURE MODAL -->
+<div id="procedureModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span onclick="closeProcedure()" style="cursor:pointer;">✖</span>
+    <h2>Procedure</h2>
+    <ol>
+      <li>Select guinea pig; shave dorsal skin; mark 2 cm circles.</li>
+      <li>Check baseline pain response (pin prick).</li>
+      <li>Inject test drug intradermally → wheal formation.</li>
+      <li>Inject saline in control wheal.</li>
+      <li>Test sensation every 5 min.</li>
+      <li>Record onset and duration.</li>
+      <li>Score: 0 = no response, + = partial, ++ = normal.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="exp-container">
+
+<h1>Infiltration Anaesthetic – Virtual Experiment</h1>
+
+<div class="main-layout">
+
+  <!-- 🎥 VIDEO -->
+  <div class="video-box">
+    <video id="expVideo" preload="metadata"></video>
+  </div>
+
+  <!-- 📊 OBSERVATION -->
+  <div class="observation-box">
+    <h2>Observation Table</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Pig No.</th>
+          <th>Site</th>
+          <th>Drug</th>
+          <th>Conc/Vol</th>
+          <th>Onset</th>
+          <th>Duration</th>
+          <th>Response</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody id="obsBody">
+        <tr><td colspan="8">—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="right-controls">
+
+      <button onclick="runShave()">🪒 Shave Area</button>
+
+      <button onclick="showDrugSelect()">🔽 Select Drug</button>
+
+      <select id="drugSelect" style="display:none;" onchange="selectDrug()">
+        <option value="">Select Drug</option>
+        <option value="lignocaine">Lignocaine HCl 1%</option>
+        <option value="procaine">Procaine HCl 1%</option>
+      </select>
+
+      <button onclick="injectDrug()">💉 Inject Drug</button>
+
+      <button onclick="injectSaline()">💧 Normal Saline</button>
+
+      <button onclick="normalPinTest()">🩸 Normal Pin Test</button>
+
+      <button onclick="drugPinTest()">🧪 Drug Pin Test</button>
+
+      <button onclick="checkResponse()">📋 Check Response</button>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-buttons">
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+    Next ▶
+  </button>
+</div>
+
+</div>
+
+<script>
+
+const video = document.getElementById("expVideo");
+const obsBody = document.getElementById("obsBody");
+const drugSelect = document.getElementById("drugSelect");
+
+let selectedDrug = null;
+let stage = "start";
+let completedDrugs = new Set();
+
+/* ================= DEFAULT VIDEO ================= */
+
+video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/default.mp4' %}";
+video.muted = true;
+video.autoplay = true;
+video.loop = true;
+video.play().catch(() => {});
+
+/* ================= TABLE DATA ================= */
+
+const observationRows = {
+
+  lignocaine: [
+    ["1","Left dorsal","Lignocaine HCl 1%","0.3 mL","2","45","0 from 2–47 min","Clear wheal"],
+    ["1","Right dorsal","Normal Saline","0.3 mL","—","—","++ throughout","Normal"]
+  ],
+
+  procaine: [
+    ["2","Left dorsal","Procaine HCl 1%","0.3 mL","3","28","0 from 3–31 min","Slight blanching"],
+    ["2","Right dorsal","Normal Saline","0.3 mL","—","—","++ throughout","Normal"]
+  ]
+};
+
+/* ================= SHAVE ================= */
+
+function runShave() {
+  if (stage !== "start") { 
+    alert("Shaving already done"); 
+    return; 
+  }
+
+  stage = "shaved";
+
+  video.loop = false;
+  video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/shave.mp4' %}";
+  video.play();
+}
+
+/* ================= SELECT DRUG ================= */
+
+function showDrugSelect() {
+  if (stage !== "shaved") { 
+    alert("Please shave area first"); 
+    return; 
+  }
+
+  drugSelect.style.display = "block";
+}
+
+function selectDrug() {
+  selectedDrug = drugSelect.value;
+  stage = "drug";
+}
+
+/* ================= INJECT TEST DRUG ================= */
+
+function injectDrug() {
+  if (stage !== "drug") { 
+    alert("Select drug first"); 
+    return; 
+  }
+
+  stage = "injected";
+
+  video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/inject test.mp4' %}";
+  video.play();
+}
+
+/* ================= INJECT SALINE ================= */
+
+function injectSaline() {
+  if (stage !== "injected") { 
+    alert("Inject test drug first"); 
+    return; 
+  }
+
+  stage = "saline";
+
+  video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/inject saline.mp4' %}";
+  video.play();
+}
+
+/* ================= NORMAL PIN TEST ================= */
+
+function normalPinTest() {
+  if (stage !== "saline") { 
+    alert("Inject saline first"); 
+    return; 
+  }
+
+  stage = "normalPin";
+
+  video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/saline pin test.mp4' %}";
+  video.play();
+}
+
+/* ================= DRUG PIN TEST ================= */
+
+function drugPinTest() {
+  if (stage !== "normalPin") { 
+    alert("Perform normal pin test first"); 
+    return; 
+  }
+
+  stage = "drugPin";
+
+  video.src = "{% static 'experiments/infiltration-anaesthetic-wheal/videos/test drug pin.mp4' %}";
+  video.play();
+}
+
+/* ================= CHECK RESPONSE (NO VIDEO) ================= */
+
+function checkResponse() {
+
+  if (stage !== "drugPin") { 
+    alert("Complete both pin tests first"); 
+    return; 
+  }
+
+  if (!selectedDrug) { 
+    alert("Select drug first"); 
+    return; 
+  }
+
+  if (completedDrugs.has(selectedDrug)) {
+    alert("This drug has already been recorded.");
+    return;
+  }
+
+  // Remove placeholder row only once
+  if (obsBody.innerText.includes("—")) {
+    obsBody.innerHTML = "";
+  }
+
+  // Append rows (do NOT overwrite existing ones)
+  observationRows[selectedDrug].forEach(row => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = row.map(col => `<td>${col}</td>`).join("");
+    obsBody.appendChild(tr);
+  });
+
+  completedDrugs.add(selectedDrug);
+
+  // Reset stage so second drug can be tested
+  stage = "shaved";
+}
+
+/* ================= UI HELPERS ================= */
+
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test for Pyrogens – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements </h1>
+
+  <!-- 🐇 ANIMAL -->
+  <div class="info-box">
+    <h2>Animal</h2>
+    <ul>
+      <li>
+        Three healthy adult rabbits of either sex, weighing not less than 1.5 kg.
+      </li>
+      <li>
+        House the animals individually in an area of uniform temperature
+        (± 2°C) with uniform humidity.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧪 MATERIALS -->
+  <div class="info-box">
+    <h2>Materials</h2>
+    <ul>
+      <li>
+        <strong>A)</strong> All glassware, syringes and needles washed with water for injection
+        and heated in a hot air oven at 250°C for 30 minutes.
+      </li>
+      <li>
+        <strong>B)</strong> Treat all diluents and solutions to assure that they are sterile
+        and pyrogen free.
+      </li>
+      <li>
+        <strong>C)</strong> Rabbit holder – It should retain animal with loosely fitting
+        neck stocks and rest of the body remains relatively free.
+      </li>
+      <li>
+        <strong>D)</strong> Room temperature should be within 30°C to that of rabbit housed area.
+      </li>
+      <li>
+        <strong>E)</strong> Preparation of sample – Dissolve the substance being tested
+        in or dilute with pyrogen-free saline solution, and warm it to
+        approximately 38.5°C before injection.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swiss Albino Mice | Experimental Animals</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Swiss Albino Mice</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW ROW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO (LEFT) -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/common-laboratory-animals/videos/swiss-albino-mice.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        Swiss albino mice (<em>Mus musculus</em>) are a widely used outbred albino
+        strain in biomedical research. They are general-purpose laboratory animals
+        valued for genetic heterogeneity, vigorous reproduction, robustness, and
+        cost-effectiveness, particularly in pharmacology and toxicology studies.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🕰️ HISTORY -->
+  <div class="exp-card">
+    <h2>History and Origin</h2>
+    <p>
+      The Swiss albino strain originated in 1926 when Clara J. Lynch imported a
+      small colony of non-inbred albino mice from Lausanne, Switzerland, to the
+      Rockefeller Institute, New York. These mice formed the foundation for
+      commercial outbred stocks such as Swiss Webster, CD-1, CFW, and
+      RjHan:SWISS.
+    </p>
+  </div>
+
+  <!-- 🧪 PHYSICAL CHARACTERISTICS -->
+  <div class="exp-card">
+    <h2>Physical Characteristics</h2>
+    <ul>
+      <li><strong>Appearance:</strong> Albino, white fur, pink/red eyes</li>
+      <li><strong>Body Weight:</strong> 20–40 g (adult)</li>
+      <li><strong>Lifespan:</strong> 1.5–3 years (laboratory)</li>
+    </ul>
+  </div>
+
+  
+
+  <!-- ✅ ADVANTAGES -->
+  <div class="exp-card">
+    <h2>Advantages</h2>
+    <ul>
+      <li>Represents human population variability</li>
+      <li>Hardy, vigorous, excellent breeders</li>
+      <li>Cost-effective and widely available</li>
+      <li>Good sentinels for pathogen monitoring</li>
+    </ul>
+  </div>
+
+  <!-- ⚠️ LIMITATIONS -->
+  <div class="exp-card">
+    <h2>Limitations</h2>
+    <ul>
+      <li>Higher experimental variability</li>
+      <li>Light sensitivity due to albinism</li>
+      <li>Limited advanced genetic tools</li>
+    </ul>
+  </div>
+
+  <!-- 📊 COMPARISON TABLE -->
+  <div class="exp-card">
+    <h2>Comparison with Common Inbred Strains</h2>
+
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Trait</th>
+            <th>Swiss Albino</th>
+            <th>BALB/c</th>
+            <th>C57BL/6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Genetic Type</td>
+            <td>Outbred</td>
+            <td>Inbred</td>
+            <td>Inbred</td>
+          </tr>
+          <tr>
+            <td>Coat / Eyes</td>
+            <td>White / Pink</td>
+            <td>White / Pink</td>
+            <td>Black / Pigmented</td>
+          </tr>
+          <tr>
+            <td>Reproducibility</td>
+            <td>Lower</td>
+            <td>High</td>
+            <td>High</td>
+          </tr>
+          <tr>
+            <td>Breeding</td>
+            <td>Excellent</td>
+            <td>Good</td>
+            <td>Moderate</td>
+          </tr>
+          <tr>
+            <td>Common Uses</td>
+            <td>Toxicology, safety</td>
+            <td>Immunology</td>
+            <td>Neuroscience</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🔬 COMMON USES -->
+  <div class="exp-card">
+    <h2>Common Uses in Research</h2>
+    <ul>
+      <li>Toxicology and safety pharmacokinetics</li>
+      <li>Pharmacological drug screening</li>
+      <li>Oncology and infectious disease research</li>
+      <li>Reproductive biology and embryology</li>
+      <li>General multipurpose preclinical studies</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Animal List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

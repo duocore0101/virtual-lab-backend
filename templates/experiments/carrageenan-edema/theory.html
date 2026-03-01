@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-inflammatory Activity – Carrageenan Paw Edema – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory / Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- Slide 1 -->
+    <div class="info-box slide active">
+      <h2>Principle of Carrageenan-Induced Paw Edema</h2>
+      <p>
+        Subplantar injection of carrageenan (a sulfated polysaccharide from seaweed)
+        into the rat hind paw induces acute inflammation.
+      </p>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="info-box slide">
+      <h2>Pathophysiology of Inflammation</h2>
+      <p>
+        The inflammation is characterized by increased vascular permeability,
+        neutrophil infiltration, and release of inflammatory mediators.
+      </p>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="info-box slide">
+      <h2>Early Phase (0–1 Hour)</h2>
+      <p>
+        The early phase is mediated by:
+      </p>
+      <ul>
+        <li>Histamine</li>
+        <li>Serotonin</li>
+        <li>Bradykinin</li>
+      </ul>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="info-box slide">
+      <h2>Late Phase (1–6 Hours)</h2>
+      <p>
+        The late phase is mainly mediated by:
+      </p>
+      <ul>
+        <li>Prostaglandins (PGE<sub>2</sub>)</li>
+        <li>Cytokines</li>
+        <li>COX-2 induction</li>
+      </ul>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="info-box slide">
+      <h2>Basis of Measurement & Drug Action</h2>
+      <p>
+        This mediator release leads to paw swelling (edema), measured as
+        increase in paw volume using a plethysmometer.
+      </p>
+      <p>
+        Anti-inflammatory drugs reduce edema by inhibiting these mediators,
+        particularly in the late phase, indicating COX inhibition.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

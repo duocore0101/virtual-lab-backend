@@ -1,0 +1,158 @@
+{% extends "teacher/base.html" %}
+{% load static %}
+
+{% block title %}Teacher Dashboard | G-MARS{% endblock %}
+
+{% block content %}
+
+<div style="padding:40px; max-width:1400px; margin:auto;">
+
+  <!-- ================= HERO (THEME SAFE) ================= -->
+  <div style="
+      background: linear-gradient(
+        135deg,
+        rgba(255,0,0,0.20),
+        var(--bg-card)
+      );
+      padding:60px 50px;
+      border-radius:22px;
+      margin-bottom:35px;
+      border:1px solid var(--border-color);
+      transition: background 0.3s ease;
+  ">
+      <h1 style="font-size:38px; margin-bottom:10px;">
+        Teacher Dashboard
+      </h1>
+      <p style="color:var(--text-muted); font-size:16px;">
+        Welcome, {{ name }} 👋
+      </p>
+      <p style="color:var(--text-muted); margin-top:6px;">
+        Manage students, experiments, exams & practical attempts
+      </p>
+  </div>
+
+
+  
+
+
+  <!-- ================= KPI CARDS (THEME SAFE) ================= -->
+  <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+      margin-bottom:50px;
+  ">
+
+      <!-- STUDENTS -->
+      <a href="/teacher/students/" style="
+          background: var(--bg-card);
+          padding:30px;
+          border-radius:18px;
+          border:1px solid var(--border-color);
+          text-decoration:none;
+          color:var(--text-main);
+          box-shadow: var(--shadow-soft);
+          transition:0.3s;
+      ">
+          <div style="font-size:14px; color:var(--text-muted);">
+              Your Students
+          </div>
+          <div style="
+              font-size:34px;
+              margin-top:10px;
+              color:var(--accent-red);
+              font-weight:700;
+          ">
+              {{ total_students }}
+          </div>
+      </a>
+
+      <!-- EXPERIMENTS -->
+      <a href="/teacher/experiments/" style="
+          background: var(--bg-card);
+          padding:30px;
+          border-radius:18px;
+          border:1px solid var(--border-color);
+          text-decoration:none;
+          color:var(--text-main);
+          box-shadow: var(--shadow-soft);
+          transition:0.3s;
+      ">
+          <div style="font-size:14px; color:var(--text-muted);">
+              Active Experiments
+          </div>
+          <div style="
+              font-size:34px;
+              margin-top:10px;
+              color:var(--accent-red);
+              font-weight:700;
+          ">
+              {{ total_experiments }}
+          </div>
+      </a>
+
+      <!-- ATTEMPTS -->
+      <a href="/teacher/attempts/" style="
+          background: var(--bg-card);
+          padding:30px;
+          border-radius:18px;
+          border:1px solid var(--border-color);
+          text-decoration:none;
+          color:var(--text-main);
+          box-shadow: var(--shadow-soft);
+          transition:0.3s;
+      ">
+          <div style="font-size:14px; color:var(--text-muted);">
+              Completed Practicals
+          </div>
+          <div style="
+              font-size:34px;
+              margin-top:10px;
+              color:var(--accent-red);
+              font-weight:700;
+          ">
+              {{ total_attempts }}
+          </div>
+      </a>
+
+  </div>
+
+
+  <!-- ================= EXAM MANAGEMENT PANEL ================= -->
+  <div style="
+      background: var(--bg-card);
+      padding:35px;
+      border-radius:18px;
+      border:1px solid var(--border-color);
+      box-shadow: var(--shadow-soft);
+      transition: background 0.3s ease;
+  ">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <h2 style="margin:0;">Exam Management</h2>
+      </div>
+
+      <ul style="color:var(--text-muted); line-height:28px; margin-bottom:25px;">
+          <li>Add & Edit MCQ Questions</li>
+          <li>Add Short Answer Questions</li>
+          <li>Enable or Disable Exams</li>
+          <li>View Student Exam Results</li>
+      </ul>
+
+      <a href="/teacher/experiments/"
+         style="
+            background:var(--accent-red);
+            color:#fff;
+            padding:12px 22px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:600;
+         ">
+         Manage Experiment Exams
+      </a>
+
+  </div>
+
+</div>
+
+{% endblock %}

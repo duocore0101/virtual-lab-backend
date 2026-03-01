@@ -1,0 +1,98 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Audit Logs | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Audit Logs</h1>
+      <p>Track all critical system & admin activities</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= AUDIT LOG TABLE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>System Activity</h2>
+      <span class="text-muted">
+        Latest actions recorded
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Actor</th>
+            <th>Action</th>
+            <th>Target</th>
+            <th>Message</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for log in audit_logs %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              {% if log.actor %}
+                {{ log.actor.first_name }}
+              {% else %}
+                <span class="text-muted">System</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <span class="status-badge
+                {% if log.action == 'create' %}active
+                {% elif log.action == 'activate' %}active
+                {% elif log.action == 'deactivate' %}inactive
+                {% else %}neutral{% endif %}">
+                {{ log.action|upper }}
+              </span>
+            </td>
+
+            <td>
+              {% if log.target_user %}
+                {{ log.target_user.first_name }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+
+            <td>
+              {% if log.message %}
+                {{ log.message }}
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+
+            <td>
+              {{ log.created_at|date:"d M Y, H:i" }}
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="6" style="text-align:center; color:var(--text-muted);">
+              No audit logs available
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

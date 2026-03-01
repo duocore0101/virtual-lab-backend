@@ -1,0 +1,201 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= HERO ================= -->
+  <section class="sa-hero">
+    <h1>Admin Control Panel</h1>
+    <p>College-level monitoring of teachers, students & experiments</p>
+  </section>
+
+  <!-- ================= QUICK ACTIONS ================= -->
+  <section class="quick-actions">
+    <button class="primary-btn"
+            onclick="window.location.href='/admin/create-teacher/'">
+      ➕ Create Teacher
+    </button>
+
+    <button class="secondary-btn"
+            onclick="window.location.href='/admin/export/students/'">
+      ⬇ Export Students CSV
+    </button>
+
+    <button class="secondary-btn"
+            onclick="window.location.href='/admin/export/attempts/'">
+      ⬇ Export Attempts CSV
+    </button>
+
+    <button class="secondary-btn"
+            onclick="window.location.href='/admin/experiments/'">
+      🧪 Manage Experiments
+    </button>
+  </section>
+
+  <!-- ================= KPI / ANALYTICS ================= -->
+  <section class="kpi-section">
+    <div class="kpi-grid">
+
+      <div class="kpi-card"
+           onclick="location.href='/admin/teachers/'">
+        Total Teachers
+        <span>{{ total_teachers }}</span>
+      </div>
+
+      <div class="kpi-card"
+           onclick="location.href='/admin/students/'">
+        Total Students
+        <span>{{ total_students }}</span>
+      </div>
+
+      <div class="kpi-card"
+           onclick="location.href='/admin/attempts/'">
+        Total Attempts
+        <span>{{ total_attempts }}</span>
+      </div>
+
+      <!-- 🔥 ANALYTICS CARD (NO NEW LOGIC) -->
+      <div class="kpi-card">
+        Avg Attempts / Student
+        <span>{{ avg_attempts }}</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= TEACHERS OVERVIEW ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Teachers Overview</h2>
+      <a href="/admin/teachers/">View All</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Created By</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for teacher in teachers %}
+        <tr>
+          <td>{{ teacher.first_name }}</td>
+          <td>{{ teacher.email }}</td>
+          <td>
+            {% if teacher.is_active %}
+              <span class="status active">Active</span>
+            {% else %}
+              <span class="status inactive">Inactive</span>
+            {% endif %}
+          </td>
+          <td>{{ teacher.created_by.first_name }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="text-align:center; color:#888;">
+            No teachers found
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= STUDENTS OVERVIEW ================= -->
+  <section class="panel" style="margin-top: 40px;">
+    <div class="panel-header">
+      <h2>Students Overview</h2>
+      <a href="/admin/students/">View All</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Created By</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for student in students %}
+        <tr>
+          <td>{{ student.first_name }}</td>
+          <td>{{ student.email }}</td>
+          <td>
+            {% if student.created_by %}
+              {{ student.created_by.first_name }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>
+            {% if student.is_active %}
+              <span class="status active">Active</span>
+            {% else %}
+              <span class="status inactive">Inactive</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="text-align:center; color:#888;">
+            No students found
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= RECENT ATTEMPTS ================= -->
+  <section class="panel" style="margin-top: 40px;">
+    <div class="panel-header">
+      <h2>Recent Practical Attempts</h2>
+      <a href="/admin/attempts/">View All</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Experiment</th>
+          <th>Teacher</th>
+          <th>Completed At</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for attempt in attempts %}
+        <tr>
+          <td>{{ attempt.student.first_name }}</td>
+          <td>{{ attempt.experiment.name }}</td>
+          <td>{{ attempt.experiment.teacher.first_name }}</td>
+          <td>{{ attempt.completed_at|date:"d M Y, H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="text-align:center; color:#888;">
+            No attempts recorded yet
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+{% endblock %}

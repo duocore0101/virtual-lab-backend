@@ -1,0 +1,190 @@
+{% extends "student/base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================= */
+/* 🤍 WHITE BACKGROUND */
+/* ============================= */
+
+.sa-content {
+  background: #ffffff;
+  padding: 60px;
+  min-height: 100vh;
+}
+
+/* ============================= */
+/* 🏷️ TITLE */
+/* ============================= */
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 50px;
+  color: #111;
+}
+
+/* ============================= */
+/* 📦 VERTICAL LAYOUT */
+/* ============================= */
+
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+/* ============================= */
+/* 🔴 RED BORDER + GOLDEN GLOW CARD */
+/* ============================= */
+
+.section-card {
+  position: relative;
+  padding: 40px;
+  border-radius: 22px;
+  background: #ffffff;
+
+  /* 🔴 Red Rounded Border */
+  border: 2px solid #e10600;
+
+  /* 🔥 Strong Dark Shadow */
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.18),
+    0 35px 80px rgba(0,0,0,0.12);
+
+  transition: all 0.4s ease;
+}
+
+/* ✨ Light Golden Glow Effect */
+.section-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  box-shadow: 0 0 0px rgba(212,175,55,0.4);
+  transition: 0.4s ease;
+  pointer-events: none;
+}
+
+/* 🚀 Hover Effect */
+.section-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 30px 65px rgba(0,0,0,0.28),
+    0 45px 100px rgba(0,0,0,0.18);
+}
+
+/* ✨ Golden Glow on Hover */
+.section-card:hover::after {
+  box-shadow:
+    0 0 20px rgba(212,175,55,0.5),
+    0 0 40px rgba(212,175,55,0.3);
+}
+
+/* ============================= */
+/* 📝 TEXT */
+/* ============================= */
+
+.section-card h3 {
+  font-size: 21px;
+  margin-bottom: 18px;
+  color: #111;
+}
+
+.section-card p {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #444;
+}
+
+/* ============================= */
+/* 🟢 STATUS BADGE */
+/* ============================= */
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-active {
+  background: #e6fff3;
+  color: #00a86b;
+}
+
+.badge-inactive {
+  background: #ffeaea;
+  color: #d90429;
+}
+
+/* ============================= */
+/* 🚀 BUTTON */
+/* ============================= */
+
+.btn-primary {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.btn-primary:hover {
+  background: #e10600;
+  transform: scale(1.07);
+  box-shadow:
+    0 15px 35px rgba(225,6,0,0.4);
+}
+
+/* ============================= */
+/* EMPTY MESSAGE */
+/* ============================= */
+
+.empty-text {
+  font-size: 16px;
+  color: #666;
+}
+
+</style>
+
+<div class="dashboard-title">
+  Welcome, {{ name }} 👋
+</div>
+
+<div class="card-grid">
+
+  {% for exp in experiments %}
+  <div class="section-card">
+
+    <h3>{{ exp.name }}</h3>
+
+    <!-- <p><strong>Aim:</strong> {{ exp.aim }}</p> -->
+
+    <p>
+      Status:
+      <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+        {% if exp.is_active %}Active{% else %}Inactive{% endif %}
+      </span>
+    </p>
+
+    <a href="/experiment/{{ exp.slug }}/" class="btn-primary">
+      🚀 Start Practical
+    </a>
+
+  </div>
+
+  {% empty %}
+    <p class="empty-text">No practicals assigned yet.</p>
+  {% endfor %}
+
+</div>
+
+{% endblock %}

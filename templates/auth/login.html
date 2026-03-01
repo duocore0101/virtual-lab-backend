@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login | G-MARS Pharma Solutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("{% static 'images/pharma-bgg.png' %}") no-repeat center center/cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+body::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(4px);
+}
+
+.main-card{
+  position:relative;
+  z-index:1;
+  width:560px;
+  background:rgba(255,255,255,0.95);
+  padding:35px;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  text-align:center;
+}
+
+.logo{
+  width:130px;
+  margin-bottom:15px;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:5px;
+  font-weight:600;
+}
+
+.subtitle{
+  font-size:14px;
+  color:#777;
+  margin-bottom:20px;
+}
+
+.error{
+  color:#d63031;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.success{
+  color:#27ae60;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+input, select{
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:14px;
+  outline:none;
+  width:100%;
+}
+
+input:focus, select:focus{
+  border-color:#ff4d4d;
+}
+
+.btn{
+  padding:12px;
+  background:#ff4d4d;
+  border:none;
+  color:white;
+  font-weight:500;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+  grid-column:span 2;
+}
+
+.btn:hover{
+  background:#e03c3c;
+}
+
+.switch-text{
+  margin-top:10px;
+  font-size:13px;
+  color:#666;
+}
+
+.switch-text span{
+  color:#ff4d4d;
+  cursor:pointer;
+  font-weight:500;
+}
+
+.register-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  text-align:left;
+}
+
+.full{
+  grid-column:span 2;
+}
+
+#signupForm{
+  display:none;
+}
+
+@media(max-width:600px){
+  .main-card{
+    width:90%;
+  }
+  .register-grid{
+    grid-template-columns:1fr;
+  }
+  .full{
+    grid-column:span 1;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="main-card">
+
+<img src="{% static 'images/gmars-logo.png' %}" class="logo">
+
+<h1>G-MARS Pharma Solution</h1>
+<p class="subtitle">Virtual Pharmacology Lab Platform</p>
+
+{% if message %}
+<p class="success">{{ message }}</p>
+{% endif %}
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<!-- LOGIN -->
+<form method="post" action="/login/" id="loginForm">
+{% csrf_token %}
+<input type="hidden" name="action" value="login">
+<input type="email" name="email" placeholder="Email address" required>
+<input type="password" name="password" placeholder="Password" required>
+<button type="submit" class="btn">Sign In</button>
+
+<p class="switch-text">
+Don't have an account?
+<span onclick="toggleSignup()">Register</span>
+</p>
+</form>
+
+<!-- REGISTER -->
+<form method="post" action="/login/" id="signupForm">
+{% csrf_token %}
+<input type="hidden" name="action" value="register">
+
+<div class="register-grid">
+
+<select name="role" id="roleSelect" required onchange="handleRoleChange()">
+<option value="">Select Role</option>
+<option value="admin">Principal / Admin</option>
+<option value="teacher">Teacher</option>
+<option value="student">Student</option>
+</select>
+
+<!-- Principal -->
+<div id="collegeTextDiv">
+<input type="text" name="college_name" placeholder="Enter New College Name">
+</div>
+
+<!-- Teacher / Student -->
+<div id="collegeDropdownDiv" style="display:none;">
+<select name="college_id" id="collegeDropdown" onchange="filterTeachers()">
+<option value="">Select College</option>
+{% for college in colleges %}
+<option value="{{ college.id }}">{{ college.name }}</option>
+{% endfor %}
+</select>
+</div>
+
+<!-- Student Teacher -->
+<div id="teacherDropdownDiv" style="display:none;">
+<select name="teacher_id" id="teacherDropdown">
+<option value="">Select Teacher</option>
+{% for teacher in teachers %}
+<option value="{{ teacher.id }}" data-college="{{ teacher.college.id }}">
+{{ teacher.first_name }} ({{ teacher.college.name }})
+</option>
+{% endfor %}
+</select>
+</div>
+
+<!-- 🔥 Student Roll Number -->
+<div id="rollNoDiv" style="display:none;">
+<input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
+</div>
+
+<input type="text" name="fullname" placeholder="Full Name" required>
+<input type="email" name="email" placeholder="Email address" required>
+
+<input type="text" name="mobile" placeholder="Mobile Number" required>
+<input type="password" name="password" placeholder="Password" required>
+
+<input type="password" name="confirm_password" placeholder="Confirm Password" required class="full">
+
+<button type="submit" class="btn full">Register</button>
+
+</div>
+
+<p class="switch-text">
+Already have an account?
+<span onclick="toggleLogin()">Sign In</span>
+</p>
+
+</form>
+
+</div>
+
+<script>
+function toggleSignup(){
+  document.getElementById("loginForm").style.display="none";
+  document.getElementById("signupForm").style.display="block";
+}
+
+function toggleLogin(){
+  document.getElementById("signupForm").style.display="none";
+  document.getElementById("loginForm").style.display="flex";
+}
+
+function handleRoleChange(){
+  let role=document.getElementById("roleSelect").value;
+  let textDiv=document.getElementById("collegeTextDiv");
+  let dropdownDiv=document.getElementById("collegeDropdownDiv");
+  let teacherDiv=document.getElementById("teacherDropdownDiv");
+  let rollDiv=document.getElementById("rollNoDiv");
+  let rollInput=document.getElementById("rollNoInput");
+
+  if(role==="admin"){
+    textDiv.style.display="block";
+    dropdownDiv.style.display="none";
+    teacherDiv.style.display="none";
+    rollDiv.style.display="none";
+    rollInput.removeAttribute("required");
+  }
+  else if(role==="teacher"){
+    textDiv.style.display="none";
+    dropdownDiv.style.display="block";
+    teacherDiv.style.display="none";
+    rollDiv.style.display="none";
+    rollInput.removeAttribute("required");
+  }
+  else if(role==="student"){
+    textDiv.style.display="none";
+    dropdownDiv.style.display="block";
+    teacherDiv.style.display="block";
+    rollDiv.style.display="block";
+    rollInput.setAttribute("required","required");
+  }
+}
+
+function filterTeachers(){
+  let collegeId=document.getElementById("collegeDropdown").value;
+  let teacherDropdown=document.getElementById("teacherDropdown");
+  let options=teacherDropdown.querySelectorAll("option");
+
+  options.forEach(option=>{
+    if(!option.dataset.college) return;
+    option.style.display=(option.dataset.college===collegeId)?"block":"none";
+  });
+
+  teacherDropdown.value="";
+}
+</script>
+
+</body>
+</html>

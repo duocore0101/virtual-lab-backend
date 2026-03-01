@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Theory – Anticonvulsant Activity by MES or PTZ Method
+  </title>
+
+  <!-- Reuse Intro / Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory: Anticonvulsant Activity by MES or PTZ Method
+  </h1>
+
+  <!-- ================= MES THEORY ================= -->
+  <div class="info-box">
+    <h2>A) Maximal Electroshock Seizure (MES) Method</h2>
+
+    <p>
+      The Maximal Electroshock Seizure (MES) method is one of the most widely
+      used experimental models for screening anticonvulsant drugs effective
+      against <strong>generalized tonic–clonic (grand mal) seizures</strong>.
+    </p>
+
+    <p>
+      In this method, a supramaximal electrical stimulus is delivered through
+      corneal or ear clip electrodes to experimental animals. This produces a
+      characteristic sequence of seizure phases, the most important being
+      <strong>hind limb tonic extension (HLTE)</strong>.
+    </p>
+
+    <p>
+      Anticonvulsant drugs that are effective in this model prevent the spread
+      of seizure activity in the brain and abolish hind limb tonic extension.
+      Such drugs are considered useful in the treatment of tonic–clonic
+      seizures in humans.
+    </p>
+
+    <ul>
+      <li>MES simulates generalized tonic–clonic seizures</li>
+      <li>Key endpoint: abolition of hind limb tonic extension (HLTE)</li>
+      <li>Predictive of clinical efficacy against grand mal epilepsy</li>
+    </ul>
+  </div>
+
+  <!-- ================= MES MECHANISM ================= -->
+  <div class="info-box">
+    <h2>Mechanism of Action (MES Model)</h2>
+
+    <p>
+      Seizure activity produced by maximal electroshock spreads through
+      brainstem centers. Drugs that block this spread are effective in
+      abolishing tonic extension.
+    </p>
+
+    <p>
+      Most drugs effective in the MES model act by blocking
+      <strong>voltage-gated sodium channels</strong>, thereby preventing
+      sustained neuronal firing.
+    </p>
+
+    <ul>
+      <li>Blocks seizure propagation</li>
+      <li>Acts mainly via sodium channel inhibition</li>
+      <li>Examples: Phenytoin, Carbamazepine, Lamotrigine</li>
+    </ul>
+  </div>
+
+  <!-- ================= PTZ THEORY ================= -->
+  <div class="info-box">
+    <h2>B) Pentylenetetrazol (PTZ) Induced Seizure Method</h2>
+
+    <p>
+      The Pentylenetetrazol (PTZ) induced seizure method is used to evaluate
+      anticonvulsant drugs effective against
+      <strong>clonic, myoclonic, and absence (petit mal) seizures</strong>.
+    </p>
+
+    <p>
+      PTZ is a chemical convulsant that lowers the seizure threshold by
+      antagonizing inhibitory neurotransmission in the central nervous system.
+      Administration of PTZ produces myoclonic jerks followed by generalized
+      clonic seizures in experimental animals.
+    </p>
+
+    <ul>
+      <li>Models absence and myoclonic seizures</li>
+      <li>Induces clonic convulsions</li>
+      <li>Useful for screening GABA-enhancing drugs</li>
+    </ul>
+  </div>
+
+  <!-- ================= PTZ MECHANISM ================= -->
+  <div class="info-box">
+    <h2>Mechanism of Action (PTZ Model)</h2>
+
+    <p>
+      PTZ induces seizures by antagonizing the
+      <strong>GABA<sub>A</sub> receptor</strong>, which reduces inhibitory
+      neurotransmission in the brain and increases neuronal excitability.
+    </p>
+
+    <p>
+      Drugs that enhance GABAergic transmission increase seizure threshold,
+      delay the onset of seizures, or completely prevent convulsions in this
+      model.
+    </p>
+
+    <ul>
+      <li>Acts by blocking GABA<sub>A</sub> receptors</li>
+      <li>Produces clonic seizures</li>
+      <li>Standard drug: Diazepam</li>
+    </ul>
+  </div>
+
+  <!-- ================= COMPARISON ================= -->
+  <div class="info-box">
+    <h2>Comparison of MES and PTZ Models</h2>
+
+    <ul>
+      <li>
+        <strong>MES:</strong> Screens drugs effective against tonic–clonic
+        seizures
+      </li>
+      <li>
+        <strong>PTZ:</strong> Screens drugs effective against clonic and
+        absence seizures
+      </li>
+      <li>
+        Activity in both models suggests broad-spectrum anticonvulsant
+        potential
+      </li>
+    </ul>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next: Requirements ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

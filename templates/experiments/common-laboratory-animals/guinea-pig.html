@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guinea Pig | Experimental Animals</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Guinea Pig (Cavia porcellus)</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/common-laboratory-animals/videos/guinea-pig.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The guinea pig (<em>Cavia porcellus</em>), also known as a cavy, is a
+        widely used experimental animal in biomedical research. Unlike rats and
+        mice, guinea pigs are hystricomorph rodents with distinct physiological
+        traits, making them valuable for studies where murine models are
+        inadequate. They are docile, relatively large, and share several
+        important similarities with humans.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🕰️ HISTORY -->
+  <div class="exp-card">
+    <h2>History and Origin</h2>
+    <p>
+      Guinea pigs were domesticated from wild cavies in South America
+      approximately 5000–7000 years ago by Andean civilizations. They were
+      introduced to Europe in the 16th century. Their use in laboratories began
+      in the late 19th and early 20th centuries, with standardized strains such
+      as Dunkin-Hartley developed in the 1920s–1930s. Major suppliers include
+      Charles River and Inotiv.
+    </p>
+  </div>
+
+  <!-- 🧪 PHYSICAL CHARACTERISTICS -->
+  <div class="exp-card">
+    <h2>Physical Characteristics</h2>
+    <ul>
+      <li><strong>Appearance:</strong> Rounded body, short hair (common lab
+        strains), no tail; coat colors vary (albino Hartley common)</li>
+      <li><strong>Body Weight:</strong> 700–1200 g (adults)</li>
+      <li><strong>Body Length:</strong> 20–30 cm</li>
+      <li><strong>Lifespan:</strong> 4–8 years (longer than rats and mice)</li>
+      <li><strong>Anatomy Highlights:</strong> Cannot synthesize vitamin C;
+        sensitive hearing; four toes on forelimbs, three on hind limbs</li>
+    </ul>
+  </div>
+
+
+
+  <!-- ✅ ADVANTAGES -->
+  <div class="exp-card">
+    <h2>Advantages</h2>
+    <ul>
+      <li>Human-like immune responses (complement system, anaphylaxis)</li>
+      <li>Excellent respiratory and infectious disease models</li>
+      <li>Only common lab rodent requiring dietary vitamin C</li>
+      <li>Larger size facilitates surgery and biological sampling</li>
+      <li>Low aggression and easy handling</li>
+    </ul>
+  </div>
+
+  <!-- ⚠️ LIMITATIONS -->
+  <div class="exp-card">
+    <h2>Limitations</h2>
+    <ul>
+      <li>Higher housing and maintenance costs</li>
+      <li>Limited genetic tools compared to mice</li>
+      <li>Prone to spontaneous diseases in some strains</li>
+    </ul>
+  </div>
+
+  <!-- 🧬 COMMON STRAINS -->
+  <div class="exp-card">
+    <h2>Common Strains</h2>
+    <ul>
+      <li><strong>Dunkin-Hartley (Hartley):</strong> Outbred albino; most widely
+        used and robust</li>
+      <li><strong>Strain 2/13:</strong> Inbred; commonly used in immunological
+        studies</li>
+    </ul>
+  </div>
+
+  <!-- 📊 COMPARISON TABLE -->
+  <div class="exp-card">
+    <h2>Comparison with Other Rodents</h2>
+
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Trait</th>
+            <th>Guinea Pig</th>
+            <th>Rat</th>
+            <th>Mouse</th>
+            <th>Hamster</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Vitamin C Requirement</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Adult Weight</td>
+            <td>700–1200 g</td>
+            <td>200–800 g</td>
+            <td>20–40 g</td>
+            <td>100–150 g</td>
+          </tr>
+          <tr>
+            <td>Gestation Period</td>
+            <td>59–72 days</td>
+            <td>21–23 days</td>
+            <td>19–21 days</td>
+            <td>~16 days</td>
+          </tr>
+          <tr>
+            <td>Temperament</td>
+            <td>Very docile</td>
+            <td>Docile</td>
+            <td>Variable</td>
+            <td>Solitary</td>
+          </tr>
+          <tr>
+            <td>Primary Uses</td>
+            <td>Immunology, infection</td>
+            <td>General research</td>
+            <td>Genetics, cancer</td>
+            <td>Infectious disease</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🔬 COMMON USES -->
+  <div class="exp-card">
+    <h2>Common Uses in Research</h2>
+    <ul>
+      <li>Immunology and allergy (anaphylaxis, asthma)</li>
+      <li>Infectious disease research (tuberculosis, influenza)</li>
+      <li>Nutrition studies (vitamin C deficiency, scurvy)</li>
+      <li>Audiology and otology (noise-induced hearing loss)</li>
+      <li>Dermatology, reproduction, and cardiovascular studies</li>
+    </ul>
+    <p>
+      Guinea pigs remain essential in preclinical research, particularly for
+      respiratory and immunological studies, while emphasizing welfare through
+      enrichment, group housing, and ethical animal experimentation.
+    </p>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Animal List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

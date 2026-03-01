@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Super Admin | G-MARS{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/super_admin.css' %}??v=10001">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="sa-header">
+  <div class="logo-area">
+    <img src="{% static 'images/gmars-logo.png' %}" class="logo">
+    <span class="badge">SUPER ADMIN</span>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn" title="Toggle Menu" onclick="toggleSidebar()">☰</button>
+
+    <button class="icon-btn" title="Notifications"
+            onclick="window.location.href='/superadmin/attempts/'">🔔</button>
+
+    <button class="icon-btn" title="Toggle Theme" onclick="toggleTheme()">🌓</button>
+
+    <button class="icon-btn" title="Settings"
+            onclick="window.location.href='/superadmin/settings/'">⚙</button>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+  </div>
+</header>
+
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="sa-layout">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sa-sidebar">
+    <nav>
+      <a href="/superadmin/dashboard/">🏠 <span>Dashboard</span></a>
+
+      <a href="/superadmin/principal-requests/">
+        📥 <span>Principal Requests</span>
+        {% if pending_requests > 0 %}
+          <span class="badge-count">{{ pending_requests }}</span>
+        {% endif %}
+      </a>
+
+      <a href="/superadmin/colleges/">🏫 <span>Colleges</span></a>
+      <a href="/superadmin/students/">👥 <span>Users</span></a>
+      <a href="/superadmin/experiments/">🧪 <span>Experiments</span></a>
+      <a href="/superadmin/exams/">📝 <span>Exams</span></a>
+      <a href="/superadmin/reports/">📊 <span>Reports</span></a>
+      <a href="/superadmin/billing/">💳 <span>Billing</span></a>
+      <a href="/superadmin/cms/">📚 <span>CMS</span></a>
+      <a href="/superadmin/support/">🎧 <span>Support</span></a>
+      <a href="/superadmin/settings/">⚙ <span>Settings</span></a>
+      <a href="/superadmin/audit-logs/">🔒 <span>Audit Logs</span></a>
+    </nav>
+  </aside>
+
+  <!-- ================= PAGE CONTENT ================= -->
+  <main class="sa-content">
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="sa-footer">
+  <p>© 2026 G-MARS Pharma Solutions | Super Admin Panel</p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>
+
+</body>
+</html>

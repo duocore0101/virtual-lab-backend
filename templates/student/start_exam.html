@@ -1,0 +1,466 @@
+{% extends "student/base.html" %}
+{% load static %}
+{% block title %}{{ exam.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================= PAGE WRAPPER ================= */
+.exam-wrapper {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+/* ================= HEADER ================= */
+.exam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.exam-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.exam-duration {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* ================= TIMER ================= */
+.timer-box {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 10px 25px rgba(239,68,68,0.3);
+}
+
+/* ================= SECTION TITLE ================= */
+.section-title {
+    margin-top: 40px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #4f46e5;
+    border-left: 4px solid #4f46e5;
+    padding-left: 10px;
+}
+
+/* ================= QUESTION CARD ================= */
+.question-card {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    transition: 0.2s;
+}
+
+.question-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ================= MCQ OPTIONS ================= */
+.option-item {
+    display: block;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option-item:hover {
+    background: #eef2ff;
+    border-color: #6366f1;
+}
+
+.option-item input {
+    margin-right: 8px;
+}
+
+/* ================= TEXTAREA ================= */
+textarea, input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    transition: 0.2s;
+}
+
+textarea:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+/* ================= SPOTTING IMAGE ================= */
+.spot-image {
+    max-width: 280px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* ================= SUBMIT BUTTON ================= */
+.submit-btn {
+    margin-top: 40px;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(79,70,229,0.3);
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(79,70,229,0.4);
+}
+
+</style>
+
+<div class="exam-wrapper">
+
+    <!-- HEADER -->
+    <div class="exam-header">
+        <div>
+            <div class="exam-title">{{ exam.title }}</div>
+            <div class="exam-duration">
+                Duration: {{ duration }} minutes
+            </div>
+        </div>
+
+        <div class="timer-box">
+            ⏳ Time Left: <span id="time">--:--</span>
+        </div>
+    </div>
+
+    <form id="examForm"
+          data-submit-url="{% url 'submit-exam' exam.id %}"
+          data-duration="{{ duration }}">
+
+        <!-- MCQ SECTION -->
+        {% if mcqs %}
+        <div class="section-title">MCQ Section</div>
+        {% for mcq in mcqs %}
+        <div class="question-card">
+            <strong>Q{{ forloop.counter }}.</strong> {{ mcq.question_text }}
+            <div style="margin-top:12px;">
+                <label class="option-item">
+                    <input type="radio" name="mcq_{{ mcq.id }}" value="A">
+                    {{ mcq.option_a }}
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="mcq_{{ mcq.id }}" value="B">
+                    {{ mcq.option_b }}
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="mcq_{{ mcq.id }}" value="C">
+                    {{ mcq.option_c }}
+                </label>
+                <label class="option-item">
+                    <input type="radio" name="mcq_{{ mcq.id }}" value="D">
+                    {{ mcq.option_d }}
+                </label>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- SHORT SECTION -->
+        {% if short_answers %}
+        <div class="section-title">Short Answer Section</div>
+        {% for short in short_answers %}
+        <div class="question-card">
+            <strong>Q{{ forloop.counter }}.</strong> {{ short.question_text }}
+            <textarea name="short_{{ short.id }}" rows="4"
+                      placeholder="Write your answer..."></textarea>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- SPOTTING SECTION -->
+        {% if spotting_questions %}
+        <div class="section-title">Spotting Section</div>
+        {% for spot in spotting_questions %}
+        <div class="question-card">
+            <strong>Spot {{ forloop.counter }}</strong><br><br>
+            <img src="{{ spot.image.url }}" class="spot-image">
+            <input type="text"
+                   name="spotting_{{ spot.id }}"
+                   placeholder="Enter your answer">
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- PRACTICAL SECTION -->
+        <!-- PRACTICAL SECTION -->
+{% if practicals %}
+<div class="section-title">Practical Section</div>
+
+{% for practical in practicals %}
+<div class="question-card">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <strong>{{ practical.title }}</strong>
+            <div style="color:#6b7280; font-size:14px;">
+                {{ practical.get_practical_type_display|default:"Practical" }}
+            </div>
+        </div>
+
+         {% if practical.experiment.slug %}
+<button type="button"
+        class="option-item watch-video-btn"
+        style="width:auto; padding:6px 14px;"
+        data-video="{% static 'experiment_videos/' %}{{ practical.experiment.slug }}.mp4">
+    ▶ Watch Video
+</button>
+{% endif %}
+    </div>
+
+    <hr style="margin:15px 0;">
+
+    <!-- AIM (READ ONLY) -->
+    <div style="margin-bottom:15px;">
+        <strong>Aim:</strong>
+        <div style="color:#374151; margin-top:5px;">
+            {{ practical.aim }}
+        </div>
+    </div>
+
+    <!-- THEORY -->
+    <div style="margin-bottom:15px;">
+        <label><strong>Theory</strong></label>
+        <textarea name="practical_{{ practical.id }}_theory"
+                  rows="3"
+                  placeholder="Write theory..."></textarea>
+    </div>
+
+    <!-- REQUIREMENTS -->
+    <div style="margin-bottom:15px;">
+        <label><strong>Requirements</strong></label>
+        <textarea name="practical_{{ practical.id }}_requirements"
+                  rows="3"
+                  placeholder="Write requirements..."></textarea>
+    </div>
+
+    <!-- PROCEDURE -->
+    <div style="margin-bottom:15px;">
+        <label><strong>Procedure</strong></label>
+        <textarea name="practical_{{ practical.id }}_procedure"
+                  rows="4"
+                  placeholder="Write procedure..."></textarea>
+    </div>
+
+    <!-- OBSERVATION -->
+    <div style="margin-bottom:15px;">
+        <label><strong>Observation</strong></label>
+        <textarea name="practical_{{ practical.id }}_observation"
+                  rows="3"
+                  placeholder="Write observation..."></textarea>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div>
+        <label><strong>Conclusion</strong></label>
+        <textarea name="practical_{{ practical.id }}_conclusion"
+                  rows="3"
+                  placeholder="Write conclusion..."></textarea>
+    </div>
+
+</div>
+{% endfor %}
+{% endif %}
+
+        <button type="button"
+                id="submitBtn"
+                class="submit-btn"
+                onclick="submitExam()">
+            Submit Exam
+        </button>
+
+    </form>
+    <!-- VIDEO MODAL -->
+<div id="videoModal"
+     style="display:none; position:fixed; inset:0;
+            background:rgba(0,0,0,0.7);
+            justify-content:center;
+            align-items:center;
+            z-index:9999;">
+
+    <div style="background:#fff; padding:20px;
+                border-radius:12px; width:80%; max-width:800px;
+                position:relative;">
+
+        <button onclick="closeVideoModal()"
+                style="position:absolute; top:10px; right:15px;
+                       border:none; background:none;
+                       font-size:20px; cursor:pointer;">
+            ✖
+        </button>
+
+       <video id="videoFrame"
+       width="100%"
+       height="400"
+       controls
+       style="border-radius:12px;">
+    <source src="" type="video/mp4">
+</video>
+
+    </div>
+</div>
+</div>
+
+<!-- TIMER & SUBMIT LOGIC -->
+<script>
+const examForm = document.getElementById("examForm");
+const submitUrl = examForm.dataset.submitUrl;
+const durationMinutes = parseInt(examForm.dataset.duration || "0");
+
+let totalSeconds = durationMinutes * 60;
+let examSubmitted = false;
+
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+function startTimer() {
+    const timerElement = document.getElementById("time");
+
+    const interval = setInterval(function() {
+
+        if (examSubmitted) {
+            clearInterval(interval);
+            return;
+        }
+
+        timerElement.innerText = formatTime(totalSeconds);
+        totalSeconds--;
+
+        if (totalSeconds < 0) {
+            clearInterval(interval);
+            submitExam(true);
+        }
+
+    }, 1000);
+}
+
+startTimer();
+
+function submitExam(auto = false) {
+
+    if (examSubmitted) return;
+
+    examSubmitted = true;
+    document.getElementById("submitBtn").disabled = true;
+
+    let mcqAnswers = {};
+    let shortAnswers = {};
+    let spottingAnswers = {};
+    let practicalAnswers = {};
+
+    document.querySelectorAll("input[type=radio]:checked")
+        .forEach(function(input) {
+            const parts = input.name.split("_");
+            mcqAnswers[parts[1]] = input.value;
+        });
+
+    document.querySelectorAll("textarea")
+    .forEach(function(textarea) {
+        const parts = textarea.name.split("_");
+
+        // SHORT ANSWERS (unchanged)
+        if (textarea.name.startsWith("short_")) {
+            shortAnswers[parts[1]] = textarea.value;
+        }
+    });
+
+/* 🔥 NEW PRACTICAL STRUCTURED COLLECTION */
+document.querySelectorAll("textarea[name^='practical_']")
+    .forEach(function(textarea) {
+
+        const parts = textarea.name.split("_");
+
+        const practicalId = parts[1];
+        const field = parts[2];
+
+        if (!practicalAnswers[practicalId]) {
+            practicalAnswers[practicalId] = {};
+        }
+
+        practicalAnswers[practicalId][field] = textarea.value;
+    });
+
+    document.querySelectorAll("input[name^='spotting_']")
+        .forEach(function(input) {
+            const parts = input.name.split("_");
+            spottingAnswers[parts[1]] = input.value;
+        });
+
+    const payload = {
+        mcq: mcqAnswers,
+        short: shortAnswers,
+        spotting: spottingAnswers,
+        practical: practicalAnswers
+    };
+
+    fetch(submitUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        }
+    });
+}
+function openVideoModal(url) {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("videoFrame");
+
+    video.querySelector("source").src = url;
+    video.load();
+    modal.style.display = "flex";
+}
+
+function closeVideoModal() {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("videoFrame");
+
+    video.pause();
+    video.currentTime = 0;
+    video.querySelector("source").src = "";
+    modal.style.display = "none";
+}
+// Attach video button listeners on page load
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".watch-video-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+            openVideoModal(this.dataset.video);
+        });
+    });
+});
+</script>
+
+{% endblock %}

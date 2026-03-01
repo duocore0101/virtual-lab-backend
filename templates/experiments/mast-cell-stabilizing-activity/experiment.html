@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mast Cell Stabilizing Activity – Virtual Simulator</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+<style>
+  .top-actions {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 12px;
+    z-index: 50;
+  }
+
+  .dropdown-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: #ff2e2e;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    transition: 0.3s;
+  }
+
+  .dropdown-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .main-image {
+    width: 45%;
+    max-width: 1000px;
+  }
+
+  .main-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  }
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 INSTRUCTIONS POPUP -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Divide animals into 5 groups.</li>
+      <li>Administer standard and test drugs.</li>
+      <li>Induce mast cell degranulation using Compound 48/80.</li>
+      <li>Count intact and degranulated mast cells.</li>
+      <li>Calculate % Protection.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+
+    <h2>Procedure / Calculation</h2>
+
+    <p><strong>Formula:</strong></p>
+
+    <p>
+      % Protection =
+      (Degranulated cells in control − Degranulated cells in treated) × 100
+      <br>
+      --------------------------------------------------------------
+      <br>
+      Degranulated cells in control
+    </p>
+
+    <p><strong>Example:</strong></p>
+
+    <p>
+      For Standard Drug:
+      <br>
+      (60 − 18) × 100 / 60 = 70%
+    </p>
+
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:1000px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+
+    <h2>Observation Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Treatment</th>
+          <th>Total Mast Cells</th>
+          <th>Intact Cells</th>
+          <th>Degranulated Cells</th>
+          <th>% Protection</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>I</td>
+          <td>Normal Control</td>
+          <td>100</td>
+          <td>94</td>
+          <td>6</td>
+          <td>—</td>
+        </tr>
+
+        <tr>
+          <td>II</td>
+          <td>Disease Control</td>
+          <td>100</td>
+          <td>40</td>
+          <td>60</td>
+          <td>—</td>
+        </tr>
+
+        <tr>
+          <td>III</td>
+          <td>Standard Drug</td>
+          <td>100</td>
+          <td>82</td>
+          <td>18</td>
+          <td>70.0 %</td>
+        </tr>
+
+        <tr>
+          <td>IV</td>
+          <td>Test Drug Low Dose</td>
+          <td>100</td>
+          <td>58</td>
+          <td>42</td>
+          <td>30.0 %</td>
+        </tr>
+
+        <tr>
+          <td>V</td>
+          <td>Test Drug High Dose</td>
+          <td>100</td>
+          <td>75</td>
+          <td>25</td>
+          <td>58.3 %</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Formula/Calculation</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Mast Cell Stabilizing Activity – Virtual Simulator</h1>
+
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🖼 BIG CENTRAL IMAGE -->
+  <div class="image-container">
+    <div class="main-image">
+      <img src="{% static 'experiments/mast-cell-stabilizing-activity/images/mast_cell_setup.png' %}"
+           alt="Mast Cell Degranulation Setup">
+    </div>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<script>
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+const toggle = document.getElementById("themeToggle");
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

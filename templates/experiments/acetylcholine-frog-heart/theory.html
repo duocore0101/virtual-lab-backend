@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Acetylcholine on Frog’s Heart – Theory</title>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ===== SLIDE IMAGE ===== */
+    .slide-image {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .slide-image img {
+      max-width: 100%;
+      height: 260px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- MAIN TITLE -->
+  <h1 class="title">
+    Theory / Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- 🔹 SLIDE 1 : PRINCIPLE (UPDATED) -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+
+      <p>
+        Acetylcholine (<strong>ACh</strong>) binds to
+        <strong>muscarinic receptors</strong> (primarily
+        <strong>M<sub>2</sub> subtype</strong>) present on cardiac muscle cells,
+        producing inhibitory effects on the heart.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Negative chronotropic effect:</strong>
+          Decrease in heart rate (<em>bradycardia</em>)
+        </li>
+        <li>
+          <strong>Negative inotropic effect:</strong>
+          Decrease in force of contraction (reduced amplitude)
+        </li>
+      </ul>
+
+      <p>
+        This occurs through the following mechanism:
+      </p>
+
+      <ol>
+        <li>
+          Activation of M<sub>2</sub> receptors →
+          coupling to <strong>G<sub>i</sub> proteins</strong> →
+          inhibition of <strong>adenylyl cyclase</strong> →
+          reduced intracellular <strong>cAMP</strong> levels.
+        </li>
+        <li>
+          Opening of <strong>G-protein–gated inward rectifier K<sup>+</sup> channels</strong>
+          leads to membrane <strong>hyperpolarization</strong>,
+          slowing pacemaker activity (especially in the
+          <strong>sinus venosus</strong>, the pacemaker of the frog heart)
+          and reducing cardiac excitability.
+        </li>
+        <li>
+          At higher doses, acetylcholine may cause
+          <strong>temporary cardiac arrest in diastole</strong>,
+          which is <strong>reversible</strong> on washing with
+          Ringer’s solution.
+        </li>
+      </ol>
+    </div>
+
+    <!-- 🔹 SLIDE 2 (UNCHANGED) -->
+    <div class="info-box slide">
+      <h2>Cholinergic Action on Heart</h2>
+      <p>
+        Acetylcholine is a major <strong>neurohumoral transmitter</strong> at
+        autonomic and somatic sites.
+      </p>
+      <p>
+        Acetylcholine, like <strong>parasympathomimetics</strong>, influences
+        heart rate and force of contraction.
+      </p>
+      <p>
+        Acetylcholine acts through <strong>muscarinic receptors</strong>
+        located in the heart.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/acetylcholine-frog-heart/images/cholinergic_action.png' %}"
+             alt="Cholinergic action on frog heart">
+      </div>
+    </div>
+
+    <!-- 🔹 SLIDE 3 (UNCHANGED) -->
+    <div class="info-box slide">
+      <h2>Effect on Pacemaker Cells</h2>
+      <p>
+        Acetylcholine <strong>hyperpolarizes</strong> the pacemaker cells and
+        decreases the rate of <strong>diastolic depolarization</strong>.
+      </p>
+      <p>
+        Thus, the rate of impulse generation is reduced, leading to
+        <strong>bradycardia</strong>.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/acetylcholine-frog-heart/images/pacemaker_effect.png' %}"
+             alt="Effect of acetylcholine on pacemaker cells">
+      </div>
+    </div>
+
+    <!-- 🔹 SLIDE 4 (UNCHANGED) -->
+    <div class="info-box slide">
+      <h2>Effect on Cardiac Contractility</h2>
+      <p>
+        Acetylcholine reduces atrial and ventricular contractility by acting
+        on cardiac muscle.
+      </p>
+      <p>
+        Acetylcholine increases <strong>K⁺ permeability</strong>, which leads
+        to <strong>hyperpolarization</strong> and decrease in contractility.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/acetylcholine-frog-heart/images/contractility_effect.png' %}"
+             alt="Effect of acetylcholine on cardiac contractility">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 4
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

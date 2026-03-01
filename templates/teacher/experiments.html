@@ -1,0 +1,220 @@
+{% extends "teacher/base.html" %}
+{% load static %}
+
+{% block title %}My Experiments | Teacher{% endblock %}
+
+{% block content %}
+
+<style>
+/* ================================
+   MODERN EXPERIMENTS UI
+   (LIGHT + DARK MODE SUPPORT)
+================================ */
+
+/* Wrapper */
+.experiments-wrapper {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Header */
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+/* Card (THEME BASED) */
+.experiments-card {
+    margin-top: 25px;
+    background: var(--bg-card);
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    transition: 0.3s ease;
+}
+
+/* Table */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modern-table th {
+    text-align: left;
+    padding: 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modern-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+/* Row Hover */
+.modern-table tbody tr {
+    transition: 0.3s ease;
+}
+
+.modern-table tbody tr:hover {
+    background: rgba(255, 0, 0, 0.05);
+    transform: scale(1.01);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: rgba(0,230,118,0.12);
+    color: #00c853;
+    border: 1px solid rgba(0,230,118,0.4);
+}
+
+.status-inactive {
+    background: rgba(255,26,26,0.12);
+    color: var(--accent-red);
+    border: 1px solid rgba(255,26,26,0.4);
+}
+
+/* Action Buttons */
+.action-group {
+    display: flex;
+    gap: 12px;
+}
+
+.run-btn {
+    background: var(--accent-red);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.run-btn:hover {
+    background: var(--accent-red-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-red);
+}
+
+.exam-btn {
+    border: 2px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.exam-btn:hover {
+    background: rgba(255,0,0,0.1);
+    transform: translateY(-3px);
+}
+
+/* Empty State */
+.empty-row {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .action-group {
+        flex-direction: column;
+    }
+}
+</style>
+
+<div class="experiments-wrapper">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Experiments</h2>
+        <p>Run experiments, manage exams and monitor activity</p>
+    </div>
+
+    <!-- Card -->
+    <div class="experiments-card">
+
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Experiment Name</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for exp in experiments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+                        <strong>{{ exp.name }}</strong>
+                    </td>
+
+                    <td>
+                        <span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+                            {% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="action-group">
+
+                            <!-- Run -->
+                            <a href="/experiment/{{ exp.slug }}/"
+                               class="run-btn">
+                                Run
+                            </a>
+
+                            <!-- Manage Exam -->
+                            <a href="/teacher/experiment/{{ exp.slug }}/exam/"
+                               class="exam-btn">
+                                Manage Exam
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-row">
+                        No experiments available
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

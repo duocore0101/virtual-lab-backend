@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plethysmometer (Digital Plethysmometer) | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Plethysmometer (Digital Plethysmometer)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/plethysmometer.glb' %}"
+        alt="Digital Plethysmometer 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Plethysmometer</strong>, commonly referred to as the
+        <em>Digital Plethysmometer</em> or <em>Paw Volume Meter</em>, is a
+        precision instrument used in experimental pharmacology to measure
+        <strong>small changes in paw volume</strong> of rodents.
+      </p>
+      <p>
+        It is widely employed for evaluating
+        <strong>anti-inflammatory drugs</strong> by quantifying
+        <strong>paw edema</strong> induced by inflammatory agents such as
+        carrageenan.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      The plethysmometer operates based on
+      <strong>Archimedes’ principle of water displacement</strong>.
+      When the animal’s paw is dipped into a fluid-filled measuring cell
+      up to a fixed reference point (usually the ankle joint),
+      the volume of fluid displaced corresponds to the paw volume.
+    </p>
+    <p>
+      Modern digital plethysmometers use highly sensitive transducers to
+      detect minute volume changes (resolution up to
+      <strong>0.01 ml</strong>), providing a direct digital readout.
+      Older models used mercury, which has now been replaced for safety.
+    </p>
+    <p>
+      Effective anti-inflammatory drugs (e.g., diclofenac, indomethacin)
+      significantly reduce edema volume compared to control animals.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Measuring Cell:</strong> Small transparent tube or beaker
+        filled with water or electrolyte solution, connected to a
+        sensitive volume transducer.
+      </li>
+      <li>
+        <strong>Display:</strong> Digital display panel showing volume
+        directly in milliliters (typical range 0–50 ml, accuracy ±0.01 ml).
+      </li>
+      <li>
+        <strong>Foot Switch / Pedal:</strong> Enables hands-free zeroing
+        and measurement.
+      </li>
+      <li>
+        <strong>Features:</strong>
+        <ul>
+          <li>Tare/zero function</li>
+          <li>Calibration tube</li>
+          <li>Separate measuring cells for rats and mice</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Commercial Models:</strong> Commonly available from
+        manufacturers such as Ugo Basile and Panlab.
+      </li>
+      <li>
+        <strong>Advantages of Digital Versions:</strong> Mercury-free,
+        highly precise, rapid, and easy to use.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Assessment of acute and chronic inflammation</li>
+      <li>Screening of anti-inflammatory and anti-edematous drugs</li>
+      <li>Evaluation of paw edema in experimental models</li>
+      <li>Preclinical pharmacological research</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Saline Purgatives on Frog Intestine – Experiment</title>
+
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
+
+  <style>
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
+      width: 100%;
+      height: 480px;
+      background: #000;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+    }
+
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= POPUP OVERLAY ================= */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 1000px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 28px 34px;
+      box-shadow:
+        0 0 0 2px #ff3b3b,
+        0 0 35px rgba(255, 59, 59, 0.55);
+      position: relative;
+      animation: popIn 0.35s ease;
+    }
+
+    .popup-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 20px;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .observation-table th {
+      background: #1f2937;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    To study Effect of Saline Purgatives on Frog Intestine
+  </h1>
+
+  <!-- TOP ACTIONS -->
+  <div class="top-actions">
+  <button class="dropdown-btn" onclick="toggleTheme()">🌗 Theme</button>
+  <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+  <button class="dropdown-btn" onclick="openObservation()">📊 Observation</button>
+</div>
+
+
+  <!-- ================= VIDEO ================= -->
+  <div class="video-frame">
+    <video controls>
+      <source src="{% static 'experiments/saline-purgative-frog-intestine/videos/saline_purgative_frog_intestine.mp4' %}">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row" style="justify-content:center; margin-top:25px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedureModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeProcedure()">✖</span>
+    <h2 class="popup-title">Procedure</h2>
+
+    <ol>
+      <li>Pith the frog (destroy brain and spinal cord humanely) and pin it ventral side up on the frog board.</li>
+      <li>Open the abdominal cavity by a midline incision and expose the small intestine.</li>
+      <li>Carefully isolate a segment of small intestine (ileum preferred).</li>
+      <li>Divide the intestine into three equal compartments by tightly tying threads (use different colors).</li>
+      <li>
+        Using a syringe, inject:
+        <ul>
+          <li><strong>Compartment 1:</strong> 0.2 mL hypotonic saline.</li>
+          <li><strong>Compartment 2:</strong> 0.2 mL hypertonic MgSO₄ (saline purgative).</li>
+          <li><strong>Compartment 3:</strong> 0.2 mL Frog Ringer's solution.</li>
+        </ul>
+      </li>
+      <li>Leave the preparation for 20–30 minutes.</li>
+      <li>Observe and note changes in volume/diameter of each compartment.</li>
+    </ol>
+
+  </div>
+</div>
+
+<!-- ================= OBSERVATION POPUP ================= -->
+<div class="popup-overlay" id="observationModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeObservation()">✖</span>
+    <h2 class="popup-title">Observation</h2>
+
+    <p><strong>Typical results after 20–30 minutes:</strong></p>
+
+    <table class="observation-table">
+      <tr>
+        <th>Compartment</th>
+        <th>Solution Injected</th>
+        <th>Observation</th>
+        <th>Reason</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Hypotonic (0.45% NaCl)</td>
+        <td>Shrunken (reduced volume)</td>
+        <td>Water moves from lumen to tissues (osmosis).</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Hypertonic (27% MgSO₄)</td>
+        <td>Swollen (increased volume)</td>
+        <td>Water moves from tissues to lumen → mimics purgative action by increasing luminal fluid.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Isotonic (Frog Ringer's)</td>
+        <td>No change</td>
+        <td>Equilibrium; no net water movement.</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

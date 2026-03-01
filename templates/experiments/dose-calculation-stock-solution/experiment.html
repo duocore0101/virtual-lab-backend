@@ -1,0 +1,363 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dose Calculation & Stock Solution | Virtual Lab</title>
+
+<link rel="stylesheet"
+      href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+<style>
+
+/* ================= TOP RIGHT ACTIONS ================= */
+.top-actions{
+  position:fixed;
+  top:20px;
+  right:25px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+.top-actions button{
+  padding:10px 18px;
+  border-radius:22px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff2e2e;
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,0,0,0.6);
+  transition:0.3s;
+}
+
+.top-actions button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* ================= CONTAINER CENTER FIX ================= */
+.exp-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px;
+}
+
+/* ================= GRID CENTER ================= */
+.exp-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:25px;
+  justify-content:center;
+}
+
+/* full width section */
+.full-width{
+  grid-column:1 / -1;
+}
+
+/* ================= INPUT BEAUTIFICATION ================= */
+.exp-input{
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:14px;
+  text-align:center;
+}
+
+select.exp-input{
+  cursor:pointer;
+}
+
+.btn-small{
+  padding:6px 16px;
+  font-size:13px;
+  width:auto;
+  margin:10px auto 0;
+  display:block;
+}
+
+/* ================= TABLE POLISH ================= */
+.exp-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  margin-top:14px;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.exp-table th{
+  background:rgba(229,9,20,0.18);
+  color:#e50914;
+  padding:12px;
+  text-align:center;
+}
+
+.exp-table td{
+  padding:12px;
+  text-align:center;
+  border-top:1px solid #333;
+}
+
+</style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔴 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <h1 class="exp-title" style="text-align:center;">
+    Dose Calculation & Stock Solution Preparation
+  </h1>
+
+  <div class="exp-grid">
+
+    <!-- (ALL YOUR CARDS REMAIN EXACTLY SAME — NO LOGIC CHANGED) -->
+
+    <!-- 1 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Vehicle</h3>
+      <select id="vehicle" class="exp-input">
+        <option>Normal Saline (0.9%)</option>
+        <option>Distilled Water</option>
+        <option>5–10% Tween 80</option>
+        <option>PEG 50%</option>
+        <option>CMC / Methylcellulose</option>
+      </select>
+    </div>
+
+    <!-- 2 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Animal</h3>
+      <select id="animal" class="exp-input">
+        <option value="rat">Rat</option>
+        <option value="mouse">Mouse</option>
+      </select>
+      <input type="number" id="weight" class="exp-input" placeholder="Weight (g)">
+    </div>
+
+    <!-- 3 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Route & Volume</h3>
+      <select id="route" class="exp-input">
+        <option value="oral">Oral</option>
+        <option value="ip">IP</option>
+      </select>
+      <button class="btn-start btn-small" onclick="calcVolume()">Calculate</button>
+      <div class="exp-result" id="volumeOut"></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Dose (mg/kg)</h3>
+      <input type="number" id="doseMgKg" class="exp-input" placeholder="mg/kg">
+      <button class="btn-start btn-small" onclick="calcDose()">Calculate</button>
+      <div class="exp-result" id="doseOut"></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Stock Solution</h3>
+      <input type="number" id="drugMg" class="exp-input" placeholder="Drug (mg)">
+      <input type="number" id="drugVol" class="exp-input" placeholder="Volume (ml)">
+      <button class="btn-start btn-small" onclick="calcStock()">Calculate</button>
+      <div class="exp-result" id="stockOut"></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Plant Extract</h3>
+      <select id="plantDose" class="exp-input">
+        <option value="20">200 mg/kg</option>
+        <option value="40">400 mg/kg</option>
+      </select>
+      <button class="btn-start btn-small" onclick="plantCalc()">Show</button>
+      <div class="exp-result" id="plantOut"></div>
+    </div>
+
+    <!-- 7 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Tablet (Silymarin)</h3>
+      <input type="number" id="tabMg" class="exp-input" value="70">
+      <input type="number" id="tabVol" class="exp-input" placeholder="Volume (ml)">
+      <button class="btn-start btn-small" onclick="tabCalc()">Calculate</button>
+      <div class="exp-result" id="tabOut"></div>
+    </div>
+
+    <!-- 8 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Alloxan</h3>
+      <input type="number" id="alloxDose" class="exp-input" value="150">
+      <button class="btn-start btn-small" onclick="alloxCalc()">Calculate</button>
+      <div class="exp-result" id="alloxOut"></div>
+    </div>
+
+    <!-- 9 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Gentamicin</h3>
+      <input type="number" id="ampConc" class="exp-input" value="40">
+      <button class="btn-start btn-small" onclick="ampCalc()">Calculate</button>
+      <div class="exp-result" id="ampOut"></div>
+    </div>
+
+    <!-- 10 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Dilution</h3>
+      <input type="number" id="origConc" class="exp-input" placeholder="Concentration">
+      <select id="dilFactor" class="exp-input">
+        <option value="2">×2</option>
+        <option value="10">×10</option>
+        <option value="15">×15</option>
+        <option value="20">×20</option>
+      </select>
+      <button class="btn-start btn-small" onclick="dilCalc()">Calculate</button>
+      <div class="exp-result" id="dilOut"></div>
+    </div>
+
+    <!-- 11 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Human → Animal</h3>
+      <input type="number" id="humanDose" class="exp-input" placeholder="Human dose">
+      <button class="btn-start btn-small" onclick="humanCalc()">Convert</button>
+      <div class="exp-result" id="humanOut"></div>
+    </div>
+
+    <!-- 12 -->
+    <div class="exp-card">
+      <h3 class="exp-heading">Administration</h3>
+      <div class="exp-info">
+        <b>Oral:</b> Gavage<br>
+        <b>IP:</b> Lower abdomen
+      </div>
+    </div>
+
+    <!-- OBSERVATION TABLE -->
+    <div class="exp-card full-width">
+      <h2 class="exp-heading">Observation Table</h2>
+      <table class="exp-table">
+        <tr>
+          <th>Animal</th>
+          <th>Weight (g)</th>
+          <th>Dose (mg)</th>
+          <th>Volume (ml)</th>
+        </tr>
+        <tr>
+          <td id="tAnimal">—</td>
+          <td id="tWeight">—</td>
+          <td id="tDose">—</td>
+          <td id="tVol">—</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="exp-actions" style="margin-top:30px; text-align:center;">
+    <a href="/experiment/{{ experiment.slug }}/" class="btn-start btn-small" style="margin-right:20px;">
+      ⬅ Back
+    </a>
+    <a href="/experiment/{{ experiment.slug }}/graph/" class="btn-start btn-small">
+      Next ➡
+    </a>
+  </div>
+
+</div>
+
+<script>
+
+/* FULLSCREEN */
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+</script>
+<script>
+function getVal(id){ return parseFloat(document.getElementById(id).value); }
+
+function toggleTheme(){
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function calcVolume(){
+  let w=getVal("weight");
+  if(isNaN(w)||w<=0){ volumeOut.innerHTML="⚠️ Enter valid weight"; return; }
+  let r=route.value;
+  let v=(r==="oral")?(w/1000)*10:(w/1000)*5;
+
+  volumeOut.innerHTML="Allowed volume: <b>"+v.toFixed(2)+" ml</b>";
+  tVol.innerText=v.toFixed(2);
+
+  // 🔥 STORE FOR GRAPH
+  localStorage.setItem("volume_ml", v.toFixed(2));
+}
+
+function calcDose(){
+  let w=getVal("weight"), d=getVal("doseMgKg");
+  if(isNaN(w)||isNaN(d)){ doseOut.innerHTML="⚠️ Enter inputs"; return; }
+
+  let dose=(w/1000)*d;
+  doseOut.innerHTML="Required dose: <b>"+dose.toFixed(2)+" mg</b>";
+
+  tAnimal.innerText=animal.value;
+  tWeight.innerText=w;
+  tDose.innerText=dose.toFixed(2);
+
+  // 🔥 STORE FOR GRAPH
+  localStorage.setItem("dose_mg", dose.toFixed(2));
+}
+
+function calcStock(){
+  let mg=getVal("drugMg"), ml=getVal("drugVol");
+  if(isNaN(mg)||isNaN(ml)||ml<=0){ stockOut.innerHTML="⚠️ Invalid"; return; }
+  stockOut.innerHTML="Stock: <b>"+(mg/ml).toFixed(2)+" mg/ml</b>";
+}
+
+function plantCalc(){
+  plantOut.innerHTML="Plant extract stock: <b>"+plantDose.value+" mg/ml</b>";
+}
+
+function tabCalc(){
+  let mg=getVal("tabMg"), ml=getVal("tabVol");
+  if(isNaN(mg)||isNaN(ml)||ml<=0){ tabOut.innerHTML="⚠️ Enter volume"; return; }
+  tabOut.innerHTML="Tablet stock: <b>"+(mg/ml).toFixed(2)+" mg/ml</b>";
+}
+
+function alloxCalc(){
+  let w=getVal("weight"), d=getVal("alloxDose");
+  if(isNaN(w)||isNaN(d)){ alloxOut.innerHTML="⚠️ Enter weight"; return; }
+  alloxOut.innerHTML="Alloxan dose: <b>"+((w/1000)*d).toFixed(2)+" mg</b>";
+}
+
+function ampCalc(){
+  let w=getVal("weight"), c=getVal("ampConc");
+  if(isNaN(w)||isNaN(c)){ ampOut.innerHTML="⚠️ Enter values"; return; }
+  ampOut.innerHTML="Injection volume: <b>"+(((w/1000)*80)/c).toFixed(3)+" ml</b>";
+}
+
+function dilCalc(){
+  let c=getVal("origConc"), f=getVal("dilFactor");
+  if(isNaN(c)||isNaN(f)||f<=0){ dilOut.innerHTML="⚠️ Invalid"; return; }
+  dilOut.innerHTML="New concentration: <b>"+(c/f).toFixed(2)+" mg/ml</b>";
+}
+
+function humanCalc(){
+  let h=getVal("humanDose"), w=getVal("weight");
+  if(isNaN(h)||isNaN(w)){ humanOut.innerHTML="⚠️ Enter inputs"; return; }
+  humanOut.innerHTML="Animal dose: <b>"+((h/70000)*w).toFixed(3)+"</b>";
+}
+</script>
+</body>
+</html>

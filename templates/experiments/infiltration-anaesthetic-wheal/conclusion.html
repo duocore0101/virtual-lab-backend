@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Infiltration Anaesthetic Activity – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      The test drugs were evaluated for their ability to produce 
+      <strong>infiltration anaesthesia</strong> using the guinea pig wheal method.
+    </p>
+
+    <ul>
+      <li>
+        <strong>Lignocaine HCl 1%:</strong> Produced rapid onset of 
+        infiltration anaesthesia with prolonged duration, indicated by 
+        absence of response to pin prick in the wheal area.
+      </li>
+
+      <li>
+        <strong>Procaine HCl 1%:</strong> Produced infiltration anaesthesia 
+        with slightly delayed onset and shorter duration compared to lignocaine.
+      </li>
+
+      <li>
+        <strong>Normal Saline:</strong> Did not produce anaesthesia and 
+        showed normal pain response throughout the observation period.
+      </li>
+    </ul>
+
+    <p>
+      Loss of skin pain sensation in the wheal area confirms effective 
+      blockade of cutaneous nerve endings.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The test drugs produce infiltration anaesthesia by 
+      <strong>blocking voltage-gated sodium channels</strong> in peripheral 
+      sensory nerve fibers, thereby preventing conduction of pain impulses.
+    </p>
+    <p>
+      The absence of response to pin prick in the wheal region confirms 
+      successful infiltration anaesthetic activity. The study demonstrates 
+      the effectiveness of local anaesthetics in producing reversible loss 
+      of cutaneous sensation.
+    </p>
+  </div>
+
+  <!-- ⚠ PRECAUTIONS -->
+  <div class="info-box">
+    <h2>Precautions</h2>
+    <ul>
+      <li>Shave the dorsal area properly before injection.</li>
+      <li>Ensure intradermal injection to form a proper wheal.</li>
+      <li>Use minimal volume and correct concentration of drug.</li>
+      <li>Observe animal carefully during pin prick testing.</li>
+      <li>Follow CPCSEA / IAEC ethical guidelines strictly.</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        result: "Test drug produces infiltration anaesthesia indicating blockade of cutaneous nerve endings"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

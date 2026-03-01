@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Diuretic Activity Experiment – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      The test drug produced a <strong>dose-dependent increase in urine output</strong>
+      in rats when compared with the control group. The high dose of the test drug
+      showed significant diuresis with a total urine output of approximately
+      <strong>14.3 ml</strong>, whereas the control group showed about
+      <strong>5.8 ml</strong> of urine output.
+    </p>
+    <p>
+      The calculated diuretic activity was found to be
+      <strong>greater than 2</strong>, indicating a <strong>potent diuretic effect</strong>
+      comparable to the standard diuretic drug, furosemide.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The present study confirms that the given test drug possesses
+      <strong>significant diuretic activity</strong>.
+      The observed dose-dependent increase in urine output suggests a true
+      pharmacological action rather than a nonspecific effect.
+    </p>
+    <p>
+      Further evaluation of electrolyte excretion, particularly the
+      <strong>Na<sup>+</sup>/K<sup>+</sup> ratio</strong>, can help classify the
+      mechanism of action (e.g., loop diuretic–like activity).
+      Based on the findings, the test drug may be useful in the management
+      of conditions such as <strong>hypertension and edema</strong>.
+    </p>
+  </div>
+
+  <!-- ⚠ PRECAUTIONS -->
+  <div class="info-box">
+    <h2>Precautions</h2>
+    <ul>
+      <li>Ensure uniform hydration and accurate dosing of animals.</li>
+      <li>Prevent evaporation or loss of urine during collection.</li>
+      <li>Follow CPCSEA / IAEC ethical guidelines for animal experimentation.</li>
+      <li>Apply appropriate statistical analysis (e.g., ANOVA) to assess significance.</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        result: "Diuretic activity evaluated successfully"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // 🔥 BACKEND DECIDES REDIRECT
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intramuscular Route | Routes of Drug Administration</title>
+
+ <link rel="stylesheet"
+      href="{% static 'experiments/blood-withdrawal-techniques/css/experiment.css' %}">
+
+  <!-- 🔝 TOP RIGHT ACTIONS + POPUP -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ================= POPUP ================= */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-card {
+      background: #111;
+      color: #fff;
+      width: 90%;
+      max-width: 750px;
+      border-radius: 16px;
+      padding: 25px;
+      animation: popIn 0.3s ease;
+      box-shadow: 0 0 25px rgba(255,0,0,0.6);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .popup-header h2 {
+      margin: 0;
+      color: #ff4d4d;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .popup-card ul {
+      padding-left: 18px;
+    }
+
+    .popup-card li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <button onclick="openProcedure()">💉 Technique</button>
+</div>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedurePopup" onclick="closeProcedure(event)">
+  <div class="popup-card">
+    <div class="popup-header">
+      <h2>Intramuscular (IM) – Technique</h2>
+      <button class="close-btn" onclick="closeProcedure()">✖</button>
+    </div>
+
+    <ul>
+      <li>Anesthetize animal (isoflurane recommended for rodents).</li>
+      <li>Extend hind leg gently; restrain properly.</li>
+      <li>Disinfect injection site with alcohol.</li>
+      <li>Insert needle at 90° angle into caudal thigh muscle (3–5 mm depth in mice).</li>
+      <li>Aspirate to ensure no blood (avoid vascular injection).</li>
+      <li>Inject slowly; withdraw needle carefully.</li>
+      <li>Monitor for lameness or signs of nerve injury.</li>
+    </ul>
+
+    <hr style="margin:15px 0; opacity:0.3;">
+
+    <p>
+      <strong>Important:</strong> Avoid sciatic nerve and use minimal volume
+      to prevent muscle damage.
+    </p>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Intramuscular (IM) Route</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/routes-drug-administration/videos/intramuscular.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The intramuscular route involves injecting drugs directly into
+        muscle tissue for relatively rapid absorption. It is commonly
+        used for vaccines, depot preparations, and moderately irritant drugs.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🧬 ADVANTAGES & DISADVANTAGES -->
+  <div class="exp-card">
+    <h2>Advantages & Disadvantages</h2>
+    <ul>
+      <li><strong>Advantages:</strong> Faster absorption than SC.</li>
+      <li>Suitable for depot/oil-based formulations.</li>
+      <li>No first-pass metabolism.</li>
+      <li><strong>Disadvantages:</strong> Painful and stressful.</li>
+      <li>Risk of sciatic nerve damage or muscle necrosis.</li>
+      <li>Limited injection volume in small animals.</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 EQUIPMENT & PHARMACOKINETICS -->
+  <div class="exp-card">
+    <h2>Equipment & Pharmacokinetics</h2>
+    <ul>
+      <li>Syringe: 0.5–1 mL (precision).</li>
+      <li>Needle: 23–27G, ½–1 inch length.</li>
+      <li>Onset: 10–30 minutes.</li>
+      <li>High bioavailability for aqueous solutions.</li>
+      <li>Recommended Volume: Mice ≤0.05 mL; Rats ≤0.3 mL per site.</li>
+      <li>Preferred Sites: Caudal thigh or gastrocnemius muscle.</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/run/" class="btn-start">
+      ← Back to Route List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function openProcedure() {
+  document.getElementById("procedurePopup").classList.add("active");
+}
+
+function closeProcedure(e) {
+  if (!e || e.target.id === "procedurePopup") {
+    document.getElementById("procedurePopup").classList.remove("active");
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+{% extends "teacher/base.html" %}
+{% block title %}Assign Practical{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================= PAGE WRAPPER ================= */
+.batch-container {
+    padding: 40px;
+}
+
+/* ================= PAGE TITLE ================= */
+.batch-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.batch-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* ================= CARD DESIGN ================= */
+.batch-card {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ================= CHECKBOX LIST ================= */
+.experiment-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.experiment-item:hover {
+    background: rgba(0,0,0,0.04);
+}
+
+.experiment-checkbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+    accent-color: var(--accent-red);
+    cursor: pointer;
+}
+
+.experiment-label {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ================= BUTTON ================= */
+.batch-btn {
+    margin-top: 20px;
+    padding: 10px 22px;
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.batch-btn:hover {
+    background: var(--accent-red-dark);
+    transform: translateY(-1px);
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-state {
+    padding: 25px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+</style>
+
+<div class="batch-container">
+
+    <div class="batch-title">
+        Assign Practical
+    </div>
+
+    <div class="batch-subtitle">
+        Batch: <strong>{{ batch.name }}</strong>
+        ({{ batch.start_roll }} - {{ batch.end_roll }})
+    </div>
+
+    <div class="batch-card">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% for experiment in experiments %}
+                <div class="experiment-item">
+                    <input type="checkbox"
+                           name="experiments"
+                           value="{{ experiment.id }}"
+                           class="experiment-checkbox"
+                           {% if experiment.id in assigned_ids %}checked{% endif %}>
+
+                    <label class="experiment-label">
+                        {{ experiment.name }}
+                    </label>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    No practicals available.
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="batch-btn">
+                Save Assignment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

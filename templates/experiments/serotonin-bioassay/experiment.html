@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay of Serotonin (5-HT) – Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+  <style>
+    .video-frame {
+      width: 100%;
+      height: 480px;
+      border-radius: 14px;
+      background: #000;
+      margin-top: 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      display: none;
+    }
+
+    .start-btn {
+      padding: 14px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 30px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 1100px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #222;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Bioassay of Serotonin (5-HT) Using Rat Fundus Strip by Three-Point Method
+  </h1>
+
+  <!-- FULL SCREEN -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">
+      ⛶ Full Screen
+    </button>
+  </div>
+
+  <!-- VIDEO FRAME -->
+  <div class="video-frame">
+    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+      ▶ Start Practical
+    </button>
+
+    <video id="experimentVideo" controls>
+      <source src="{% static 'experiments/pA2-prazosin-schild/videos/pA2-prazosin-schild.mp4' %}" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row" style="justify-content:center; margin-top:25px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="openModal()">
+      View Observations 📊
+    </button>
+
+    <button class="exp-btn"
+      onclick="goToGraph()">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= OBSERVATION MODAL ================= -->
+<div class="modal" id="obsModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+
+    <h2 style="text-align:center;">
+      Observation Table – Three Point Bioassay of 5-HT
+    </h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cycle</th>
+          <th>Sequence</th>
+          <th>S1 Response (mm)</th>
+          <th>S2 Response (mm)</th>
+          <th>T Response (mm)</th>
+        </tr>
+      </thead>
+      <tbody>
+       
+        <tr>
+            <td>1</td>
+            <td>S1 → S2 → T</td>
+            <td id="s1_1"></td>
+            <td id="s2_1"></td>
+            <td id="t_1"></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>S2 → T → S1</td>
+            <td id="s1_2"></td>
+            <td id="s2_2"></td>
+            <td id="t_2"></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>T → S1 → S2</td>
+            <td id="s1_3"></td>
+            <td id="s2_3"></td>
+            <td id="t_3"></td>
+        </tr>
+        <tr style="font-weight:bold;">
+            <td colspan="2">Average</td>
+            <td id="avg_s1"></td>
+            <td id="avg_s2"></td>
+            <td id="avg_t"></td>
+        </tr>
+        </tbody>
+            
+    </table>
+  </div>
+</div>
+
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+<script>
+function startExperiment() {
+  document.getElementById("startBtn").style.display = "none";
+  let video = document.getElementById("experimentVideo");
+  video.style.display = "block";
+  video.play();
+
+  video.onended = function() {
+    fillObservations();
+  };
+}
+
+function fillObservations() {
+
+  // ========================
+  // CYCLE VALUES
+  // ========================
+
+  // Cycle 1
+  document.getElementById("s1_1").innerText = 24;
+  document.getElementById("s2_1").innerText = 58;
+  document.getElementById("t_1").innerText = 42;
+
+  // Cycle 2
+  document.getElementById("s1_2").innerText = 22;
+  document.getElementById("s2_2").innerText = 56;
+  document.getElementById("t_2").innerText = 40;
+
+  // Cycle 3
+  document.getElementById("s1_3").innerText = 23;
+  document.getElementById("s2_3").innerText = 57;
+  document.getElementById("t_3").innerText = 43;
+
+  // ========================
+  // AVERAGE VALUES
+  // ========================
+
+  document.getElementById("avg_s1").innerText = "23 mm";
+  document.getElementById("avg_s2").innerText = "57 mm";
+  document.getElementById("avg_t").innerText = "41.67 mm (≈42 mm)";
+}
+function openModal() {
+  document.getElementById("obsModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("obsModal").style.display = "none";
+}
+
+function goToGraph() {
+  location.href = "/experiment/{{ experiment.slug }}/graph/";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

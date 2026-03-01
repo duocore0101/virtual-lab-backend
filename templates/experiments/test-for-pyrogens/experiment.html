@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test for Pyrogens – Experiment</title>
+
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
+
+  <style>
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= POPUP OVERLAY ================= */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 1000px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 28px 34px;
+      box-shadow:
+        0 0 0 2px #ff3b3b,
+        0 0 35px rgba(255, 59, 59, 0.55);
+      position: relative;
+      animation: popIn 0.35s ease;
+    }
+
+    .popup-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 20px;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .observation-table th {
+      background: #1f2937;
+      color: #fff;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    Test for Pyrogens
+  </h1>
+
+  <div class="top-actions">
+  <button class="dropdown-btn" onclick="toggleTheme()">🌗 Theme</button>
+  <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+  <button class="dropdown-btn" onclick="openObservation()">📊 Observation</button>
+</div>
+
+
+  <!-- NAVIGATION -->
+  <div class="button-row" style="justify-content:center; margin-top:80px;">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= PROCEDURE POPUP ================= -->
+<div class="popup-overlay" id="procedureModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeProcedure()">✖</span>
+    <h2 class="popup-title">Procedure</h2>
+
+   <ol>
+
+  <li>
+    You are already aware that injectable preparations must be free from
+    pyrogen contamination. The test for pyrogen is designed to measure
+    the rise in temperature in rabbit due to contaminated injectables.
+  </li>
+
+  <li>
+    An apparatus telethermometer with six probes is used for the test.
+    It consist of a mains on/off switch, digital counter, rotating knob,
+    six probes and sockets for measurement of temperature.
+    Calibration of telethermometer is a prerequisite.
+  </li>
+
+  <li>
+    To check the test sample for pyrogen, always select three healthy
+    rabbits of either sex.
+  </li>
+
+  <li>
+    These animals must be previously conditioned and housed according to IP.
+    Place the animals individually in rabbit holders.
+  </li>
+
+  <li>
+    Now insert the temperature sensing probe in to the rectum up to
+    a depth of about 5cm.
+  </li>
+
+  <li>
+    Record the normal body temperature of each animal before the
+    injection of test sample every 30 minutes for a span of at least
+    ninety minutes. Do not use any rabbit showing body temperature
+    higher than 39.8 degree and lower than 38 degree centigrade.
+  </li>
+
+  <li>
+    Now inject the test sample in to the ear vein of each rabbit.
+    Here, water for injection is used.
+    The volume of injection is not less than 0.5ml/kg.
+  </li>
+
+  <li>
+    Record the temperature of each rabbit at every half hour
+    for three hours duration after the injection.
+    You shall observe the rise in body temperature of all
+    3 individual rabbits is less than 0.6 degrees centigrade.
+    This is indicative of the fact that the test sample is free
+    from pyrogen.
+  </li>
+
+</ol>
+
+
+  </div>
+</div>
+
+<!-- ================= OBSERVATION POPUP ================= -->
+<div class="popup-overlay" id="observationModal">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closeObservation()">✖</span>
+    <h2 class="popup-title">Observation</h2>
+
+    <table class="observation-table">
+      <tr>
+        <th>Parameters</th>
+        <th>Time</th>
+        <th>Rabbit No 1</th>
+        <th>Rabbit No 2</th>
+        <th>Rabbit No 3</th>
+      </tr>
+
+      <tr>
+        <td>Initial Body Temp</td>
+        <td>-</td>
+        <td>38.2</td>
+        <td>38.4</td>
+        <td>38.3</td>
+      </tr>
+
+      <tr>
+        <td rowspan="6">Body Temp After Injection</td>
+        <td>30 min</td>
+        <td>38.2</td>
+        <td>38.4</td>
+        <td>38.3</td>
+      </tr>
+      <tr>
+        <td>60 min</td>
+        <td>38.1</td>
+        <td>38.4</td>
+        <td>38.3</td>
+      </tr>
+      <tr>
+        <td>90 min</td>
+        <td style="color:red;">38.4</td>
+        <td style="color:red;">38.7</td>
+        <td>38.4</td>
+      </tr>
+      <tr>
+        <td>120 min</td>
+        <td>38.3</td>
+        <td>38.5</td>
+        <td style="color:red;">38.5</td>
+      </tr>
+      <tr>
+        <td>150 min</td>
+        <td>38.2</td>
+        <td>38.4</td>
+        <td>38.4</td>
+      </tr>
+      <tr>
+        <td>180 min</td>
+        <td>38.2</td>
+        <td>38.4</td>
+        <td>38.3</td>
+      </tr>
+
+      <tr>
+        <td>Difference (Highest – Initial)</td>
+        <td>-</td>
+        <td>0.2</td>
+        <td>0.3</td>
+        <td>0.2</td>
+      </tr>
+
+      <tr>
+        <td colspan="5"><strong>Sum of Difference = 0.7°C</strong></td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+</body>
+</html>

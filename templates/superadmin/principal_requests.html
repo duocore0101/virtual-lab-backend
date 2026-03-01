@@ -1,0 +1,154 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Principal Requests | Super Admin{% endblock %}
+
+{% block content %}
+
+<style>
+/* ================= PAGE TITLE ================= */
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ================= TABLE CONTAINER ================= */
+.table-container {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ================= TABLE ================= */
+.sa-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sa-table th {
+  background: #f8f9fa;
+  padding: 12px;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+.sa-table td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.sa-table tr:hover {
+  background: #f9fbff;
+}
+
+/* ================= STATUS BADGES ================= */
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ================= BUTTONS ================= */
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-decoration: none;
+  margin-right: 6px;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.btn.approve {
+  background: #28a745;
+  color: white;
+}
+
+.btn.approve:hover {
+  background: #218838;
+}
+
+.btn.reject {
+  background: #dc3545;
+  color: white;
+}
+
+.btn.reject:hover {
+  background: #c82333;
+}
+</style>
+
+<h2 class="page-title">📥 Principal Registration Requests</h2>
+
+<div class="table-container">
+  <table class="sa-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>College</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for req in requests %}
+      <tr>
+        <td>{{ req.fullname }}</td>
+        <td>{{ req.email }}</td>
+        <td>{{ req.mobile }}</td>
+        <td>{{ req.college_name }}</td>
+        <td>
+          {% if req.status == "pending" %}
+            <span class="status pending">Pending</span>
+          {% elif req.status == "approved" %}
+            <span class="status approved">Approved</span>
+          {% else %}
+            <span class="status rejected">Rejected</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% if req.status == "pending" %}
+            <a href="/superadmin/principal-requests/approve/{{ req.id }}/"
+               class="btn approve">Approve</a>
+
+            <a href="/superadmin/principal-requests/reject/{{ req.id }}/"
+               class="btn reject">Reject</a>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center; padding:20px;">
+          No registration requests found.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

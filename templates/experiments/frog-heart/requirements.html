@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frog Heart Experiment – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐸 Experimental Animal -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li><strong>Animal:</strong> Frog</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 Frog Ringer’s Solution -->
+  <div class="info-box">
+    <h2>Physiological Solution</h2>
+    <p><strong>Frog Ringer’s Solution Composition (per liter)</strong></p>
+    <ul>
+      <li>NaCl: 6.5 g</li>
+      <li>KCl: 0.14 g</li>
+      <li>CaCl<sub>2</sub>: 0.12 g</li>
+      <li>NaHCO<sub>3</sub>: 0.2 g</li>
+      <li>NaH<sub>2</sub>PO<sub>4</sub>: 0.01 g</li>
+      <li>Glucose: 2.0 g</li>
+      <li>Distilled water up to 1 L</li>
+      <li><em>Solution should be aerated for proper oxygenation</em></li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus and Instruments -->
+  <div class="info-box">
+    <h2>Apparatus and Instruments</h2>
+    <ul>
+      <li>Frog board</li>
+      <li>Dissection kit (forceps, scissors, pithing needle)</li>
+      <li>
+        Perfusion setup:
+        <ul>
+          <li>Mariotte bottle (reservoir)</li>
+          <li>Rubber tubing</li>
+          <li>Venous cannula (Syme’s cannula or glass cannula)</li>
+        </ul>
+      </li>
+      <li>Iron stand with clamps</li>
+      <li>
+        Recording apparatus:
+        <ul>
+          <li>Kymograph / rotating drum</li>
+          <li>Starling’s heart lever</li>
+          <li>Thread and pins</li>
+        </ul>
+      </li>
+      <li>Syringe for drug injection</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

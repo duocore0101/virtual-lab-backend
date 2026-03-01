@@ -1,0 +1,77 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Billing | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Licensing & Billing</h1>
+      <p>Subscription plans, invoices, and revenue tracking</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= KPI PLACEHOLDERS ================= -->
+  <section class="kpi-section">
+    <div class="kpi-grid">
+
+      <div class="kpi-card disabled">
+        Active Licenses
+        <span>—</span>
+      </div>
+
+      <div class="kpi-card disabled">
+        Expiring Soon
+        <span>—</span>
+      </div>
+
+      <div class="kpi-card disabled">
+        Total Revenue
+        <span>—</span>
+      </div>
+
+      <div class="kpi-card disabled">
+        Pending Invoices
+        <span>—</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BILLING MODULE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Billing Module</h2>
+      <span class="text-muted">Under Development</span>
+    </div>
+
+    <div class="coming-soon-box">
+      <div class="coming-soon-icon">💳</div>
+
+      <h3>Billing System Coming Soon</h3>
+
+      <p>
+        This module will manage:
+      </p>
+
+      <ul class="feature-list">
+        <li>✔ College license plans</li>
+        <li>✔ Subscription renewals</li>
+        <li>✔ Invoice generation</li>
+        <li>✔ Payment history</li>
+        <li>✔ Revenue analytics</li>
+      </ul>
+
+      <span class="text-muted">
+        Planned for enterprise deployment
+      </span>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

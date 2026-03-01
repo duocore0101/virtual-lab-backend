@@ -1,0 +1,339 @@
+{% extends "teacher/base.html" %}
+{% load custom_tags %}
+{% block content %}
+
+<style>
+
+/* ========================= */
+/* WRAPPER */
+/* ========================= */
+.evaluate-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+/* ========================= */
+/* SECTION TITLE */
+/* ========================= */
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-left: 14px;
+    position: relative;
+    color: #111827;
+}
+
+.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 4px;
+    height: 22px;
+    background: #ef4444;
+    border-radius: 6px;
+}
+
+/* DARK MODE TITLE */
+body.dark-mode .section-title {
+    color: #f3f4f6 !important;
+}
+
+/* ========================= */
+/* QUESTION CARD */
+/* ========================= */
+.question-card {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(239,68,68,0.35);
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    color: #111827;
+}
+
+/* HOVER */
+.question-card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* ========================= */
+/* DARK MODE CARD FIX */
+/* ========================= */
+body.dark-mode .question-card {
+    background: linear-gradient(135deg, #1f2937, #111827) !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(239,68,68,0.45);
+}
+
+/* ========================= */
+/* LABEL */
+/* ========================= */
+.label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: inherit;   /* FIX: inherit correct theme color */
+}
+
+/* ========================= */
+/* ANSWER BOX */
+/* ========================= */
+.answer-box {
+    background: #f1f5f9;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: inherit;
+}
+
+/* DARK MODE ANSWER BOX */
+body.dark-mode .answer-box {
+    background: #0f172a !important;
+    color: #f3f4f6 !important;
+}
+
+/* ========================= */
+/* SPOTTING IMAGE */
+/* ========================= */
+.spot-img {
+    max-width: 220px;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    border: 3px solid rgba(239,68,68,0.3);
+}
+
+/* ========================= */
+/* PRACTICAL VERTICAL */
+/* ========================= */
+.practical-item {
+    margin-bottom: 20px;
+}
+
+.practical-item strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* ========================= */
+/* MARK PANEL */
+/* ========================= */
+.marks-panel {
+    margin-top: 50px;
+    padding: 35px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: 1px solid rgba(239,68,68,0.35);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.1);
+    color: #111827;
+}
+
+/* DARK MODE PANEL */
+body.dark-mode .marks-panel {
+    background: linear-gradient(135deg, #1f2937, #111827) !important;
+    color: #f3f4f6 !important;
+}
+
+/* ========================= */
+/* INPUT */
+/* ========================= */
+.form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #111827;
+}
+
+body.dark-mode .form-control {
+    background: #0f172a !important;
+    color: #f3f4f6 !important;
+    border: 1px solid #334155 !important;
+}
+
+.form-control:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.2);
+}
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+.btn-finalize {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 14px 30px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn-finalize:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(239,68,68,0.4);
+}
+
+</style>
+
+<div class="evaluate-wrapper">
+
+    <!-- HEADER -->
+    <div class="evaluate-header">
+        <h2>Exam Evaluation</h2>
+        <div class="evaluate-sub">
+            Student: {{ attempt.student.first_name }} |
+            Exam: {{ attempt.exam.title }}
+        </div>
+    </div>
+
+    <!-- QUESTION 1 -->
+    <div class="section-block">
+        <div class="section-title">Question 1 – Spotting</div>
+
+        {% if answers.spotting %}
+            {% for spot in attempt.exam.spotting_questions.all %}
+                <div class="question-card">
+                    <div class="badge-custom">Spotting Question</div>
+                    <img src="{{ spot.image.url }}" class="spot-img">
+
+                    <span class="label">Student Answer:</span>
+                    <div class="answer-text">
+                        {{ answers.spotting|get_item:spot.id }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="question-card">
+                No spotting answers submitted.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- QUESTION 2 -->
+    <div class="section-block">
+        <div class="section-title">Question 2 – Synopsis</div>
+
+        <div class="question-card">
+            <div class="badge-custom">MCQ Auto Score</div>
+            <h4>{{ attempt.mcq_score }}</h4>
+        </div>
+
+        {% for short in attempt.exam.short_answers.all %}
+            <div class="question-card">
+                <span class="label">{{ short.question_text }}</span>
+                <div class="answer-text">
+                    {{ answers.short|get_item:short.id }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- PRACTICAL -->
+    <div class="section-block">
+        <div class="section-title">Question 3 & 4 – Practical</div>
+
+        {% for practical in attempt.exam.practicals.all %}
+            <div class="question-card">
+
+                <div class="badge-custom">
+                    {{ practical.get_practical_type_display }}
+                </div>
+
+                <p><strong>{{ practical.title }}</strong></p>
+                <p><em>{{ practical.aim }}</em></p>
+
+                {% with p=answers.practical|get_item:practical.id %}
+    {% if p %}
+        <div class="practical-block">
+
+            <div class="practical-item">
+                <strong>Theory</strong>
+                <div class="answer-box">{{ p.theory }}</div>
+            </div>
+
+            <div class="practical-item">
+                <strong>Requirements</strong>
+                <div class="answer-box">{{ p.requirements }}</div>
+            </div>
+
+            <div class="practical-item">
+                <strong>Procedure</strong>
+                <div class="answer-box">{{ p.procedure }}</div>
+            </div>
+
+            <div class="practical-item">
+                <strong>Observation</strong>
+                <div class="answer-box">{{ p.observation }}</div>
+            </div>
+
+            <div class="practical-item">
+                <strong>Conclusion</strong>
+                <div class="answer-box">{{ p.conclusion }}</div>
+            </div>
+
+        </div>
+    {% endif %}
+{% endwith %}
+
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- VIVA -->
+    <div class="section-block">
+        <div class="section-title">Question 5 – Viva</div>
+        <div class="question-card">
+            Maximum Viva Marks:
+            <strong>{{ attempt.exam.viva_marks }}</strong>
+        </div>
+    </div>
+
+    <!-- MARKS ENTRY -->
+    <div class="marks-panel">
+
+        <div class="marks-title">Finalize Evaluation</div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label>Short Answer Marks</label>
+                <input type="number" step="0.5"
+                       name="short_score"
+                       class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Practical Marks</label>
+                <input type="number" step="0.5"
+                       name="practical_score"
+                       class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Viva Marks</label>
+                <input type="number" step="0.5"
+                       name="viva_score"
+                       class="form-control">
+            </div>
+
+            <button class="btn-finalize">
+                Approve & Finalize Evaluation
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

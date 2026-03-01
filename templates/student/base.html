@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Student | G-MARS{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
+
+  <style>
+
+    /* ================= HEADER BADGE ================= */
+    .student-badge {
+      background: linear-gradient(135deg, #6a5af9, #8b7fff);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="sa-header">
+
+  <div class="logo-area">
+    <img src="{% static 'images/gmars-logo.png' %}" 
+         class="logo" 
+         alt="G-MARS">
+    <span class="student-badge">Student Panel</span>
+  </div>
+
+  <div class="header-actions">
+
+    <button class="icon-btn"
+            title="Toggle Menu"
+            onclick="toggleSidebar()">☰</button>
+
+    <a href="{% url 'student-dashboard' %}"
+       class="icon-btn"
+       title="Dashboard">
+       🏠
+    </a>
+
+    <button class="icon-btn"
+            title="Toggle Theme"
+            onclick="toggleTheme()">🌓</button>
+
+    <a href="{% url 'logout' %}" 
+       class="logout-btn">
+       Logout
+    </a>
+
+  </div>
+
+</header>
+
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="sa-layout">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sa-sidebar">
+    <nav>
+
+      <a href="{% url 'student-dashboard' %}"
+         class="{% if '/student/dashboard/' in request.path %}active{% endif %}">
+        🏠 <span>Dashboard</span>
+      </a>
+
+      <a href="{% url 'student-dashboard' %}"
+         class="{% if '/experiment/' in request.path %}active{% endif %}">
+        🧪 <span>My Practicals</span>
+      </a>
+
+      <a href="{% url 'student-exams' %}"
+         class="{% if '/student/exams/' in request.path %}active{% endif %}">
+        📝 <span>My Exams</span>
+      </a>
+
+      <a href="{% url 'student-dashboard' %}"
+         class="{% if '/attempt' in request.path %}active{% endif %}">
+        📊 <span>My Attempts</span>
+      </a>
+
+      <a href="#"
+         class="{% if '/student/settings/' in request.path %}active{% endif %}">
+        ⚙ <span>Settings</span>
+      </a>
+
+    </nav>
+  </aside>
+
+  <!-- ================= PAGE CONTENT ================= -->
+  <main class="sa-content">
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="sa-footer">
+  <p>© 2026 G-MARS Pharma Solutions | Student Portal</p>
+</footer>
+
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>
+
+</body>
+</html>

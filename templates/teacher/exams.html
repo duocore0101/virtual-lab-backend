@@ -1,0 +1,220 @@
+{% extends "teacher/base.html" %}
+{% block title %}Exam Management{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================= */
+/* PAGE WRAPPER */
+/* ============================= */
+.exam-wrapper {
+    padding: 40px;
+    background: linear-gradient(135deg, #f4f6fb, #eef2ff);
+    min-height: 100vh;
+}
+
+/* ============================= */
+/* HEADER SECTION */
+/* ============================= */
+.exam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.exam-header h2 {
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+}
+
+/* ============================= */
+/* CREATE BUTTON */
+/* ============================= */
+.create-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.create-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+}
+
+/* ============================= */
+/* TABLE CARD */
+/* ============================= */
+.exam-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================= */
+/* TABLE */
+/* ============================= */
+.exam-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.exam-table thead {
+    background: #4f46e5;
+    color: white;
+}
+
+.exam-table th {
+    padding: 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.exam-table td {
+    padding: 14px;
+    font-size: 14px;
+    color: #333;
+}
+
+.exam-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #eee;
+}
+
+.exam-table tbody tr:hover {
+    background: #f1f5ff;
+    transform: scale(1.01);
+}
+
+/* ============================= */
+/* STATUS BADGES */
+/* ============================= */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ============================= */
+/* ACTION LINKS */
+/* ============================= */
+.action-links a {
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 10px;
+    transition: 0.3s;
+}
+
+.action-build {
+    color: #4f46e5;
+}
+
+.action-edit {
+    color: #0ea5e9;
+}
+
+.action-toggle {
+    color: #f97316;
+}
+
+.action-links a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.empty-row {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
+}
+
+</style>
+
+<div class="exam-wrapper">
+
+    <div class="exam-header">
+        <h2>📘 Exam Management</h2>
+        <a href="/teacher/exams/create/" class="create-btn">
+            + Create Exam
+        </a>
+    </div>
+
+    <div class="exam-card">
+
+        <table class="exam-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for exam in exams %}
+                <tr>
+                    <td><strong>{{ exam.title }}</strong></td>
+                    <td>{{ exam.get_year_display }}</td>
+                    <td>{{ exam.duration_minutes }} mins</td>
+                    <td>
+                        {% if exam.is_active %}
+                            <span class="badge badge-active">Active</span>
+                        {% else %}
+                            <span class="badge badge-inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td class="action-links">
+    <a href="/teacher/exams/{{ exam.id }}/builder/" 
+       class="action-build">Build</a>
+
+    <a href="/teacher/exams/{{ exam.id }}/edit/" 
+       class="action-edit">Edit</a>
+
+    <a href="/teacher/exams/{{ exam.id }}/attempts/" 
+       style="color:#10b981; font-weight:600;">
+       Attempts
+    </a>
+
+    <a href="/teacher/exams/{{ exam.id }}/toggle/" 
+       class="action-toggle">Toggle</a>
+</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-row">
+                        No exams created yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rotarod Experiment</title>
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}??v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 12px;
+      z-index: 50;
+    }
+
+    .dropdown-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.3s;
+    }
+
+    .dropdown-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup (UNCHANGED) -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe empty rotating rod</li>
+      <li>Record fall time before drug</li>
+      <li>Inject test drug</li>
+      <li>Record fall time after drug</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP (NEW) -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+      <li><b>Animal selection & training:</b> Select mice staying 180–300 s.</li>
+      <li><b>Grouping:</b> Control (saline) and Standard (Diazepam 4 mg/kg i.p.).</li>
+      <li><b>Pre-treatment:</b> Record fall-off time (3 trials).</li>
+      <li><b>Drug administration:</b> Inject intraperitoneally.</li>
+      <li><b>Post-treatment:</b> Repeat test after 30 minutes.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP (CENTER MODAL) -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:900px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+
+    <h2>Dose of Diazepam: 4 mg/kg</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Sr</th>
+          <th>Body wt (g)</th>
+          <th>Dose (mg)</th>
+          <th>Basal (A)</th>
+          <th>Treatment (B)</th>
+          <th>% Decrease</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in "123456" %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><input value="25" oninput="updateDose(this)"></td>
+          <td><input value="0.10" oninput="updateWeight(this)"></td>
+          <td id="A{{ forloop.counter }}">—</td>
+          <td id="B{{ forloop.counter }}">—</td>
+          <td id="P{{ forloop.counter }}">—</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <!-- 🔽 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+     <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Rotarod Experiment – Virtual Simulator</h1>
+
+  <!-- 🌗 THEME TOGGLE (UNCHANGED) -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 VIDEO GRID (UNCHANGED) -->
+  <div class="video-grid">
+
+    <div class="side-video">
+      <h4>Vehicle Tested</h4>
+      <video id="leftVideo" muted loop autoplay>
+        <source src="{% static 'experiments/rotarod/videos/container1.mp4' %}">
+      </video>
+    </div>
+
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/rotarod/videos/empty_rotarod.mp4' %}">
+      </video>
+    </div>
+
+    <div class="side-video">
+      <h4>Drug tested</h4>
+      <video id="rightVideo" muted loop autoplay>
+        <source src="{% static 'experiments/rotarod/videos/container2.mp4' %}">
+      </video>
+    </div>
+
+  </div>
+
+  <!-- 🎛 CONTROLS (UNCHANGED) -->
+  <div class="control-panel">
+    <button onclick="startRotarod()">Start Rotarod</button>
+    <button onclick="runBeforeDrug()">Before Drug</button>
+    <button onclick="injectDrug()">Inject Drug</button>
+    <button onclick="runAfterDrug()">After Drug</button>
+  </div>
+
+  <!-- NAVIGATION -->
+  <button onclick="location.href='/api/experiments/practice/{{ experiment.slug }}/conclusion/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<!-- ================= ORIGINAL VIDEO LOGIC (UNCHANGED) ================= -->
+<script>
+const mainVideo = document.getElementById("expVideo");
+const leftVideo = document.getElementById("leftVideo");
+const rightVideo = document.getElementById("rightVideo");
+
+const DOSE_PER_KG = 4;
+const beforeTimes = [10, 11, 14];
+const afterTimes  = [6, 7, 9];
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+  leftVideo.playbackRate = 0.6;
+  rightVideo.playbackRate = 0.6;
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function startRotarod() {
+  mainVideo.src = "{% static 'experiments/rotarod/videos/empty_rotarod.mp4' %}";
+  mainVideo.loop = true;
+  mainVideo.currentTime = 0;
+  mainVideo.play();
+
+  leftVideo.src = "{% static 'experiments/rotarod/videos/container1.mp4' %}";
+  rightVideo.src = "{% static 'experiments/rotarod/videos/container2.mp4' %}";
+  leftVideo.play();
+  rightVideo.play();
+}
+
+function injectDrug() {
+  mainVideo.src = "{% static 'experiments/rotarod/videos/inject_drug.mp4' %}";
+  mainVideo.loop = false;
+  mainVideo.play();
+
+  leftVideo.src = "{% static 'experiments/rotarod/videos/container1.mp4' %}";
+  rightVideo.src = "{% static 'experiments/rotarod/videos/empty_container.mp4' %}";
+  leftVideo.play();
+  rightVideo.play();
+}
+
+function runBeforeDrug() {
+  mainVideo.src = "{% static 'experiments/rotarod/videos/before_drug.mp4' %}";
+  mainVideo.play();
+
+  leftVideo.src = "{% static 'experiments/rotarod/videos/empty_container.mp4' %}";
+  rightVideo.src = "{% static 'experiments/rotarod/videos/container2.mp4' %}";
+  leftVideo.play();
+  rightVideo.play();
+
+  beforeTimes.forEach((t, i) => runCountdown(`A${i+1}`, t));
+}
+
+function runAfterDrug() {
+  mainVideo.src = "{% static 'experiments/rotarod/videos/after_drug.mp4' %}";
+  mainVideo.play();
+
+  leftVideo.src = "{% static 'experiments/rotarod/videos/container1.mp4' %}";
+  rightVideo.src = "{% static 'experiments/rotarod/videos/empty_container.mp4' %}";
+  leftVideo.play();
+  rightVideo.play();
+
+  afterTimes.forEach((t, i) =>
+    runCountdown(`B${i+1}`, t, () => calculatePercent(i+1))
+  );
+}
+
+function runCountdown(cellId, endTime, onComplete) {
+  let val = 0;
+  const cell = document.getElementById(cellId);
+
+  const timer = setInterval(() => {
+    cell.innerText = val.toFixed(2);
+    val += 0.1;
+
+    if (val >= endTime) {
+      clearInterval(timer);
+      cell.innerText = endTime.toFixed(2);
+      if (onComplete) onComplete();
+    }
+  }, 100);
+}
+
+function calculatePercent(i) {
+  const A = Number(document.getElementById(`A${i}`).innerText);
+  const B = Number(document.getElementById(`B${i}`).innerText);
+  const PCell = document.getElementById(`P${i}`);
+
+  if (!isNaN(A) && !isNaN(B) && A > 0) {
+    const percent = ((A - B) / A) * 100;
+    PCell.innerText = percent.toFixed(1) + " %";
+  } else {
+    PCell.innerText = "—";
+  }
+}
+
+function updateDose(input) {
+  const row = input.closest("tr");
+  const doseInput = row.cells[2].querySelector("input");
+  const wt = parseFloat(input.value);
+  if (!isNaN(wt)) doseInput.value = ((wt * DOSE_PER_KG) / 1000).toFixed(3);
+}
+
+function updateWeight(input) {
+  const row = input.closest("tr");
+  const wtInput = row.cells[1].querySelector("input");
+  const dose = parseFloat(input.value);
+  if (!isNaN(dose)) wtInput.value = ((dose * 1000) / DOSE_PER_KG).toFixed(1);
+}
+</script>
+
+<!-- 🔥 SAFE EXTENSIONS -->
+<script>
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+function autoFillExtraMice() {
+  for (let i = 4; i <= 6; i++) {
+    const A = (180 + Math.random() * 80).toFixed(1);
+    const B = (A * (0.6 + Math.random() * 0.2)).toFixed(1);
+    document.getElementById(`A${i}`).innerText = A;
+    document.getElementById(`B${i}`).innerText = B;
+    document.getElementById(`P${i}`).innerText =
+      (((A - B) / A) * 100).toFixed(1) + " %";
+  }
+}
+
+const __afterDrug = runAfterDrug;
+runAfterDrug = function () {
+  __afterDrug();
+  setTimeout(autoFillExtraMice, 4200);
+};
+</script>
+
+<script>
+const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("expTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "expTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert(`Error enabling fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

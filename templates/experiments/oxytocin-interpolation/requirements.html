@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay of Oxytocin – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐀 EXPERIMENTAL ANIMAL -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li>
+        <strong>Female Albino Rat</strong> (150–250 g)
+      </li>
+      <li>Preferably in oestrus phase or estrogen-primed</li>
+      <li>
+        <strong>Priming:</strong> Inject oestradiol benzoate (50–100 μg/kg, i.m.) 
+        18–24 hours before experiment to sensitize uterus
+      </li>
+      <li>
+        Confirm oestrus by vaginal smear 
+        (mostly cornified epithelial cells)
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
+  <div class="info-box">
+    <h2>Physiological Solution</h2>
+    <ul>
+      <li>
+        <strong>De Jalon's Solution</strong>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 💊 DRUGS -->
+  <div class="info-box">
+    <h2>Drugs</h2>
+    <ul>
+      <li>
+        <strong>Standard Oxytocin:</strong>  
+        0.1–1 IU/ml or μg/ml stock (synthetic oxytocin)
+      </li>
+      <li>
+        <strong>Test (Unknown) Oxytocin Solution:</strong>  
+        Diluted appropriately
+      </li>
+    </ul>
+  </div>
+
+  <!-- ⚙ APPARATUS -->
+  <div class="info-box">
+    <h2>Apparatus</h2>
+    <ul>
+      <li>
+        Student organ bath (20–40 ml), aerator, thermostat (32–37°C, 
+        often 32°C for De Jalon's to minimize spontaneity)
+      </li>
+      <li>
+        Isotonic frontal writing lever (magnification 5–10×) or transducer
+      </li>
+      <li>
+        Kymograph / Sherrington drum or digital recorder
+      </li>
+      <li>
+        Syringes (precise volumes), thread, petri dish
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

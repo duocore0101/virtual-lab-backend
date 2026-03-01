@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay Assembly – Requirements</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse SAME Rotarod CSS Theme -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🧬 Biological System -->
+  <div class="info-box">
+    <h2>1️⃣ Biological System</h2>
+    <ul>
+      <li>Experimental animal (rabbit, mouse, guinea pig, pigeon, frog)</li>
+      <li><strong>OR</strong></li>
+      <li>Isolated tissue/organ (guinea pig ileum, frog rectus abdominis)</li>
+      <li><strong>OR</strong></li>
+      <li>Cell culture / in vitro system</li>
+    </ul>
+  </div>
+
+  <!-- 💊 Drugs & Chemicals -->
+  <div class="info-box">
+    <h2>2️⃣ Drugs & Chemicals</h2>
+    <ul>
+      <li><strong>Standard preparation:</strong> Known potency drug</li>
+      <li><strong>Test sample:</strong> Unknown potency substance</li>
+      <li>Physiological salt solution (Tyrode’s / Ringer’s solution, if tissue used)</li>
+    </ul>
+  </div>
+
+  <!-- ⚙ Apparatus -->
+  <div class="info-box">
+    <h2>3️⃣ Apparatus</h2>
+    <ul>
+      <li>Organ bath with aeration system (for in vitro setup)</li>
+      <li>Kymograph / Physiograph / Data recording system</li>
+      <li>Syringes and micropipettes</li>
+      <li>Weighing balance</li>
+      <li>Temperature control system</li>
+      <li>Stopwatch</li>
+    </ul>
+  </div>
+
+  <!-- 🧪 3D MODEL -->
+  <div class="info-box" style="text-align:center;">
+    <h2>Bioassay Organ Bath – 3D View</h2>
+
+    <model-viewer
+      src="{% static 'experiments/bioassay-assembly/models/organ_bath.glb' %}"
+      camera-controls
+      auto-rotate
+      rotation-per-second="20deg"
+      shadow-intensity="1"
+      exposure="1.1"
+      style="width:100%; height:420px; border-radius:12px;">
+    </model-viewer>
+  </div>
+
+  <!-- 📊 Other Requirements -->
+  <div class="info-box">
+    <h2>4️⃣ Other Requirements</h2>
+    <ul>
+      <li>Graph paper (for interpolation method)</li>
+      <li>Statistical calculation tools</li>
+      <li>Proper laboratory conditions</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

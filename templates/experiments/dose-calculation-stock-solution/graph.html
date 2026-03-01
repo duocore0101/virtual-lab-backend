@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dose vs Volume Graph | Virtual Lab</title>
+
+<!-- COMMON CSS -->
+<link rel="stylesheet"
+      href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* ================= TOP RIGHT ACTIONS ================= */
+.top-actions{
+  position:fixed;
+  top:20px;
+  right:25px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+.top-actions button{
+  padding:10px 18px;
+  border-radius:22px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff2e2e;
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,0,0,0.6);
+  transition:0.3s;
+}
+
+.top-actions button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* ================= GRAPH CONTAINER ================= */
+.graph-container{
+  max-width:900px;
+  margin:40px auto;
+  padding:30px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.75);
+  box-shadow:0 0 25px rgba(229,9,20,0.25);
+}
+
+.theme-light .graph-container{
+  background:#fff;
+}
+
+canvas{
+  margin-top:20px;
+}
+
+</style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔴 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <h1 class="exp-title" style="text-align:center;">
+    Dose vs Volume Graph
+  </h1>
+
+  <div class="graph-container">
+    <h2 class="exp-heading">Dose (mg) vs Volume (ml)</h2>
+    <p class="exp-info">
+      This graph represents the relationship between calculated drug dose
+      and administered volume in experimental animals.
+    </p>
+
+    <canvas id="doseVolumeChart"></canvas>
+  </div>
+
+  <!-- 🔀 ACTIONS -->
+  <div class="exp-actions" style="margin-top:30px; text-align:center;">
+
+    <!-- BACK -->
+    <a href="/experiment/{{ experiment.slug }}/run/" class="btn-start" style="margin-right:20px;">
+      ⬅ Back
+    </a>
+
+    <!-- NEXT -->
+    <a href="/experiment/{{ experiment.slug }}/conclusion/" class="btn-start">
+      Next ➡
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+
+/* ================= THEME ================= */
+function toggleTheme(){
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+/* ================= FULLSCREEN ================= */
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+/* ================= GRAPH DATA ================= */
+
+const doseValues = [1, 2, 3, 4, 5];
+const volumeValues = [0.2, 0.4, 0.6, 0.8, 1.0];
+
+const ctx = document.getElementById('doseVolumeChart');
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: doseValues,
+    datasets: [{
+      label: 'Volume (ml)',
+      data: volumeValues,
+      borderColor: '#e50914',
+      backgroundColor: 'rgba(229,9,20,0.15)',
+      tension: 0.3,
+      fill: true,
+      pointRadius: 5,
+      pointBackgroundColor: '#e50914'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: '#e50914'
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Dose (mg)',
+          color: '#e50914'
+        },
+        ticks: {
+          color: '#aaa'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Volume (ml)',
+          color: '#e50914'
+        },
+        ticks: {
+          color: '#aaa'
+        }
+      }
+    }
+  }
+});
+
+</script>
+
+</body>
+</html>

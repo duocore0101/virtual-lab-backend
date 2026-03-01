@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sprague-Dawley Rat | Experimental Animals</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Sprague-Dawley Rat (Rattus norvegicus)</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/common-laboratory-animals/videos/sprague-dawley-rat.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The Sprague-Dawley rat (<em>Rattus norvegicus</em>), commonly abbreviated
+        as SD rat, is one of the most popular outbred albino strains used in
+        biomedical research. It is a versatile, multipurpose model valued for
+        its calm temperament, ease of handling, rapid growth, and strong
+        physiological relevance to humans.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🕰️ HISTORY -->
+  <div class="exp-card">
+    <h2>History and Origin</h2>
+    <p>
+        The Sprague-Dawley rat was developed in 1925 by Robert Dawley at the
+        Sprague-Dawley Animal Company in Madison, Wisconsin. It originated from
+        a hybrid hooded male crossed with a female Wistar rat. The strain was
+        later refined and commercialized, with widespread distribution beginning
+        in the 1950s. Modern Sprague-Dawley rats are supplied by vendors such as
+        Charles River, Taconic, and Inotiv, with minor genetic differences due to
+        separate breeding colonies.
+    </p>
+  </div>
+
+  <!-- 🧪 PHYSICAL CHARACTERISTICS -->
+  <div class="exp-card">
+    <h2>Physical Characteristics</h2>
+    <ul>
+      <li><strong>Appearance:</strong> Albino with white fur and pink/red eyes;
+        longer body and tail compared to Wistar rats</li>
+      <li><strong>Body Weight:</strong> Females 250–500 g; males 300–800 g</li>
+      <li><strong>Lifespan:</strong> 2–3.5 years (laboratory conditions)</li>
+    </ul>
+  </div>
+
+ 
+
+  <!-- ✅ ADVANTAGES -->
+  <div class="exp-card">
+    <h2>Advantages</h2>
+    <ul>
+      <li>Rapid growth and larger size suitable for surgery and imaging</li>
+      <li>Excellent reproductive performance and hardiness</li>
+      <li>Extensive historical data on physiology, toxicology, and behavior</li>
+      <li>Widely available from multiple suppliers</li>
+    </ul>
+  </div>
+
+  <!-- ⚠️ LIMITATIONS -->
+  <div class="exp-card">
+    <h2>Limitations</h2>
+    <ul>
+      <li>Higher incidence of spontaneous tumors than some strains</li>
+      <li>Genetic variability between vendors affecting reproducibility</li>
+      <li>Prone to obesity on high-fat diets</li>
+    </ul>
+  </div>
+
+  <!-- 🔬 COMMON USES -->
+  <div class="exp-card">
+    <h2>Common Uses in Research</h2>
+    <ul>
+      <li>Toxicology and safety assessment</li>
+      <li>Pharmacology, pharmacokinetics, and drug development</li>
+      <li>Metabolic disorders (obesity and diabetes models)</li>
+      <li>Neuroscience, cardiovascular, and oncology research</li>
+      <li>Surgical, nutritional, and aging studies</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Animal List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

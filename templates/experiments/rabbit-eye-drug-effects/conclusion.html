@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Conclusion – Rabbit Eye Experiment</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* ===== CARDS ===== */
+    .graph-box,
+    .conclusion-box {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 0 24px rgba(255,0,0,0.25);
+      margin-top: 24px;
+      transition: all 0.35s ease;
+    }
+
+    /* ✨ HOVER EFFECT */
+    .graph-box:hover,
+    .conclusion-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 40px rgba(255,0,0,0.45);
+    }
+
+    .conclusion-box h2 {
+      color: #d60000;
+      margin-bottom: 12px;
+    }
+
+    .conclusion-box p {
+      line-height: 1.6;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    /* ===== DARK MODE FIX ===== */
+    body.light-mode {
+      background: #f4f4f4;
+      color: #000;
+    }
+
+    body:not(.light-mode) {
+      background: #000;
+      color: #fff;
+    }
+
+    body:not(.light-mode) .graph-box,
+    body:not(.light-mode) .conclusion-box {
+      background: #111;
+      box-shadow: 0 0 28px rgba(255,0,0,0.5);
+    }
+
+    body:not(.light-mode) .conclusion-box p {
+      color: #ddd;
+    }
+
+    body:not(.light-mode) .conclusion-box h2 {
+      color: #ff3b3b;
+    }
+
+    body:not(.light-mode) .graph-box h2 {
+      color: #ff3b3b !important;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Conclusion & Result</h1>
+  <p style="text-align:center;font-size:16px;">
+    Rabbit Eye Experiment – Effect of Mydriatic & Miotic Drugs
+  </p>
+
+  <!-- GRAPH -->
+  <div class="graph-box">
+    <h2 style="text-align:center;color:#d60000;">Result (Graph)</h2>
+    <p style="text-align:center;margin-bottom:16px;">
+      Comparative Effect on Pupil Diameter
+    </p>
+    <canvas id="resultChart" height="120"></canvas>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="conclusion-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      The present experiment demonstrates the effects of autonomic drugs
+      on the rabbit eye using a virtual simulation model.
+    </p>
+
+    <p>
+      <strong>Atropine</strong> produces <strong>mydriasis</strong> by
+      blocking muscarinic receptors, leading to dilation of the pupil
+      and loss of light reflex.
+    </p>
+
+    <p>
+      <strong>Pilocarpine</strong> produces <strong>miosis</strong> by
+      stimulating muscarinic receptors, resulting in constriction of
+      the pupil with enhanced reflex activity.
+    </p>
+
+    <p>
+      The experiment confirms opposite pharmacological effects of
+      parasympathetic blockers and stimulants on the eye.
+    </p>
+  </div>
+
+  <!-- NAV -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/student/dashboard/'">
+      Finish Practical ▶
+    </button>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+  localStorage.setItem(
+    "uiTheme",
+    document.body.classList.contains("light-mode") ? "light" : "dark"
+  );
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+
+  const ctx = document.getElementById("resultChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: [
+        "Before Atropine",
+        "After Atropine",
+        "Before Pilocarpine",
+        "After Pilocarpine"
+      ],
+      datasets: [{
+        label: "Pupil Diameter (mm)",
+        data: [4.5, 8, 4.5, 2.5],
+        backgroundColor: [
+          "#3b6edc",
+          "#d60000",
+          "#3b6edc",
+          "#d60000"
+        ],
+        borderRadius: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: document.body.classList.contains("light-mode") ? "#000" : "#fff"
+          },
+          title: {
+            display: true,
+            text: "Pupil Diameter (mm)",
+            color: document.body.classList.contains("light-mode") ? "#000" : "#fff"
+          }
+        },
+        x: {
+          ticks: {
+            color: document.body.classList.contains("light-mode") ? "#000" : "#fff"
+          }
+        }
+      }
+    }
+  });
+};
+</script>
+
+</body>
+</html>

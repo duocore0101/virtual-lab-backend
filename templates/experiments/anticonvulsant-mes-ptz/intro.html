@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
+  </title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod / Actophotometer Intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
+  </h1>
+
+  <!-- 3D MODEL (PLACEHOLDER – CAN BE REPLACED LATER) -->
+  <model-viewer
+    src="{% static 'experiments/anticonvulsant-mes-ptz/models/mes-ptz-apparatus.glb' %}"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    exposure="1.1"
+    style="width:100%; height:450px; border-radius:12px;">
+  </model-viewer>
+
+  <!-- INFO BOX -->
+  <div class="info-box">
+    <h2>Introduction</h2>
+
+    <p>
+      Epilepsy is a chronic neurological disorder characterized by recurrent
+      seizures due to abnormal electrical activity in the brain.
+      Experimental animal models are widely used to evaluate the
+      anticonvulsant potential of drugs.
+    </p>
+
+    <p>
+      The <strong>Maximal Electroshock Seizure (MES)</strong> method and the
+      <strong>Pentylenetetrazol (PTZ)</strong> induced seizure method are
+      standard screening models used in pharmacology to assess
+      anticonvulsant activity.
+    </p>
+
+    <ul>
+      <li>
+        <strong>MES method</strong> is used to identify drugs effective
+        against generalized tonic–clonic (grand mal) seizures by observing
+        abolition of hind limb tonic extension.
+      </li>
+      <li>
+        <strong>PTZ method</strong> is used to evaluate drugs effective
+        against clonic, myoclonic, and absence (petit mal) seizures by
+        measuring delay or prevention of convulsions.
+      </li>
+      <li>
+        Together, these models help in determining the spectrum of
+        anticonvulsant activity of a test drug.
+      </li>
+    </ul>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/student/dashboard/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next: Theory ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

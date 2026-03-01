@@ -1,0 +1,74 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Dashboard | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= HERO ================= -->
+  <section class="sa-hero">
+    <h1>Super Admin Control Center</h1>
+    <p>Global overview of colleges, administrators & experiments</p>
+  </section>
+
+  <!-- ================= KPI METRICS ================= -->
+  <section class="kpi-section">
+    <div class="kpi-grid">
+
+      <div class="kpi-card"
+           onclick="location.href='/superadmin/colleges/'">
+        Total Colleges
+        <span>{{ total_colleges }}</span>
+      </div>
+
+      <div class="kpi-card"
+           onclick="location.href='/superadmin/admins/'">
+        College Admins
+        <span>{{ total_admins }}</span>
+      </div>
+
+      <div class="kpi-card"
+           onclick="location.href='/superadmin/experiments/'">
+        Experiments
+        <span>{{ total_experiments }}</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= COLLEGES OVERVIEW ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Colleges Overview</h2>
+      <a href="/superadmin/colleges/">View All</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>College</th>
+          <th>Code</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for admin in admins %}
+        <tr>
+          <td>{{ admin.college.name }}</td>
+          <td>{{ admin.college.code }}</td>
+          <td class="green">Active</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" style="text-align:center; color:#888;">
+            No colleges found
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+{% endblock %}

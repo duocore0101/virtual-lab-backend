@@ -1,0 +1,99 @@
+{% extends "admin/base.html" %}
+{% block title %}Teacher Requests | Admin{% endblock %}
+
+{% block content %}
+
+<div style="padding:20px;">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h2 style="margin:0;">Teacher Registration Requests</h2>
+      <p style="margin:4px 0; color:gray;">
+        Review and approve teacher registrations for your college
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= REQUEST TABLE ================= -->
+  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <table style="width:100%; border-collapse:collapse;">
+
+      <thead>
+        <tr style="background:#f5f5f5; text-align:left;">
+          <th style="padding:12px;">Name</th>
+          <th style="padding:12px;">Email</th>
+          <th style="padding:12px;">Mobile</th>
+          <th style="padding:12px;">Date</th>
+          <th style="padding:12px;">Status</th>
+          <th style="padding:12px; text-align:center;">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for req in requests %}
+        <tr style="border-bottom:1px solid #eee;">
+
+          <td style="padding:12px;">{{ req.fullname }}</td>
+          <td style="padding:12px;">{{ req.email }}</td>
+          <td style="padding:12px;">{{ req.mobile }}</td>
+          <td style="padding:12px;">
+            {{ req.created_at|date:"d M Y" }}
+          </td>
+
+          <!-- STATUS BADGE -->
+          <td style="padding:12px;">
+            {% if req.status == "pending" %}
+              <span style="background:#fff3cd; color:#856404; padding:5px 10px; border-radius:20px; font-size:12px;">
+                Pending
+              </span>
+            {% elif req.status == "approved" %}
+              <span style="background:#d4edda; color:#155724; padding:5px 10px; border-radius:20px; font-size:12px;">
+                Approved
+              </span>
+            {% else %}
+              <span style="background:#f8d7da; color:#721c24; padding:5px 10px; border-radius:20px; font-size:12px;">
+                Rejected
+              </span>
+            {% endif %}
+          </td>
+
+          <!-- ACTION BUTTONS -->
+          <td style="padding:12px; text-align:center;">
+
+            {% if req.status == "pending" %}
+
+              <a href="/admin/teacher-requests/approve/{{ req.id }}/"
+                 style="background:#28a745; color:white; padding:6px 12px; border-radius:6px; text-decoration:none; font-size:13px; margin-right:5px;">
+                 Approve
+              </a>
+
+              <a href="/admin/teacher-requests/reject/{{ req.id }}/"
+                 style="background:#dc3545; color:white; padding:6px 12px; border-radius:6px; text-decoration:none; font-size:13px;">
+                 Reject
+              </a>
+
+            {% else %}
+              <span style="color:gray; font-size:13px;">No Action</span>
+            {% endif %}
+
+          </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="padding:20px; text-align:center; color:gray;">
+            No teacher registration requests found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock %}

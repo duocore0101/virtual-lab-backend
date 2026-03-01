@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rotarod Experiment – Graph</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Graphical Representation</h1>
+
+  <div class="info-box">
+    <h2>Effect of Diazepam on Rotarod Performance</h2>
+    <p>
+      The graphs below represent the fall-off time of mice before and after
+      administration of diazepam.
+    </p>
+  </div>
+
+  <!-- BAR GRAPH -->
+  <div class="info-box">
+    <h3>Bar Graph: Mean Fall-off Time</h3>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <!-- LINE GRAPH -->
+  <div class="info-box">
+    <h3>Line Graph: Trial-wise Fall-off Time</h3>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+/* 🔢 GET DATA FROM LOCAL STORAGE */
+const pre = JSON.parse(localStorage.getItem("rotarod_pre")) || [];
+const post = JSON.parse(localStorage.getItem("rotarod_post")) || [];
+
+function mean(arr) {
+  if (!arr.length) return 0;
+  return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
+const preMean = mean(pre);
+const postMean = mean(post);
+
+/* ==========================
+   📊 BAR CHART (MEAN VALUES)
+   ========================== */
+new Chart(document.getElementById("barChart"), {
+  type: "bar",
+  data: {
+    labels: ["Pre-treatment", "Post-treatment"],
+    datasets: [{
+      label: "Mean Fall-off Time (sec)",
+      data: [preMean, postMean],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Fall-off Time (seconds)"
+        }
+      }
+    }
+  }
+});
+
+/* ==========================
+   📈 LINE CHART (TRIAL-WISE)
+   ========================== */
+new Chart(document.getElementById("lineChart"), {
+  type: "line",
+  data: {
+    labels: pre.map((_, i) => "Mouse " + (i + 1)),
+    datasets: [
+      {
+        label: "Pre-treatment",
+        data: pre,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: "Post-treatment",
+        data: post,
+        tension: 0.3,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Fall-off Time (seconds)"
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

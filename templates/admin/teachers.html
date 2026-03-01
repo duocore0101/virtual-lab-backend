@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Teachers | Admin{% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Teachers</h1>
+      <p>Manage all teachers assigned across colleges</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= TEACHERS TABLE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Teacher List</h2>
+      <span class="text-muted">
+        Total: {{ teachers|length }}
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>College</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for teacher in teachers %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              <a href="/admin/teacher/{{ teacher.id }}/"
+                style="color:#ff4d4d; font-weight:600; text-decoration:none;">
+                {{ teacher.first_name }}
+              </a>
+            </td>
+
+            <td>{{ teacher.email }}</td>
+
+            <td>
+              {% if teacher.college %}
+                {{ teacher.college.name }}
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+
+            <td>
+              {% if teacher.is_active %}
+                <span class="status-badge active">ACTIVE</span>
+              {% else %}
+                <span class="status-badge inactive">INACTIVE</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <a href="/superadmin/toggle-user/{{ teacher.id }}/"
+                 class="{% if teacher.is_active %}deactivate-btn{% else %}activate-btn{% endif %}"
+                 onclick="return confirm('Are you sure?')">
+                 {% if teacher.is_active %}
+                   ⛔ Deactivate
+                 {% else %}
+                   ✅ Activate
+                 {% endif %}
+              </a>
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="6" style="text-align:center; color:var(--text-muted);">
+              No teachers found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

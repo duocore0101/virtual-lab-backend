@@ -1,0 +1,76 @@
+{% extends "superadmin/base.html" %}
+{% block title %}Attempts | Super Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="page-header">
+    <div>
+      <h1>Practical Attempts</h1>
+      <p>Completed experiment attempts across all colleges</p>
+    </div>
+
+    
+  </section>
+
+  <!-- ================= ATTEMPTS TABLE ================= -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Experiment Attempts</h2>
+      <span class="text-muted">
+        Total: {{ attempts|length }}
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Experiment</th>
+            <th>Teacher</th>
+            <th>Completed On</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for attempt in attempts %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              <strong>{{ attempt.student.first_name }}</strong>
+            </td>
+
+            <td>{{ attempt.experiment.name }}</td>
+
+            <td>
+              {% if attempt.experiment.teacher %}
+                {{ attempt.experiment.teacher.first_name }}
+              {% else %}
+                <span class="text-muted">Not Assigned</span>
+              {% endif %}
+            </td>
+
+            <td>
+              {{ attempt.completed_at|date:"d M Y, H:i" }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" style="text-align:center; color:var(--text-muted);">
+              No attempts found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

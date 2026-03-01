@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hole Board Apparatus | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Hole Board Apparatus (Holeboard Test)
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/hole-board.glb' %}"
+        alt="Hole Board Apparatus 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Hole Board Apparatus</strong>, also known as the
+        <em>Holeboard Test</em>, is a widely used behavioral instrument in
+        experimental pharmacology for assessing
+        <strong>exploratory behavior</strong>,
+        <strong>anxiety-like states</strong>, and
+        <strong>locomotor activity</strong> in rodents.
+      </p>
+      <p>
+        It primarily measures <strong>head-dipping behavior</strong>,
+        an index of curiosity and neophilia, and is commonly used for
+        screening anxiolytics, nootropics, and drugs affecting motivation.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      Rodents naturally explore novel environments by poking their heads
+      into holes, a behavior known as <strong>head dipping</strong>.
+      This reflects curiosity and exploratory drive (neophilia).
+    </p>
+    <p>
+      <strong>Anxiolytic drugs</strong> (e.g., benzodiazepines) typically
+      increase head-dipping behavior at doses that do not impair locomotion,
+      indicating reduced anxiety or neophobia. In contrast,
+      <strong>anxiogenic agents</strong> or sedatives decrease head dipping.
+    </p>
+    <p>
+      Locomotor activity is assessed separately (e.g., line crossings),
+      allowing differentiation between exploratory behavior and general
+      motor effects. The test is independent of food or water motivation
+      and requires no prior training.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Board:</strong> Flat platform (floor-level or elevated),
+        typically square (40–60 cm per side for mice) with evenly spaced holes.
+      </li>
+      <li>
+        <strong>Holes:</strong> Usually 16 holes, each 2–3 cm in diameter
+        and 2–4 cm deep; holes do not lead anywhere to prevent escape.
+      </li>
+      <li>
+        <strong>Material:</strong> Opaque acrylic or Perspex (white or black)
+        with high surrounding walls (20–30 cm) to prevent escape.
+      </li>
+      <li>
+        <strong>Floor Markings:</strong> Divided into squares (e.g., 4 × 4 grid)
+        for manual assessment of locomotor activity.
+      </li>
+      <li>
+        <strong>Features:</strong> Conducted under moderate illumination
+        in a quiet environment.
+      </li>
+      <li>
+        <strong>Modern Versions:</strong> Infrared sensors beneath holes
+        for precise detection of head dips, combined with video tracking
+        and software analysis (e.g., ANY-maze).
+      </li>
+      <li>
+        <strong>Variants:</strong> Some models include objects beneath holes
+        for novelty or olfactory versions for scent-based exploration.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Assessment of exploratory and curiosity-driven behavior</li>
+      <li>Screening of anxiolytic and anxiogenic drugs</li>
+      <li>Evaluation of nootropic and motivation-modulating agents</li>
+      <li>Behavioral pharmacology research</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

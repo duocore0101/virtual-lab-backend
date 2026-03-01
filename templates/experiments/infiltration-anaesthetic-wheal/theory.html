@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Infiltration Anaesthetic Activity – Theory</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 🔬 3D MODEL STYLE */
+    .model-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory / Principle
+  </h1>
+
+  <!-- ================= SLIDE 1 ================= -->
+  <div class="info-box slide active">
+    <h2>Principle</h2>
+
+    <p>
+      <strong>Infiltration anaesthesia</strong> is produced when a local anaesthetic 
+      is injected intradermally or subcutaneously, blocking sensory nerve endings 
+      at the site of injection.
+    </p>
+
+    <p>
+      Local anaesthetics act by <strong>reversible inhibition of voltage-gated Na⁺ channels</strong> 
+      in peripheral nerve fibers, preventing conduction of pain impulses from the skin.
+    </p>
+
+    <p>
+      <strong>Animal:</strong> Guinea Pig <br>
+      <strong>Site:</strong> Dorsal skin (wheal formation) <br>
+      <strong>Stimulus:</strong> Pin prick <br>
+      <strong>Observation:</strong> Loss of cutaneous sensation
+    </p>
+
+    <p>
+      Loss of response to pinprick in the wheal area indicates 
+      <strong>effective infiltration anaesthesia.</strong>
+    </p>
+
+    <!-- 🔬 3D MODEL BELOW TEXT (Placeholder for future model) -->
+    <div class="model-container">
+      <model-viewer
+        src="{% static 'experiments/infiltration-anaesthetic-wheal/models/guinea-pig.glb' %}"
+        alt="Guinea Pig Wheal Method 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        ar>
+      </model-viewer>
+
+      <p style="margin-top:10px; font-size:14px; color:#aaa;">
+        3D Representation of Wheal Formation in Guinea Pig
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide 1 / 1
+  </div>
+
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<script>
+function nextSlide() {
+  location.href = "/experiment/{{ experiment.slug }}/run/";
+}
+
+function prevSlide() {
+  location.href = "/experiment/{{ experiment.slug }}/requirements/";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

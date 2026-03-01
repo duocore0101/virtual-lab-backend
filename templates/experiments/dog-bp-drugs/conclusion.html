@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dog Blood Pressure Experiment – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+    <p>
+      Arterial blood pressure (in <strong>mm of Hg</strong>) and heart rate
+      (in <strong>beats per minute</strong>) were recorded before and after
+      intravenous administration of various drugs. Each drug produced
+      characteristic cardiovascular responses.
+    </p>
+
+    <ul>
+      <li>
+        <strong>Adrenaline:</strong> Produced a sharp rise in both systolic and
+        diastolic blood pressure due to combined
+        <strong>α-mediated vasoconstriction</strong> and
+        <strong>β<sub>1</sub>-mediated cardiac stimulation</strong>.
+        An initial tachycardia was often followed by reflex bradycardia
+        due to baroreceptor activation.
+      </li>
+
+      <li>
+        <strong>Noradrenaline:</strong> Caused a marked and sustained rise in
+        arterial blood pressure predominantly due to strong
+        <strong>α-adrenergic action</strong>, with prominent
+        <strong>reflex bradycardia</strong> because of minimal β<sub>1</sub>
+        stimulation.
+      </li>
+
+      <li>
+        <strong>Acetylcholine:</strong> Produced a fall in blood pressure
+        associated with <strong>vasodilation</strong> and
+        <strong>cardiac inhibition</strong>, along with bradycardia due to
+        muscarinic receptor activation. The effect is blocked by atropine.
+      </li>
+
+      <li>
+        <strong>Isoprenaline:</strong> Caused a fall in diastolic blood pressure
+        due to <strong>β<sub>2</sub>-mediated vasodilation</strong> and a marked
+        increase in heart rate due to
+        <strong>β<sub>1</sub> stimulation</strong>, with little change in
+        systolic pressure.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+    <p>
+      The experiment clearly demonstrates that different drugs produce
+      distinct effects on arterial blood pressure and heart rate depending
+      on their action on <strong>α, β<sub>1</sub>, β<sub>2</sub>, and
+      muscarinic receptors</strong>.
+    </p>
+    <p>
+      The observed responses highlight the role of the
+      <strong>autonomic nervous system</strong> and
+      <strong>baroreceptor reflex</strong> in the regulation of
+      cardiovascular function. This study provides a clear understanding
+      of receptor-specific drug actions on the heart and blood vessels.
+    </p>
+  </div>
+
+  <!-- ⚠ PRECAUTIONS -->
+  <div class="info-box">
+    <h2>Precautions</h2>
+    <ul>
+      <li>Ensure adequate depth of anesthesia throughout the experiment.</li>
+      <li>Administer drugs in correct doses and small volumes intravenously.</li>
+      <li>Allow sufficient washout period between successive drug injections.</li>
+      <li>Record blood pressure and heart rate accurately.</li>
+      <li>Follow CPCSEA / IAEC ethical guidelines for animal experimentation.</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        result: "Effects of drugs on arterial blood pressure and heart rate studied successfully"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // 🔥 BACKEND DECIDES REDIRECT
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

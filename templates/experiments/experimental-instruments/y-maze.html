@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Y-Maze Apparatus | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Y-Maze Apparatus
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/y-maze.glb' %}"
+        alt="Y-Maze Apparatus 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Y-Maze Apparatus</strong> is a behavioral tool used in
+        experimental pharmacology and neuroscience to assess
+        <strong>spatial working memory</strong> and
+        <strong>exploratory behavior</strong> in rodents such as mice or rats.
+      </p>
+      <p>
+        It evaluates hippocampal-dependent short-term memory using the
+        <strong>spontaneous alternation test</strong> and does not require
+        training, food deprivation, or punishment, making it a
+        simple and stress-free method for screening memory-modulating drugs.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      Rodents have a natural tendency to explore novel environments by
+      alternating arm entries in a Y-shaped maze (e.g., ABCAB rather than ABABA).
+      This <strong>spontaneous alternation behavior (SAB)</strong> reflects
+      intact spatial working memory.
+    </p>
+    <p>
+      Memory-impairing drugs (e.g., scopolamine) reduce the percentage of
+      alternations, whereas <strong>nootropic drugs</strong> (e.g., piracetam)
+      increase alternation performance. The total number of arm entries is
+      also recorded as an index of general locomotor activity.
+    </p>
+    <p>
+      Chance level alternation is approximately 50%, while healthy rodents
+      typically achieve 65–80% alternation.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Structure:</strong> Three identical arms labeled A, B, and C,
+        arranged at 120° angles from a central junction.
+      </li>
+      <li>
+        <strong>Dimensions (for mice):</strong>
+        <ul>
+          <li>Arm length: approximately 30–40 cm</li>
+          <li>Arm width: approximately 8–10 cm</li>
+          <li>Wall height: approximately 15–20 cm</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Material:</strong> Opaque or transparent acrylic/Perspex,
+        preferably non-reflective to avoid visual cues.
+      </li>
+      <li>
+        <strong>Features:</strong> Free access to all arms (no doors),
+        placed in a quiet, dimly lit environment.
+      </li>
+      <li>
+        <strong>Modern Variants:</strong> Overhead video cameras and tracking
+        software (e.g., ANY-maze, EthoVision) for automated recording of arm
+        entries, duration, and movement paths.
+      </li>
+      <li>
+        <strong>Variants:</strong> Some models include removable partitions
+        for two-trial memory paradigms.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Assessment of spatial working memory</li>
+      <li>Screening of nootropic and amnesic drugs</li>
+      <li>Evaluation of hippocampal function</li>
+      <li>Behavioral neuroscience research</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

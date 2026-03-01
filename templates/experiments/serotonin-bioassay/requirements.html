@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bioassay of Serotonin (5-HT) – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐁 EXPERIMENTAL ANIMAL -->
+  <div class="info-box">
+    <h2>Experimental Animal</h2>
+    <ul>
+      <li>
+        <strong>Young Adult Rat</strong> (150–250 g, either sex)
+      </li>
+      <li>Preferably overnight fasted</li>
+      <li>Healthy and acclimatized before experiment</li>
+    </ul>
+  </div>
+
+  <!-- 💊 DRUG SOLUTIONS -->
+  <div class="info-box">
+    <h2>Drug Solutions</h2>
+    <ul>
+      <li>
+        <strong>Standard 5-HT Stock:</strong>
+        Usually 10 μg/mL (or 100 μg/mL)
+      </li>
+      <li>Diluted to working concentrations (1–10 ng/mL bath concentration)</li>
+      <li>
+        <strong>Test (Unknown) 5-HT Solution:</strong>
+        Sample of unknown strength provided for assay
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
+  <div class="info-box">
+    <h2>Physiological Solution</h2>
+    <ul>
+      <li>
+        <strong>Krebs' Solution</strong> (Most commonly used)
+      </li>
+      <li>
+        Aerated with 95% O₂ + 5% CO₂
+      </li>
+      <li>
+        Maintained at 37 ± 0.5°C
+      </li>
+      <li>
+        <strong>Krebs' Composition (g/L):</strong>
+        <br>
+        NaCl 6.9, KCl 0.35, CaCl₂ 0.28, NaHCO₃ 2.1,
+        KH₂PO₄ 0.16, MgSO₄·7H₂O 0.29, Glucose 2.0
+      </li>
+    </ul>
+  </div>
+
+  <!-- ⚙ EQUIPMENT -->
+  <div class="info-box">
+    <h2>Equipment / Apparatus</h2>
+    <ul>
+      <li>Organ Bath (5–10 mL capacity)</li>
+      <li>Aerator with oxygen supply</li>
+      <li>Thermostat (37°C maintenance)</li>
+      <li>Isotonic transducer or spring-loaded lever (1 g tension)</li>
+      <li>Kymograph or Digital recorder</li>
+      <li>Surgical instruments</li>
+      <li>Thread and S-shaped hooks</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

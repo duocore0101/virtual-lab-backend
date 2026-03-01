@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Laboratory Animal Maintenance – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 100px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* ================= IMAGE STYLE ================= */
+    .slide-image {
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .slide-image img {
+      max-width: 100%;
+      width: 400px;
+      border-radius: 14px;
+      border: 1px solid #444;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ================= FULLSCREEN BUTTON ================= */
+    .top-actions {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 20;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+    }
+
+    .dropdown-btn:active {
+      transform: scale(0.96);
+    }
+
+    :fullscreen .top-actions {
+      top: 14px;
+      left: 18px;
+    }
+
+    /* ================= WIDER CONTENT CARD ================= */
+    .info-box {
+    max-width: 1200px;      /* 🔥 increased width */
+    width: 95%;             /* responsive */
+    margin: 0 auto;         /* center align */
+    padding: 24px 28px;     /* more breathing space */
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- AIM AS MAIN TITLE -->
+  <h3 class="title">
+    To study the maintenance of laboratory animals according to CPCSEA guidelines
+  </h3>
+
+  <!-- FULL SCREEN BUTTON -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+      <p>
+        The Committee for the Purpose of Control and Supervision of Experiments on Animals (CPCSEA), under the Ministry of Fisheries, Animal Husbandry and Dairying (Government of India), provides detailed guidelines for humane care, housing, and maintenance of laboratory animals.
+
+These guidelines aim to ensure Good Laboratory Practices (GLP), animal welfare, quality maintenance, and safety during biomedical and behavioral research.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/principle.png' %}" alt="CPCSEA Principle">
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="info-box slide">
+      <h2>Procurement and Arrival</h2>
+      <ul>
+      
+        <li>Animals must be procured only from CPCSEA-registered breeders.</li>
+        <li>Health certificates and transport conditions must be verified.</li>
+        <li>Animals should be transferred immediately to quarantine.</li>
+        <li>Cages must be labeled with species, strain, source, date, and number.</li>
+        <li>Acclimatization period of at least 7 days for rodents is required.</li>
+      </ul>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/procurement.png' %}" alt="Animal Procurement">
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="info-box slide">
+      <h2>Quarantine and Health Monitoring</h2>
+      <ul>
+       <li> Animals are housed in a separate quarantine room.</li>
+        <li>Daily observation for signs of illness is mandatory.</li>
+        <li>Health screening includes fecal and microbiological tests.</li>
+        <li>Prophylactic treatment as advised by veterinarian.</li>
+        <li>Animals are released only after veterinary clearance</li>
+</ul>
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/quarantine.png' %}" alt="Animal Quarantine">
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="info-box slide">
+      <h2>Housing Setup</h2>
+      <p>
+        Appropriate cages must be used: polycarbonate or polypropylene cages for rodents and stainless steel cages for larger animals.
+
+Clean, dust-free bedding and environmental enrichment such as nesting material or tunnels should be provided.g.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/housing.png' %}" alt="Animal Housing">
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="info-box slide">
+      <h2>Environmental Control</h2>
+      <ul>
+        <li>Temperature: 22–26°C (rodents), 18–22°C (rabbits)</li>
+        <li>Humidity: 40–70%</li>
+        <li>Ventilation: 10–15 air changes/hour</li>
+        <li>Lighting: 12:12 light–dark cycle</li>
+        <li>Noise should be minimized (<85 dB)</li>
+      </ul>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/environment.png' %}" alt="Environmental Control">
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="info-box slide">
+      <h2>Feeding and Watering</h2>
+      <ul>
+        <li>Nutritionally balanced pellet diet should be provided ad libitum.</li>
+<li>Feed hoppers must be checked daily.</li>
+<li>Clean potable water should be supplied daily.</li>
+<li>Food or water restriction only with protocol approval.</li>
+
+      </ul>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/feeding.png' %}" alt="Feeding Animals">
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="info-box slide">
+      <h2>Daily Maintenance</h2>
+      <ul>
+       <li>Personnel must wear PPE before entering animal rooms.</li>
+<li>Animals are observed daily for behavior and health.</li>
+<li>Observations must be recorded in daily logs.</li>
+<li>Soiled bedding is spot-cleaned and waste removed.</li>
+<li>Any abnormality must be reported to the veterinarian.</li>
+
+      </ul>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/daily-care.png' %}" alt="Daily Maintenance">
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="info-box slide">
+      <h2>Veterinary Care & Records</h2>
+      <ul>
+        <li>Periodic cleaning and sanitization of cages is essential.</li>
+<li>Veterinary care includes treatment and humane euthanasia.</li>
+<li>Maintain records of inventory, health, environment, and protocols.</li>
+<li>Annual reports must be submitted to CPCSEA.</li>
+
+      </ul>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/lab-animal-maintenance/images/records.png' %}" alt="Veterinary Records">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 8
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/intro/";
+  }
+}
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

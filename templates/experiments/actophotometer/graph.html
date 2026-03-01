@@ -1,0 +1,325 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result Graph – Actophotometer</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* =========================
+       THEME VARIABLES
+    ========================== */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme {
+      background: #f4f6f9;
+      color: #111;
+    }
+
+    /* =========================
+       GRAPH CARD
+    ========================== */
+    .graph-card {
+      max-width: 950px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme .graph-card {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .graph-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #ff4b4b;
+    }
+
+    body.light-theme .graph-title {
+      color: #c62828;
+    }
+
+    .graph-subtitle {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #ddd;
+    }
+
+    body.light-theme .graph-subtitle {
+      color: #555;
+    }
+
+    .group-labels {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 12px;
+      font-weight: 600;
+      color: #ffb3b3;
+    }
+
+    body.light-theme .group-labels {
+      color: #333;
+    }
+
+    /* =========================
+       TOP RIGHT CONTROLS
+    ========================== */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #555;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #ff4b4b;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    body.light-theme .toggle-label {
+      color: #333;
+    }
+
+    /* FULLSCREEN BUTTON */
+    .fullscreen-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .fullscreen-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
+    }
+
+    .next-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  </style>
+
+  <style>
+    /* ===== NEXT BUTTON STYLING ===== */
+    .next-btn button {
+      margin-top: 25px;
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 30px;
+      border: 2px solid #ff2a2a;
+      background: transparent;
+      color: #ff2a2a;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .next-btn button:hover {
+      background: linear-gradient(135deg, #ff2a2a, #8b0000);
+      color: #ffffff;
+      box-shadow:
+        0 0 8px rgba(255, 42, 42, 0.7),
+        0 0 18px rgba(255, 0, 0, 0.5);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .next-btn button:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🌗 THEME + FULLSCREEN -->
+<div class="theme-toggle">
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Light Mode</span>
+
+  <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+
+<div class="graph-card">
+  <div class="graph-title">Result (Graph)</div>
+  <div class="graph-subtitle">CNS Depressant & CNS Stimulant Activity</div>
+
+  <canvas id="resultChart" height="120"></canvas>
+
+  <div class="group-labels">
+    <span>Chlorpromazine (Depressant)</span>
+    <span>Caffeine (Stimulant)</span>
+  </div>
+
+  <div class="next-btn">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next ▶
+    </button>
+  </div>
+</div>
+
+<script>
+/* =========================
+   THEME TOGGLE
+========================== */
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("uiTheme") === "light") {
+  document.body.classList.add("light-theme");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "uiTheme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+
+/* =========================
+   FULLSCREEN
+========================== */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+/* =========================
+   GRAPH DATA (UNCHANGED)
+========================== */
+const depPre  = JSON.parse(localStorage.getItem("actophoto_pre"))  || [0,0,0];
+const depPost = JSON.parse(localStorage.getItem("actophoto_post")) || [0,0,0];
+
+const stimPre  = JSON.parse(localStorage.getItem("actophoto_stim_pre"))  || depPre;
+const stimPost = JSON.parse(localStorage.getItem("actophoto_stim_post")) || depPost;
+
+function mean(arr) {
+  return Math.round(arr.reduce((a,b)=>a+b,0) / arr.length);
+}
+
+const values = [
+  mean(depPre),
+  mean(depPost),
+  mean(stimPre),
+  mean(stimPost)
+];
+
+const ctx = document.getElementById("resultChart").getContext("2d");
+
+const redGrad = ctx.createLinearGradient(0, 0, 0, 300);
+redGrad.addColorStop(0, "#ff6a6a");
+redGrad.addColorStop(1, "#b71c1c");
+
+const blueGrad = ctx.createLinearGradient(0, 0, 0, 300);
+blueGrad.addColorStop(0, "#6aa9ff");
+blueGrad.addColorStop(1, "#1e3c72");
+
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: ["Basal (A)", "Treatment (B)", "Basal (A)", "Treatment (B)"],
+    datasets: [{
+      data: values,
+      backgroundColor: [blueGrad, redGrad, blueGrad, redGrad],
+      borderRadius: 10,
+      barThickness: 55
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Locomotor Activity Score"
+        },
+        grid: { color: "rgba(255,255,255,0.1)" }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

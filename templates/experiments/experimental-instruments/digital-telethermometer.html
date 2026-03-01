@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digital Telethermometer | Experimental Instruments</title>
+
+  <!-- 🔥 SAME CSS AS PRACTICAL 3 -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+
+  <!-- 🔥 MODEL VIEWER FOR .glb -->
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">
+    Digital Telethermometer
+  </h1>
+
+  <!-- 🧊 3D MODEL + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🧊 3D MODEL (LEFT) -->
+    <div class="video-container small-video">
+      <model-viewer
+        src="{% static 'experiments/experimental-instruments/models/digital-telethermometer.glb' %}"
+        alt="Digital Telethermometer 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        style="width:100%; height:100%; background:#000;">
+      </model-viewer>
+    </div>
+
+    <!-- 🧬 OVERVIEW (RIGHT) -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        The <strong>Digital Telethermometer</strong>, also known as a
+        <em>Multi-Channel Digital Tele-Thermometer</em>, is a specialized
+        instrument used in experimental pharmacology for
+        <strong>precise and continuous monitoring of body temperature</strong>
+        in laboratory animals.
+      </p>
+      <p>
+        It is an essential tool for <strong>pyrogen testing</strong> to detect
+        fever-inducing contaminants in injectable drugs, in accordance with
+        pharmacopoeial standards such as USP, EP, and BP.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ⚙️ PRINCIPLE -->
+  <div class="exp-card">
+    <h2>Principle</h2>
+    <p>
+      The digital telethermometer operates using
+      <strong>thermistor- or thermocouple-based rectal probes</strong>
+      inserted into the animal to accurately measure core body temperature.
+      The instrument provides high resolution (approximately <strong>0.1°C</strong>)
+      and allows continuous temperature monitoring.
+    </p>
+    <p>
+      Multiple channels permit simultaneous monitoring of several animals.
+      A rise in temperature of more than <strong>0.5–1°C</strong> indicates a
+      <strong>pyrogenic response</strong>, typically due to bacterial endotoxins
+      such as lipopolysaccharides.
+    </p>
+  </div>
+
+  <!-- 🧪 DESCRIPTION OF THE INSTRUMENT -->
+  <div class="exp-card">
+    <h2>Description of the Instrument</h2>
+    <ul>
+      <li>
+        <strong>Channels:</strong> Commonly 6-channel systems for monitoring
+        six animals simultaneously; some models support 1–12 channels.
+      </li>
+      <li>
+        <strong>Probes:</strong> Flexible rectal probes with thermistors or
+        temperature sensors and long leads to minimize animal disturbance.
+      </li>
+      <li>
+        <strong>Display:</strong> Digital LED/LCD display showing temperature
+        (range typically 0–50°C or 20–45°C) with accuracy ±0.1°C.
+      </li>
+      <li>
+        <strong>Features:</strong>
+        <ul>
+          <li>Individual or combined display per channel</li>
+          <li>Calibration facility</li>
+          <li>Auto and manual operating modes</li>
+          <li>Built-in timer</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Advanced Models:</strong> Software-based data logging,
+        protocol compliance (USP/EP/BP), and printing capabilities.
+      </li>
+    </ul>
+  </div>
+
+  <!-- 🔬 APPLICATIONS -->
+  <div class="exp-card">
+    <h2>Applications</h2>
+    <ul>
+      <li>Pyrogen testing of injectable pharmaceutical products</li>
+      <li>Monitoring body temperature during anesthesia</li>
+      <li>Hyperthermia and hypothermia studies</li>
+      <li>Physiological and toxicological research</li>
+      <li>Teaching experimental pharmacology practicals</li>
+    </ul>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Instrument List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+</body>
+</html>

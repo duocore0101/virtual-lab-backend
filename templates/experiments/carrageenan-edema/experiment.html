@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrageenan Paw Edema – Virtual Simulator</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+<style>
+  .top-actions {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 12px;
+    z-index: 50;
+  }
+
+  .dropdown-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: #ff2e2e;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    transition: 0.3s;
+  }
+
+  .dropdown-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .video-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .main-video {
+    width: 75%;
+    max-width: 1100px;
+  }
+
+  .main-video video {
+    width: 80%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  }
+
+  .observation-img {
+    width: 100%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe the plethysmometer setup carefully.</li>
+      <li>Measure baseline paw volume.</li>
+      <li>Administer standard/test drug.</li>
+      <li>Inject carrageenan subplantarly.</li>
+      <li>Record paw volume at specified intervals.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+
+    <h2>Procedure</h2>
+
+    <ol class="instruction-list">
+      <li>Acclimate rats and mark the ankle joint for consistent measurement.</li>
+      <li>Measure baseline paw volume (V₀) using plethysmometer.</li>
+      <li>Divide into groups: Control, Standard, Test drug.</li>
+      <li>Administer drugs orally or i.p. (1 hour before carrageenan).</li>
+      <li>Inject 0.1 mL of 1% carrageenan subplantar into right hind paw.</li>
+      <li>Measure paw volume (Vₜ) at 1, 2, 3, and 4 hours.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP -->
+<!-- 📊 OBSERVATION POPUP -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:950px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+
+    <h2>Observation Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Time (hr)</th>
+          <th>Control</th>
+          <th>Standard</th>
+          <th>Test Drug</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td id="c0">—</td><td id="s0">—</td><td id="t0">—</td></tr>
+        <tr><td>1</td><td id="c1">—</td><td id="s1">—</td><td id="t1">—</td></tr>
+        <tr><td>2</td><td id="c2">—</td><td id="s2">—</td><td id="t2">—</td></tr>
+        <tr><td>3</td><td id="c3">—</td><td id="s3">—</td><td id="t3">—</td></tr>
+        <tr><td>4</td><td id="c4">—</td><td id="s4">—</td><td id="t4">—</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Parameter:</strong> Paw Volume (ml)</p>
+
+  </div>
+</div>
+
+
+<div class="exp-container">
+
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Carrageenan Paw Edema – Virtual Simulator</h1>
+
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 MAIN VIDEO -->
+  <div class="video-grid">
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/carrageenan-edema/videos/setup.mp4' %}">
+      </video>
+    </div>
+  </div>
+
+  <!-- 🎛 CONTROLS -->
+  <!-- 🎛 CONTROLS -->
+<div class="control-panel">
+  <button onclick="runControl()">Control</button>
+  <button onclick="injectStandard()">Inject Standard (Diclofenac)</button>
+  <button onclick="afterStandard()">After Standard</button>
+  <button onclick="injectTest()">Inject Test Drug</button>
+  <button onclick="afterTest()">After Test Drug</button>
+</div>
+
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<script>
+
+/* ===============================
+   🎥 VIDEO CONTROL
+================================= */
+
+const mainVideo = document.getElementById("expVideo");
+let currentStep = null;   // track which step is active
+
+/* ===============================
+   📊 OBSERVATION DATA
+================================= */
+
+const controlData  = [1.20, 1.45, 1.70, 1.90, 2.05];
+const standardData = [1.22, 1.30, 1.38, 1.42, 1.45];
+const testData     = [1.21, 1.35, 1.50, 1.60, 1.68];
+
+/* ===============================
+   📊 TABLE FILL FUNCTION
+================================= */
+
+function fillColumn(prefix, data) {
+  openObservation();
+
+  for (let i = 0; i < data.length; i++) {
+    setTimeout(() => {
+      const cell = document.getElementById(prefix + i);
+      if (cell) {
+        cell.innerText = data[i];
+        cell.style.color = "#00ff88";
+        cell.style.fontWeight = "bold";
+      }
+    }, i * 700);
+  }
+}
+
+/* ===============================
+   🎬 VIDEO END EVENT
+================================= */
+
+mainVideo.addEventListener("ended", function() {
+
+  if (currentStep === "control") {
+    fillColumn("c", controlData);
+  }
+
+  if (currentStep === "afterStandard") {
+    fillColumn("s", standardData);
+  }
+
+  if (currentStep === "afterTest") {
+    fillColumn("t", testData);
+  }
+
+});
+
+/* ===============================
+   🔬 STEP 1 – CONTROL
+================================= */
+
+function runControl() {
+  currentStep = "control";
+  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/control.mp4' %}";
+  mainVideo.play();
+}
+
+/* ===============================
+   💉 STEP 2 – INJECT STANDARD
+================================= */
+
+function injectStandard() {
+  currentStep = null; // no table fill here
+  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_standard.mp4' %}";
+  mainVideo.play();
+}
+
+/* ===============================
+   📈 STEP 3 – AFTER STANDARD
+================================= */
+
+function afterStandard() {
+  currentStep = "afterStandard";
+  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_standard.mp4' %}";
+  mainVideo.play();
+}
+
+/* ===============================
+   💊 STEP 4 – INJECT TEST DRUG
+================================= */
+
+function injectTest() {
+  currentStep = null; // no table fill
+  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_test.mp4' %}";
+  mainVideo.play();
+}
+
+/* ===============================
+   📊 STEP 5 – AFTER TEST DRUG
+================================= */
+
+function afterTest() {
+  currentStep = "afterTest";
+  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_test.mp4' %}";
+  mainVideo.play();
+}
+
+/* ===============================
+   🔥 AUTO SHOW INSTRUCTIONS
+================================= */
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+/* ===============================
+   📦 MODAL CONTROLS
+================================= */
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+/* ===============================
+   🌗 THEME TOGGLE
+================================= */
+
+const toggle = document.getElementById("themeToggle");
+if (toggle) {
+  toggle.addEventListener("change", () => {
+    document.body.classList.toggle("light-theme");
+  });
+}
+
+/* ===============================
+   ⛶ FULLSCREEN
+================================= */
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+</script>
+
+
+</body>
+</html>

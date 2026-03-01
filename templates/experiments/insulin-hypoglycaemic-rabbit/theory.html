@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Insulin Hypoglycaemic Effect – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">Theory / Principle</h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- Slide 1 -->
+    <div class="info-box slide active">
+      <h2>Introduction to Insulin</h2>
+      <p>
+        Insulin is a peptide hormone secreted by the 
+        <strong>β-cells of the pancreas</strong>. It plays a vital role 
+        in maintaining normal blood glucose levels in the body.
+      </p>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="info-box slide">
+      <h2>Mechanism of Action</h2>
+      <p>
+        Insulin lowers blood glucose by:
+      </p>
+      <ul>
+        <li>Promoting glucose uptake into muscle and adipose tissue via GLUT4 transporters</li>
+        <li>Stimulating glycogenesis in liver and muscle</li>
+        <li>Inhibiting glycogenolysis</li>
+        <li>Inhibiting gluconeogenesis in the liver</li>
+      </ul>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="info-box slide">
+      <h2>Effect in Fasted Rabbit</h2>
+      <p>
+        In a healthy fasted rabbit, subcutaneous injection of insulin 
+        induces <strong>hypoglycaemia</strong> (fall in blood glucose level).
+      </p>
+      <p>
+        The extent and duration of this fall indicate insulin's potency 
+        and time course of action.
+      </p>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="info-box slide">
+      <h2>Basis of Measurement</h2>
+      <p>
+        Blood glucose is measured at:
+      </p>
+      <ul>
+        <li>Baseline (0 hour)</li>
+        <li>1 hour</li>
+        <li>2 hours</li>
+        <li>3 hours</li>
+        <li>4–5 hours post-injection</li>
+      </ul>
+      <p>
+        A progressive fall followed by gradual recovery is observed.
+      </p>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="info-box slide">
+      <h2>Calculations and Interpretation</h2>
+      <p><strong>1. Percentage Fall:</strong></p>
+      <p>
+        % Fall = (Baseline − Glucose at time t) × 100 / Baseline
+      </p>
+
+      <p><strong>2. Area Under Curve (AUC):</strong></p>
+      <p>
+        Calculated using trapezoidal rule on glucose-time graph.
+      </p>
+
+      <p><strong>3. Maximum Hypoglycaemic Response:</strong></p>
+      <p>
+        Lowest glucose value and time to reach it.
+      </p>
+
+      <p><strong>4. Duration of Action:</strong></p>
+      <p>
+        Time taken for glucose to return within 10–20% of baseline.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 5
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+}
+
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

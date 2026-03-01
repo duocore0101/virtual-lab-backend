@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hamsters | Experimental Animals</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/common-laboratory-animals/css/experiment.css' %}">
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="exp-container">
+
+  <!-- PAGE TITLE -->
+  <h1 class="exp-title">Hamsters as Experimental Animal Models</h1>
+
+  <!-- 🎥 VIDEO + OVERVIEW -->
+  <div class="top-flex-row">
+
+    <!-- 🎥 VIDEO CARD -->
+    <div class="video-container small-video">
+      <video autoplay muted loop controls>
+        <source src="{% static 'experiments/common-laboratory-animals/videos/hamsters.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 🧬 OVERVIEW CARD -->
+    <div class="exp-card overview-card">
+      <h2>Overview</h2>
+      <p>
+        Hamsters are small rodents widely used in biomedical research and are
+        distinct from mice and rats. The most common laboratory species is the
+        Syrian (golden) hamster (<em>Mesocricetus auratus</em>), followed by the
+        Chinese hamster (<em>Cricetulus griseus</em>) and dwarf species such as
+        the Djungarian hamster (<em>Phodopus sungorus</em>). They possess unique
+        physiological traits including cheek pouches, hibernation capability,
+        and susceptibility to several human pathogens.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 🐹 SYRIAN HAMSTER -->
+  <div class="exp-card">
+    <h2>Syrian (Golden) Hamster (<em>Mesocricetus auratus</em>)</h2>
+    <ul>
+      <li><strong>Origin:</strong> Captured from wild populations in Syria in
+        1930; all laboratory Syrian hamsters descend from this stock</li>
+      <li><strong>Appearance:</strong> Golden/brown or cream-colored fur, large
+        cheek pouches, robust body</li>
+      <li><strong>Size:</strong> 100–150 g; lifespan 2–3 years</li>
+      <li><strong>Traits:</strong> Solitary, aggressive to conspecifics,
+        hibernation capability, short gestation (~16 days)</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Highly susceptible to human viruses (SARS-CoV-2, RSV, influenza)</li>
+      <li>Models human-like disease progression</li>
+      <li>Immune-privileged cheek pouches for transplant studies</li>
+      <li>Useful in oncology, cardiology, and metabolic research</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Limited genetic tools compared to mice</li>
+      <li>Inbred nature reduces genetic diversity</li>
+      <li>Prone to spontaneous diseases in aging animals</li>
+    </ul>
+  </div>
+
+  <!-- 🐹 CHINESE HAMSTER -->
+  <div class="exp-card">
+    <h2>Chinese Hamster (<em>Cricetulus griseus</em>)</h2>
+    <ul>
+      <li><strong>Appearance:</strong> Gray coat with black dorsal stripe,
+        short tail, small cheek pouches</li>
+      <li><strong>Size:</strong> ~50 g; lifespan 2–3 years</li>
+      <li><strong>Genetics:</strong> Low chromosome number (2n = 22)</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Source of CHO cells for biopharmaceutical production</li>
+      <li>Produces complex human-like glycosylated proteins</li>
+      <li>Used in toxicology, genetics, and diabetes research</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Less common as a whole-animal model</li>
+      <li>Lower reproductive performance than Syrian hamsters</li>
+    </ul>
+  </div>
+
+  <!-- 🐹 DJUNGARIAN HAMSTER -->
+  <div class="exp-card">
+    <h2>Djungarian (Siberian) Hamster (<em>Phodopus sungorus</em>)</h2>
+    <ul>
+      <li><strong>Appearance:</strong> Small body, gray coat with winter white
+        color change</li>
+      <li><strong>Size:</strong> 20–50 g</li>
+      <li><strong>Traits:</strong> Photoperiod-sensitive reproduction and
+        metabolism</li>
+    </ul>
+
+    <p>
+      Djungarian hamsters are mainly used in studies of circadian rhythm,
+      seasonal biology, metabolism, and behavior. They are less susceptible
+      to some viral infections compared to Syrian hamsters.
+    </p>
+  </div>
+
+  <!-- 📊 COMPARISON TABLE -->
+  <div class="exp-card">
+    <h2>Comparison of Main Hamster Models</h2>
+
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Trait</th>
+            <th>Syrian</th>
+            <th>Chinese</th>
+            <th>Djungarian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Adult Weight</td>
+            <td>100–150 g</td>
+            <td>~50 g</td>
+            <td>20–50 g</td>
+          </tr>
+          <tr>
+            <td>Primary Use</td>
+            <td>Infectious disease, oncology</td>
+            <td>CHO cell production</td>
+            <td>Seasonal biology</td>
+          </tr>
+          <tr>
+            <td>Virus Susceptibility</td>
+            <td>High</td>
+            <td>Moderate</td>
+            <td>Variable</td>
+          </tr>
+          <tr>
+            <td>Reproduction</td>
+            <td>Excellent</td>
+            <td>Good</td>
+            <td>Photoperiod-dependent</td>
+          </tr>
+          <tr>
+            <td>Unique Feature</td>
+            <td>Cheek pouches</td>
+            <td>Low chromosomes</td>
+            <td>Coat color change</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🔬 COMMON USES -->
+  <div class="exp-card">
+    <h2>Common Uses in Research</h2>
+    <ul>
+      <li>Infectious diseases (COVID-19, influenza, leishmaniasis)</li>
+      <li>Biopharmaceutical production (CHO cells)</li>
+      <li>Oncology and toxicology</li>
+      <li>Metabolic, reproductive, and circadian rhythm studies</li>
+    </ul>
+    <p>
+      Hamsters complement mice and rats in research by modeling
+      human-relevant pathogenesis, while adhering to ethical standards
+      in animal experimentation. Syrian hamsters remain the most
+      versatile whole-animal hamster model.
+    </p>
+  </div>
+
+  <!-- 🔙 NAVIGATION -->
+  <div class="exp-actions">
+    <a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+      ← Back to Animal List
+    </a>
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("theme-light");
+  document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

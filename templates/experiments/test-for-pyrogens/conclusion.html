@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test for Pyrogens – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- ================= RESULT ================= -->
+  <div class="info-box">
+    <h2>Observations : Interpretation of Result</h2>
+
+    <p>
+      If the sum of the responses of the group of three rabbits does not exceed
+      1.4°C and if the response of any individual rabbit is less than 0.6°C,
+      the preparation being examined passes the test.
+    </p>
+
+    <p>
+      If the responses of any rabbit is 0.6°C or more and if the sum of
+      responses of three rabbits exceeds 1.4°C, continue test by using
+      another five rabbits.
+    </p>
+
+    <p>
+      If not more than three of eight rabbits show individual responses
+      of 0.6°C or more and if sum of responses of group eight rabbits
+      does not exceed 3.7°C, the preparation complies with the test of pyrogen.
+    </p>
+  </div>
+
+  <!-- ================= WHAT YOU HAVE LEARNT ================= -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <ul>
+      <li>
+        Telethermometer with six probes is used as an apparatus/device
+        in recording fever response.
+      </li>
+
+      <li>
+        Prerequisites for the test must be strictly adhered.
+      </li>
+
+      <li>
+        A preparation is said to be having passed the test for pyrogen only if:
+        <ul>
+          <li>
+            The sum of the responses of a group of three rabbits
+            does not exceed 1.4°C.
+          </li>
+          <li>
+            The response of any individual rabbit should be
+            less than 0.6°C.
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        Failure to obtain the above result test must be repeated
+        employing five other rabbits, in all eight rabbits are employed
+        in the test.
+      </li>
+
+      <li>
+        Under this condition not more than three of the eight rabbits
+        should show individual responses of 0.6°C or more and sum of
+        responses of the group of eight rabbits does not exceed 3.7°C.
+      </li>
+
+      <li>
+        It is only then a preparation is said to be finally
+        passed the test for pyrogen.
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+
+    <!-- FINISH PRACTICAL -->
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        status: "completed"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

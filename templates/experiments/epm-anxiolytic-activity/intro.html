@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elevated Plus Maze Experiment – 3D Virtual Model</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse SAME CSS as Actophotometer / Rabbit Eye -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <!-- TITLE -->
+  <h1 class="title">
+    To Study Anxiolytic Activity of Drugs Using Elevated Plus Maze (EPM)
+    Method in Mice / Rats
+  </h1>
+
+  <!-- 3D MODEL -->
+  <model-viewer
+    src="{% static 'experiments/epm-anxiolytic-activity/models/elevated-plus-maze.glb' %}"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    exposure="1.1"
+    style="width:100%; height:450px; border-radius:12px;">
+  </model-viewer>
+
+  <!-- INFO BOX -->
+  <div class="info-box">
+    <h2>Introduction</h2>
+
+    <p>
+      Anxiety is a behavioral response exhibited by animals when exposed
+      to unfamiliar or stressful environments. In experimental
+      pharmacology, animal models are widely used to evaluate drugs
+      that modify anxiety-related behavior.
+    </p>
+
+    <p>
+      The Elevated Plus Maze (EPM) is a validated behavioral model used
+      to study anxiety in rodents such as mice and rats. It is based on
+      the natural aversion of rodents to open and elevated spaces.
+      Anxiolytic drugs reduce this fear and increase exploratory behavior.
+    </p>
+
+    <ul>
+      <li>Open arms indicate reduced anxiety</li>
+      <li>Closed arms indicate anxiety-related behavior</li>
+      <li>Anxiolytic drugs increase open arm exploration</li>
+    </ul>
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/student/dashboard/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next: Theory ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  🌗 Toggle Theme
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+
+  if (document.body.classList.contains("light-mode")) {
+    localStorage.setItem("uiTheme", "light");
+  } else {
+    localStorage.setItem("uiTheme", "dark");
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("uiTheme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+};
+</script>
+
+</body>
+</html>

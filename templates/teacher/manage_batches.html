@@ -1,0 +1,196 @@
+{% extends "teacher/base.html" %}
+{% block title %}Manage Batches{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================= PAGE WRAPPER ================= */
+.batch-container {
+    padding: 40px;
+}
+
+/* ================= PAGE TITLE ================= */
+.batch-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+/* ================= CARD DESIGN ================= */
+.batch-card {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 35px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.batch-card h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ================= INPUT FIELDS ================= */
+.batch-input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.batch-input:focus {
+    outline: none;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 3px rgba(255,0,0,0.08);
+}
+
+/* ================= BUTTON ================= */
+.batch-btn {
+    padding: 10px 22px;
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.batch-btn:hover {
+    background: var(--accent-red-dark);
+    transform: translateY(-1px);
+}
+
+/* ================= TABLE ================= */
+.batch-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.batch-table th {
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.04);
+    font-weight: 600;
+}
+
+.batch-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 14px;
+}
+
+.batch-table tr:hover {
+    background: rgba(0,0,0,0.03);
+}
+
+/* ================= ACTION LINKS ================= */
+.action-link {
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: 0.2s ease;
+}
+
+.edit-link {
+    color: #3b82f6;
+}
+
+.assign-link {
+    color: #10b981;
+}
+
+.action-link:hover {
+    opacity: 0.7;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-state {
+    padding: 25px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+</style>
+
+<div class="batch-container">
+
+    <div class="batch-title">Manage Batches</div>
+
+    <!-- ================= CREATE BATCH ================= -->
+    <div class="batch-card">
+        <h3>Create Batch</h3>
+
+        <form method="POST" action="/teacher/create-batch/">
+            {% csrf_token %}
+
+            <input type="text" name="name" 
+                   placeholder="Batch Name"
+                   class="batch-input" required>
+
+            <input type="number" name="start_roll" 
+                   placeholder="Start Roll Number"
+                   class="batch-input" required>
+
+            <input type="number" name="end_roll" 
+                   placeholder="End Roll Number"
+                   class="batch-input" required>
+
+            <button type="submit" class="batch-btn">
+                Create Batch
+            </button>
+        </form>
+    </div>
+
+    <!-- ================= BATCH OVERVIEW ================= -->
+    <div class="batch-card">
+        <h3>Batch Overview</h3>
+
+        <table class="batch-table">
+            <tr>
+                <th>Batch Name</th>
+                <th>Roll Range</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for batch in batches %}
+            <tr>
+                <td>{{ batch.name }}</td>
+                <td>{{ batch.start_roll }} - {{ batch.end_roll }}</td>
+                <td>
+                    <a href="/teacher/batch/{{ batch.id }}/edit/" 
+                       class="action-link edit-link">
+                       Edit
+                    </a>
+
+                    <a href="/teacher/batch/{{ batch.id }}/assign/" 
+                       class="action-link assign-link">
+                       Assign Practical
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">
+                    <div class="empty-state">
+                        No batches created yet.
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

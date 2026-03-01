@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrageenan Paw Edema – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The paw volume was recorded before and after carrageenan injection 
+      in control, standard, and test drug-treated groups using a 
+      digital plethysmometer.
+    </p>
+
+    <p>
+      <strong>Diclofenac / Indomethacin (standard drug)</strong> 
+      significantly inhibited paw edema (50–70% at peak), 
+      mainly in the late phase (3–4 hours), confirming 
+      cyclooxygenase (COX) inhibition.
+    </p>
+
+    <p>
+      The test drug showed a reduction in paw edema 
+      compared to the control group, indicating 
+      anti-inflammatory activity.
+    </p>
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <p>
+      Carrageenan-induced paw edema is a well-established 
+      model for evaluating acute anti-inflammatory activity.
+    </p>
+
+    <p>
+      Greater inhibition during the late phase suggests 
+      prostaglandin-mediated action similar to NSAIDs, 
+      indicating possible COX inhibition.
+    </p>
+
+    <p>
+      If the test drug shows dose-dependent and significant 
+      reduction in paw edema, it possesses 
+      <strong>anti-inflammatory activity</strong>.
+    </p>
+
+    <p>
+      Lack of significant effect may indicate absence of 
+      acute anti-inflammatory potential or involvement 
+      of a different mechanism of action.
+    </p>
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        method: "Carrageenan-Induced Paw Edema Model",
+        result: "Anti-inflammatory activity observed via reduction in paw edema"
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+
+}
+</script>
+
+</body>
+</html>

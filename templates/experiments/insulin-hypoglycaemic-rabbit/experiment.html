@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Insulin-Induced Hypoglycaemic Effect – Virtual Simulator</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+<style>
+  .top-actions {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 12px;
+    z-index: 50;
+  }
+
+  .dropdown-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: #ff2e2e;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,0,0,0.6);
+    transition: 0.3s;
+  }
+
+  .dropdown-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .video-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .main-video {
+    width: 75%;
+    max-width: 1100px;
+  }
+
+  .main-video video {
+    width: 80%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  }
+  .control-panel button {
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 6px;
+}
+
+/* Button Colors */
+.btn-baseline {
+  background: linear-gradient(45deg, #ff4b4b, #ff2e2e);
+  color: #fff;
+}
+
+.btn-inject {
+  background: linear-gradient(45deg, #ff884d, #ff5722);
+  color: #fff;
+}
+
+.btn-1hr {
+  background: linear-gradient(45deg, #ffc107, #ff9800);
+  color: #000;
+}
+
+.btn-2hr {
+  background: linear-gradient(45deg, #e91e63, #d81b60);
+  color: #fff;
+}
+
+.btn-3hr {
+  background: linear-gradient(45deg, #2196f3, #1565c0);
+  color: #fff;
+}
+
+.btn-4hr {
+  background: linear-gradient(45deg, #9c27b0, #6a1b9a);
+  color: #fff;
+}
+
+.btn-5hr {
+  background: linear-gradient(45deg, #4caf50, #2e7d32);
+  color: #fff;
+}
+
+.control-panel button:hover {
+  transform: scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 Instructions Popup -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <li>Observe rabbit handling and blood collection technique.</li>
+      <li>Record baseline blood glucose.</li>
+      <li>Inject insulin subcutaneously.</li>
+      <li>Measure glucose at different time intervals.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 🔬 PROCEDURE POPUP -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Procedure</h2>
+    <ol class="instruction-list">
+      <li>Select healthy rabbits (2–3 animals; fast 16–18 hrs, water ad libitum).</li>
+      <li>Weigh and mark the rabbit.</li>
+      <li>Collect baseline blood sample from marginal ear vein.</li>
+      <li>Estimate blood glucose immediately.</li>
+      <li>Inject insulin subcutaneously (1–2 IU/kg).</li>
+      <li>Example: For 2 kg rabbit → 2–4 IU (0.05–0.1 mL of 40 IU/mL).</li>
+      <li>Return rabbit to cage (no food).</li>
+      <li>Collect blood at 1, 2, 3, 4, and 5 hours.</li>
+      <li>Measure glucose at each time point.</li>
+      <li>If severe hypoglycaemia occurs → administer glucose rescue.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 📊 OBSERVATION POPUP -->
+<div id="observationModal" class="modal">
+  <div class="modal-content" style="max-width:950px;">
+    <span class="close-btn" onclick="closeObservation()">✖</span>
+    <h2>Observation Table</h2>
+
+    <table class="observation-table">
+      <thead>
+        <tr>
+          <th>Time (hours)</th>
+          <th>Blood Glucose Level (mg/dL)</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+  <td>0 (baseline)</td>
+  <td id="val0">—</td>
+  <td id="remark0">—</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td id="val1">—</td>
+  <td id="remark1">—</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td id="val2">—</td>
+  <td id="remark2">—</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td id="val3">—</td>
+  <td id="remark3">—</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td id="val4">—</td>
+  <td id="remark4">—</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td id="val5">—</td>
+  <td id="remark5">—</td>
+</tr>
+</tbody>
+
+    </table>
+
+    <p style="margin-top:15px;">
+      <strong>Observation:</strong> Blood glucose falls progressively, reaches 
+      minimum around 1.5–3 hours, then gradually rises due to 
+      counter-regulatory hormones.
+    </p>
+  </div>
+</div>
+
+<div class="exp-container">
+
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  </div>
+
+  <h1>Insulin Hypoglycaemic Effect – Virtual Simulator</h1>
+
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">Light Mode</span>
+  </div>
+
+  <!-- 🎥 MAIN VIDEO -->
+  <div class="video-grid">
+    <div class="main-video">
+      <video id="expVideo" controls preload="metadata">
+        <source src="{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/setup.mp4' %}">
+      </video>
+    </div>
+  </div>
+
+ <!-- 🎛 CONTROLS -->
+<div class="control-panel">
+  <button class="btn-baseline" onclick="playBaseline()">Baseline</button>
+  <button class="btn-inject" onclick="injectInsulin()">Inject Insulin</button>
+  <button class="btn-1hr" onclick="play1hr()">After Insulin 1 hr</button>
+  <button class="btn-2hr" onclick="play2hr()">After Insulin 2 hr</button>
+  <button class="btn-3hr" onclick="play3hr()">After Insulin 3 hr</button>
+  <button class="btn-4hr" onclick="play4hr()">After Insulin 4 hr</button>
+  <button class="btn-5hr" onclick="play5hr()">After Insulin 5 hr</button>
+</div>
+
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+    ⬅ Back
+  </button>
+
+  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+    Next ▶
+  </button>
+
+</div>
+
+<script>
+const mainVideo = document.getElementById("expVideo");
+let currentStep = null;
+
+/* PLAY FUNCTIONS */
+
+function playBaseline() {
+  currentStep = 0;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/baseline.mp4' %}";
+  mainVideo.play();
+}
+
+function injectInsulin() {
+  currentStep = "inject";
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/inject.mp4' %}";
+  mainVideo.play();
+}
+
+function play1hr() {
+  currentStep = 1;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/1hr.mp4' %}";
+  mainVideo.play();
+}
+
+function play2hr() {
+  currentStep = 2;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/2hr.mp4' %}";
+  mainVideo.play();
+}
+
+function play3hr() {
+  currentStep = 3;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/3hr.mp4' %}";
+  mainVideo.play();
+}
+
+function play4hr() {
+  currentStep = 4;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/4hr.mp4' %}";
+  mainVideo.play();
+}
+
+function play5hr() {
+  currentStep = 5;
+  mainVideo.src = "{% static 'experiments/insulin-hypoglycaemic-rabbit/videos/5hr.mp4' %}";
+  mainVideo.play();
+}
+
+/* AUTO FILL VALUES */
+
+mainVideo.onended = function () {
+
+  switch(currentStep) {
+    case 0:
+      document.getElementById("val0").innerText = "102";
+      document.getElementById("remark0").innerText = "Normal fasting level";
+      break;
+
+    case 1:
+      document.getElementById("val1").innerText = "78";
+      document.getElementById("remark1").innerText = "Mild fall begins";
+      break;
+
+    case 2:
+      document.getElementById("val2").innerText = "52";
+      document.getElementById("remark2").innerText = "Maximum hypoglycaemia (peak effect)";
+      break;
+
+    case 3:
+      document.getElementById("val3").innerText = "68";
+      document.getElementById("remark3").innerText = "Starting recovery";
+      break;
+
+    case 4:
+      document.getElementById("val4").innerText = "88";
+      document.getElementById("remark4").innerText = "Approaching baseline";
+      break;
+
+    case 5:
+      document.getElementById("val5").innerText = "97";
+      document.getElementById("remark5").innerText = "Near normal";
+      break;
+  }
+};
+
+
+
+/* MODALS */
+
+window.onload = () => {
+  document.getElementById("instructionModal").style.display = "flex";
+};
+
+function closeModal() {
+  document.getElementById("instructionModal").style.display = "none";
+}
+
+function openObservation() {
+  document.getElementById("observationModal").style.display = "flex";
+}
+function closeObservation() {
+  document.getElementById("observationModal").style.display = "none";
+}
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
+}
+
+const toggle = document.getElementById("themeToggle");
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-theme");
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>
