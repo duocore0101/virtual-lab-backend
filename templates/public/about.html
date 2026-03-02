@@ -4,204 +4,406 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Us - G MARS</title>
+<title>About – G MARS Pharma Solution</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', sans-serif;
+
+/* ================= RESET ================= */
+*, *::before, *::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
+html, body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+/* ================= VARIABLES ================= */
+:root{
+  --bg-dark:#05070f;
+  --bg-light:#ffffff;
+  --gold:#f4b400;
+  --text-dark:#e8eaf0;
+  --text-light:#000;
+  --text-dim:#9aa4b2;
+  --card-dark:#0c1222;
+  --border-dark:#1f2937;
+}
+
+/* ================= BODY ================= */
 body{
-    background:#060b16;
-    color:white;
-    padding:60px 8%;
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text-dark);
+  transition:0.4s ease;
 }
 
-/* ===== HEADER ===== */
+body.light-mode{
+  background:var(--bg-light);
+  color:var(--text-light);
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 50px;
+  background:#060b16;
+}
+
+body.light-mode .navbar{
+  background:#fff;
+}
+
+.logo img{ height:110px; }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+}
+
+.nav-links a{
+  margin-left:25px;
+  text-decoration:none;
+  color:inherit;
+  font-family:'Poppins',sans-serif;
+  font-weight:500;
+}
+
+.login-btn{
+  background:var(--gold);
+  color:#000!important;
+  padding:8px 18px;
+  border-radius:25px;
+}
+
+.theme-toggle{
+  margin-left:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:1px solid #444;
+  background:#111;
+  color:#fff;
+}
+
+body.light-mode .theme-toggle{
+  background:#fff;
+  color:#000;
+  border:1px solid #ddd;
+}
+
+/* ================= SIDEBAR ================= */
+.hamburger{ display:none; font-size:28px; cursor:pointer; }
+
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:75%;
+  max-width:300px;
+  height:100vh;
+  background:#0c1222;
+  padding:100px 30px;
+  transition:0.4s;
+  z-index:200;
+}
+
+.sidebar.active{ right:0; }
+
+.sidebar a{
+  display:block;
+  margin-bottom:25px;
+  font-size:18px;
+  color:#fff;
+  text-decoration:none;
+}
+
+/* Sidebar Light Mode Fix */
+body.light-mode .sidebar{
+  background:#ffffff;
+}
+
+body.light-mode .sidebar a{
+  color:#000;
+}
+
+.mobile-theme-toggle{
+  margin-top:30px;
+  padding:12px;
+  border-radius:30px;
+  border:none;
+  background:var(--gold);
+  color:#000;
+  font-weight:600;
+  width:100%;
+}
+
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:150;
+}
+
+.sidebar-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= SECTION ================= */
+.about-section{
+  padding:60px 60px 100px;
+  min-height:100vh;
+}
+
 .about-header small{
-    color:#f4b400;
-    letter-spacing:2px;
-    font-size:14px;
+  color:var(--gold);
+  letter-spacing:2px;
+  font-size:14px;
 }
 
 .about-header h1{
-    font-size:48px;
-    margin-top:10px;
-    font-weight:700;
+  font-family:'Orbitron',monospace;
+  font-size:44px;
+  margin-top:10px;
+  line-height:1.2;
 }
 
 .about-header h1 span{
-    color:#f4b400;
+  color:var(--gold);
 }
 
 .about-header p{
-    margin-top:15px;
-    color:#9aa4b2;
-    max-width:650px;
-    font-size:15px;
-    line-height:1.6;
+  margin-top:15px;
+  color:var(--text-dim);
+  max-width:650px;
+  font-size:15px;
+  line-height:1.6;
 }
 
-/* ===== MISSION SECTION ===== */
+/* ================= Mission ================= */
 .mission-section{
-    margin-top:70px;
-    background:#0c1222;
-    padding:40px;
-    border-radius:20px;
-    border:1px solid #1f2937;
+  margin-top:60px;
+  background:var(--card-dark);
+  padding:40px;
+  border-radius:20px;
+  border:1px solid var(--border-dark);
+  transition:0.3s;
+}
+
+.mission-section:hover{
+  box-shadow:0 0 30px rgba(244,180,0,0.2);
 }
 
 .mission-section h2{
-    color:#f4b400;
-    margin-bottom:20px;
+  color:var(--gold);
+  margin-bottom:20px;
 }
 
-.mission-section p{
-    color:#9aa4b2;
-    line-height:1.7;
-    font-size:15px;
+/* Light Mode Mission Fix */
+body.light-mode .mission-section{
+  background:#f5f5f5;
+  border:1px solid #ddd;
 }
 
-/* ===== TEAM SECTION ===== */
+body.light-mode .mission-section p{
+  color:#555;
+}
+
+/* ================= Team ================= */
 .team-section{
-    margin-top:80px;
+  margin-top:80px;
 }
 
 .team-section h2{
-    font-size:36px;
-    margin-bottom:40px;
+  font-size:36px;
+  margin-bottom:40px;
 }
 
 .team-section h2 span{
-    color:#f4b400;
+  color:var(--gold);
 }
 
-/* FORCE 5 IN ONE LINE */
 .team-container{
-    display:flex;
-    justify-content:space-between;
-    align-items:stretch;
-    gap:25px;
-    margin-top:60px;
+  display:flex;
+  justify-content:space-between;
+  gap:25px;
+  flex-wrap:wrap;
 }
 
 .team-card{
-    background:#0c1222;
-    border-radius:20px;
-    padding:30px 20px;
-    text-align:center;
-    width:19%;
-    border:1px solid #1f2937;
-    transition:0.3s;
+  background:var(--card-dark);
+  border-radius:20px;
+  padding:30px 20px;
+  text-align:center;
+  width:19%;
+  border:1px solid var(--border-dark);
+  transition:0.3s;
 }
 
 .team-card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 40px rgba(244,180,0,0.25);
+  transform:translateY(-10px);
+  box-shadow:0 0 30px rgba(244,180,0,0.3);
 }
 
-/* IMAGE FIX */
 .team-card img{
-    width:150px;
-    height:150px;
-    border-radius:50%;
-    object-fit:cover;
-    object-position:center top;
-    border:4px solid #f4b400;
-    margin-bottom:20px;
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-    box-shadow:0 0 20px rgba(244,180,0,0.3);
-}
-
-.team-card h3{
-    margin-top:10px;
-    font-size:17px;
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--gold);
+  margin-bottom:20px;
 }
 
 .team-card p{
-    font-size:13px;
-    color:#9aa4b2;
-    margin-top:5px;
+  color:var(--text-dim);
+  font-size:13px;
 }
 
-/* ===== VALUES ===== */
+/* Light Mode Team Fix */
+body.light-mode .team-card{
+  background:#f5f5f5;
+  border:1px solid #ddd;
+}
+
+body.light-mode .team-card p{
+  color:#555;
+}
+
+/* ================= Values ================= */
 .values{
-    margin-top:80px;
-    display:flex;
-    gap:30px;
-    flex-wrap:wrap;
+  margin-top:80px;
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
 }
 
 .value-card{
-    background:#0c1222;
-    padding:30px;
-    border-radius:20px;
-    flex:1 1 calc(33% - 20px);
-    border:1px solid #1f2937;
-    transition:0.3s;
+  background:var(--card-dark);
+  padding:30px;
+  border-radius:20px;
+  flex:1 1 calc(33% - 20px);
+  border:1px solid var(--border-dark);
+  transition:0.3s;
 }
 
 .value-card:hover{
-    box-shadow:0 0 40px rgba(244,180,0,0.2);
+  box-shadow:0 0 30px rgba(244,180,0,0.2);
 }
 
 .value-card h4{
-    color:#f4b400;
-    margin-bottom:15px;
+  color:var(--gold);
+  margin-bottom:15px;
 }
 
 .value-card p{
-    color:#9aa4b2;
-    font-size:14px;
-    line-height:1.6;
+  color:var(--text-dim);
+  font-size:14px;
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:1100px){
-    .team-container{
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-
-    .team-card{
-        width:45%;
-        margin-bottom:25px;
-    }
-
-    .value-card{
-        flex:1 1 100%;
-    }
+/* Light Mode Value Fix */
+body.light-mode .value-card{
+  background:#f5f5f5;
+  border:1px solid #ddd;
 }
 
-@media(max-width:700px){
-    .team-card{
-        width:100%;
-    }
+body.light-mode .value-card p{
+  color:#555;
 }
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+
+  .nav-links{ display:none; }
+
+  .hamburger{
+    display:block;
+    position:absolute;
+    right:20px;
+  }
+
+  .navbar{ padding:15px 20px; }
+
+  .about-section{
+    padding:40px 20px 80px;
+  }
+
+  .about-header h1{
+    font-size:28px;
+  }
+
+  .team-card{
+    width:100%;
+  }
+
+  .value-card{
+    flex:1 1 100%;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="about-header">
-    <small>ABOUT G MARS</small>
-    <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
-    <p>
-        G MARS Pharma Solution is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
-    </p>
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo">
+  </div>
+
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'features' %}">Features</a>
+    <a href="{% url 'experiments' %}">Experiments</a>
+    <a href="{% url 'pricing' %}">Pricing</a>
+    <a href="{% url 'about' %}">About</a>
+    <a href="{% url 'login' %}" class="login-btn">Login</a>
+    <button id="themeToggle" class="theme-toggle">🌙</button>
+  </div>
+
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
 </div>
 
-<!-- Mission -->
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="{% url 'home' %}">🏠 Home</a>
+  <a href="{% url 'features' %}">✨ Features</a>
+  <a href="{% url 'experiments' %}">🧪 Experiments</a>
+  <a href="{% url 'pricing' %}">💳 Pricing</a>
+  <a href="{% url 'about' %}">👨‍💻 About</a>
+  <a href="{% url 'login' %}">🔐 Login</a>
+  <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- CONTENT -->
+<section class="about-section">
+
+<div class="about-header">
+  <small>ABOUT G MARS</small>
+  <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
+  <p>
+    G MARS Pharma Solution is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
+  </p>
+</div>
+
 <div class="mission-section">
-    <h2>Our Mission</h2>
-    <p>
-        We aim to bridge the gap between theoretical pharmacology education and real-world laboratory experience through advanced digital simulation technology. G MARS empowers colleges with AI-driven evaluation, automated practical journals, real-time analytics, and multi-tenant SaaS infrastructure.
-    </p>
+  <h2>Our Mission</h2>
+  <p>
+    We aim to bridge the gap between theoretical pharmacology education and real-world laboratory experience through advanced digital simulation technology. G MARS empowers colleges with AI-driven evaluation, automated practical journals, real-time analytics, and multi-tenant SaaS infrastructure.
+  </p>
 </div>
 
 <!-- Team -->
@@ -243,23 +445,31 @@ body{
     </div>
 </div>
 
-<!-- Values -->
-<div class="values">
-    <div class="value-card">
-        <h4>Innovation</h4>
-        <p>We integrate AI, automation, and modern SaaS architecture into pharmaceutical education.</p>
-    </div>
+</section>
 
-    <div class="value-card">
-        <h4>Accuracy</h4>
-        <p>Every simulation is designed to reflect real pharmacological laboratory standards.</p>
-    </div>
+<script>
+const toggleBtn=document.getElementById("themeToggle");
 
-    <div class="value-card">
-        <h4>Scalability</h4>
-        <p>Built for institutions — supporting multiple colleges under one secure multi-tenant system.</p>
-    </div>
-</div>
+function toggleTheme(){
+  document.body.classList.toggle("light-mode");
+  localStorage.setItem("theme",
+    document.body.classList.contains("light-mode") ? "light":"dark"
+  );
+}
+
+if(localStorage.getItem("theme")==="light"){
+  document.body.classList.add("light-mode");
+}
+
+if(toggleBtn){
+  toggleBtn.addEventListener("click",toggleTheme);
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>
