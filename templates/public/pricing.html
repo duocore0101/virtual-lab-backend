@@ -4,247 +4,403 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing Plans</title>
+<title>Pricing – G MARS Pharma Solution</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Segoe UI', sans-serif;
+
+/* ================= RESET ================= */
+*, *::before, *::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
+html, body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+/* ================= VARIABLES ================= */
+:root{
+  --bg-dark:#05070f;
+  --bg-light:#ffffff;
+  --gold:#f4b400;
+  --gold-soft:#ffd84d;
+  --text-dark:#e8eaf0;
+  --text-light:#000;
+  --text-dim:#9aa4b2;
+  --card-dark:#0c1222;
+}
+
+/* ================= BODY ================= */
 body{
-    background:#060b16;
-    color:white;
-    padding:60px 8%;
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text-dark);
+  transition:0.4s ease;
+  position:relative;
+  overflow-x:hidden;
 }
 
-/* ===== HEADER ===== */
+body.light-mode{
+  background:var(--bg-light);
+  color:var(--text-light);
+}
+
+/* ================= ENTERPRISE ANIMATED BACKGROUND ================= */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(244,180,0,0.12), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(244,180,0,0.08), transparent 40%);
+  animation: bgMove 12s infinite alternate ease-in-out;
+  z-index:-1;
+}
+
+@keyframes bgMove{
+  0%{ transform:translateY(0px); }
+  100%{ transform:translateY(-40px); }
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 50px;
+  background:#060b16;
+}
+
+body.light-mode .navbar{
+  background:#fff;
+}
+
+.logo img{ height:100px; }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+}
+
+.nav-links a{
+  margin-left:25px;
+  text-decoration:none;
+  color:inherit;
+  font-family:'Poppins',sans-serif;
+}
+
+.login-btn{
+  background:var(--gold);
+  color:#000!important;
+  padding:8px 18px;
+  border-radius:25px;
+}
+
+.theme-toggle{
+  margin-left:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:1px solid #444;
+  background:#111;
+  color:#fff;
+}
+
+/* ================= SIDEBAR ================= */
+.hamburger{ display:none; font-size:28px; cursor:pointer; }
+
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:75%;
+  max-width:300px;
+  height:100vh;
+  background:#0c1222;
+  padding:100px 30px;
+  transition:0.4s;
+  z-index:200;
+}
+
+.sidebar.active{ right:0; }
+
+.sidebar a{
+  display:block;
+  margin-bottom:25px;
+  font-size:18px;
+  color:#fff;
+  text-decoration:none;
+}
+
+.mobile-theme-toggle{
+  margin-top:30px;
+  padding:12px;
+  border-radius:30px;
+  border:none;
+  background:var(--gold);
+  color:#000;
+  font-weight:600;
+  width:100%;
+}
+
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:150;
+}
+
+.sidebar-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= PRICING SECTION ================= */
+.pricing-section{
+  padding:60px 60px 100px;
+  min-height:100vh;
+}
+
 .pricing-header small{
-    color:#f4b400;
-    letter-spacing:2px;
-    font-size:14px;
+  color:var(--gold);
+  letter-spacing:2px;
 }
 
 .pricing-header h1{
-    font-size:48px;
-    margin-top:10px;
-    font-weight:700;
+  font-family:'Orbitron',monospace;
+  font-size:44px;
+  margin-top:10px;
+  line-height:1.2;
 }
 
-.pricing-header h1 span{
-    color:#f4b400;
-}
+.pricing-header h1 span{ color:var(--gold); }
 
 .pricing-header p{
-    margin-top:15px;
-    color:#9aa4b2;
-    max-width:500px;
-    font-size:14px;
-    line-height:1.6;
+  margin-top:15px;
+  color:var(--text-dim);
+  max-width:500px;
+  font-size:14px;
 }
 
-/* Toggle */
-.toggle{
-    margin-top:30px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-    font-size:13px;
-    color:#9aa4b2;
-}
-
-.switch{
-    width:50px;
-    height:25px;
-    background:#111827;
-    border-radius:30px;
-    position:relative;
-    cursor:pointer;
-}
-
-.switch::before{
-    content:'';
-    position:absolute;
-    width:18px;
-    height:18px;
-    background:#f4b400;
-    border-radius:50%;
-    top:3.5px;
-    left:4px;
-}
-
-/* ===== CARDS ===== */
+/* ================= CARDS ================= */
 .pricing-container{
-    display:flex;
-    justify-content:space-between;
-    margin-top:50px;
-    gap:30px;
+  display:flex;
+  gap:40px;
+  margin-top:60px;
+  flex-wrap:wrap;
 }
 
 .card{
-    background:#0c1222;
-    padding:40px 30px;
-    border-radius:20px;
-    flex:1;
-    border:1px solid #1f2937;
-    transition:0.3s;
-    position:relative;
+  flex:1;
+  min-width:280px;
+  padding:40px 30px;
+  border-radius:22px;
+  background:var(--card-dark);
+  border:1px solid rgba(244,180,0,0.15);
+  transition:0.4s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Smooth golden glow */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg, transparent, rgba(244,180,0,0.25), transparent);
+  transform:translateX(-100%);
+  transition:0.6s;
+}
+
+.card:hover::before{
+  transform:translateX(100%);
 }
 
 .card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 40px rgba(244,180,0,0.2);
+  transform:translateY(-12px);
+  box-shadow:
+    0 0 25px rgba(244,180,0,0.4),
+    0 0 60px rgba(244,180,0,0.25);
 }
 
 .card h3{
-    font-size:14px;
-    letter-spacing:1px;
-    margin-top:10px;
-    color:#cbd5e1;
+  font-size:16px;
+  letter-spacing:1px;
 }
 
 .price{
-    font-size:48px;
-    font-weight:700;
-    margin:20px 0;
-}
-
-.price span{
-    font-size:14px;
-    color:#9aa4b2;
-    font-weight:400;
+  font-size:42px;
+  margin:20px 0;
+  font-weight:700;
+  color:var(--gold);
 }
 
 .features{
-    margin:25px 0;
+  margin:25px 0;
 }
 
 .features li{
-    list-style:none;
-    margin-bottom:12px;
-    font-size:14px;
-    color:#9aa4b2;
+  list-style:none;
+  margin-bottom:12px;
+  font-size:14px;
+  color:var(--text-dim);
 }
 
 .features li::before{
-    content:"✔";
-    color:#00ff95;
-    margin-right:8px;
+  content:"✔";
+  color:var(--gold);
+  margin-right:8px;
 }
 
 .btn{
-    width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #1f2937;
-    background:transparent;
-    color:white;
-    cursor:pointer;
-    transition:0.3s;
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(244,180,0,0.4);
+  background:transparent;
+  color:var(--gold);
+  cursor:pointer;
+  transition:0.3s;
 }
 
 .btn:hover{
-    background:#f4b400;
-    color:black;
-    border:none;
+  background:var(--gold);
+  color:#000;
 }
 
-/* ===== PROFESSIONAL CARD ===== */
-.popular{
-    border:2px solid #f4b400;
-    box-shadow:0 0 40px rgba(244,180,0,0.4);
-}
+/* ================= MOBILE ================= */
+@media(max-width:900px){
 
-.popular-badge{
+  .nav-links{ display:none; }
+
+  .hamburger{
+    display:block;
     position:absolute;
-    top:-15px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#f4b400;
-    color:black;
-    padding:5px 15px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
+    right:20px;
+  }
+
+  .navbar{ padding:15px 20px; }
+
+  .pricing-section{
+    padding:40px 20px 80px;
+  }
+
+  .pricing-header h1{
+    font-size:28px;
+  }
+
+  .pricing-container{
+    flex-direction:column;
+  }
 }
 
-.popular .btn{
-    background:#f4b400;
-    color:black;
-    border:none;
-}
-
-.popular .btn:hover{
-    background:#ffd84d;
-}
 </style>
 </head>
 
 <body>
 
-<div class="pricing-header">
-    <small>SUBSCRIPTION PLANS</small>
-    <h1>Simple, Transparent<br>
-    <span>Pricing For Every College</span></h1>
-    <p>Choose the plan that fits your institution. No hidden fees, no surprises — just powerful pharmacology simulation at a price that makes sense.</p>
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo">
+  </div>
 
-    <div class="toggle">
-        <span>MONTHLY</span>
-        <div class="switch"></div>
-        <span>YEARLY</span>
-    </div>
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'features' %}">Features</a>
+    <a href="{% url 'experiments' %}">Experiments</a>
+    <a href="{% url 'pricing' %}">Pricing</a>
+    <a href="{% url 'login' %}" class="login-btn">Login</a>
+    <button id="themeToggle" class="theme-toggle">🌙</button>
+  </div>
+
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="{% url 'home' %}">🏠 Home</a>
+  <a href="{% url 'features' %}">✨ Features</a>
+  <a href="{% url 'experiments' %}">🧪 Experiments</a>
+  <a href="{% url 'pricing' %}">💳 Pricing</a>
+  <a href="{% url 'login' %}">🔐 Login</a>
+  <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- PRICING -->
+<section class="pricing-section">
+
+<div class="pricing-header">
+  <small>SUBSCRIPTION PLANS</small>
+  <h1>Simple, Transparent <br><span>Pricing For Every College</span></h1>
+  <p>Choose the plan that fits your institution. Powerful pharmacology simulation with enterprise performance.</p>
 </div>
 
 <div class="pricing-container">
 
-    <!-- Starter -->
-    <div class="card">
-        <h3>STARTER</h3>
-        <div class="price">₹1,999 <span>/month billed monthly</span></div>
-        <ul class="features">
-            <li>Upto 50 Students</li>
-            <li>1 Teacher Account</li>
-            <li>5 Core Experiments</li>
-            <li>Practical Journal PDF</li>
-            <li>Basic Performance Reports</li>
-        </ul>
-        <button class="btn">GET STARTED FREE</button>
-    </div>
+  <!-- ₹1000 PLAN -->
+  <div class="card">
+    <h3>SINGLE EXPERIMENT PLAN</h3>
+    <div class="price">₹1,000</div>
+    <ul class="features">
+      <li>Access to 1 Selected Experiment</li>
+      <li>Practical Simulation</li>
+      <li>Observation Recording</li>
+      <li>Journal PDF Generation</li>
+    </ul>
+    <button class="btn">GET STARTED</button>
+  </div>
 
-    <!-- Professional -->
-    <div class="card popular">
-        <div class="popular-badge">MOST POPULAR</div>
-        <h3>PROFESSIONAL</h3>
-        <div class="price">₹4,999 <span>/month billed monthly</span></div>
-        <ul class="features">
-            <li>Upto 300 Students</li>
-            <li>5 Teacher Accounts</li>
-            <li>All 7 Experiments + Viva</li>
-            <li>Live Analytics Dashboard</li>
-            <li>Auto Certificate + QR</li>
-            <li>Student Dashboard</li>
-        </ul>
-        <button class="btn">START 14-DAYS FREE TRIAL</button>
-    </div>
-
-    <!-- Campus -->
-    <div class="card">
-        <h3>CAMPUS</h3>
-        <div class="price">₹9,999 <span>/month billed monthly</span></div>
-        <ul class="features">
-            <li>Unlimited Students</li>
-            <li>Unlimited Teacher Accounts</li>
-            <li>AI Evaluation & Reports</li>
-            <li>Advanced Rank Intelligence</li>
-            <li>Full Viva + Exam Auto-Grade</li>
-            <li>Priority Support</li>
-        </ul>
-        <button class="btn">CONTACT SALES</button>
-    </div>
+  <!-- ₹19,999 PLAN -->
+  <div class="card">
+    <h3>FULL ACCESS PLAN</h3>
+    <div class="price">₹19,999</div>
+    <ul class="features">
+      <li>Access to All 50 Experiments</li>
+      <li>Full Viva Modules</li>
+      <li>Auto Evaluation System</li>
+      <li>Performance Dashboard</li>
+      <li>Certificate + QR Verification</li>
+    </ul>
+    <button class="btn">CONTACT SALES</button>
+  </div>
 
 </div>
+</section>
+
+<script>
+const toggleBtn=document.getElementById("themeToggle");
+
+function toggleTheme(){
+  document.body.classList.toggle("light-mode");
+  localStorage.setItem("theme",
+    document.body.classList.contains("light-mode") ? "light":"dark"
+  );
+}
+
+if(localStorage.getItem("theme")==="light"){
+  document.body.classList.add("light-mode");
+}
+
+if(toggleBtn){
+  toggleBtn.addEventListener("click",toggleTheme);
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>

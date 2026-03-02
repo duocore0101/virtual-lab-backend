@@ -6,75 +6,80 @@
 <title>Features – G MARS Pharma Solution</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ═══════════════════════════════════════════
-   RESET & VARIABLES
-═══════════════════════════════════════════ */
+/* RESET */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
-  --red: #c70000;
-  --red-bright: #ff4d4d;
-  --bg-main: #f4efe8;
-  --bg: #05070f;
-  --surface: rgba(255,255,255,0.03);
-  --border: rgba(199,0,0,0.18);
-  --text: #e8eaf0;
-  --text-dim: #636b80;
-  --cyan: #00e5ff;
+  --red:#c70000;
+  --red-bright:#ff4d4d;
+  --bg-light:#ffffff;
+  --bg-dark:#05070f;
+  --surface-dark:#0b0f1a;
+  --text-light:#000;
+  --text-dark:#e8eaf0;
 }
 
-body {
-  background: var(--bg-main);
-  font-family: 'DM Sans', sans-serif;
-  transition: background 0.4s ease;
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-light);
+  color:var(--text-light);
+  transition:0.4s ease;
 }
 
-/* DARK MODE */
-body.dark-mode {
-  --bg-main: #05070f;
+body.dark-mode{
+  background:var(--bg-dark);
+  color:var(--text-dark);
 }
 
 /* NAVBAR */
-.navbar {
+.navbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:20px 60px;
   background:#fff;
+  position:relative;
+  z-index:10;
 }
 
-body.dark-mode .navbar {
-  background:#0b0f1a;
+body.dark-mode .navbar{
+  background:var(--surface-dark);
 }
 
-.nav-links a {
+.logo img{
+  height:130px;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+}
+
+.nav-links a{
   margin-left:25px;
   text-decoration:none;
   font-family:'Poppins',sans-serif;
-  color:#000;
+  color:inherit;
   font-weight:500;
-  transition:.3s;
+  transition:0.3s;
 }
 
-body.dark-mode .nav-links a {
-  color:#fff;
+.nav-links a:hover{
+  color:var(--red);
 }
 
-.nav-links a:hover { color: var(--red-bright); }
-
-.login-btn {
-  background: var(--red-bright);
+.login-btn{
+  background:var(--red-bright);
   color:#fff!important;
   padding:8px 18px;
   border-radius:25px;
 }
 
-.theme-toggle {
+.theme-toggle{
   margin-left:20px;
   width:40px;
   height:40px;
@@ -82,98 +87,173 @@ body.dark-mode .nav-links a {
   cursor:pointer;
   border:1px solid #ddd;
   background:#fff;
-  font-size:18px;
 }
 
-/* ═══════════════════════════════════════════
-   FEATURES SECTION
-═══════════════════════════════════════════ */
-.features-section {
-  position: relative;
+body.dark-mode .theme-toggle{
+  background:#111;
+  color:#fff;
+}
+
+/* HAMBURGER */
+.hamburger{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:75%;
+  max-width:300px;
+  height:100vh;
+  background:linear-gradient(#0b0f1a,#111a2f);
+  padding:120px 30px;
+  transition:0.5s ease;
+  z-index:20;
+}
+
+.sidebar.active{
+  right:0;
+}
+
+.sidebar a{
+  display:block;
+  margin-bottom:28px;
+  font-size:20px;
+  color:#fff;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.sidebar a:hover{
+  color:var(--red-bright);
+}
+
+/* Mobile Theme Toggle Button */
+.mobile-theme-toggle{
+  margin-top:40px;
+  padding:12px 20px;
+  border-radius:30px;
+  border:none;
+  background:var(--red-bright);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
   width:100%;
+}
+
+/* Overlay */
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  transition:0.4s ease;
+  z-index:15;
+}
+
+.sidebar-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* FEATURES */
+.features-section{
   padding:120px 60px 140px;
-  background: var(--bg);
-  color: var(--text);
 }
 
-.section-inner {
-  max-width:1400px;
-  margin:0 auto;
-}
-
-.section-eyebrow {
-  font-family:'Orbitron',monospace;
-  font-size:11px;
-  letter-spacing:4px;
-  color:var(--red);
-  text-transform:uppercase;
-  margin-bottom:16px;
-}
-
-.section-title {
+.section-title{
   font-family:'Orbitron',monospace;
   font-size:48px;
   font-weight:900;
-  margin-bottom:18px;
 }
 
-.section-title .accent { color:var(--red); }
-.section-title .dim { color:var(--text-dim); }
-
-.section-subtitle {
-  font-size:16px;
-  color:var(--text-dim);
-  max-width:560px;
-  line-height:1.7;
-  margin-bottom:80px;
-}
-
-.features-grid {
+.features-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:20px;
+  gap:25px;
+  margin-top:70px;
 }
 
-.feat-card {
-  background:var(--surface);
-  border:1px solid var(--border);
+.feat-card{
+  padding:35px;
   border-radius:16px;
-  padding:32px;
-  transition:.3s;
+  background:rgba(0,0,0,0.05);
+  transition:0.4s ease;
+  border:1px solid rgba(0,0,0,0.1);
 }
 
-.feat-card:hover {
-  transform:translateY(-5px);
-  border-color:var(--red-bright);
-  box-shadow:0 20px 40px rgba(199,0,0,.15);
+body.dark-mode .feat-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
 }
 
-.feat-title {
-  font-family:'Orbitron',monospace;
+.feat-card:hover{
+  background:var(--red);
+  color:#fff;
+  transform:translateY(-8px);
+  box-shadow:0 15px 40px rgba(199,0,0,0.4);
+}
+
+.feat-card h3{
+  margin-bottom:12px;
+  font-family:'Poppins',sans-serif;
+}
+
+.feat-card p{
   font-size:14px;
-  font-weight:700;
-  margin-bottom:10px;
+  line-height:1.7;
 }
 
-.feat-desc {
-  font-size:14px;
-  color:var(--text-dim);
-  line-height:1.6;
-}
-
+/* MOBILE */
 @media(max-width:900px){
-  .features-grid { grid-template-columns:1fr; }
+
+  .nav-links{
+    display:none;
+  }
+
+  .hamburger{
+    display:block;
+    position:absolute;
+    right:25px;
+  }
+
+  .navbar{
+    padding:20px 25px;
+  }
+
+  .logo img{
+    height:100px;
+  }
+
+  /* 🔥 Reduced gap */
+  .features-section{
+    padding:60px 25px 100px;
+  }
+
+  .section-title{
+    font-size:32px;
+    margin-top:-20px;
+  }
+
+  .features-grid{
+    grid-template-columns:1fr;
+  }
 }
 
 </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <div>
-    <a href="{% url 'home' %}" style="text-decoration:none; font-weight:700;">G MARS</a>
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo">
   </div>
 
   <div class="nav-links">
@@ -181,94 +261,101 @@ body.dark-mode .nav-links a {
     <a href="{% url 'features' %}">Features</a>
     <a href="{% url 'experiments' %}">Experiments</a>
     <a href="{% url 'pricing' %}">Pricing</a>
+    <a href="{% url 'about' %}">About</a>
     <a href="{% url 'login' %}" class="login-btn">Login</a>
     <button id="themeToggle" class="theme-toggle">🌙</button>
   </div>
+
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
 </div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="{% url 'home' %}">🏠 Home</a>
+  <a href="{% url 'features' %}">✨ Features</a>
+  <a href="{% url 'experiments' %}">🧪 Experiments</a>
+  <a href="{% url 'pricing' %}">💳 Pricing</a>
+  <a href="{% url 'about' %}">👨‍💻 About</a>
+  <a href="{% url 'login' %}">🔐 Login</a>
+  <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <!-- FEATURES -->
 <section class="features-section">
-  <div class="section-inner">
 
-    <p class="section-eyebrow">Platform Capabilities</p>
+  <h2 class="section-title">
+    Enterprise-Grade <span style="color:#c70000;">Feature Arsenal</span>
+  </h2>
 
-    <h2 class="section-title">
-      <span class="dim">Enterprise-Grade</span><br>
-      <span class="accent">Feature Arsenal</span>
-    </h2>
+  <div class="features-grid">
 
-    <p class="section-subtitle">
-      A complete pharmacology education operating system — from AI-powered viva generation 
-      to SaaS-ready college management.
-    </p>
-
-    <div class="features-grid">
-
-      <div class="feat-card">
-        <div class="feat-title">Live Performance Analytics</div>
-        <div class="feat-desc">
-          Real-time visual intelligence dashboard with graphs, attempt tracking, and performance insights.
-        </div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-title">Student Auto Leaderboard</div>
-        <div class="feat-desc">
-          Live ranking system per batch, experiment, and college.
-        </div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-title">Auto Certificate + QR Verification</div>
-        <div class="feat-desc">
-          Generate verifiable PDF certificates with QR validation.
-        </div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-title">AI Viva Question Generator</div>
-        <div class="feat-desc">
-          Automatically generate contextual viva questions per experiment.
-        </div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-title">Batch Intelligence System</div>
-        <div class="feat-desc">
-          Detect weak students, monitor averages, and trigger alerts.
-        </div>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-title">Multi-College SaaS Mode</div>
-        <div class="feat-desc">
-          Subscription system, college-level access control, and multi-tenant architecture.
-        </div>
-      </div>
-
+    <div class="feat-card">
+      <h3>📊 Live Performance Analytics</h3>
+      <p>Advanced dashboards with real-time graphs, performance tracking, and intelligent insights to monitor student progress.</p>
     </div>
+
+    <div class="feat-card">
+      <h3>🏆 Student Auto Leaderboard</h3>
+      <p>Dynamic ranking system per batch and experiment with automatic scoring and merit evaluation.</p>
+    </div>
+
+    <div class="feat-card">
+      <h3>📜 Auto Certificate + QR</h3>
+      <p>Generate secure, verifiable certificates with QR validation for authenticity and institutional credibility.</p>
+    </div>
+
+    <!-- ✅ Replaced AI Viva with Exam Module -->
+    <div class="feat-card">
+      <h3>📝 Smart Exam Module</h3>
+      <p>Conduct MCQ exams with automatic grading, timer control, negative marking, and instant result generation with detailed analytics.</p>
+    </div>
+
+    <div class="feat-card">
+      <h3>📈 Batch Intelligence System</h3>
+      <p>Identify weak areas, detect trends, and automate improvement alerts using AI-powered analytics.</p>
+    </div>
+
+    <div class="feat-card">
+      <h3>🏢 Multi-College SaaS Mode</h3>
+      <p>Secure multi-tenant architecture enabling multiple institutions to operate independently on one platform.</p>
+    </div>
+
   </div>
 </section>
 
 <script>
-const toggleBtn = document.getElementById("themeToggle");
 
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark-mode");
-  toggleBtn.textContent = "☀️";
-}
+/* ✅ FIXED DESKTOP + MOBILE TOGGLE */
+const desktopToggle=document.getElementById("themeToggle");
 
-toggleBtn.addEventListener("click", () => {
+function toggleTheme(){
   document.body.classList.toggle("dark-mode");
 
-  if (document.body.classList.contains("dark-mode")) {
-    localStorage.setItem("theme", "dark");
-    toggleBtn.textContent = "☀️";
-  } else {
-    localStorage.setItem("theme", "light");
-    toggleBtn.textContent = "🌙";
+  if(document.body.classList.contains("dark-mode")){
+    localStorage.setItem("theme","dark");
+    if(desktopToggle) desktopToggle.textContent="☀️";
+  }else{
+    localStorage.setItem("theme","light");
+    if(desktopToggle) desktopToggle.textContent="🌙";
   }
-});
+}
+
+if(localStorage.getItem("theme")==="dark"){
+  document.body.classList.add("dark-mode");
+  if(desktopToggle) desktopToggle.textContent="☀️";
+}
+
+if(desktopToggle){
+  desktopToggle.addEventListener("click",toggleTheme);
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
 </script>
 
 </body>

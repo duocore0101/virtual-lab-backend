@@ -6,69 +6,82 @@
 <title>Experiments – G MARS Pharma Solution</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ═══════════════════════════════════════════
-   RESET & ROOT
-═══════════════════════════════════════════ */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+/* ================= RESET ================= */
+*, *::before, *::after {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
+/* ================= VARIABLES ================= */
 :root {
-  --red:#c70000;
-  --red-bright:#ff4d4d;
-  --bg-main:#f4efe8;
+  --bg-light:#ffffff;
   --bg-dark:#05070f;
-  --bg-experiment:#030508;
-  --text:#e8eaf0;
-  --text-dim:#636b80;
+  --exp-dark:#030508;
   --green:#00ff9d;
-  --surface:rgba(255,255,255,0.03);
+  --text-light:#000;
+  --text-dark:#e8eaf0;
+  --text-dim:#7c859a;
 }
 
-body {
+/* ================= BODY ================= */
+body{
   font-family:'DM Sans',sans-serif;
-  background:var(--bg-main);
+  background:var(--bg-light);
+  color:var(--text-light);
   transition:0.4s ease;
+  overflow-x:hidden;
 }
 
-body.dark-mode {
-  --bg-main:#05070f;
+body.dark-mode{
+  background:var(--bg-dark);
+  color:var(--text-dark);
 }
 
-/* NAVBAR */
-.navbar {
+/* ================= NAVBAR ================= */
+.navbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:20px 60px;
+  padding:15px 60px;   /* reduced spacing */
   background:#fff;
+  position:relative;
+  z-index:100;
 }
 
-body.dark-mode .navbar { background:#0b0f1a; }
+body.dark-mode .navbar{
+  background:#0b0f1a;
+}
 
-.nav-links a {
+.logo img{
+  height:100px;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+}
+
+.nav-links a{
   margin-left:25px;
   text-decoration:none;
   font-family:'Poppins',sans-serif;
-  color:#000;
+  color:inherit;
   font-weight:500;
 }
 
-body.dark-mode .nav-links a { color:#fff; }
-
-.nav-links a:hover { color:var(--red-bright); }
-
-.login-btn {
-  background:var(--red-bright);
+.login-btn{
+  background:#ff4d4d;
   color:#fff!important;
   padding:8px 18px;
   border-radius:25px;
 }
 
-.theme-toggle {
+.theme-toggle{
   margin-left:20px;
   width:40px;
   height:40px;
@@ -78,168 +91,193 @@ body.dark-mode .nav-links a { color:#fff; }
   background:#fff;
 }
 
-/* ═══════════════════════════════════════════
-   EXPERIMENT SECTION
-═══════════════════════════════════════════ */
-.exp-section {
-  background:var(--bg-experiment);
-  padding:100px 60px 120px;
-  color:var(--text);
-  min-height:100vh;
-}
-
-.exp-inner { max-width:1400px; margin:0 auto; }
-
-.exp-eyebrow {
-  font-family:'Orbitron',monospace;
-  font-size:11px;
-  letter-spacing:4px;
-  color:var(--green);
-  text-transform:uppercase;
-  margin-bottom:16px;
-}
-
-.exp-title {
-  font-family:'Orbitron',monospace;
-  font-size:48px;
-  font-weight:900;
-  margin-bottom:18px;
-}
-
-.exp-title .g-accent { color:var(--green); }
-.exp-title .g-dim { color:var(--text-dim); }
-
-.exp-subtitle {
-  font-size:16px;
-  color:var(--text-dim);
-  max-width:700px;
-  margin-bottom:70px;
-  line-height:1.7;
-}
-
-/* HERO GRID */
-.exp-hero {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-  margin-bottom:70px;
-}
-
-/* TERMINAL */
-.exp-terminal {
-  background:rgba(0,255,157,0.02);
-  border:1px solid rgba(0,255,157,0.2);
-  border-radius:16px;
-  padding:30px;
-  font-family:'Space Mono',monospace;
-  font-size:13px;
-  line-height:1.8;
-}
-
-/* STAT CARDS */
-.exp-stat-card {
-  background:var(--surface);
-  border:1px solid rgba(0,255,157,0.15);
-  padding:22px;
-  border-radius:14px;
-  margin-bottom:16px;
-}
-
-/* EXPERIMENT GRID */
-.exp-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:60px;
-}
-
-.exp-card {
-  background:var(--surface);
-  border:1px solid rgba(0,255,157,0.1);
-  border-radius:16px;
-  padding:24px;
-  transition:0.3s;
-}
-
-.exp-card:hover {
-  transform:translateY(-6px);
-  border-color:var(--green);
-  box-shadow:0 15px 35px rgba(0,255,157,.1);
-}
-
-.exp-card-title {
-  font-family:'Orbitron',monospace;
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:10px;
-}
-
-.exp-card-desc {
-  font-size:13px;
-  color:var(--text-dim);
-}
-
-/* CURRICULUM */
-.exp-curriculum {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  margin-bottom:60px;
-}
-
-.curr-card {
-  background:var(--surface);
-  border:1px solid rgba(199,0,0,.15);
-  padding:26px;
-  border-radius:14px;
-}
-
-/* CTA */
-.exp-cta {
-  background:linear-gradient(135deg,rgba(0,255,157,0.05),rgba(199,0,0,0.05));
-  padding:50px;
-  border-radius:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.cta-btn {
-  padding:12px 28px;
-  border-radius:30px;
-  font-family:'Orbitron',monospace;
-  text-decoration:none;
-}
-
-.cta-btn.primary {
-  background:var(--green);
-  color:#000;
-}
-
-.cta-btn.secondary {
-  border:1px solid #fff;
+body.dark-mode .theme-toggle{
+  background:#111;
   color:#fff;
 }
 
-@media(max-width:1000px){
-  .exp-grid{grid-template-columns:repeat(2,1fr);}
-  .exp-curriculum{grid-template-columns:1fr;}
-  .exp-hero{grid-template-columns:1fr;}
+/* ================= HAMBURGER ================= */
+.hamburger{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
 }
 
-@media(max-width:600px){
-  .exp-grid{grid-template-columns:1fr;}
+/* ================= SIDEBAR ================= */
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:75%;
+  max-width:300px;
+  height:100vh;
+  background:linear-gradient(#030508,#0b0f1a);
+  padding:100px 30px;
+  transition:0.4s ease;
+  z-index:200;
+}
+
+.sidebar.active{
+  right:0;
+}
+
+.sidebar a{
+  display:block;
+  margin-bottom:25px;
+  font-size:18px;
+  color:#fff;
+  text-decoration:none;
+}
+
+.mobile-theme-toggle{
+  margin-top:30px;
+  padding:12px;
+  border-radius:30px;
+  border:none;
+  background:var(--green);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+  width:100%;
+}
+
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:150;
+}
+
+.sidebar-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= EXP SECTION ================= */
+.exp-section{
+  padding:60px 60px 100px;   /* reduced top spacing */
+  min-height:100vh;
+}
+
+body.dark-mode .exp-section{
+  background:var(--exp-dark);
+  color:var(--text-dark);
+}
+
+body:not(.dark-mode) .exp-section{
+  background:#ffffff;
+  color:#000;
+}
+
+.exp-inner{
+  max-width:1200px;
+  margin:0 auto;
+  width:100%;
+}
+
+/* ================= HEADINGS ================= */
+.exp-eyebrow{
+  font-family:'Orbitron',monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--green);
+  margin-bottom:10px;
+}
+
+.exp-title{
+  font-family:'Orbitron',monospace;
+  font-size:44px;
+  font-weight:900;
+  line-height:1.2;
+  margin-bottom:15px;
+}
+
+.exp-title .g-accent{ color:var(--green); }
+.exp-title .g-dim{ color:var(--text-dim); }
+
+.exp-subtitle{
+  font-size:15px;
+  color:var(--text-dim);
+  max-width:700px;
+  margin-bottom:40px;
+  line-height:1.6;
+}
+
+/* ================= LIST LAYOUT ================= */
+.exp-list{
+  column-count:2;
+  column-gap:40px;
+  word-break:break-word;
+}
+
+.exp-category{
+  break-inside:avoid;
+  margin-bottom:25px;
+  padding:15px;
+  border-left:4px solid var(--green);
+  background:rgba(0,255,157,0.05);
+  border-radius:8px;
+}
+
+.exp-category h3{
+  margin-bottom:10px;
+  font-size:16px;
+  color:var(--green);
+}
+
+.exp-category ol{
+  padding-left:18px;
+}
+
+.exp-category li{
+  font-size:13px;
+  margin-bottom:6px;
+  line-height:1.5;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+
+  .nav-links{ display:none; }
+
+  .hamburger{
+    display:block;
+    position:absolute;
+    right:25px;
+  }
+
+  .navbar{ padding:15px 20px; }
+
+  .logo img{ height:90px; }
+
+  .exp-section{
+    padding:40px 18px 80px;
+  }
+
+  .exp-title{
+    font-size:28px;
+  }
+
+  .exp-list{
+    column-count:1;
+  }
+
+  .sidebar{
+    right:-100%;
+  }
 }
 
 </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <div>
-    <a href="{% url 'home' %}" style="text-decoration:none;font-weight:700;">G MARS</a>
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo">
   </div>
 
   <div class="nav-links">
@@ -250,9 +288,23 @@ body.dark-mode .nav-links a { color:#fff; }
     <a href="{% url 'login' %}" class="login-btn">Login</a>
     <button id="themeToggle" class="theme-toggle">🌙</button>
   </div>
+
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
 </div>
 
-<!-- EXPERIMENT SECTION -->
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="{% url 'home' %}">🏠 Home</a>
+  <a href="{% url 'features' %}">✨ Features</a>
+  <a href="{% url 'experiments' %}">🧪 Experiments</a>
+  <a href="{% url 'pricing' %}">💳 Pricing</a>
+  <a href="{% url 'login' %}">🔐 Login</a>
+  <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- EXP SECTION -->
 <section class="exp-section">
 <div class="exp-inner">
 
@@ -268,93 +320,146 @@ body.dark-mode .nav-links a { color:#fff; }
 Perform practicals digitally, record observations, analyze results, and generate professional reports — all in one intelligent platform.
 </p>
 
-<!-- HERO -->
-<div class="exp-hero">
-<div class="exp-terminal">
-$ gmars init --lab pharmacology <br>
-✔ Lab environment loaded <br>
-✔ Simulation ready <br>
-✔ Journal PDF auto-generated
+<div class="exp-list">
+
+<div class="exp-list">
+
+<h3 style="margin-bottom:20px;">Experimental Pharmacology Practical List</h3>
+
+<!-- A -->
+<div class="exp-category">
+<h3>A. Introduction & Basic Concepts</h3>
+<ol>
+<li>Introduction to pharmacology, experimental pharmacology, its scope, objectives, and foundational concepts.</li>
+<li>Commonly used instruments in experimental pharmacology.</li>
+<li>Study of common laboratory animals in experimental pharmacology.</li>
+<li>Introduction to in-vitro pharmacology and physiological salt solutions.</li>
+<li>Study of dose calculation and stock solution preparation in pharmacological experiments.</li>
+</ol>
 </div>
 
-<div>
-<div class="exp-stat-card">🔬 No Physical Risk</div>
-<div class="exp-stat-card">⚡ Real-Time Simulation</div>
-<div class="exp-stat-card">📄 Instant Journal Generation</div>
-<div class="exp-stat-card">🎓 Exam-Ready Format</div>
-</div>
-</div>
-
-<!-- EXPERIMENT CARDS -->
-<div class="exp-grid">
-
-<div class="exp-card">
-<div class="exp-card-title">Rotarod Test</div>
-<div class="exp-card-desc">Evaluation of motor coordination and CNS depressant activity.</div>
+<!-- B -->
+<div class="exp-category">
+<h3>B. Animal Ethics, Handling & Laboratory Techniques</h3>
+<ol start="6">
+<li>Maintenance of laboratory animals as per CPCSEA guidelines (handling & restraining).</li>
+<li>Common laboratory techniques: Blood withdrawal; Serum and plasma separation; Anaesthetics and euthanasia for animal studies.</li>
+<li>Study of different routes of drug administration in small animals (rats/mice).</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Maze Test</div>
-<div class="exp-card-desc">Assessment of learning and cognitive behavior.</div>
+<!-- C -->
+<div class="exp-category">
+<h3>C. Autonomic & Peripheral Pharmacology</h3>
+<ol start="9">
+<li>Effect of drugs on rabbit eye (pupil size / intraocular pressure).</li>
+<li>Effect of drugs on frog’s ciliary motility in frog oesophagus.</li>
+<li>Effect of agonists and antagonists on guinea pig ileum.</li>
+<li>Effect of saline purgative on frog intestine.</li>
+<li>Effect of spasmogens and spasmolytics using rabbit jejunum.</li>
+<li>Effect of drugs on gastrointestinal motility in rat/mice.</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Hot Plate Method</div>
-<div class="exp-card-desc">Analgesic activity testing with thermal stimulus.</div>
+<!-- D -->
+<div class="exp-category">
+<h3>D. Central Nervous System (CNS) Pharmacology</h3>
+<ol start="15">
+<li>Effect of skeletal muscle relaxants using Rota-rod apparatus.</li>
+<li>Effect of drugs on locomotor activity using actophotometer.</li>
+<li>Study of stereotype & anti-catatonic activity of drugs on rat/mice.</li>
+<li>Anticonvulsant effect of drugs by MES and PTZ method.</li>
+<li>Study of anxiolytic activity of drugs using elevated plus maze method.</li>
+<li>Taming and hypnosis potentiating effect of chlorpromazine in mice/rat.</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Actophotometer</div>
-<div class="exp-card-desc">Measurement of locomotor activity.</div>
+<!-- E -->
+<div class="exp-category">
+<h3>E. Cardiovascular & Renal Pharmacology</h3>
+<ol start="21">
+<li>Study of isolation and perfusion of frog heart.</li>
+<li>Study of effect of potassium ions on isolated frog heart.</li>
+<li>Study of effect of calcium ions on isolated frog heart.</li>
+<li>Study of effect of acetylcholine and adrenaline on isolated frog heart.</li>
+<li>Effect of drugs on blood pressure and heart rate of dog.</li>
+<li>Study of diuretic activity of drugs using rats/mice.</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Convulsion Studies</div>
-<div class="exp-card-desc">Anticonvulsant drug screening models.</div>
+<!-- F -->
+<div class="exp-category">
+<h3>F. Analgesic, Anti-Inflammatory & Antipyretic Models</h3>
+<ol start="27">
+<li>Evaluation of analgesic activity by hot plate method.</li>
+<li>Evaluation of analgesic activity by tail flick method.</li>
+<li>Evaluation of anti-inflammatory activity using carrageenan-induced paw edema model.</li>
+<li>Test for pyrogens (rabbit method).</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Major & Minor Practicals</div>
-<div class="exp-card-desc">University-structured examination practicals.</div>
+<!-- G -->
+<div class="exp-category">
+<h3>G. Endocrine & Metabolic Pharmacology</h3>
+<ol start="31">
+<li>Study of insulin-induced hypoglycaemic effect in rabbit.</li>
+</ol>
 </div>
 
-<div class="exp-card">
-<div class="exp-card-title">Viva Modules</div>
-<div class="exp-card-desc">AI-generated viva question systems.</div>
+<!-- H -->
+<div class="exp-category">
+<h3>H. Gastrointestinal & Anti-Ulcer Studies</h3>
+<ol start="32">
+<li>Study of anti-ulcer activity using pylorus-ligated (Shay) rat model and NSAIDs-induced ulcer model.</li>
+</ol>
 </div>
 
+<!-- I -->
+<div class="exp-category">
+<h3>I. Local Anaesthetics & Allergy Models</h3>
+<ol start="33">
+<li>Study of local anaesthetic by different methods.</li>
+<li>Evaluation of anti-allergic activity by mast cell stabilization assay.</li>
+<li>Effect of diphenhydramine in experimentally produced asthma in guinea pig.</li>
+</ol>
 </div>
 
-<!-- CURRICULUM -->
-<div class="exp-curriculum">
-
-<div class="curr-card">
-<h4>D. Pharm</h4>
-<p>Complete second-year practical coverage.</p>
+<!-- J -->
+<div class="exp-category">
+<h3>J. In-Vitro Bioassay & Dose-Response Studies</h3>
+<ol start="36">
+<li>Introduction to bioassay & assembly setup.</li>
+<li>Dose-response curve (DRC) of acetylcholine using frog rectus abdominis muscle.</li>
+<li>Effect of physostigmine & atropine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum respectively.</li>
+<li>Bioassay of histamine using guinea pig ileum by matching method.</li>
+<li>Bioassay of oxytocin using rat uterine horn by interpolation method.</li>
+<li>Bioassay of serotonin (5-HT) using rat fundus strip by three-point method.</li>
+<li>Bioassay of acetylcholine using rat ileum/colon by four-point method.</li>
+<li>Determination of PA₂ value of prazosin using rat anococcygenus muscle (Schild’s plot method).</li>
+<li>Determination of PD₂ value using guinea pig ileum.</li>
+</ol>
 </div>
 
-<div class="curr-card">
-<h4>B. Pharm</h4>
-<p>Sem IV, V & VI pharmacology practicals.</p>
+<!-- K -->
+<div class="exp-category">
+<h3>K. Toxicology Studies</h3>
+<ol start="45">
+<li>Determination of acute oral toxicity (LD₅₀) of a drug from given data.</li>
+<li>Determination of acute skin irritation/corrosion of a test substance.</li>
+<li>Determination of acute eye irritation/corrosion of a test substance.</li>
+</ol>
 </div>
 
-<div class="curr-card">
-<h4>M. Pharm</h4>
-<p>Advanced research-oriented modules.</p>
+<!-- L -->
+<div class="exp-category">
+<h3>L. Biochemical, Pharmacokinetics & Biostatistics</h3>
+<ol start="48">
+<li>Estimation of serum biochemical parameters using semi-autoanalyser.</li>
+<li>Calculation of pharmacokinetic parameters from given data.</li>
+<li>Biostatistical methods in experimental pharmacology: Student’s t-test; ANOVA; Chi-square test; Wilcoxon signed-rank test.</li>
+</ol>
 </div>
 
-</div>
-
-<!-- CTA -->
-<div class="exp-cta">
-<div>
-<h3>From Lab to Learning — Digitally.</h3>
-<p>No physical lab limitations. Just smart simulation.</p>
-</div>
-
-<div>
-<a href="{% url 'login' %}" class="cta-btn primary">Start Simulating</a>
-<a href="{% url 'features' %}" class="cta-btn secondary">View Features</a>
 </div>
 </div>
 
@@ -363,20 +468,29 @@ $ gmars init --lab pharmacology <br>
 
 <script>
 const toggleBtn=document.getElementById("themeToggle");
+
+function toggleTheme(){
+  document.body.classList.toggle("dark-mode");
+  if(document.body.classList.contains("dark-mode")){
+    localStorage.setItem("theme","dark");
+    toggleBtn.textContent="☀️";
+  }else{
+    localStorage.setItem("theme","light");
+    toggleBtn.textContent="🌙";
+  }
+}
+
 if(localStorage.getItem("theme")==="dark"){
-document.body.classList.add("dark-mode");
-toggleBtn.textContent="☀️";
+  document.body.classList.add("dark-mode");
+  toggleBtn.textContent="☀️";
 }
-toggleBtn.addEventListener("click",()=>{
-document.body.classList.toggle("dark-mode");
-if(document.body.classList.contains("dark-mode")){
-localStorage.setItem("theme","dark");
-toggleBtn.textContent="☀️";
-}else{
-localStorage.setItem("theme","light");
-toggleBtn.textContent="🌙";
+
+toggleBtn.addEventListener("click",toggleTheme);
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
 }
-});
 </script>
 
 </body>
