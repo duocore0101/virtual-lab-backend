@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===============================
    BASE RESET
 ================================ */
@@ -5,7 +21,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* ===============================
@@ -39,7 +55,7 @@ body.theme-light {
 ================================ */
 .exp-title {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600; /* changed from 700 */
   color: #ff2b2b;
   margin-bottom: 40px;
   text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
@@ -81,22 +97,22 @@ body.theme-light .exp-card {
 /* Video: natural aspect ratio */
 .video-container video {
   width: 100%;
-  height: auto;                /* ✅ critical */
-  max-height: 520px;           /* optional cap */
+  height: auto;
+  max-height: 520px;
   display: block;
-  object-fit: contain;         /* ✅ NEVER crop */
+  object-fit: contain;
 }
 
 /* Small video = same behavior (NO forced crop) */
 .video-container.small-video {
   max-width: 900px;
-  height: auto;                /* ✅ remove forced height */
+  height: auto;
   background: #000;
 }
 
 .video-container.small-video video {
   height: auto;
-  object-fit: contain;         /* ✅ fix */
+  object-fit: contain;
 }
 
 /* ===============================
@@ -136,7 +152,7 @@ body.theme-light .exp-card {
   text-decoration: none;
   border-radius: 40px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600; /* changed from 700 */
 }
 
 /* ===============================

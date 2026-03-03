@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* =========================
    ROOT VARIABLES (THEMES)
 ========================= */
@@ -29,13 +45,18 @@ body.light-mode {
 ========================= */
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
   background: var(--bg-main);
   color: var(--text-main);
   min-height: 100vh;
   transition: background 0.4s ease, color 0.4s ease;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
 .page-container,
 .experiment-container {
   padding: 40px;
@@ -51,7 +72,7 @@ body {
   text-align: center;
   margin-bottom: 30px;
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 600; /* changed from 700 */
   color: var(--accent);
   text-shadow: 0 0 18px rgba(255,0,0,0.6);
 }
@@ -89,6 +110,7 @@ body {
 .info-box h2 {
   color: var(--accent);
   margin-bottom: 12px;
+  font-weight: 600;
 }
 
 /* =========================
@@ -129,6 +151,7 @@ ul li {
   cursor: pointer;
   transition: 0.3s;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .back-btn:hover,
@@ -150,7 +173,7 @@ ul li {
   font-size: 17px;
   border-radius: 999px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600; /* changed from 700 */
   box-shadow: 0 0 25px rgba(255,0,0,0.6);
   transition: 0.3s;
   text-decoration: none;
@@ -180,6 +203,7 @@ ul li {
   backdrop-filter: blur(10px);
   transition: 0.3s;
   z-index: 999;
+  font-weight: 600;
 }
 
 .theme-toggle:hover {

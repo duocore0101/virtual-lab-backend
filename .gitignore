@@ -1,10 +1,42 @@
+# -----------------------------
+# Virtual Environment
+# -----------------------------
 venv/
 env/
+
+# -----------------------------
+# Environment Files
+# -----------------------------
 .env
+
+# -----------------------------
+# Database
+# -----------------------------
 db.sqlite3
+*.sql
+
+# -----------------------------
+# Media Uploads
+# -----------------------------
 media/
+
+# -----------------------------
+# Python
+# -----------------------------
 __pycache__/
 *.pyc
-*.sql
+
+# -----------------------------
+# Collected Static (DO NOT TRACK)
+# -----------------------------
+static/admin/
+static/rest_framework/
+static/vendor/
+static/jazzmin/
+staticfiles/
+
+# -----------------------------
+# Large Assets (optional if using S3)
+# -----------------------------
 *.mp4
 *.glb
