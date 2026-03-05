@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taming and Hypnosis Potentiating Effect of Chlorpromazine – Theory</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 🔬 3D MODEL STYLE */
+    .model-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Theory/Principle</h1>
+
+<!-- ================= SLIDE 1 ================= -->
+<div class="info-box slide active">
+
+<h2>Background of Psychiatric Disorders</h2>
+
+<p>
+The <strong>nosology</strong> (science of classification of diseases) makes a
+basic distinction among <strong>psychoses, cognitive disorders,
+mood disorders, anxiety disorders and disorders of personality</strong>.
+</p>
+
+<p>
+Antipsychotic drugs are used primarily in the management of patients
+with <strong>psychotic and other psychiatric illnesses</strong>
+characterized by agitation and impaired reasoning.
+</p>
+
+<p>
+It must be understood that the essential characteristics of human mental
+disorders cannot be completely reproduced in animals. Therefore,
+<strong>cognition, communication and social behavior in animals</strong>
+are difficult to compare directly with human conditions.
+</p>
+
+<p>
+<strong>Chlorpromazine</strong> is widely used in the treatment of
+psychiatric disorders. It reduces psychomotor excitement, alters manic
+states and is used in the treatment of <strong>schizophrenia</strong>.
+It suppresses spontaneous movements and complex behaviors while
+<strong>spinal reflexes remain intact</strong>.
+</p>
+
+<div class="model-container">
+
+<img
+src="{% static 'experiments/chlorpromazine/images/chlorpromazine-cns.png' %}"
+alt="Chlorpromazine CNS effect"
+style="max-width:300px;width:100%;border-radius:12px;box-shadow:0 0 25px rgba(0,0,0,0.6);">
+
+<p style="margin-top:10px;font-size:14px;color:#aaa;">
+Antipsychotic Drug Action on Central Nervous System
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================= SLIDE 2 ================= -->
+<div class="info-box slide">
+
+<h2>Taming Effect of Chlorpromazine</h2>
+
+<p>
+In humans, chlorpromazine reduces initiative and interest in the
+environment, decreases emotional expression, slows responses to
+external stimuli and produces <strong>drowsiness</strong>.
+The patient becomes less agitated and calmer.
+</p>
+
+<p>
+Aggressive and impulsive behavior diminishes.
+<strong>Delusions and hallucinations gradually disappear</strong>,
+which is referred to as the <strong>“taming effect”</strong>.
+</p>
+
+<p>
+The psychophysiological and behavioral effects produced in animals
+by chlorpromazine show remarkable similarity to those seen in humans
+when administered in <strong>low doses</strong>.
+The drug reduces excitement while <strong>spinal reflexes remain unchanged</strong>.
+</p>
+
+<p>
+At higher doses chlorpromazine produces
+<strong>cataleptic immobility</strong> in animals.
+Muscle tone increases, <strong>ptosis</strong> occurs and the animal
+becomes indifferent to external stimuli.
+</p>
+
+<p>
+Apart from its neuroleptic effects, chlorpromazine also exhibits
+<strong>antiemetic and antihistaminic actions</strong> and can
+<strong>potentiate analgesics, sedatives and general anesthetics</strong>.
+</p>
+
+<p>
+This tranquilizing and neuroleptic property of chlorpromazine is known
+as <strong>ataractic activity</strong>.
+</p>
+
+<div class="model-container">
+
+<img
+src="{% static 'experiments/chlorpromazine/images/taming-effect.png' %}"
+alt="Behavioral effects of chlorpromazine"
+style="max-width:300px;width:100%;border-radius:12px;box-shadow:0 0 25px rgba(0,0,0,0.6);">
+
+<p style="margin-top:10px;font-size:14px;color:#aaa;">
+Behavioral Changes Produced by Chlorpromazine
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================= SLIDE 3 ================= -->
+<div class="info-box slide">
+
+<h2>Experimental Evaluation in Animals</h2>
+
+<p>
+The <strong>ataractic activity</strong> of chlorpromazine is greater than
+its sedative or anesthetic effect. The drug produces
+<strong>tranquilization (taming or calmness)</strong>
+without deep sedation or loss of alertness.
+</p>
+
+<p>
+The taming and potentiating effects of chlorpromazine can be studied
+experimentally in laboratory animals such as <strong>mice and rats</strong>.
+</p>
+
+<p>The effects can be observed by evaluating:</p>
+
+<ul>
+<li>Conditioned avoidance response</li>
+<li>Animal behavioral changes</li>
+<li>Potentiation of CNS depressants</li>
+<li>Reduction in spontaneous motor activity</li>
+</ul>
+
+<p>The responses can be studied by different experimental methods:</p>
+
+<ul>
+<li>
+<strong>Righting Reflex Method</strong> –
+Chlorpromazine potentiates barbiturate sleeping time in rodents.
+</li>
+
+<li>
+<strong>Pole Climbing Method</strong> –
+Used to study conditioned avoidance response.
+</li>
+
+<li>
+<strong>Actophotometer Method</strong> –
+Measures reduction in spontaneous motor activity.
+</li>
+
+<li>
+<strong>Hot Plate Method</strong> –
+Demonstrates potentiation of analgesic activity.
+</li>
+
+<li>
+Antagonism to stimulant drugs.
+</li>
+
+<li>
+Suppression of aggressive or combative behavior.
+</li>
+
+</ul>
+
+<div class="model-container">
+
+
+
+
+
+</div>
+
+</div>
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 3
+</div>
+
+<div class="button-row">
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+<button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+</div>
+
+</div>
+
+<script>
+
+let current = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index){
+slides.forEach(s => s.classList.remove("active"));
+slides[index].classList.add("active");
+document.getElementById("currentSlide").innerText = index + 1;
+}
+
+function nextSlide(){
+if(current < slides.length - 1){
+current++;
+showSlide(current);
+}else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+}
+
+function prevSlide(){
+if(current > 0){
+current--;
+showSlide(current);
+}else{
+location.href="/experiment/{{ experiment.slug }}/requirements/";
+}
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+if (!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}else{
+document.exitFullscreen();
+}
+}
+
+</script>
+
+</body>
+</html>

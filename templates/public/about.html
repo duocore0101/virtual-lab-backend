@@ -257,14 +257,21 @@ body.light-mode .mission-section p{
 }
 
 .team-card img{
-  width:140px;
-  height:140px;
+  width:170px;
+  height:170px;
   border-radius:50%;
   object-fit:cover;
+  object-position:center 20%;
   border:4px solid var(--gold);
   margin-bottom:20px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
-
+/* Fix first profile image head cut */
+.team-card:first-child img{
+  object-position:center 10%;
+}
 .team-card p{
   color:var(--text-dim);
   font-size:13px;
@@ -350,7 +357,11 @@ body.light-mode .value-card p{
     flex:1 1 100%;
   }
 }
-
+.team-card p{
+  font-size:13px;
+  color:var(--text-dim);
+  line-height:1.5;
+}
 </style>
 </head>
 
@@ -408,39 +419,95 @@ body.light-mode .value-card p{
 
 <!-- Team -->
 <div class="team-section">
-    <h2>Meet Our <span>Core Team</span></h2>
+<h2>Meet Our <span>Core Team</span></h2>
 
-    <div class="team-container">
+<div class="team-container">
 
-        <div class="team-card">
-            <img src="{% static 'images/member1.png' %}" alt="Dr. Ganesh Y Dama">
-            <h3>Dr. Ganesh Y Dama</h3>
-            <p>Co-founder</p>
-        </div>
+<!-- Ganesh Dama -->
+<div class="team-card">
+<img src="{% static 'images/member1.png' %}" alt="Dr. Ganesh Y Dama">
+<h3>Dr. Ganesh Yogiraj Dama</h3>
+<p><strong>Founder – GMARS Tech Solutions</strong></p>
+<p>
+He is a distinguished academic and administrator in pharmacy education in India. 
+He serves as Professor and Principal at Sharadchandra Pawar College of Pharmacy, 
+Otur (Pune), Maharashtra, with over 24 years of experience in teaching and research. 
+Specializing in pharmacognosy, he has authored/co-authored books including 
+“Basics and Fundamentals of Nanoscience”, published numerous research papers 
+(47+ works with 346+ citations), and guides PhD students. He also chairs the 
+Board of Studies at SPPU Pune and is widely respected as a mentor inspiring 
+students and faculty.
+</p>
+</div>
 
-        <div class="team-card">
-            <img src="{% static 'images/member5.png' %}" alt="Dr. Sumit A Joshi">
-            <h3>Dr. Sumit A Joshi</h3>
-            <p>Co-founder</p>
-        </div>
+<!-- Sumit Joshi -->
+<div class="team-card">
+<img src="{% static 'images/member5.png' %}" alt="Dr. Sumit A Joshi">
+<h3>Dr. Sumit Ashok Joshi</h3>
+<p><strong>Founder – GMARS Tech Solutions</strong></p>
+<p>
+He is a dedicated pharmaceutical researcher and faculty member at Shri Gajanan 
+Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College of Pharmacy, 
+Otur, Pune. His research focuses on formulation development, nanotechnology, 
+analytical method validation, and novel drug delivery systems. 
+He has co-authored PCI-aligned textbooks and practical handbooks including 
+“Basics and Fundamentals of Nanoscience”. Dr. Joshi is a co-inventor in multiple 
+patents and actively contributes to research, innovation, and industry consultancy.
+</p>
+</div>
 
-        <div class="team-card">
-            <img src="{% static 'images/member2.png' %}" alt="Dr. Abhishek D Meher">
-            <h3>Dr. Abhishek D Meher</h3>
-            <p>Co-founder</p>
-        </div>
+<!-- Shriram Pethakar -->
+<div class="team-card">
+<img src="{% static 'images/member 4.png' %}" alt="Dr. Shriram R Pethakar">
+<h3>Dr. Shriram Ramesh Pethakar</h3>
+<p><strong>Founder – GMARS Tech Solutions</strong></p>
+<p>
+He is currently working as Principal at Shramjivi Shikshan Prasarak 
+Mandal’s Shramjivi College of Pharmacy, Omerga. With over 15 years 
+of teaching and industry experience, he is recognized as a 
+distinguished researcher and academic administrator. 
+He completed his Ph.D. from KLE University, Belagavi, has published 
+more than 15 research articles, and holds 9 patents. His work focuses 
+on innovation, research advancement, and institutional development 
+in pharmaceutical education.
+</p>
+</div>
 
-        <div class="team-card">
-            <img src="{% static 'images/member3.png' %}" alt="Dr. Ashwini S Gawade">
-            <h3>Dr. Ashwini S Gawade</h3>
-            <p>Co-founder</p>
-        </div>
+<!-- Abhishek Meher -->
+<div class="team-card">
+<img src="{% static 'images/member2.png' %}" alt="Dr. Abhishek D Meher">
+<h3>Dr. Abhishek Dattatray Meher</h3>
+<p><strong>Founder – GMARS Tech Solutions</strong></p>
+<p>
+He is the Founder of GMARS Tech Solutions and a dynamic faculty member at 
+Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College 
+of Pharmacy, Otur, Pune since 2019–20. A highly innovative researcher in 
+pharmaceutical sciences, he has published 10 research articles and holds 
+5 patents. His work focuses on novel drug delivery systems and development 
+of advanced digital teaching tools including the GMARS Pharma Solution 
+virtual pharmacology simulation software.
+</p>
+</div>
 
-        <div class="team-card">
-            <img src="{% static 'images/member4.png' %}" alt="Dr. Ramesh B Pethakar">
-            <h3>Dr Shriram R Pethakar</h3>
-            <p>Co-founder</p>
-        </div>
+<!-- Ashwini Gawade -->
+<div class="team-card">
+<img src="{% static 'images/member3.png' %}" alt="Prof. Ashwini S Gawade">
+<h3>Prof. Ashwini Sukharaj Gawade</h3>
+<p><strong>Founder – GMARS Tech Solutions</strong></p>
+<p>
+She is a dedicated and passionate pharmacologist serving at 
+Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar 
+College of Pharmacy, Otur, Pune for more than 12 years. Through her 
+outstanding teaching, student mentoring, and innovative approaches 
+in pharmacology education, she has contributed significantly to 
+academic excellence and practical learning for B.Pharm students.
+</p>
+</div>
+
+
+
+</div>
+</div>
 
         
 

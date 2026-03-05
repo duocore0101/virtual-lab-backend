@@ -1,0 +1,455 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>
+Taming and Hypnosis Potentiating Effect of Chlorpromazine
+</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+.top-actions{
+position:absolute;
+top:18px;
+left:22px;
+z-index:20;
+}
+
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#fff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+}
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:95%;
+max-width:1100px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+font-size:14px;
+}
+
+th,td{
+border:1px solid #444;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+.exp-toggle{
+text-align:center;
+margin-top:15px;
+}
+
+.toggle-btn{
+padding:8px 16px;
+border-radius:20px;
+border:none;
+cursor:pointer;
+margin:5px;
+background:#444;
+color:#fff;
+}
+
+.toggle-btn.active{
+background:#ee0a0a;
+}
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:95%;
+max-width:1100px;
+color:white;
+}
+
+/* FIX FOR LIGHT MODE */
+.light-mode .modal-content{
+background:#ffffff;
+color:#000;
+}
+
+.light-mode table{
+color:#000;
+}
+
+.light-mode th{
+background:#e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Taming and Hypnosis Potentiating Effect of Chlorpromazine
+</h1>
+
+<!-- FULL SCREEN -->
+<div class="top-actions">
+
+<button class="dropdown-btn"
+onclick="openProcedure()">
+Procedure
+</button>
+
+<button class="dropdown-btn"
+onclick="toggleFullscreen()">
+⛶ Full Screen
+</button>
+
+</div>
+
+
+<!-- EXPERIMENT SWITCH -->
+<div class="exp-toggle">
+
+<button class="toggle-btn active">
+Pole Climbing (Taming Effect)
+</button>
+
+<button class="toggle-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+Hypnosis Potentiation
+</button>
+
+</div>
+
+
+<!-- VIDEO FRAME -->
+<div class="video-frame">
+
+<button class="start-btn"
+id="startBtn"
+onclick="startExperiment()">
+▶ Start Practical
+</button>
+
+<video id="experimentVideo" controls>
+
+<source
+src="{% static 'experiments/chlorpromazine/videos/pole_climbing.mp4' %}"
+type="video/mp4">
+
+</video>
+
+</div>
+
+
+<!-- NAVIGATION -->
+<div class="button-row"
+style="justify-content:center;margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn"
+onclick="openModal()">
+View Observations 📊
+</button>
+
+<button class="exp-btn"
+onclick="goToConclusion()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= PROCEDURE MODAL ================= -->
+
+<div class="modal"
+id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeProcedure()">✖</span>
+
+<h2>
+Procedure
+</h2>
+
+<ol>
+
+<li>Select healthy mice.</li>
+
+<li>Place the mice individually inside Cooke’s pole climbing apparatus.</li>
+
+<li>
+The apparatus contains a floor grid carrying electric current
+and a pole suspended from the top of the chamber.
+</li>
+
+<li>
+Train mice to escape electric shock by climbing the pole
+(non-conditioned response).
+</li>
+
+<li>
+Train mice to climb the pole when danger signal
+(buzzer/light) occurs before shock
+(conditioned avoidance response).
+</li>
+
+<li>
+Keep mice no.1 as control.
+</li>
+
+<li>
+Inject chlorpromazine (4 mg/kg i.p.) to mice no.2.
+</li>
+
+<li>
+Observe conditioned and unconditioned responses.
+</li>
+
+<li>
+Chlorpromazine blocks conditioned avoidance response
+but does not block escape response to electric shock.
+</li>
+
+</ol>
+
+</div>
+</div>
+
+
+
+<!-- ================= OBSERVATION MODAL ================= -->
+
+<div class="modal"
+id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeModal()">✖</span>
+
+<h2 style="text-align:center;">
+Observation Table – Pole Climbing Method
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Sr No</th>
+<th>Mice No.</th>
+<th>Drug/Dose</th>
+<th colspan="2">Response</th>
+</tr>
+
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th>Conditioned Stimulus</th>
+<th>Unconditioned Stimulus</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>Mice 1</td>
+
+<td>Saline – intraperitoneally</td>
+
+<td>
+After buzzer,
+animal climbs on pole
+</td>
+
+<td>
+Animal climbs on pole
+in response to shock only
+</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Mice 2</td>
+
+<td>Chlorpromazine (4 mg/kg) intraperitoneally</td>
+
+<td>
+Animal shows no response to buzzer,
+does not climb on pole
+</td>
+
+<td>
+After shock,
+animal climbs on pole
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<button class="theme-toggle"
+onclick="toggleTheme()">
+🌗 Toggle Theme
+</button>
+
+
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+}
+
+
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+
+
+function goToConclusion(){
+location.href="/experiment/{{ experiment.slug }}/conclusion/";
+}
+
+
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+</body>
+</html>

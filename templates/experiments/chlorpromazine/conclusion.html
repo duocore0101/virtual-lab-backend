@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taming and Hypnosis Potentiating Effect of Chlorpromazine – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- 🧪 RESULT -->
+  <div class="info-box">
+    <h2>Result</h2>
+
+    <p>
+      The experiment demonstrated the <strong>taming and hypnosis potentiating effect of chlorpromazine</strong> 
+      in laboratory mice using the pole climbing method and righting reflex method.
+    </p>
+
+    <p>
+      It was observed that:
+    </p>
+
+    <ul>
+      <li>
+        Chlorpromazine blocks the <strong>conditioned avoidance response</strong> in mice.
+      </li>
+      <li>
+        However, it does <strong>not block the unconditioned escape response</strong> to electric shock.
+      </li>
+      <li>
+        When administered with barbiturates, chlorpromazine <strong>enhances the duration of sleep</strong>.
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- 🧠 CONCLUSION -->
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+    <ul>
+      <li>
+        You will be able to distinguish between different psychological disturbances in human beings.
+      </li>
+
+      <li>
+        Selective antipsychotics are available for specific psychiatric disorders.
+      </li>
+
+      <li>
+        You will understand that animal models employed in pharmacology experiments
+        do not always represent the true therapeutic efficacy of a drug in humans.
+      </li>
+
+      <li>
+        Therefore cognition, communication and social relationships in animals are
+        difficult to compare directly with human conditions.
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- 🔘 NAVIGATION -->
+  <div class="button-row">
+
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+      ⬅ Back
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()">
+      Download Practical PDF 📄
+    </button>
+
+    <button class="exp-btn" onclick="finishPractical()">
+      Finish Practical ✔
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment: "Taming and Hypnosis Potentiating Effect of Chlorpromazine"
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Chlorpromazine_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        experiment: "Taming and Hypnosis Potentiating Effect of Chlorpromazine",
+        result: "Chlorpromazine shows taming effect and potentiates barbiturate induced sleep."
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>
