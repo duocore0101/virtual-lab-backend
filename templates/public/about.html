@@ -220,7 +220,8 @@ body.light-mode .mission-section p{
   color:#555;
 }
 
-/* ================= Team ================= */
+/* ================= TEAM ================= */
+
 .team-section{
   margin-top:80px;
 }
@@ -234,21 +235,15 @@ body.light-mode .mission-section p{
   color:var(--gold);
 }
 
-/* ===== TEAM GRID FIX FOR DESKTOP ===== */
+/* DESKTOP LAYOUT */
 
-/* ===== TEAM CARDS DESKTOP FIX ===== */
+/* DESKTOP TEAM GRID */
 
 .team-container{
-  display:flex;
-  justify-content:center;
-  align-items:stretch;
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
   gap:25px;
-  flex-wrap:nowrap;
-}
-
-.team-card{
-  width:260px;
-  min-height:520px;
+  align-items:start;
 }
 
 .team-card{
@@ -256,9 +251,12 @@ body.light-mode .mission-section p{
   border-radius:20px;
   padding:30px 20px;
   text-align:center;
-  width:19%;
+  width:100%;
   border:1px solid var(--border-dark);
   transition:0.3s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 .team-card:hover{
@@ -267,6 +265,7 @@ body.light-mode .mission-section p{
 }
 
 .team-card img{
+  margin-top:10px;
   width:170px;
   height:170px;
   border-radius:50%;
@@ -479,18 +478,24 @@ body.light-mode .contact-btn{
     font-size:28px;
   }
 
+  /* TEAM MOBILE FIX */
+
+  .team-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:25px;
+  }
+
   .team-card{
     width:100%;
+    max-width:400px;
   }
 
   .value-card{
     flex:1 1 100%;
   }
-}
-.team-card p{
-  font-size:13px;
-  color:var(--text-dim);
-  line-height:1.5;
+
 }
 </style>
 </head>
@@ -679,7 +684,7 @@ www.gmars.co.in
 </div>
 <div class="contact-buttons">
 
-<a href="https://wa.me/917875526666" target="_blank" class="contact-btn whatsapp-btn">
+<a href="https://wa.me/917875526666?text=Hello%20GMARS%20Tech%20Solutions%20Team,%20We%20are%20interested%20in%20purchasing%20the%20GMARS%20Tech%20Solutions%20software.%20Kindly%20share%20complete%20details%20regarding%20pricing,%20plans,%20and%20implementation%20for%20our%20institution." target="_blank" class="contact-btn whatsapp-btn">
 <img src="{% static 'images/whatsappp.png' %}" alt="WhatsApp">
 </a>
 
