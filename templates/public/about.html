@@ -234,11 +234,21 @@ body.light-mode .mission-section p{
   color:var(--gold);
 }
 
+/* ===== TEAM GRID FIX FOR DESKTOP ===== */
+
+/* ===== TEAM CARDS DESKTOP FIX ===== */
+
 .team-container{
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
+  align-items:stretch;
   gap:25px;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
+}
+
+.team-card{
+  width:260px;
+  min-height:520px;
 }
 
 .team-card{
@@ -327,7 +337,127 @@ body.light-mode .value-card{
 body.light-mode .value-card p{
   color:#555;
 }
+/* ================= CONTACT SECTION ================= */
 
+.contact-section{
+  margin-top:90px;
+}
+
+.contact-section h2{
+  font-size:36px;
+  margin-bottom:40px;
+}
+
+.contact-section h2 span{
+  color:var(--gold);
+}
+
+.contact-container{
+  display:flex;
+  justify-content:center;
+}
+
+.contact-card{
+  background:var(--card-dark);
+  padding:40px;
+  border-radius:20px;
+  border:1px solid var(--border-dark);
+  max-width:700px;
+  width:100%;
+  text-align:center;
+  transition:0.3s;
+}
+
+.contact-card:hover{
+  box-shadow:0 0 30px rgba(244,180,0,0.25);
+}
+
+.contact-item{
+  margin-bottom:20px;
+  font-size:15px;
+  color:var(--text-dim);
+}
+
+.contact-item strong{
+  color:var(--gold);
+}
+
+/* Light mode fix */
+
+body.light-mode .contact-card{
+  background:#f5f5f5;
+  border:1px solid #ddd;
+}
+
+body.light-mode .contact-item{
+  color:#555;
+}
+/* clickable links */
+.contact-link{
+  color:#4db5ff;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.contact-link:hover{
+  color:#7fd1ff;
+  text-decoration:underline;
+}
+
+/* CONTACT ICON BUTTONS */
+
+.contact-buttons{
+  margin-top:35px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:40px;
+}
+
+/* icon container */
+
+.contact-btn{
+  width:60px;
+  height:90px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.3s ease;
+}
+
+/* icons */
+
+.contact-btn img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+/* hover animation */
+
+.contact-btn:hover{
+  transform:translateY(-6px) scale(1.1);
+}
+
+/* whatsapp glow */
+
+.whatsapp-btn:hover{
+  filter:drop-shadow(0 0 12px #25D366);
+}
+
+/* gmail glow */
+
+.email-btn:hover{
+  filter:drop-shadow(0 0 12px #EA4335);
+}
+/* light mode fix */
+
+body.light-mode .contact-btn{
+  background:#fff;
+  border:1px solid #ddd;
+}
 /* ================= MOBILE ================= */
 @media(max-width:900px){
 
@@ -403,10 +533,10 @@ body.light-mode .value-card p{
 <section class="about-section">
 
 <div class="about-header">
-  <small>ABOUT G MARS</small>
+  <small>ABOUT GMARS</small>
   <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
   <p>
-    G MARS Pharma Solution is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
+    GMARS Tech Solutions is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
   </p>
 </div>
 
@@ -509,7 +639,56 @@ academic excellence and practical learning for B.Pharm students.
 </div>
 </div>
 
-        
+        <!-- CONTACT US -->
+<div class="contact-section">
+
+<h2>Contact <span>Us</span></h2>
+
+<div class="contact-container">
+
+<div class="contact-card">
+
+<div class="contact-item">
+<strong>Corporate Address</strong><br>
+Eternia, Flat No A-1103, Survey No. 53,<br>
+B T Kawade Road, 93-Avenue, Ghorpadi,<br>
+Pune City, Pune – 411002
+</div>
+
+<div class="contact-item">
+<strong>Mobile</strong><br>
+<a href="tel:+917875526666" class="contact-link">
++91 7875526666
+</a>
+</div>
+
+<div class="contact-item">
+<strong>Email</strong><br>
+<a href="mailto:info@gmars.co.in" class="contact-link">
+info@gmars.co.in
+</a>
+</div>
+
+<div class="contact-item">
+<strong>Website</strong><br>
+www.gmars.co.in
+</div>
+
+</div>
+
+</div>
+<div class="contact-buttons">
+
+<a href="https://wa.me/917875526666" target="_blank" class="contact-btn whatsapp-btn">
+<img src="{% static 'images/whatsappp.png' %}" alt="WhatsApp">
+</a>
+
+<a href="mailto:info@gmars.co.in" class="contact-btn email-btn">
+<img src="{% static 'images/email.png' %}" alt="Email">
+</a>
+
+</div>
+</div>
 
     </div>
 </div>
