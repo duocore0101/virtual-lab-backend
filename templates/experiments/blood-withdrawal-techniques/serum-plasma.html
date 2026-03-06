@@ -1,0 +1,364 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Serum & Plasma Separation | Laboratory Techniques</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/blood-withdrawal-techniques/css/experiment.css' %}">
+
+<style>
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform .25s, box-shadow .25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* POPUP */
+
+.popup-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:10000;
+}
+
+.popup-overlay.active{
+display:flex;
+}
+
+.popup-card{
+background:#111;
+color:#fff;
+width:90%;
+max-width:600px;
+border-radius:16px;
+padding:25px;
+animation:popIn .3s ease;
+box-shadow:0 0 25px rgba(255,0,0,0.6);
+}
+
+@keyframes popIn{
+from{
+transform:scale(.85);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.popup-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.popup-header h2{
+margin:0;
+color:#ff4d4d;
+}
+
+.close-btn{
+background:transparent;
+border:none;
+font-size:22px;
+color:#fff;
+cursor:pointer;
+}
+
+.popup-card ul{
+padding-left:18px;
+}
+
+.popup-card li{
+margin-bottom:8px;
+line-height:1.6;
+}
+
+</style>
+</head>
+
+<body class="theme-dark">
+
+<!-- TOP ACTIONS -->
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+<button onclick="openProcedure()">🧪 Procedure</button>
+</div>
+
+<!-- PROCEDURE POPUP -->
+<div class="popup-overlay" id="procedurePopup" onclick="closeProcedure(event)">
+<div class="popup-card">
+
+<div class="popup-header">
+<h2>Serum & Plasma Separation – Procedure</h2>
+<button class="close-btn" onclick="closeProcedure()">✖</button>
+</div>
+
+<ul>
+<li>Collect whole blood using an appropriate blood withdrawal technique.</li>
+<li>For serum: Allow blood to clot naturally at room temperature for 20–30 minutes.</li>
+<li>For plasma: Collect blood into tubes containing anticoagulants (EDTA, heparin, or citrate).</li>
+<li>Centrifuge samples at 3000 rpm for 10–15 minutes.</li>
+<li>Carefully separate the clear supernatant without disturbing blood cells.</li>
+</ul>
+
+<hr style="margin:15px 0; opacity:0.3;">
+
+<p>
+<strong>Post-Procedure:</strong> Store serum or plasma samples at
+appropriate temperatures (4°C for short term or −20°C/−80°C for long term)
+to preserve biochemical integrity.
+</p>
+
+</div>
+</div>
+
+<div class="exp-container">
+
+<!-- TITLE -->
+<h1 class="exp-title">Serum and Plasma Separation</h1>
+
+<!-- VIDEO + OVERVIEW -->
+<div class="top-flex-row">
+
+<div class="video-container small-video">
+<video autoplay muted loop controls>
+<source src="{% static 'experiments/blood-withdrawal-techniques/videos/serum-plasma.mp4' %}" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+</div>
+
+<div class="exp-card overview-card">
+<h2>Overview</h2>
+<p>
+
+Serum is the clear yellowish liquid portion of blood obtained after
+clotting and removal of the clot. It does not contain fibrinogen or
+clotting factors.
+
+Plasma is the liquid component of blood obtained when clotting is
+prevented using anticoagulants. Plasma contains fibrinogen and other
+clotting proteins.
+
+Both serum and plasma are obtained by centrifugation of whole blood
+to separate cellular components such as red blood cells, white blood
+cells, and platelets.
+
+</p>
+</div>
+
+</div>
+
+<!-- GUIDELINES -->
+<div class="exp-card">
+<h2>Key Principles</h2>
+
+<ul>
+<li><strong>Serum:</strong> Obtained after blood clot formation.</li>
+<li><strong>Plasma:</strong> Obtained using anticoagulant-treated blood.</li>
+<li><strong>Centrifugation:</strong> Separates cellular elements from liquid components.</li>
+<li><strong>Applications:</strong> Biochemical analysis, drug level estimation, biomarker detection.</li>
+<li><strong>Sample Integrity:</strong> Avoid hemolysis and improper storage.</li>
+</ul>
+
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="exp-card">
+
+<h2>Difference Between Serum and Plasma</h2>
+
+<div class="table-wrapper">
+<table class="comparison-table">
+
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Serum</th>
+<th>Plasma</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><strong>Composition</strong></td>
+<td>Plasma minus fibrinogen and clotting factors</td>
+<td>Contains fibrinogen and clotting factors</td>
+</tr>
+
+<tr>
+<td><strong>Anticoagulant</strong></td>
+<td>None required</td>
+<td>Required (e.g., EDTA, heparin, citrate)</td>
+</tr>
+
+<tr>
+<td><strong>Appearance</strong></td>
+<td>Clearer, fewer proteins</td>
+<td>Slightly more opaque</td>
+</tr>
+
+<tr>
+<td><strong>Volume Yield</strong></td>
+<td>Slightly less (due to clot formation)</td>
+<td>Higher</td>
+</tr>
+
+<tr>
+<td><strong>Common Uses</strong></td>
+<td>Routine chemistry, immunology tests, avoids anticoagulant interference</td>
+<td>Coagulation studies and tests requiring clotting factors</td>
+</tr>
+
+<tr>
+<td><strong>Preparation Time</strong></td>
+<td>Longer (requires clotting time)</td>
+<td>Faster (centrifuge immediately)</td>
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+<!-- SEPARATION PROCESS -->
+<div class="exp-card">
+
+<h2>Separation Processes</h2>
+
+<p>
+Serum is the clear, yellowish liquid portion of blood obtained after clotting
+and removal of the clot. It lacks fibrinogen and other clotting factors.
+</p>
+
+<p>
+Plasma is the liquid portion of blood that remains when clotting is prevented
+using an anticoagulant. It contains fibrinogen and clotting factors.
+</p>
+
+<p>
+Both serum and plasma are derived from whole blood after separating cellular
+components (red blood cells, white blood cells, and platelets) through
+centrifugation. However, their preparation processes differ.
+</p>
+
+</div>
+
+
+<div class="exp-card">
+
+<h2>Preparing Serum</h2>
+
+<ol>
+<li>Collect blood in a plain tube (no anticoagulant) or serum separator tube (SST).</li>
+
+<li>Allow blood to clot undisturbed at room temperature for <strong>30–60 minutes</strong>.</li>
+
+<li>Centrifuge the sample at <strong>1,000–2,000 × g for 10–15 minutes</strong>.</li>
+
+<li>The clot forms at the bottom while the clear liquid <strong>(serum)</strong> remains above it.</li>
+
+<li>The serum is carefully pipetted off for analysis.</li>
+
+</ol>
+
+</div>
+
+
+<div class="exp-card">
+
+<h2>Preparing Plasma</h2>
+
+<ol>
+
+<li>Collect blood in a tube containing anticoagulant such as
+<strong>EDTA, heparin, or citrate</strong>.</li>
+
+<li>Gently invert the tube several times to mix blood with the anticoagulant.</li>
+
+<li>Centrifuge immediately at <strong>1,000–2,000 × g for 10–15 minutes</strong>.</li>
+
+<li>The blood cells pellet at the bottom while <strong>plasma</strong> remains as the
+supernatant.</li>
+
+<li>A thin <strong>buffy coat layer</strong> containing white blood cells and platelets
+may appear between plasma and red blood cells.</li>
+
+<li>The plasma is carefully pipetted off for further biochemical or pharmacological analysis.</li>
+
+</ol>
+
+</div>
+<!-- NAVIGATION -->
+
+<div class="exp-actions">
+
+<a href="/experiment/{{ experiment.slug }}/experiment/" class="btn-start">
+← Back to Technique List
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleTheme(){
+document.body.classList.toggle("theme-light");
+document.body.classList.toggle("theme-dark");
+}
+
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+}
+
+function openProcedure(){
+document.getElementById("procedurePopup").classList.add("active");
+}
+
+function closeProcedure(e){
+if(!e || e.target.id==="procedurePopup"){
+document.getElementById("procedurePopup").classList.remove("active");
+}
+}
+
+</script>
+
+</body>
+</html>

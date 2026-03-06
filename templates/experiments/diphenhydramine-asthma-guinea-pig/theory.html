@@ -1,0 +1,245 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effect of Diphenhydramine in Experimentally Produced Asthma – Theory</title>
+
+  <!-- MODEL VIEWER -->
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod CSS -->
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* IMAGE STYLE */
+    .theory-image {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .theory-image img {
+      max-width: 50%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Theory Behind The Experiment</h1>
+
+<!-- ================= SLIDE 1 ================= -->
+
+<div class="info-box slide active">
+
+<p>
+A person over reactive to a substance tolerated by most other is said to be
+<strong>hypersensitive</strong> i.e. <strong style="color:#ff3b3b;">allergic</strong>.
+Substances which induce allergic reactions are
+<strong style="color:#ff3b3b;">allergens</strong>.
+</p>
+
+<p>
+Common allergens are milk, antibiotics like penicillin,
+vaccines like typhoid vaccine, snake venom,
+pollens, dust, moulds etc.
+</p>
+
+</div>
+
+<!-- ================= SLIDE 2 ================= -->
+
+<div class="info-box slide">
+
+<p>
+The most common reaction is
+<strong style="color:#ff3b3b;">anaphylactic reaction</strong>
+and occurs within few minutes of exposure to allergen.
+</p>
+
+<p>
+In this reaction,
+<strong style="color:#ff3b3b;">IgE-antibody sensitized mast cell</strong>
+and basophils release histamine, prostaglandins and kinins.
+</p>
+
+<p>
+These mediators cause vasodilatation,
+increased capillary permeability,
+increased smooth muscle contraction of lungs
+and increased mucus secretion.
+</p>
+
+<p>
+As a result there is difficulty in breathing,
+runny nose and <strong style="color:#ff3b3b;">wheezing</strong>,
+along with shock due to vasodilatation.
+</p>
+
+<p>
+Such condition can be treated with adrenaline injection
+and some antihistamines.
+</p>
+
+</div>
+
+<!-- ================= SLIDE 3 ================= -->
+
+<div class="info-box slide">
+
+<p>
+Although the guinea pig has been favored for screening
+anti-histamine agents because of its sensitivity to histamine,
+the rabbit may serve when a second species is desired.
+</p>
+
+<p>
+With the help of histamine aerosol chamber one can test
+effect of histamine and antihistamines like
+<strong>diphenhydramine</strong> on rabbit.
+</p>
+
+<p>
+Antihistamine antagonizes the effect of histamine
+and improvement in signs and symptoms of asthma
+can be observed.
+</p>
+
+<!-- IMAGE BELOW TEXT -->
+
+<div class="theory-image">
+<img src="{% static 'experiments/diphenhydramine-asthma-guinea-pig/images/histamine-chamber.png' %}"
+alt="Histamine Aerosol Chamber Setup">
+
+<p style="margin-top:10px; font-size:14px; color:#aaa;">
+Histamine Aerosol Chamber Experimental Setup
+</p>
+</div>
+
+</div>
+
+<div class="slide-counter">
+Slide <span id="slideNum">1</span> / 3
+</div>
+
+<div class="button-row">
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+<button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+</div>
+
+</div>
+
+<script>
+
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+const slideNum = document.getElementById("slideNum");
+
+function showSlide(index){
+slides.forEach(s => s.classList.remove("active"));
+slides[index].classList.add("active");
+slideNum.innerText = index + 1;
+}
+
+function nextSlide(){
+if(currentSlide < slides.length - 1){
+currentSlide++;
+showSlide(currentSlide);
+}else{
+location.href = "/experiment/{{ experiment.slug }}/run/";
+}
+}
+
+function prevSlide(){
+if(currentSlide > 0){
+currentSlide--;
+showSlide(currentSlide);
+}else{
+location.href = "/experiment/{{ experiment.slug }}/requirements/";
+}
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen().catch(() => {
+alert("Fullscreen not supported");
+});
+} else {
+document.exitFullscreen();
+}
+}
+
+</script>
+
+</body>
+</html>

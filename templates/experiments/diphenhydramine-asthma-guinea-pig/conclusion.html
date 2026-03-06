@@ -1,0 +1,225 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Effect of Diphenhydramine in Experimentally Produced Asthma – Result & Conclusion</title>
+
+<!-- Reuse existing CSS -->
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+.top-actions {
+position: fixed;
+top: 20px;
+right: 25px;
+display: flex;
+gap: 12px;
+z-index: 9999;
+}
+
+.top-actions button {
+padding: 10px 18px;
+border-radius: 22px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+background: #ff2e2e;
+color: #fff;
+box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.top-actions button:hover {
+transform: scale(1.08);
+box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Result & Conclusion</h1>
+
+<!-- ================= RESULT ================= -->
+
+<div class="info-box">
+
+<h2>Result</h2>
+
+<p>
+The experiment demonstrates the protective effect of
+<strong>Diphenhydramine (an antihistamine drug)</strong>
+against histamine-induced bronchospasm in experimental animals.
+</p>
+
+<p>
+Administration of histamine aerosol produced
+<strong>bronchospasm, difficulty in breathing and abnormal behaviour</strong>
+in the control animal.
+</p>
+
+<p>
+After administration of <strong>Diphenhydramine HCl</strong>,
+the animal showed
+<strong>normal behaviour and normal breathing</strong>,
+indicating antagonism of histamine action.
+</p>
+
+</div>
+
+<!-- ================= CONCLUSION ================= -->
+
+<div class="info-box">
+
+<h2>Conclusion</h2>
+
+<ul>
+
+<li>
+Administration of histamine is associated with
+<strong>anaphylactic reactions and bronchospasm</strong>
+and is not completely recovered by diphenhydramine alone.
+</li>
+
+<li>
+Asthmatic airway narrowing occurs mainly due to
+<strong>inflammation of respiratory passages</strong>.
+</li>
+
+<li>
+<strong>Allergens</strong> are responsible for the release of histamine
+which triggers allergic reactions.
+</li>
+
+<li>
+Antagonism of constrictor action of histamine on
+<strong>respiratory smooth muscles</strong>
+can be studied by producing asthma in laboratory animals.
+</li>
+
+<li>
+Speedy recovery from shock and protection to animals
+can be achieved by administration of
+<strong>adrenaline along with diphenhydramine</strong>.
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= NAVIGATION ================= -->
+
+<div class="button-row">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+⬅ Back </button>
+
+<button class="exp-btn" onclick="downloadPDF()">
+Download Practical PDF 📄
+</button>
+
+<button class="exp-btn" onclick="finishPractical()">
+Finish Practical ✔
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen().catch(() => {
+alert("Fullscreen not supported");
+});
+} else {
+document.exitFullscreen();
+}
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+experiment: "Effect of Diphenhydramine in Experimentally Produced Asthma"
+})
+})
+.then(res => {
+if (!res.ok) {
+throw new Error("PDF generation failed");
+}
+return res.blob();
+})
+.then(blob => {
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "Diphenhydramine_Asthma_Practical_Report.pdf";
+document.body.appendChild(a);
+a.click();
+a.remove();
+})
+.catch(err => {
+alert("Failed to generate PDF");
+console.error(err);
+});
+}
+</script>
+
+<script>
+function finishPractical() {
+
+fetch("/experiment/finish/", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+experiment_slug: "{{ experiment.slug }}",
+observations: {
+experiment: "Effect of Diphenhydramine in Experimentally Produced Asthma",
+result: "Diphenhydramine shows protective antihistaminic effect against histamine-induced bronchospasm."
+}
+})
+})
+.then(res => res.json())
+.then(data => {
+window.location.href = data.redirect;
+})
+.catch(err => {
+alert("Failed to submit practical");
+console.error(err);
+});
+}
+</script>
+
+</body>
+</html>

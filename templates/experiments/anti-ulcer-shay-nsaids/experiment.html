@@ -1,0 +1,476 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>
+Anti-ulcer Activity using Pylorus-ligated (SHAY) Rat Model
+</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+.top-actions{
+position:absolute;
+top:18px;
+left:22px;
+z-index:20;
+}
+
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#fff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+}
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:95%;
+max-width:1100px;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+font-size:14px;
+}
+
+th,td{
+border:1px solid #444;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+.exp-toggle{
+text-align:center;
+margin-top:15px;
+}
+
+.toggle-btn{
+padding:8px 16px;
+border-radius:20px;
+border:none;
+cursor:pointer;
+margin:5px;
+background:#444;
+color:#fff;
+}
+
+.toggle-btn.active{
+background:#ee0a0a;
+}
+
+/* LIGHT MODE SUPPORT */
+
+.light-mode .modal-content{
+background:#ffffff;
+color:#000;
+}
+
+.light-mode table{
+color:#000;
+}
+
+.light-mode th{
+background:#e5e7eb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Anti-ulcer Activity of Drug using Pylorus-Ligated (SHAY) Rat Model
+</h1>
+
+<!-- TOP RIGHT -->
+
+<div class="top-actions">
+
+<button class="dropdown-btn"
+onclick="openProcedure()">
+Procedure </button>
+
+<button class="dropdown-btn"
+onclick="openCalculations()">
+Calculations </button>
+
+<button class="dropdown-btn"
+onclick="toggleFullscreen()">
+⛶ Full Screen </button>
+
+</div>
+
+<!-- EXPERIMENT SWITCH -->
+
+<div class="exp-toggle">
+
+<button class="toggle-btn active">
+Pylorus-Ligated
+</button>
+
+<button class="toggle-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+NSAIDS </button>
+
+</div>
+
+<!-- VIDEO FRAME -->
+
+<div class="video-frame">
+
+<button class="start-btn"
+id="startBtn"
+onclick="startExperiment()">
+▶ Start Practical </button>
+
+<video id="experimentVideo" controls>
+
+<source
+src="{% static 'experiments/anti-ulcer-shay-nsaids/videos/pylorus_ligation.mp4' %}"
+type="video/mp4">
+
+</video>
+
+</div>
+
+<!-- NAVIGATION -->
+
+<div class="button-row"
+style="justify-content:center;margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back </button>
+
+<button class="exp-btn"
+onclick="openModal()">
+View Observations 📊 </button>
+
+<button class="exp-btn"
+onclick="goToConclusion()">
+Next ▶ </button>
+
+</div>
+
+</div>
+
+<!-- ================= PROCEDURE MODAL ================= -->
+
+<div class="modal" id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeProcedure()">✖</span>
+
+<h2>Procedure</h2>
+
+<ol>
+
+<li>Fast rats for 24–36 hours (water allowed).</li>
+
+<li>Divide rats into groups: Control, Standard, Test drug groups.</li>
+
+<li>Administer test or standard drug orally 30–60 minutes before surgery.</li>
+
+<li>Under light anesthesia make a small midline abdominal incision.</li>
+
+<li>Expose stomach and ligate the pylorus carefully.</li>
+
+<li>Suture the abdominal wall.</li>
+
+<li>After 4 hours sacrifice rats using anesthetic overdose.</li>
+
+<li>Remove stomach and collect gastric contents.</li>
+
+<li>Measure gastric juice volume.</li>
+
+<li>Determine pH, free acidity and total acidity by titration.</li>
+
+<li>Open stomach along greater curvature.</li>
+
+<li>Examine mucosa under magnification and score ulcers.</li>
+
+</ol>
+
+</div>
+</div>
+
+<!-- ================= CALCULATIONS MODAL ================= -->
+
+<div class="modal" id="calcModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeCalculations()">✖</span>
+
+<h2>Calculations</h2>
+
+<p><strong>Free Acidity (mEq/L)</strong></p>
+
+<p>
+Free Acidity =
+(mL of 0.1N NaOH × 0.1 × 100) / mL gastric juice
+</p>
+
+<p><strong>Total Acidity (mEq/L)</strong></p>
+
+<p>
+Total Acidity =
+(Total mL of 0.1N NaOH × 0.1 × 100) / mL gastric juice
+</p>
+
+<p><strong>Ulcer Index</strong></p>
+
+<p>
+UI = (UN + US + UP) × 10⁻¹
+</p>
+
+<p>
+UN = Average number of ulcers<br>
+US = Average severity score<br>
+UP = Percentage of animals with ulcers
+</p>
+
+<p><strong>% Ulcer Protection</strong></p>
+
+<p>
+% Inhibition =
+[(UI control − UI test) / UI control] × 100
+</p>
+
+</div>
+</div>
+
+<!-- ================= OBSERVATION MODAL ================= -->
+
+<div class="modal" id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn"
+onclick="closeModal()">✖</span>
+
+<h2 style="text-align:center;">
+Observation Table – Pylorus Ligation Model
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Group</th>
+<th>Treatment</th>
+<th>Volume of Gastric Juice (ml)</th>
+<th>pH</th>
+<th>Free Acidity (mEq/L)</th>
+<th>Total Acidity (mEq/L)</th>
+<th>Ulcer Index</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>I</td>
+<td>Normal Control</td>
+<td>1.2 ± 0.1</td>
+<td>3.8 ± 0.2</td>
+<td>22 ± 1.5</td>
+<td>38 ± 2.0</td>
+<td>0.0</td>
+</tr>
+
+<tr>
+<td>II</td>
+<td>Ulcer Control</td>
+<td>4.8 ± 0.3</td>
+<td>1.8 ± 0.1</td>
+<td>68 ± 2.5</td>
+<td>92 ± 3.2</td>
+<td>12.5</td>
+</tr>
+
+<tr>
+<td>III</td>
+<td>Standard (Ranitidine 20 mg/kg)</td>
+<td>2.0 ± 0.2</td>
+<td>3.5 ± 0.3</td>
+<td>30 ± 1.8</td>
+<td>48 ± 2.1</td>
+<td>3.2</td>
+</tr>
+
+<tr>
+<td>IV</td>
+<td>Test Drug Low Dose</td>
+<td>3.0 ± 0.2</td>
+<td>2.8 ± 0.2</td>
+<td>42 ± 2.0</td>
+<td>60 ± 2.5</td>
+<td>6.4</td>
+</tr>
+
+<tr>
+<td>V</td>
+<td>Test Drug High Dose</td>
+<td>2.4 ± 0.1</td>
+<td>3.2 ± 0.2</td>
+<td>34 ± 1.6</td>
+<td>52 ± 2.2</td>
+<td>4.1</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<button class="theme-toggle"
+onclick="toggleTheme()">
+🌗 Toggle Theme </button>
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+}
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function openCalculations(){
+document.getElementById("calcModal").style.display="flex";
+}
+
+function closeCalculations(){
+document.getElementById("calcModal").style.display="none";
+}
+
+function goToConclusion(){
+location.href="/experiment/{{ experiment.slug }}/conclusion/";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+</body>
+</html>

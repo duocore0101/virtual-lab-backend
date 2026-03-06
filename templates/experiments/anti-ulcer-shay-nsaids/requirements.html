@@ -1,0 +1,142 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-ulcer Activity using Pylorus-ligated (SHAY) Rat Model and NSAIDS Induced Ulcer Model – Requirements</title>
+
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse existing intro CSS -->
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Requirements / Materials</h1>
+
+  <!-- 🐀 ANIMAL -->
+
+  <div class="info-box">
+    <h2>Animal</h2>
+    <ul>
+      <li>Healthy adult Wistar albino rats (150–250 g, male/female)</li>
+    </ul>
+  </div>
+
+  <!-- 💊 DRUGS -->
+
+  <div class="info-box">
+    <h2>Drugs</h2>
+    <ul>
+      <li>Test drug (e.g., Ranitidine 50 mg/kg p.o. or Omeprazole 10–20 mg/kg p.o.)</li>
+      <li>Standard anti-ulcer drug</li>
+      <li>Control vehicle (1% CMC or distilled water)</li>
+      <li>Indomethacin (48 mg/kg i.p., suspended in 1% Tween 80) or Aspirin (300–500 mg/kg p.o.)</li>
+    </ul>
+  </div>
+
+  <!-- ⚙ INSTRUMENTS / EQUIPMENTS -->
+
+  <div class="info-box">
+    <h2>Instrument / Equipments</h2>
+    <ul>
+      <li>Anesthetic (Ether / Thiopental sodium 30–40 mg/kg i.p.)</li>
+      <li>Surgical instruments: scissors, forceps, ligation thread, suture material</li>
+      <li>pH meter or indicator paper</li>
+      <li>Burette for titration (0.1 N NaOH)</li>
+      <li>Phenolphthalein / Topfer's reagent for acidity estimation</li>
+      <li>Magnifying glass or stereoscope for ulcer scoring</li>
+      <li>Weighing balance</li>
+      <li>Animal cages (fasting with water ad libitum)</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
+
+  <div class="button-row">
+    <button class="back-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
+    </button>
+
+
+<button class="exp-btn"
+  onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+  Next ▶
+</button>
+
+
+  </div>
+
+</div>
+
+<!-- 🔧 SCRIPTS -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+</script>
+
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

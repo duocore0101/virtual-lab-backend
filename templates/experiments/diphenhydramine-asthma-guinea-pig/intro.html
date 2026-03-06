@@ -1,15 +1,19 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blood Withdrawal Techniques – Aim</title>
+  <title>Effect of Diphenhydramine in Experimentally Produced Asthma – Aim</title>
 
-  <!-- 🔥 REUSE ROTAROD INTRO CSS (DO NOT CHANGE FLOW) -->
+  <!-- CSS (REUSE ROTAROD INTRO CSS) -->
+
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
       position: fixed;
       top: 20px;
@@ -36,11 +40,13 @@
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
   </style>
+
 </head>
 
 <body>
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
+
 <div class="top-actions">
   <button onclick="toggleTheme()">🌗 Theme</button>
   <button onclick="toggleFullscreen()">⛶ Full Screen</button>
@@ -48,33 +54,45 @@
 
 <div class="page-container">
 
-  <!-- TITLE -->
+  <!-- =========================
+       TITLE (AIM ONLY)
+  ========================== -->
+
   <h1 class="title">Aim</h1>
 
-  <!-- AIM CONTENT -->
+  <!-- =========================
+       AIM TEXT
+  ========================== -->
+
   <div class="info-box">
     <p style="font-size:18px; text-align:center; font-weight:500;">
-  To study common laboratory techniques:
-  <strong>Blood withdrawal</strong>;
-  <strong>Serum and plasma separation</strong>;
-  <strong>Anaesthetics and euthanasia for animal studies</strong>.
-</p>
+      To Study the Effect of Diphenhydramine in Experimentally Produced Asthma in Guinea Pig
+    </p>
   </div>
 
-  <!-- NAVIGATION -->
+  <!-- =========================
+       NAVIGATION BUTTONS
+  ========================== -->
+
   <div class="button-row" style="justify-content:center;">
     <button class="back-btn"
       onclick="location.href='/student/dashboard/'">
       ⬅ Back
     </button>
 
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next ▶
-    </button>
+<button class="exp-btn"
+  onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+  Next ▶
+</button>
+
+
   </div>
 
 </div>
+
+<!-- =========================
+     🔧 SCRIPTS
+========================== -->
 
 <script>
 function toggleTheme() {
@@ -85,7 +103,9 @@ function toggleTheme() {
 <script>
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
+    document.documentElement.requestFullscreen().catch(err => {
+      alert("Fullscreen not supported");
+    });
   } else {
     document.exitFullscreen();
   }

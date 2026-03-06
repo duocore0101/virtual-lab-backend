@@ -1,0 +1,244 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-ulcer Activity of a Drug using Pylorus-Ligated (SHAY) Rat Model and NSAID Induced Ulcer Model – Result & Conclusion</title>
+
+  <!-- Reuse existing CSS -->
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">Result & Conclusion</h1>
+
+  <!-- RESULT -->
+
+  <div class="info-box">
+    <h2>Result</h2>
+
+
+<p>
+  The experiment demonstrated the <strong>anti-ulcer activity of the test drug</strong>
+  using the pylorus-ligated (Shay rat) model and NSAID-induced ulcer model in rats.
+</p>
+
+<p>
+  It was observed that:
+</p>
+
+<ul>
+  <li>
+    The test drug significantly <strong>reduced gastric juice volume</strong>
+    compared to the ulcer control group.
+  </li>
+
+  <li>
+    There was a significant <strong>decrease in free acidity and total acidity</strong>
+    and a corresponding <strong>increase in gastric pH</strong>.
+  </li>
+
+  <li>
+    The <strong>ulcer index was markedly reduced</strong> in animals treated with the test drug.
+  </li>
+
+  <li>
+    In the NSAID-induced ulcer model, the drug significantly
+    <strong>reduced ulcer severity and gastric lesions</strong>.
+  </li>
+
+  <li>
+    These effects were <strong>comparable to the standard anti-ulcer drug</strong>
+    such as ranitidine or omeprazole.
+  </li>
+</ul>
+
+
+  </div>
+
+  <!-- CONCLUSION -->
+
+  <div class="info-box">
+    <h2>Conclusion</h2>
+
+
+<ul>
+
+  <li>
+    The pylorus ligation model is useful for evaluating
+    <strong>anti-secretory drugs that reduce gastric acid output</strong>.
+  </li>
+
+  <li>
+    NSAID-induced ulcer models help in studying drugs that provide
+    <strong>gastroprotective and cytoprotective effects</strong>.
+  </li>
+
+  <li>
+    Reduction in gastric acidity, ulcer index and lesion severity
+    indicates <strong>significant anti-ulcer activity</strong>.
+  </li>
+
+  <li>
+    Experimental animal models are valuable tools for evaluating
+    <strong>pharmacological activity of anti-ulcer drugs</strong>,
+    though they may not fully replicate human gastric diseases.
+  </li>
+
+  <li>
+    Therefore these models help in the
+    <strong>screening and development of new anti-ulcer agents</strong>.
+  </li>
+
+</ul>
+
+
+  </div>
+
+  <!-- NAVIGATION -->
+
+  <div class="button-row">
+
+
+<button class="back-btn"
+  onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+  ⬅ Back
+</button>
+
+<button class="exp-btn" onclick="downloadPDF()">
+  Download Practical PDF 📄
+</button>
+
+<button class="exp-btn" onclick="finishPractical()">
+  Finish Practical ✔
+</button>
+
+
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+<script>
+function downloadPDF() {
+
+  fetch("/experiment/{{ experiment.slug }}/download-pdf/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment: "Anti-ulcer Activity using Pylorus-Ligated and NSAID Induced Ulcer Models"
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("PDF generation failed");
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Anti_Ulcer_Practical_Report.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+<script>
+function finishPractical() {
+
+  fetch("/experiment/finish/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      experiment_slug: "{{ experiment.slug }}",
+      observations: {
+        experiment: "Anti-ulcer Activity using Pylorus-Ligated and NSAID Induced Ulcer Models",
+        result: "The test drug showed significant anti-ulcer and gastroprotective activity by reducing gastric acidity and ulcer index."
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    window.location.href = data.redirect;
+  })
+  .catch(err => {
+    alert("Failed to submit practical");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>

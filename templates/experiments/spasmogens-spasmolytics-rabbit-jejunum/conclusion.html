@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Effects of Spasmogens and Spasmolytics – Result & Conclusion</title>
+
+<!-- Reuse existing CSS -->
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform 0.25s,box-shadow 0.25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Result & Conclusion</h1>
+
+<!-- RESULT -->
+
+<div class="info-box">
+
+<h2>Result</h2>
+
+<p>
+The isolated <strong>rabbit jejunum preparation</strong> showed characteristic 
+responses to different pharmacological agents affecting intestinal smooth muscle.
+</p>
+
+<ul>
+
+<li>
+<strong>Acetylcholine (ACh)</strong> produced a marked increase in tone and amplitude 
+of contraction due to stimulation of muscarinic (M3) receptors.
+</li>
+
+<li>
+<strong>Barium chloride (BaCl₂)</strong> caused sustained contraction of smooth muscle 
+due to direct depolarization of the muscle membrane.
+</li>
+
+<li>
+<strong>Atropine</strong> produced relaxation by blocking muscarinic receptors 
+(antimuscarinic effect).
+</li>
+
+<li>
+<strong>Adrenaline</strong> decreased intestinal contractions through β₂ adrenergic 
+receptor mediated smooth muscle relaxation.
+</li>
+
+<li>
+Pre-treatment with <strong>atropine</strong> significantly reduced the contractile 
+response produced by acetylcholine, demonstrating competitive antagonism.
+</li>
+
+</ul>
+
+</div>
+
+
+<!-- CONCLUSION -->
+
+<div class="info-box">
+
+<h2>Conclusion</h2>
+
+<p>
+Spasmogens such as <strong>acetylcholine</strong> (acting through muscarinic receptors) 
+and <strong>barium chloride</strong> (acting directly on smooth muscle) increase 
+intestinal motility and produce contraction of the rabbit jejunum.
+</p>
+
+<p>
+Spasmolytic agents reduce smooth muscle activity by different mechanisms:
+</p>
+
+<ul>
+
+<li>
+<strong>Atropine</strong> produces relaxation by blocking muscarinic receptors.
+</li>
+
+<li>
+<strong>Adrenaline</strong> relaxes smooth muscle via β₂ adrenergic receptor activation.
+</li>
+
+<li>
+<strong>Papaverine</strong> acts as a non-specific smooth muscle relaxant through 
+phosphodiesterase inhibition and calcium channel blockade.
+</li>
+
+</ul>
+
+<p>
+This experiment demonstrates the <strong>differential pharmacological actions</strong> 
+of spasmogenic and spasmolytic drugs on intestinal smooth muscle.
+</p>
+
+<p>
+Such studies are useful in the <strong>screening and evaluation of antispasmodic drugs</strong> 
+used in clinical conditions such as intestinal colic and irritable bowel syndrome (IBS).
+</p>
+
+</div>
+
+
+<!-- NAVIGATION -->
+
+<div class="button-row">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="downloadPDF()">
+Download Practical PDF 📄
+</button>
+
+<button class="exp-btn" onclick="finishPractical()">
+Finish Practical ✔
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}
+else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+
+<script>
+
+function downloadPDF(){
+
+fetch("/experiment/{{ experiment.slug }}/download-pdf/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+experiment:"Effect of Spasmogens and Spasmolytics on Rabbit Jejunum"
+})
+})
+.then(res=>{
+if(!res.ok){
+throw new Error("PDF generation failed");
+}
+return res.blob();
+})
+.then(blob=>{
+const url=window.URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;
+a.download="Rabbit_Jejunum_Spasmogen_Spasmolytic_Practical_Report.pdf";
+document.body.appendChild(a);
+a.click();
+a.remove();
+})
+.catch(err=>{
+alert("Failed to generate PDF");
+console.error(err);
+});
+
+}
+
+</script>
+
+
+<script>
+
+function finishPractical(){
+
+fetch("/experiment/finish/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+
+experiment_slug:"{{ experiment.slug }}",
+
+observations:{
+experiment:"Effects of Spasmogens and Spasmolytics on Rabbit Jejunum",
+result:"Spasmogenic and spasmolytic responses successfully demonstrated"
+}
+
+})
+})
+.then(res=>res.json())
+.then(data=>{
+window.location.href=data.redirect;
+})
+.catch(err=>{
+alert("Failed to submit practical");
+console.error(err);
+});
+
+}
+
+</script>
+
+</body>
+</html>

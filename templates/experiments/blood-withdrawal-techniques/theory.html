@@ -2,205 +2,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Blood Withdrawal Techniques – Theory</title>
+<meta charset="UTF-8">
+<title>Blood Withdrawal Techniques – Theory</title>
 
-  <!-- 🔥 USE ROTAROD INTRO CSS FOR SLIDE FLOW -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+<link rel="stylesheet"
+      href="{% static 'experiments/rotarod/css/intro.css' %}">
 
-  <style>
-    /* ================= SLIDE SYSTEM ================= */
-    .slide-container {
-      position: relative;
-      min-height: 260px;
-    }
+<style>
 
-    .slide {
-      display: none;
-      animation: slideIn 0.5s ease;
-    }
+/* ================= SLIDE SYSTEM ================= */
+.slide-container {
+  position: relative;
+  min-height: 260px;
+}
 
-    .slide.active {
-      display: block;
-    }
+.slide {
+  display: none;
+  animation: slideIn 0.5s ease;
+}
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
+.slide.active {
+  display: block;
+}
 
-    .slide-counter {
-      text-align: center;
-      margin-top: 15px;
-      color: #aaa;
-      font-size: 14px;
-    }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
-    /* 🔝 TOP RIGHT ACTION BUTTONS */
-    .top-actions {
-      position: fixed;
-      top: 20px;
-      right: 25px;
-      display: flex;
-      gap: 12px;
-      z-index: 9999;
-    }
+.slide-counter {
+  text-align: center;
+  margin-top: 15px;
+  color: #aaa;
+  font-size: 14px;
+}
 
-    .top-actions button {
-      padding: 10px 18px;
-      border-radius: 22px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
+/* TOP ACTION BUTTONS */
+.top-actions {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  display: flex;
+  gap: 12px;
+  z-index: 9999;
+}
 
-    .top-actions button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
-    }
-  </style>
+.top-actions button {
+  padding: 10px 18px;
+  border-radius: 22px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #ff2e2e;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255,0,0,0.6);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.top-actions button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 22px rgba(255,0,0,0.9);
+}
+
+</style>
 </head>
 
 <body>
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
 </div>
 
 <div class="page-container">
 
-  <!-- MAIN TITLE -->
-  <h1 class="title">Theory</h1>
+<h1 class="title">Theory</h1>
 
-  <!-- ================= SLIDES ================= -->
-  <div class="slide-container">
+<div class="slide-container">
 
-    <div class="info-box slide active">
-      <h2>Introduction to Blood Withdrawal</h2>
-      <p>
-        Blood withdrawal is a fundamental laboratory technique in experimental
-        pharmacology used to obtain blood samples for biochemical, hematological,
-        and pharmacokinetic analysis in laboratory animals.
-      </p>
-    </div>
+<!-- SLIDE 1 -->
+<div class="info-box slide active">
+<h2>Introduction to Blood Withdrawal</h2>
+<p>
+Blood withdrawal is a fundamental laboratory technique in experimental
+pharmacology used to obtain blood samples for biochemical, hematological,
+and pharmacokinetic analysis in laboratory animals.
+</p>
+</div>
 
-    <div class="info-box slide">
-      <h2>Purpose of Blood Collection</h2>
-      <p>
-        Blood samples are required for estimation of drug levels, metabolites,
-        biomarkers, hormones, and safety parameters. Proper blood collection
-        ensures reliable experimental data and reproducibility.
-      </p>
-    </div>
+<!-- SLIDE 2 -->
+<div class="info-box slide">
+<h2>Purpose of Blood Collection</h2>
+<p>
+Blood samples are required for estimation of drug levels, metabolites,
+biomarkers, hormones, and safety parameters. Proper blood collection
+ensures reliable experimental data and reproducibility.
+</p>
+</div>
 
-    <div class="info-box slide">
-      <h2>Types of Blood Collection Methods</h2>
-      <p>
-        Blood withdrawal techniques are classified as
-        <strong>non-terminal</strong> (tail vein, saphenous vein, marginal ear vein)
-        and <strong>terminal</strong> methods (cardiac puncture, posterior vena cava),
-        depending on volume required and study design.
-      </p>
-    </div>
+<!-- SLIDE 3 -->
+<div class="info-box slide">
+<h2>Types of Blood Collection Methods</h2>
+<p>
+Blood withdrawal techniques are classified as
+<strong>non-terminal</strong> (tail vein, saphenous vein, marginal ear vein)
+and <strong>terminal</strong> methods (cardiac puncture, posterior vena cava),
+depending on volume required and study design.
+</p>
+</div>
 
-    <div class="info-box slide">
-      <h2>Animal Welfare & Ethical Considerations</h2>
-      <p>
-        All blood collection procedures must follow ethical principles including
-        the <strong>3Rs – Replacement, Reduction, and Refinement</strong>.
-        Stress, pain, and blood volume limits must be strictly controlled.
-      </p>
-    </div>
+<!-- SLIDE 4 -->
+<div class="info-box slide">
+<h2>Animal Welfare & Ethical Considerations</h2>
+<p>
+All blood collection procedures must follow ethical principles including
+the <strong>3Rs – Replacement, Reduction, and Refinement</strong>.
+Stress, pain, and blood volume limits must be strictly controlled.
+</p>
+</div>
 
-    <div class="info-box slide">
-      <h2>Guidelines and Safety</h2>
-      <p>
-        Blood withdrawal should be performed by trained personnel under
-        institutional and international guidelines (NC3Rs, IACUC, AVMA).
-        Proper restraint, aseptic technique, and anesthesia (when required)
-        are essential for animal safety.
-      </p>
-    </div>
+<!-- SLIDE 5 -->
+<div class="info-box slide">
+<h2>Guidelines and Safety</h2>
+<p>
+Blood withdrawal should be performed by trained personnel under
+institutional and international guidelines (NC3Rs, IACUC, AVMA).
+Proper restraint, aseptic technique, and anesthesia (when required)
+are essential for animal safety.
+</p>
+</div>
 
-  </div>
+<!-- NEW SLIDE 6 -->
+<div class="info-box slide">
+<h2>Serum and Plasma Separation</h2>
+<p>
+<strong>Serum</strong> is the clear, yellowish liquid portion of blood obtained
+after clotting and removal of the clot. It lacks fibrinogen and other clotting
+factors.
+</p>
 
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
-  </div>
+<p>
+<strong>Plasma</strong> is the liquid portion of blood that remains when clotting
+is prevented using an anticoagulant. It contains fibrinogen and clotting factors.
+</p>
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+<p>
+Both serum and plasma are obtained from whole blood after separating cellular
+components such as red blood cells, white blood cells, and platelets through
+centrifugation. However, their preparation methods differ depending on whether
+coagulation is allowed or prevented.
+</p>
+</div>
+
+<!-- NEW SLIDE 7 -->
+<div class="info-box slide">
+<h2>Anesthesia Techniques in Experimental Animals</h2>
+<p>
+Anesthesia in laboratory animals, particularly rodents such as mice and rats,
+is essential for surgical procedures, imaging studies, and experimental
+interventions in pharmacological research.
+</p>
+
+<p>
+Modern guidelines recommend <strong>inhalational anesthesia</strong> (e.g.
+isoflurane or sevoflurane) as the preferred method for recovery procedures due
+to its controllable depth, rapid induction, and minimal physiological
+disturbance.
+</p>
+
+<p>
+Injectable anesthetics are also used in certain situations, particularly for
+short procedures. Institutional ethical committees such as IACUC require proper
+monitoring of respiration, body temperature, and reflexes during anesthesia.
+</p>
+</div>
+
+<!-- NEW SLIDE 8 -->
+<div class="info-box slide">
+<h2>Euthanasia Techniques in Experimental Animals</h2>
+<p>
+Euthanasia in laboratory animals must ensure a rapid, painless, and
+distress-free death while maintaining ethical standards in biomedical research.
+</p>
+
+<p>
+According to the <strong>AVMA Guidelines for the Euthanasia of Animals
+(2020)</strong>, methods are categorized as acceptable, acceptable with
+conditions, or unacceptable depending on animal welfare considerations.
+</p>
+
+<p>
+Common euthanasia techniques in laboratory rodents include inhalation
+anesthetics, carbon dioxide exposure, cervical dislocation under anesthesia,
+and overdose of anesthetic agents. These procedures must follow institutional
+ethical approvals and avoid interference with experimental tissue analysis.
+</p>
+</div>
 
 </div>
 
-<!-- ================= SCRIPTS ================= -->
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 8
+</div>
+
+<div class="button-row">
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+<button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+</div>
+
+</div>
+
 <script>
+
 let slides = document.querySelectorAll(".slide");
 let index = 0;
 
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
+function showSlide(i){
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+document.getElementById("currentSlide").innerText = i+1;
 }
 
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    // AFTER LAST SLIDE → EXPERIMENT PAGE
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
+function nextSlide(){
+if(index < slides.length-1){
+index++;
+showSlide(index);
+}
+else{
+location.href = "/experiment/{{ experiment.slug }}/run/";
+}
 }
 
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    // BEFORE FIRST SLIDE → INTRO PAGE
-    location.href = "/experiment/{{ experiment.slug }}/";
-  }
+function prevSlide(){
+if(index>0){
+index--;
+showSlide(index);
+}
+else{
+location.href="/experiment/{{ experiment.slug }}/";
+}
 }
 
-/* KEYBOARD SUPPORT */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
+document.addEventListener("keydown",function(e){
+if(e.key==="Enter") nextSlide();
+if(e.key==="Escape") prevSlide();
 });
 
-/* THEME */
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
 }
 
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
 }
+}
+
 </script>
 
 </body>

@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Effect of Spasmogens and Spasmolytics on Rabbit Jejunum – Experiment</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+.top-actions{
+position:absolute;
+top:18px;
+left:22px;
+z-index:20;
+display:flex;
+gap:10px;
+}
+
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#fff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+}
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:95%;
+max-width:1100px;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+font-size:14px;
+}
+
+th,td{
+border:1px solid #444;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Effect of Spasmogens and Spasmolytics on Isolated Rabbit Jejunum
+</h1>
+
+<!-- TOP ACTION BUTTONS -->
+<div class="top-actions">
+
+<button class="dropdown-btn" onclick="openProcedure()">
+📋 Procedure
+</button>
+
+<button class="dropdown-btn" onclick="toggleFullscreen()">
+⛶ Full Screen
+</button>
+
+</div>
+
+<!-- VIDEO FRAME -->
+<div class="video-frame">
+
+<button class="start-btn" id="startBtn" onclick="startExperiment()">
+▶ Start Practical
+</button>
+
+<video id="experimentVideo" controls>
+<source src="{% static 'experiments/spasmogens-spasmolytics-rabbit-jejunum/videos/jejunum-experiment.mp4' %}" type="video/mp4">
+</video>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="button-row" style="justify-content:center; margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="openModal()">
+View Observations 📊
+</button>
+
+<button class="exp-btn"
+onclick="goToGraph()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= OBSERVATION MODAL ================= -->
+
+<div class="modal" id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeModal()">✖</span>
+
+<h2 style="text-align:center;">
+Observation Table – Rabbit Jejunum Experiment
+</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>S. No</th>
+<th>Drug Administered</th>
+<th>Dose</th>
+<th>Observation (Height of Response)</th>
+<th>Inference</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Normal Saline</td>
+<td>0.1 ml</td>
+<td>No change (Constant waves)</td>
+<td>Control / Baseline</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Acetylcholine (ACh)</td>
+<td>10 µg</td>
+<td>Increased tone & amplitude (≈25 mm)</td>
+<td>Spasmogenic effect via M3 receptors</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Barium Chloride</td>
+<td>100 µg</td>
+<td>Increased tone (sustained spasm)</td>
+<td>Spasmogenic – Direct muscle depolarization</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Atropine</td>
+<td>10 µg</td>
+<td>Decreased tone (Relaxation)</td>
+<td>Spasmolytic – Antimuscarinic</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>Adrenaline</td>
+<td>10 µg</td>
+<td>Decreased tone & frequency</td>
+<td>Spasmolytic – Sympathomimetic</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>Atropine + ACh</td>
+<td>Both</td>
+<td>No response (or reduced &lt; 5 mm)</td>
+<td>Atropine blocked action of ACh (Competitive antagonism)</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+
+<!-- ================= PROCEDURE MODAL ================= -->
+
+<div class="modal" id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeProcedure()">✖</span>
+
+<h2 style="text-align:center;">
+Experimental Procedure
+</h2>
+
+<ol style="margin-top:15px; line-height:1.7">
+
+<li>Sacrifice the rabbit by air embolism or cervical dislocation.</li>
+
+<li>Open the abdomen and isolate a 2–3 cm segment of jejunum.</li>
+
+<li>Flush lumen gently with Tyrode's solution.</li>
+
+<li>Mount tissue in organ bath with Tyrode's solution at 37°C with aeration.</li>
+
+<li>Attach to isotonic lever with ~1 g tension and equilibrate 30–45 minutes.</li>
+
+<li>Record normal spontaneous pendular movements.</li>
+
+<li>Add drugs cumulatively (contact time 1–2 minutes with washing).</li>
+
+<li>Spasmogens: Acetylcholine or Barium Chloride.</li>
+
+<li>Spasmolytics: Atropine, Adrenaline or Papaverine.</li>
+
+<li>Pre-incubate with atropine before ACh for antagonism study.</li>
+
+<li>Record changes in tone, amplitude and frequency.</li>
+
+</ol>
+
+</div>
+</div>
+
+
+<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+}
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function goToGraph(){
+location.href="/experiment/{{ experiment.slug }}/graph/";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}
+else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+</body>
+</html>

@@ -93,6 +93,8 @@ ALLOWED_PAGES = [
     'tail-vein',
     'dorsal-pedal-vein',
     'tail-snip',
+    'serum-plasma',
+    'anaesthesia-euthanasia',
 
     # 🔥 NEW ROUTE PAGES
     "oral-gavage",

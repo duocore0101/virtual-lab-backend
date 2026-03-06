@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Effects of Spasmogens and Spasmolytics – Theory</title>
+
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod CSS -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 🔬 3D MODEL STYLE */
+    .model-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <h1 class="title">
+    Theory/Principle
+  </h1>
+
+  <!-- ================= SLIDE 1 ================= -->
+  <div class="info-box slide active">
+
+    <h2>Principle</h2>
+
+    <p>
+      The isolated <strong>rabbit jejunum</strong> shows spontaneous rhythmic 
+      contractions due to intrinsic activity of intestinal smooth muscle.
+    </p>
+
+    <p>
+      These contractions can be modified by drugs that either increase or decrease 
+      smooth muscle activity.
+    </p>
+
+    <ul>
+      <li>
+        <strong>Spasmogens</strong> increase intestinal smooth muscle contraction.
+      </li>
+
+      <li>
+        <strong>Acetylcholine (ACh)</strong> acts on 
+        <strong>muscarinic (M3) receptors</strong> producing 
+        cholinergic stimulation and contraction.
+      </li>
+
+      <li>
+        <strong>Barium chloride (BaCl₂)</strong> acts directly on 
+        smooth muscle causing <strong>membrane depolarization</strong> 
+        and contraction.
+      </li>
+    </ul>
+
+    <!-- 🔬 MODEL PLACEHOLDER -->
+    <div class="model-container">
+
+      <model-viewer
+        src="{% static 'experiments/spasmogens-spasmolytics-rabbit-jejunum/models/rabbit-jejunum.glb' %}"
+        alt="Rabbit Jejunum Organ Bath Setup 3D Model"
+        auto-rotate
+        camera-controls
+        exposure="1"
+        shadow-intensity="1"
+        ar>
+      </model-viewer>
+
+      <p style="margin-top:10px; font-size:14px; color:#aaa;">
+        Rabbit Jejunum Organ Bath Experimental Setup (3D Model Placeholder)
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= SLIDE 2 ================= -->
+  <div class="info-box slide">
+
+    <h2>Action of Spasmolytics</h2>
+
+    <p>
+      <strong>Spasmolytics</strong> reduce intestinal contractions 
+      by relaxing smooth muscle or blocking stimulatory pathways.
+    </p>
+
+    <ul>
+
+      <li>
+        <strong>Atropine</strong> – competitive muscarinic antagonist 
+        that blocks the action of acetylcholine.
+      </li>
+
+      <li>
+        <strong>Adrenaline</strong> – acts on 
+        <strong>β₂ adrenergic receptors</strong> producing 
+        relaxation of intestinal smooth muscle and inhibition of motility.
+      </li>
+
+      <li>
+        <strong>Papaverine</strong> – a non-specific smooth muscle relaxant 
+        that inhibits phosphodiesterase and blocks calcium entry, 
+        resulting in muscle relaxation.
+      </li>
+
+    </ul>
+
+    <p>
+      The responses of the tissue are recorded as changes in 
+      spontaneous contractions using a 
+      <strong>kymograph or student physiograph</strong>.
+    </p>
+
+  </div>
+
+
+  <!-- SLIDE COUNTER -->
+  <div class="slide-counter">
+    Slide <span id="slideNumber">1</span> / 2
+  </div>
+
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<script>
+
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index) {
+  slides.forEach((s,i)=> {
+    s.classList.remove("active");
+    if(i===index) s.classList.add("active");
+  });
+
+  document.getElementById("slideNumber").textContent = index + 1;
+}
+
+function nextSlide() {
+
+  if(currentSlide < slides.length - 1){
+    currentSlide++;
+    showSlide(currentSlide);
+  }
+  else{
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+
+}
+
+function prevSlide() {
+
+  if(currentSlide > 0){
+    currentSlide--;
+    showSlide(currentSlide);
+  }
+  else{
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+</script>
+
+</body>
+</html>

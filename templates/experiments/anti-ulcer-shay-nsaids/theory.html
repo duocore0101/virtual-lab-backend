@@ -1,0 +1,270 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-ulcer Activity using Pylorus-ligated (SHAY) Rat Model and NSAIDS Induced Ulcer Model – Theory</title>
+
+  <!-- MODEL VIEWER -->
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Reuse Rotarod CSS -->
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 🔬 IMAGE STYLE */
+    .model-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .model-container img {
+      max-width: 300px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Theory/Principle</h1>
+
+<!-- ================= SLIDE 1 ================= -->
+
+<div class="info-box slide active">
+
+<h2>Pylorus Ligation (Shay Rat) Model</h2>
+
+<p>
+The <strong>pylorus ligation model</strong> was introduced by
+<strong>Shay et al. (1945)</strong> to study gastric ulcer formation.
+In this method the pyloric end of the stomach is ligated, preventing
+gastric emptying.
+</p>
+
+<p>
+Due to this obstruction, gastric secretions accumulate in the stomach
+leading to excessive secretion of <strong>hydrochloric acid and pepsin</strong>.
+The continuous accumulation of gastric juice causes
+<strong>auto-digestion of the gastric mucosa</strong>.
+</p>
+
+<p>
+This results in the formation of <strong>acute peptic ulcers</strong>,
+especially in the forestomach or rumen region of rats within
+<strong>4–19 hours</strong>.
+</p>
+
+<p>
+Drugs that decrease gastric acid secretion or improve mucosal defense
+mechanisms reduce ulcer formation in this model.
+</p>
+
+
+
+</div>
+
+<!-- ================= SLIDE 2 ================= -->
+
+<div class="info-box slide">
+
+<h2>Evaluation of Anti-ulcer Drugs</h2>
+
+<p>
+The pylorus ligation model is widely used for evaluating the
+<strong>anti-secretory activity of drugs</strong> such as
+<strong>H₂-receptor blockers and proton pump inhibitors (PPIs)</strong>.
+</p>
+
+<p>
+Anti-ulcer drugs reduce gastric acidity and increase mucosal
+protection, thereby preventing ulcer formation.
+</p>
+
+<p>The following parameters are commonly evaluated:</p>
+
+<ul>
+<li>Volume of gastric juice</li>
+<li>Free acidity</li>
+<li>Total acidity</li>
+<li>pH of gastric contents</li>
+<li>Ulcer index (severity of lesions)</li>
+</ul>
+
+<p>
+A decrease in <strong>free and total acidity</strong>,
+an increase in <strong>gastric pH</strong>,
+and a reduction in <strong>ulcer index</strong>
+indicate significant <strong>anti-ulcer activity</strong>.
+</p>
+
+
+
+</div>
+
+<!-- ================= SLIDE 3 ================= -->
+
+<div class="info-box slide">
+
+<h2>NSAID-Induced Ulcer Model</h2>
+
+<p>
+Non-steroidal anti-inflammatory drugs (NSAIDs) such as
+<strong>indomethacin</strong> and <strong>aspirin</strong>
+can induce gastric ulcers in experimental animals.
+</p>
+
+<p>
+NSAIDs inhibit the enzyme <strong>cyclooxygenase-1 (COX-1)</strong>,
+which reduces the synthesis of protective
+<strong>prostaglandins (PGE₂)</strong>.
+</p>
+
+<p>
+Prostaglandins normally protect the gastric mucosa by increasing
+<strong>mucus and bicarbonate secretion</strong>,
+maintaining mucosal blood flow and regulating acid secretion.
+</p>
+
+<p>
+When prostaglandin production decreases, the gastric mucosa becomes
+vulnerable to damage from gastric acid, leading to
+<strong>erosions and ulcers</strong> in the stomach.
+</p>
+
+<p>
+Pretreatment with anti-ulcer drugs such as
+<strong>omeprazole, ranitidine or cytoprotective agents</strong>
+can significantly reduce lesion formation in this model.
+</p>
+
+
+
+
+
+</div>
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 3
+</div>
+
+<div class="button-row">
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+<button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+</div>
+
+</div>
+
+<script>
+
+let current = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index){
+slides.forEach(s => s.classList.remove("active"));
+slides[index].classList.add("active");
+document.getElementById("currentSlide").innerText = index + 1;
+}
+
+function nextSlide(){
+if(current < slides.length - 1){
+current++;
+showSlide(current);
+}else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+}
+
+function prevSlide(){
+if(current > 0){
+current--;
+showSlide(current);
+}else{
+location.href="/experiment/{{ experiment.slug }}/requirements/";
+}
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+if (!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}else{
+document.exitFullscreen();
+}
+}
+
+</script>
+
+</body>
+</html>

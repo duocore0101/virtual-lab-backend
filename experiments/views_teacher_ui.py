@@ -35,8 +35,8 @@ def teacher_dashboard(request):
     )
 
     experiments = Experiment.objects.filter(
-        is_active=True
-    ).order_by("name")
+    is_active=True
+).order_by("order", "name")
 
     attempts = ExperimentAttempt.objects.filter(
         experiment__is_active=True,

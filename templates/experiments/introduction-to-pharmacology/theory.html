@@ -1,0 +1,444 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Introduction to Pharmacology – Theory</title>
+
+<link rel="stylesheet"
+      href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+/* ================= SLIDE SYSTEM ================= */
+.slide-container{
+  position:relative;
+  min-height:260px;
+}
+
+.slide{
+  display:none;
+  animation:slideIn .5s ease;
+}
+
+.slide.active{
+  display:block;
+}
+
+@keyframes slideIn{
+  from{
+    opacity:0;
+    transform:translateX(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+
+.slide-counter{
+  text-align:center;
+  margin-top:15px;
+  color:#aaa;
+  font-size:14px;
+}
+
+/* 🔝 TOP RIGHT ACTION BUTTONS */
+.top-actions{
+  position:fixed;
+  top:20px;
+  right:25px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+.top-actions button{
+  padding:10px 18px;
+  border-radius:22px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff2e2e;
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,0,0,.6);
+  transition:transform .25s,box-shadow .25s;
+}
+
+.top-actions button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 22px rgba(255,0,0,.9);
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Theory / Principle</h1>
+
+<!-- ================= SLIDES ================= -->
+<div class="slide-container">
+
+<!-- Slide 1 -->
+<div class="info-box slide active">
+<h2>1. Definition and Etymology</h2>
+
+<p><strong>Pharmacology:</strong> Derived from Greek words 
+<strong>"Pharmakon"</strong> (drug or poison) and 
+<strong>"Logos"</strong> (study or discourse). 
+It is the scientific study of drugs including their history, sources, 
+physicochemical properties, physiological effects, mechanism of action, 
+absorption, distribution, metabolism, excretion (ADME), and therapeutic or toxic effects.</p>
+
+<p><strong>Experimental Pharmacology:</strong> 
+The branch focused on studying drug effects using laboratory models 
+(<em>in vivo, in vitro, ex vivo, or simulated</em>). 
+It is a relatively young discipline enriched by advances in electrophysiology, 
+biochemistry, molecular biology, and digital recording systems.</p>
+</div>
+
+
+<!-- Slide 2 -->
+<div class="info-box slide">
+<h2>2. Key Definitions (Basic Terminology)</h2>
+
+<ul>
+<li><strong>Drug:</strong> Any active chemical substance used for diagnosis, prevention, relief, treatment, or cure of diseases in humans or animals.</li>
+
+<li><strong>Medicine:</strong> Formulation containing the drug plus excipients (binders, lubricants, etc.) for stable and acceptable delivery.</li>
+
+<li><strong>Pharmacokinetics (PK):</strong> Study of what the body does to the drug (absorption, distribution, metabolism, elimination).</li>
+
+<li><strong>Pharmacodynamics (PD):</strong> Study of what the drug does to the body (mechanism and site of action).</li>
+
+<li><strong>Bioavailability:</strong> Fraction of unchanged drug that reaches systemic circulation after administration.</li>
+
+<li><strong>Other terms:</strong> Clinical pharmacology, Neuropharmacology, Pharmacogenetics, Posology, Pharmacovigilance, Side effects vs Adverse effects.</li>
+</ul>
+</div>
+
+
+<!-- Slide 3 -->
+<div class="info-box slide">
+<h2>3. Scope and Importance in Pharmacy</h2>
+
+<ul>
+<li>Experimental pharmacology bridges theoretical knowledge with practical application.</li>
+
+<li>It helps in drug discovery, development, safety evaluation, and understanding therapeutic uses.</li>
+
+<li>For pharmacy students it supports rational drug use, formulation development, clinical pharmacy and regulatory understanding.</li>
+
+<li>In India, drug research and experiments are regulated under authorities such as <strong>CDSCO</strong> and <strong>CPCSEA</strong>.</li>
+
+<li>As per modern PCI guidelines, many live animal experiments are replaced by simulations, videos and virtual laboratory platforms.</li>
+</ul>
+</div>
+
+
+<!-- Slide 4 -->
+<div class="info-box slide">
+<h2>4. Aims / Objectives of Experimental Pharmacology</h2>
+
+<p>The main goals are:</p>
+
+<ol>
+<li>To screen and identify new therapeutic agents suitable for human use (drug discovery).</li>
+
+<li>To study toxicity, safety and possible side effects of drugs.</li>
+
+<li>To elucidate the mechanism and site of drug action.</li>
+
+<li>To perform bioassays and evaluate drug potency and efficacy.</li>
+
+<li>To support preclinical drug development before clinical trials.</li>
+</ol>
+</div>
+
+
+<!-- Slide 5 -->
+<div class="info-box slide">
+<h2>5. Stages of Drug Evaluation </h2>
+
+<p>A.Preclinical experimental pharmacology involves identification and optimization of lead compounds and testing them in animals, isolated tissues, organs or cell cultures.</p>
+
+<h3>Why Preclinical Studies are Done?</h3>
+
+<ul>
+<li>To check if the drug is safe for humans.</li>
+<li>To evaluate whether the drug is effective against the disease.</li>
+<li>To study how the body handles the drug (ADME).</li>
+<li>To determine appropriate dose ranges and side effects.</li>
+<li>To generate data required for IND application to CDSCO.</li>
+</ul>
+
+<h3>Main Types of Preclinical Studies</h3>
+
+<ul>
+<li>Efficacy / Pharmacological Screening</li>
+<li>ADME / Pharmacokinetic Studies</li>
+<li>Toxicity Studies (Acute, Sub-acute, Chronic, Genotoxicity, Carcinogenicity)</li>
+<li>Safety Pharmacology</li>
+</ul>
+
+<h3>Methods Used</h3>
+
+<ul>
+<li><strong>In vitro:</strong> Cells or isolated tissues</li>
+<li><strong>In vivo:</strong> Whole animal studies</li>
+<li><strong>Ex vivo:</strong> Removed tissues</li>
+<li><strong>In silico:</strong> Computer simulations</li>
+</ul>
+
+<p>All studies follow <strong>Good Laboratory Practice (GLP)</strong> and the <strong>3R principles</strong>.</p>
+<P>Outcome Successful preclinical data is submitted to CDSCO as Investigational New Drug (IND) application to get permission for human (clinical) trials.</P></div>
+
+
+<!-- Slide 6 -->
+<div class="info-box slide">
+
+<h2>5. Stages of Drug Evaluation </h2>
+
+<p><strong>B.Clinical Pharmacology:</strong> Testing on human volunteers and patients
+(Phases I–IV) to evaluate pharmacokinetics, safety, efficacy, and post-marketing surveillance.</p>
+
+<p>
+Developing a new drug from an idea in the laboratory to a medicine available for patients
+is a long, expensive and highly regulated journey. It usually takes <strong>10–15 years</strong>
+and costs approximately <strong>₹8,000–15,000 crore (US$ 1–2 billion)</strong>.
+Only about <strong>1 out of 5,000–10,000 screened compounds</strong> finally reaches the market.
+Experimental pharmacology plays a major role especially during the preclinical stage.
+</p>
+
+<h3>Main Stages of Drug Discovery and Development</h3>
+
+<ol>
+
+<li>
+<strong>Target Identification & Validation:</strong>
+Scientists identify a biological target (such as a receptor, enzyme, or gene)
+linked to a disease and confirm that modifying this target may treat the disease.
+</li>
+
+<li>
+<strong>Hit Discovery:</strong>
+Thousands to millions of chemical compounds are screened
+(using High-Throughput Screening or computer-based methods)
+to identify “hits” showing activity against the target.
+</li>
+
+<li>
+<strong>Lead Identification & Optimization:</strong>
+Promising hits are chemically modified to improve potency,
+selectivity, safety, and pharmacokinetic properties (ADME).
+</li>
+
+<li>
+<strong>Preclinical Studies (Core of Experimental Pharmacology):</strong>
+The optimized lead compound is tested in the laboratory using:
+<ul>
+<li>In vitro studies (cells or isolated tissues)</li>
+<li>In vivo studies (animal models)</li>
+<li>ADME studies</li>
+<li>Toxicity and safety testing</li>
+</ul>
+This stage generates the essential data required before human trials.
+</li>
+
+<li>
+<strong>IND Application:</strong>
+Preclinical data is submitted to the regulatory authority
+(<strong>CDSCO in India</strong>) as an <strong>Investigational New Drug (IND)</strong>
+application to obtain permission for human studies.
+</li>
+
+<li>
+<strong>Clinical Trials:</strong>
+<ul>
+<li><strong>Phase I:</strong> Safety, dosage and side effects tested in 20–100 healthy volunteers.</li>
+<li><strong>Phase II:</strong> Efficacy and side effects studied in 100–500 patients.</li>
+<li><strong>Phase III:</strong> Large confirmatory trials in 1,000–5,000 patients to confirm safety and efficacy.</li>
+</ul>
+</li>
+
+<li>
+<strong>Regulatory Review & Approval:</strong>
+All data is submitted as a <strong>New Drug Application (NDA)</strong>.
+If approved by CDSCO, the drug can be marketed.
+</li>
+
+<li>
+<strong>Phase IV (Post-Marketing Surveillance / Pharmacovigilance):</strong>
+Continuous monitoring after marketing to detect rare or long-term adverse effects.
+</li>
+
+</ol>
+
+<!-- Image -->
+<img src="{% static 'experiments/introduction-to-pharmacology/images/drug-development-pipeline.png' %}"
+     alt="Drug Discovery and Development Pipeline"
+     style="width:50%; max-width:700px; margin-top:20px; border-radius:8px;">
+
+</div>
+
+
+<!-- Slide 7 -->
+<div class="info-box slide">
+<h2>6. Ethical Aspects and Guidelines</h2>
+
+<ul>
+<li>Experiments must follow <strong>CPCSEA</strong> guidelines for humane use of animals.</li>
+
+<li>The key ethical principles are the <strong>4Rs</strong>:
+Replacement, Reduction, Refinement and Rehabilitation.</li>
+
+<li>All studies must be approved by the <strong>Institutional Animal Ethics Committee (IAEC)</strong>.</li>
+
+<li>Proper maintenance, breeding, housing and record keeping of laboratory animals is essential.</li>
+
+<li>Detailed CPCSEA guidelines are often discussed in a separate experiment.</li>
+</ul>
+</div>
+
+
+<!-- Slide 8 -->
+<div class="info-box slide">
+<h2>7. Types of Experiments in Pharmacology</h2>
+
+<ul>
+<li><strong>In vivo:</strong> Whole animal experiments.</li>
+
+<li><strong>In vitro:</strong> Experiments on isolated tissues or organs.</li>
+
+<li><strong>Ex vivo:</strong> Experiments on tissues removed from animals.</li>
+
+<li><strong>Simulated / Virtual:</strong> Computer or software-based experiments as recommended by PCI.</li>
+</ul>
+
+<p>Common experimental models include:</p>
+
+<ul>
+<li>Mice or rats – CNS and behavioral studies</li>
+<li>Frogs – muscle or ciliary motility studies</li>
+<li>Rabbits – eye or insulin studies</li>
+</ul>
+
+</div>
+
+</div>
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 8
+</div>
+
+<!-- ================= NAVIGATION ================= -->
+<div class="button-row">
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+<button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+</div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+
+function showSlide(i){
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+document.getElementById("currentSlide").innerText=i+1;
+}
+
+function nextSlide(){
+
+if(index<slides.length-1){
+index++;
+showSlide(index);
+}else{
+
+// LAST SLIDE → FINISH PRACTICAL
+fetch("/experiment/finish/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken":"{{ csrf_token }}"
+},
+body:JSON.stringify({
+experiment_slug:"{{ experiment.slug }}",
+observations:{}
+})
+})
+.then(res=>res.json())
+.then(data=>{
+if(data.redirect){
+window.location.href=data.redirect;
+}
+});
+}
+}
+
+function prevSlide(){
+
+if(index>0){
+index--;
+showSlide(index);
+}else{
+
+// FIRST SLIDE → INTRO PAGE
+location.href="/experiment/{{ experiment.slug }}/";
+
+}
+}
+
+/* KEYBOARD CONTROLS */
+let keyLock = false;
+
+document.addEventListener("keydown", function (e) {
+
+  if (keyLock) return;
+
+  if (e.key === "Enter") {
+    keyLock = true;
+    nextSlide();
+  }
+
+  if (e.key === "Escape") {
+    keyLock = true;
+    prevSlide();
+  }
+
+});
+
+document.addEventListener("keyup", function () {
+  keyLock = false;
+});
+
+/* THEME */
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}else{
+document.exitFullscreen();
+}
+}
+
+</script>
+
+</body>
+</html>

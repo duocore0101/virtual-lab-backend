@@ -3,13 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blood Withdrawal Techniques – Aim</title>
+  <title>Introduction to Pharmacology – Aim</title>
 
-  <!-- 🔥 REUSE ROTAROD INTRO CSS (DO NOT CHANGE FLOW) -->
+  <!-- CSS -->
   <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=20000">
 
   <style>
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
       position: fixed;
       top: 20px;
@@ -48,20 +49,26 @@
 
 <div class="page-container">
 
-  <!-- TITLE -->
+  <!-- =========================
+       TITLE (AIM ONLY)
+  ========================== -->
   <h1 class="title">Aim</h1>
 
-  <!-- AIM CONTENT -->
+  <!-- =========================
+       AIM TEXT
+  ========================== -->
   <div class="info-box">
     <p style="font-size:18px; text-align:center; font-weight:500;">
-  To study common laboratory techniques:
-  <strong>Blood withdrawal</strong>;
-  <strong>Serum and plasma separation</strong>;
-  <strong>Anaesthetics and euthanasia for animal studies</strong>.
-</p>
+      To provide a general introduction to 
+      <strong>pharmacology and experimental pharmacology</strong>, including 
+      its scope, objectives, and foundational concepts relevant to 
+      pharmacy students and drug research.
+    </p>
   </div>
 
-  <!-- NAVIGATION -->
+  <!-- =========================
+       NAVIGATION BUTTONS
+  ========================== -->
   <div class="button-row" style="justify-content:center;">
     <button class="back-btn"
       onclick="location.href='/student/dashboard/'">
@@ -76,6 +83,9 @@
 
 </div>
 
+<!-- =========================
+     🔧 SCRIPTS
+========================== -->
 <script>
 function toggleTheme() {
   document.body.classList.toggle("light-mode");
@@ -85,7 +95,9 @@ function toggleTheme() {
 <script>
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
+    document.documentElement.requestFullscreen().catch(err => {
+      alert("Fullscreen not supported");
+    });
   } else {
     document.exitFullscreen();
   }
