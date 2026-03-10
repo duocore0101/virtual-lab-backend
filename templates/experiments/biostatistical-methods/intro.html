@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ciliary Motility Experiment – Aim</title>
+  <title>Biostatistical Methods – Aim</title>
 
-  <!-- CSS (REUSED EXACTLY LIKE ROTAROD / DIURETIC) -->
+  <!-- CSS -->
   <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=20000">
 
   <style>
     /* 🔝 TOP RIGHT ACTIONS */
@@ -59,9 +59,10 @@
   ========================== -->
   <div class="info-box">
     <p style="font-size:18px; text-align:center; font-weight:500;">
-      To study the effects of drugs on
-      <strong>ciliary motility</strong> in the
-      <strong>frog oesophagus</strong>.
+      To study and apply essential 
+      <strong>biostatistical methods</strong> used in 
+      <strong>experimental pharmacology practicals</strong> for 
+      the analysis and interpretation of experimental data.
     </p>
   </div>
 
@@ -75,7 +76,7 @@
     </button>
 
     <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
       Next ▶
     </button>
   </div>

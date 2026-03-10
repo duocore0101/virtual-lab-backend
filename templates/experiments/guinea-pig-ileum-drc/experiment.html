@@ -1,0 +1,365 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Guinea Pig Ileum – Dose Response Curve – Experiment</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+/* FULLSCREEN BUTTON */
+
+/* LEFT BUTTON */
+.top-actions{
+position:fixed;
+top:18px;
+left:22px;
+z-index:1000;
+}
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#ffffff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+transition:all 0.25s ease;
+box-shadow:0 4px 12px rgba(0,0,0,0.35);
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+border-color:#fa0707;
+}
+
+/* LEFT BUTTON */
+.top-actions{
+position:fixed;
+top:18px;
+left:22px;
+z-index:1000;
+}
+
+/* MODALS */
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:85%;
+max-width:900px;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+}
+
+th,td{
+border:1px solid #444;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Dose Response Curve of Acetylcholine on Guinea Pig Ileum
+</h1>
+
+<!-- LEFT BUTTONS -->
+<div class="top-actions">
+  <button class="dropdown-btn" onclick="toggleFullscreen()">
+    ⛶ Full Screen
+  </button>
+
+  <button class="dropdown-btn" onclick="openProcedure()">
+    📋 Procedure
+  </button>
+</div>
+
+<!-- RIGHT BUTTON -->
+<div class="top-right-tools">
+  <button class="theme-toggle" onclick="toggleTheme()">
+    🌗 Theme
+  </button>
+</div>
+<div class="video-frame">
+
+<button class="start-btn" id="startBtn" onclick="startExperiment()">
+▶ Start Practical
+</button>
+
+<video id="experimentVideo" controls>
+<source src="{% static 'experiments/guinea-pig-ileum-drc/videos/drc_experiment.mp4' %}" type="video/mp4">
+</video>
+
+</div>
+
+<div class="button-row" style="justify-content:center;margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="openModal()">
+View Observations 📊
+</button>
+
+<button class="exp-btn"
+onclick="goToGraph()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+<!-- OBSERVATION MODAL -->
+
+<div class="modal" id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeModal()">✖</span>
+
+<h2>Observation Table</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Dose of ACh (M)</th>
+<th>Log Dose</th>
+<th>Response height (mm)</th>
+<th>% Maximum Response</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>10⁻⁸</td>
+<td>-8</td>
+<td id="r1"></td>
+<td id="p1"></td>
+</tr>
+
+<tr>
+<td>10⁻⁷</td>
+<td>-7</td>
+<td id="r2"></td>
+<td id="p2"></td>
+</tr>
+
+<tr>
+<td>10⁻⁶</td>
+<td>-6</td>
+<td id="r3"></td>
+<td id="p3"></td>
+</tr>
+
+<tr>
+<td>10⁻⁵</td>
+<td>-5</td>
+<td id="r4"></td>
+<td id="p4"></td>
+</tr>
+
+<tr>
+<td>10⁻⁴</td>
+<td>-4</td>
+<td id="r5"></td>
+<td id="p5"></td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+<!-- PROCEDURE MODAL -->
+
+<div class="modal" id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeProcedure()">✖</span>
+
+<h2>Experimental Procedure</h2>
+
+<ol style="line-height:1.7">
+
+<li>Sacrifice guinea pig by cervical dislocation or CO₂ asphyxiation.</li>
+
+<li>Open abdomen and locate ileum; cut 2–3 cm segment avoiding Peyer's patches.</li>
+
+<li>Flush lumen with Tyrode's solution and mount tissue in organ bath at 37°C aerated with 95% O₂ + 5% CO₂.</li>
+
+<li>Apply resting tension 0.5–1 g and equilibrate for 30–45 minutes washing every 10 minutes.</li>
+
+<li>
+Record normal DRC for agonist:
+<ul>
+<li>Add increasing doses of acetylcholine (10⁻⁸ to 10⁻⁴ M).</li>
+<li>Allow contact time 30–60 seconds.</li>
+<li>Wash tissue 3–4 times.</li>
+<li>Allow 5 minute cycle between doses.</li>
+</ul>
+</li>
+
+<li>
+Effect of antagonist:
+<ul>
+<li>Add atropine (10⁻⁸ M) and incubate 10–15 minutes.</li>
+<li>Record new DRC in presence of atropine.</li>
+<li>Optional higher atropine concentrations for dose ratio calculation.</li>
+</ul>
+</li>
+
+<li>Plot % maximum response vs log dose.</li>
+
+</ol>
+
+</div>
+</div>
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+setTimeout(()=>fillRow(1,5,6),31000);
+setTimeout(()=>fillRow(2,18,22),45000);
+setTimeout(()=>fillRow(3,40,48),59000);
+setTimeout(()=>fillRow(4,70,82),74000);
+setTimeout(()=>fillRow(5,85,100),91000);
+
+}
+
+function fillRow(row,response,percent){
+
+document.getElementById("r"+row).innerText=response;
+document.getElementById("p"+row).innerText=percent;
+
+}
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function goToGraph(){
+location.href="/experiment/{{ experiment.slug }}/graph/";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(err=>{
+alert(`Error enabling fullscreen: ${err.message}`);
+});
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

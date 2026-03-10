@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student’s t-test – Theory</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+/* ================= SLIDE SYSTEM ================= */
+
+.slide-container{
+position:relative;
+min-height:260px;
+}
+
+.slide{
+display:none;
+animation:slideIn .5s ease;
+}
+
+.slide.active{
+display:block;
+}
+
+@keyframes slideIn{
+from{opacity:0; transform:translateX(40px);}
+to{opacity:1; transform:translateX(0);}
+}
+
+.slide-counter{
+text-align:center;
+margin-top:15px;
+color:#aaa;
+font-size:14px;
+}
+
+/* 🔝 TOP RIGHT ACTION BUTTONS */
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform .25s, box-shadow .25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+/* TABLE STYLE */
+
+.stat-table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:15px;
+}
+
+.stat-table th{
+background:#ff2e2e;
+color:#fff;
+padding:10px;
+border:1px solid #333;
+text-align:center;
+}
+
+.stat-table td{
+padding:10px;
+border:1px solid #333;
+text-align:center;
+background:#1e1e1e;
+color:#ddd;
+}
+
+.stat-table tr:hover td{
+background:#2b2b2b;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">
+Student’s t-test
+</h1>
+
+<div class="slide-container">
+
+<!-- SLIDE 1 -->
+
+<div class="info-box slide active">
+
+<h2>Types of Student’s t-test</h2>
+
+<table class="stat-table">
+
+<tr>
+<th>Type</th>
+<th>When to Use</th>
+<th>Design</th>
+<th>Common Experiments</th>
+</tr>
+
+<tr>
+<td>Unpaired (Independent)</td>
+<td>Two different groups</td>
+<td>Control vs Treated</td>
+<td>Blood glucose, paw volume, writhing count</td>
+</tr>
+
+<tr>
+<td>Paired (Dependent)</td>
+<td>Same animals before & after</td>
+<td>Pre vs Post</td>
+<td>Blood pressure, hot-plate latency</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- SLIDE 2 -->
+
+<div class="info-box slide">
+
+<h2>Example 1 – Unpaired t-test</h2>
+
+<p style="font-size:18px; line-height:1.8; text-align:center;">
+
+Antidiabetic Study (n = 6)
+
+<br><br>
+
+Control: <strong>181.5 ± 5.1</strong>
+
+<br>
+
+Test drug (100 mg/kg): <strong>128.2 ± 5.4</strong>
+
+<br><br>
+
+Result:
+
+<strong>t = 7.433, df = 10, p &lt; 0.001</strong>
+
+<br><br>
+
+<span style="color:#ff4c4c; font-weight:700;">
+Highly significant
+</span>
+
+</p>
+
+</div>
+
+
+<!-- SLIDE 3 -->
+
+<div class="info-box slide">
+
+<h2>Example 2 – Paired t-test</h2>
+
+<p style="font-size:18px; line-height:1.8; text-align:center;">
+
+Hypotensive Activity
+
+<br><br>
+
+Before treatment:
+
+<strong>122.0 ± 2.3 mmHg</strong>
+
+<br>
+
+After treatment:
+
+<strong>105.0 ± 2.1 mmHg</strong>
+
+<br><br>
+
+Result:
+
+<strong>t = 39.53, df = 5, p &lt; 0.001</strong>
+
+<br><br>
+
+<span style="color:#ff4c4c; font-weight:700;">
+Highly significant reduction
+</span>
+
+</p>
+
+</div>
+
+</div>
+
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 3
+</div>
+
+
+<div class="button-row">
+
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+
+<button id="nextButton" class="exp-btn" onclick="nextSlide()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+
+function showSlide(i){
+
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+
+document.getElementById("currentSlide").innerText=i+1;
+
+if(i===slides.length-1){
+document.getElementById("nextButton").innerText="Go to Experiment Page ▶";
+}else{
+document.getElementById("nextButton").innerText="Next ▶";
+}
+
+}
+
+function nextSlide(){
+
+if(index<slides.length-1){
+index++;
+showSlide(index);
+}
+else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+
+}
+
+function prevSlide(){
+
+if(index>0){
+index--;
+showSlide(index);
+}
+else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+
+}
+
+document.addEventListener("keydown",function(e){
+if(e.key==="Enter") nextSlide();
+if(e.key==="Escape") prevSlide();
+});
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}
+else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+</body>
+</html>

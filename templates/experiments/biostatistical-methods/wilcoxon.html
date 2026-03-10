@@ -1,0 +1,317 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wilcoxon Signed-Rank Test – Theory</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+/* SLIDE SYSTEM */
+
+.slide-container{
+position:relative;
+min-height:260px;
+}
+
+.slide{
+display:none;
+animation:slideIn .5s ease;
+}
+
+.slide.active{
+display:block;
+}
+
+@keyframes slideIn{
+from{opacity:0;transform:translateX(40px);}
+to{opacity:1;transform:translateX(0);}
+}
+
+.slide-counter{
+text-align:center;
+margin-top:15px;
+color:#aaa;
+font-size:14px;
+}
+
+/* TOP ACTIONS */
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,.6);
+transition:.25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,.9);
+}
+
+/* TABLE */
+
+.stat-table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+font-size:14px;
+}
+
+.stat-table th{
+background:#ff2e2e;
+color:#fff;
+padding:10px;
+border:1px solid #333;
+text-align:center;
+}
+
+.stat-table td{
+padding:10px;
+border:1px solid #333;
+text-align:center;
+background:#1e1e1e;
+color:#ddd;
+}
+
+.stat-table tr:hover td{
+background:#2b2b2b;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">
+Wilcoxon Signed-Rank Test
+</h1>
+
+<div class="slide-container">
+
+<!-- SLIDE 1 -->
+
+<div class="info-box slide active">
+
+<h2>When to Use Wilcoxon Test</h2>
+
+<p style="font-size:18px;text-align:center;line-height:1.8;font-weight:500;">
+Used when: Paired data but normality fails (small n, skewed data, scores).  
+Example: Eddy’s Hot Plate (Analgesic, n=7 mice)
+</p>
+
+</div>
+
+
+<!-- SLIDE 2 -->
+
+<div class="info-box slide">
+
+<h2>Example Result</h2>
+
+<p style="font-size:18px;text-align:center;line-height:1.8;font-weight:500;">
+
+Result:  
+<strong>W = 0</strong>,  
+<strong>p = 0.0156</strong> (&lt; 0.05)
+
+<br><br>
+
+<span style="color:#ff4c4c;font-weight:700;">
+Significant increase in pain latency.
+</span>
+
+</p>
+
+</div>
+
+
+<!-- SLIDE 3 -->
+
+<div class="info-box slide">
+
+<h2>Summary of All Tests</h2>
+
+<table class="stat-table">
+
+<tr>
+<th>Test</th>
+<th>Data Type</th>
+<th>Groups</th>
+<th>Paired / Independent</th>
+<th>Parametric?</th>
+<th>Common Experiments</th>
+<th>When Assumptions Fail</th>
+<th>Typical Conclusion Phrase</th>
+</tr>
+
+<tr>
+<td>Unpaired t-test</td>
+<td>Continuous</td>
+<td>2</td>
+<td>Independent</td>
+<td>Yes</td>
+<td>Control vs Drug</td>
+<td>Mann-Whitney U</td>
+<td>“Unpaired t-test: p &lt; 0.001”</td>
+</tr>
+
+<tr>
+<td>Paired t-test</td>
+<td>Continuous</td>
+<td>2</td>
+<td>Paired</td>
+<td>Yes</td>
+<td>Pre vs Post</td>
+<td>Wilcoxon signed-rank</td>
+<td>“Paired t-test: p &lt; 0.01”</td>
+</tr>
+
+<tr>
+<td>One-way ANOVA + Post-hoc</td>
+<td>Continuous</td>
+<td>≥3</td>
+<td>Independent</td>
+<td>Yes</td>
+<td>Multiple doses + control + standard</td>
+<td>Kruskal-Wallis</td>
+<td>“One-way ANOVA + Dunnett’s: p &lt; 0.001 vs control”</td>
+</tr>
+
+<tr>
+<td>Two-way ANOVA</td>
+<td>Continuous</td>
+<td>≥3 × Time</td>
+<td>—</td>
+<td>Yes</td>
+<td>Treatment × Time</td>
+<td>Friedman</td>
+<td>“Significant treatment × time interaction (p &lt; 0.0001)”</td>
+</tr>
+
+<tr>
+<td>Chi-square (χ²)</td>
+<td>Categorical</td>
+<td>—</td>
+<td>—</td>
+<td>No</td>
+<td>Protected / Dead / Ulcer yes-no</td>
+<td>Fisher’s exact</td>
+<td>“Chi-square with Yates’: p &lt; 0.05”</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 3
+</div>
+
+<div class="button-row">
+
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+
+<button id="nextButton" class="exp-btn" onclick="nextSlide()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+
+function showSlide(i){
+
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+
+document.getElementById("currentSlide").innerText=i+1;
+
+if(i===slides.length-1){
+document.getElementById("nextButton").innerText="Go to Experiment Page ▶";
+}else{
+document.getElementById("nextButton").innerText="Next ▶";
+}
+
+}
+
+function nextSlide(){
+
+if(index<slides.length-1){
+index++;
+showSlide(index);
+}
+else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+
+}
+
+function prevSlide(){
+
+if(index>0){
+index--;
+showSlide(index);
+}
+else{
+location.href="/experiment/{{ experiment.slug }}/run/";
+}
+
+}
+
+document.addEventListener("keydown",function(e){
+if(e.key==="Enter") nextSlide();
+if(e.key==="Escape") prevSlide();
+});
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+}else{
+document.exitFullscreen();
+}
+
+}
+
+</script>
+
+</body>
+</html>

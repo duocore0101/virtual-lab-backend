@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dose Response Curve – Graph</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* ================= BODY ================= */
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#0f0f0f;
+color:white;
+transition:0.3s ease;
+}
+
+body.light-theme{
+background:#f4f6f9;
+color:#111;
+}
+
+/* ================= GRAPH CARD ================= */
+
+.graph-card{
+max-width:1000px;
+margin:40px auto;
+padding:35px;
+border-radius:16px;
+position:relative;
+
+/* GREEN GRAPH PAPER */
+
+background:
+linear-gradient(#b9d8b9 1px,transparent 1px),
+linear-gradient(90deg,#b9d8b9 1px,transparent 1px),
+linear-gradient(#8fbf8f 2px,transparent 2px),
+linear-gradient(90deg,#8fbf8f 2px,transparent 2px),
+#dff3df;
+
+background-size:
+20px 20px,
+20px 20px,
+100px 100px,
+100px 100px;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.graph-title{
+text-align:center;
+font-size:28px;
+font-weight:700;
+margin-bottom:10px;
+color:#0a3d0a;
+}
+
+.graph-subtitle{
+text-align:center;
+margin-bottom:25px;
+color:#145214;
+font-weight:500;
+}
+
+/* ================= FULLSCREEN ================= */
+
+.theme-toggle{
+position:absolute;
+top:20px;
+right:30px;
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.fullscreen-btn{
+padding:8px 14px;
+border-radius:20px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 12px rgba(255,0,0,0.6);
+}
+
+/* ================= NEXT BUTTON ================= */
+
+.next-btn{
+display:flex;
+justify-content:center;
+margin-top:25px;
+}
+
+.next-btn button{
+padding:10px 30px;
+font-weight:600;
+border-radius:25px;
+border:2px solid #0a3d0a;
+background:transparent;
+color:#0a3d0a;
+cursor:pointer;
+transition:0.3s;
+}
+
+.next-btn button:hover{
+background:#0a3d0a;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FULLSCREEN -->
+
+<div class="theme-toggle">
+<button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+
+<div class="graph-card">
+
+<div class="graph-title">
+Log Dose Response Curve
+</div>
+
+<div class="graph-subtitle">
+Acetylcholine on Isolated Guinea Pig Ileum
+</div>
+
+<canvas id="drcChart" height="120"></canvas>
+
+<div class="next-btn">
+<button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+Next ▶
+</button>
+</div>
+
+</div>
+
+<script>
+
+/* ================= FULLSCREEN ================= */
+
+function toggleFullscreen(){
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+}
+
+</script>
+
+<script>
+
+/* ================= DRC DATA ================= */
+
+/* Log dose values */
+
+const doses=[-8,-7,-6,-5,-4];
+
+/* ACh responses */
+
+const ach=[5,18,40,70,100];
+
+/* ACh + Atropine (right shift) */
+
+const atropine=[1,5,20,50,95];
+
+const ctx=document.getElementById("drcChart").getContext("2d");
+
+new Chart(ctx,{
+type:"line",
+
+data:{
+labels:doses,
+
+datasets:[
+
+{
+label:"ACh",
+data:ach,
+borderColor:"#0b6623",
+backgroundColor:"rgba(11,102,35,0.25)",
+tension:0.4,
+pointRadius:6,
+pointBackgroundColor:"#064d1a",
+fill:false
+},
+
+{
+label:"ACh + Atropine",
+data:atropine,
+borderColor:"#2e8b57",
+borderDash:[6,6],
+tension:0.4,
+pointRadius:6,
+pointBackgroundColor:"#1c5f3f",
+fill:false
+}
+
+]
+
+},
+
+options:{
+
+plugins:{
+legend:{display:true}
+},
+
+scales:{
+
+x:{
+title:{
+display:true,
+text:"Log Dose (M)",
+color:"#003d1f",
+font:{weight:"bold"}
+},
+grid:{display:false}
+},
+
+y:{
+beginAtZero:true,
+max:110,
+title:{
+display:true,
+text:"Response (% Emax)",
+color:"#003d1f",
+font:{weight:"bold"}
+},
+grid:{display:false}
+}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

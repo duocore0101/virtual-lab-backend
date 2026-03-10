@@ -1,0 +1,491 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>One-Way ANOVA – Theory</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+/* ================= SLIDE SYSTEM ================= */
+
+.slide-container{
+position:relative;
+min-height:260px;
+}
+
+.slide{
+display:none;
+animation:slideIn .5s ease;
+}
+
+.slide.active{
+display:block;
+}
+
+@keyframes slideIn{
+from{opacity:0; transform:translateX(40px);}
+to{opacity:1; transform:translateX(0);}
+}
+
+.slide-counter{
+text-align:center;
+margin-top:15px;
+color:#aaa;
+font-size:14px;
+}
+
+/* 🔝 TOP RIGHT ACTION BUTTONS */
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform .25s, box-shadow .25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+/* ANOVA DATA TABLE */
+
+.anova-table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:14px;
+}
+
+.anova-table th{
+background:#ff2e2e;
+color:#fff;
+padding:10px;
+border:1px solid #333;
+text-align:center;
+}
+
+.anova-table td{
+padding:10px;
+border:1px solid #333;
+text-align:center;
+background:#1e1e1e;
+color:#ddd;
+}
+
+.anova-table tr:hover td{
+background:#2b2b2b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">
+One-Way ANOVA
+</h1>
+
+<div class="slide-container">
+
+<!-- SLIDE 1 -->
+
+<div class="info-box slide active">
+
+<h2>One-Way ANOVA</h2>
+
+<p style="font-size:18px; text-align:center; font-weight:500;">
+<strong>When to use:</strong> Compare means of 
+<strong>3 or more independent groups</strong> 
+(e.g., control + standard + test doses).
+</p>
+
+</div>
+
+
+<!-- SLIDE 2 -->
+
+<div class="info-box slide">
+
+<h2>Common Experiments</h2>
+
+<ul style="font-size:17px; line-height:1.7;">
+<li>Carrageenan-induced paw edema (anti-inflammatory)</li>
+
+<li>Acetic acid writhing / Eddy’s hot plate (analgesic)</li>
+
+<li>Alloxan/STZ-induced diabetes (antidiabetic – blood glucose)</li>
+
+<li>Diuretic activity, anti-ulcer ulcer index, pentobarbitone sleeping time, etc.</li>
+</ul>
+
+</div>
+
+
+<!-- SLIDE 3 -->
+
+<div class="info-box slide">
+
+<h2>Example (Antidiabetic Activity – Alloxan Model)</h2>
+
+<p style="text-align:center;font-size:16px;margin-bottom:15px;">
+Day 28 fasting blood glucose, n = 6 rats / group
+</p>
+
+<h3 style="margin-bottom:10px;">Raw Data (mg/dL)</h3>
+
+<table class="anova-table">
+
+<tr>
+<th>Rat No.</th>
+<th>Diabetic Control</th>
+<th>Low Dose (50 mg/kg)</th>
+<th>High Dose (100 mg/kg)</th>
+<th>Standard (Glibenclamide 5 mg/kg)</th>
+</tr>
+
+<tr>
+<td>1</td><td>285</td><td>225</td><td>145</td><td>105</td>
+</tr>
+
+<tr>
+<td>2</td><td>272</td><td>232</td><td>152</td><td>112</td>
+</tr>
+
+<tr>
+<td>3</td><td>298</td><td>218</td><td>138</td><td>98</td>
+</tr>
+
+<tr>
+<td>4</td><td>265</td><td>228</td><td>148</td><td>108</td>
+</tr>
+
+<tr>
+<td>5</td><td>279</td><td>230</td><td>150</td><td>110</td>
+</tr>
+
+<tr>
+<td>6</td><td>290</td><td>222</td><td>142</td><td>102</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>Calculated Results</h3>
+
+<ul style="font-size:16px; line-height:1.7;">
+<li>Diabetic Control: 281.50 ± 4.92</li>
+<li>Low dose: 225.83 ± 2.14</li>
+<li>High dose: 145.83 ± 2.14</li>
+<li>Standard: 105.83 ± 2.14</li>
+</ul>
+
+</div>
+
+
+<!-- SLIDE 4 -->
+
+<div class="info-box slide">
+
+<h2>Corrected One-Way ANOVA Table</h2>
+
+<table class="anova-table">
+
+<tr>
+<th>Source of Variation</th>
+<th>Sum of Squares (SS)</th>
+<th>df</th>
+<th>Mean Square (MS)</th>
+<th>F-value</th>
+<th>p-value</th>
+</tr>
+
+<tr>
+<td>Between Groups</td>
+<td>112,144.50</td>
+<td>3</td>
+<td>37,381.50</td>
+<td>658.13</td>
+<td>&lt; 0.0001</td>
+</tr>
+
+<tr>
+<td>Within Groups</td>
+<td>1,136.00</td>
+<td>20</td>
+<td>56.80</td>
+<td>—</td>
+<td>—</td>
+</tr>
+
+<tr>
+<td>Total</td>
+<td>113,280.50</td>
+<td>23</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- SLIDE 5 -->
+
+<div class="info-box slide">
+
+<h2>Interpretation</h2>
+
+<p style="font-size:18px; text-align:center; line-height:1.8; font-weight:500;">
+F(3,20) = <strong>658.13</strong>, p &lt; <strong>0.0001</strong> →
+<span style="color:#ff4c4c; font-weight:700;">
+Highly significant difference among groups.
+</span>
+</p>
+
+<p style="font-size:18px; text-align:center; margin-top:10px;">
+<strong>Decision:</strong> Reject H<sub>0</sub> (null hypothesis).
+</p>
+
+</div>
+
+
+<!-- SLIDE 6 -->
+
+<div class="info-box slide">
+
+<h2>Post-hoc Tests (Mandatory after significant ANOVA)</h2>
+
+<table class="anova-table">
+
+<tr>
+<th>Post-hoc Test</th>
+<th>When to Use</th>
+<th>Compares</th>
+<th>Most Common in Indian Colleges</th>
+</tr>
+
+<tr>
+<td>Dunnett’s</td>
+<td>Multiple doses vs Control only</td>
+<td>All groups vs Control</td>
+<td>99% of practicals (anti-inflammatory, antidiabetic, analgesic)</td>
+</tr>
+
+<tr>
+<td>Tukey’s HSD</td>
+<td>All possible pairs</td>
+<td>Every group vs every other</td>
+<td>Full dose-response comparison</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- SLIDE 7 -->
+
+<div class="info-box slide">
+
+<h2>Dunnett’s Test Result</h2>
+
+<table class="anova-table">
+
+<tr>
+<th>Treatment</th>
+<th>Mean Diff. from Control</th>
+<th>q value</th>
+<th>p value</th>
+<th>Conclusion</th>
+</tr>
+
+<tr>
+<td>Low dose</td>
+<td>55.67</td>
+<td>19.12</td>
+<td>&lt; 0.001</td>
+<td>Highly significant</td>
+</tr>
+
+<tr>
+<td>High dose</td>
+<td>135.67</td>
+<td>46.58</td>
+<td>&lt; 0.001</td>
+<td>Highly significant</td>
+</tr>
+
+<tr>
+<td>Standard</td>
+<td>175.67</td>
+<td>60.33</td>
+<td>&lt; 0.001</td>
+<td>Highly significant</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- SLIDE 8 -->
+
+<div class="info-box slide">
+
+<h2>Conclusion</h2>
+
+<p style="font-size:18px; line-height:1.8; text-align:center; font-weight:500;">
+
+“One-way ANOVA followed by <strong>Dunnett’s multiple comparison test</strong> 
+showed that low dose, high dose and standard drug produced 
+<strong>statistically significant reduction in blood glucose level</strong> 
+compared to diabetic control (p &lt; 0.001).  
+
+The test drug therefore possesses 
+<strong>significant and dose-dependent antidiabetic activity.</strong>”
+
+</p>
+
+
+
+</div>
+
+</div>
+
+
+<div class="slide-counter">
+Slide <span id="currentSlide">1</span> / 8
+</div>
+
+
+<div class="button-row">
+
+<button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+
+<button id="nextButton" class="exp-btn" onclick="nextSlide()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+
+function showSlide(i){
+
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+
+document.getElementById("currentSlide").innerText=i+1;
+
+if(i===slides.length-1){
+
+document.getElementById("nextButton").innerText="Go to Experiment Page ▶";
+
+}
+
+else{
+
+document.getElementById("nextButton").innerText="Next ▶";
+
+}
+
+}
+
+function nextSlide(){
+
+if(index<slides.length-1){
+
+index++;
+showSlide(index);
+
+}
+
+else{
+
+location.href="/experiment/{{ experiment.slug }}/run/";
+
+}
+
+}
+
+function prevSlide(){
+
+if(index>0){
+
+index--;
+showSlide(index);
+
+}
+
+else{
+
+location.href="/experiment/{{ experiment.slug }}/run/";
+
+}
+
+}
+
+document.addEventListener("keydown",function(e){
+
+if(e.key==="Enter") nextSlide();
+if(e.key==="Escape") prevSlide();
+
+});
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+
+}
+
+else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

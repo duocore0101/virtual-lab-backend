@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Physostigmine Effect on DRC of Acetylcholine – Frog Rectus – Theory</title>
+
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+  <!-- MAIN TITLE -->
+  <h1 class="title">
+    Theory / Principle
+  </h1>
+
+  <!-- ================= SLIDES ================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="info-box slide active">
+      <h2>Frog Rectus Abdominis Preparation</h2>
+      <p>
+        The frog rectus abdominis muscle is a skeletal muscle preparation
+        commonly used in pharmacological experiments. It contains 
+        <strong>nicotinic acetylcholine receptors (nAChRs)</strong> that respond
+        to cholinergic agonists.
+      </p>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="info-box slide">
+      <h2>Action of Acetylcholine</h2>
+      <p>
+        Acetylcholine (ACh) acts on the nicotinic receptors present on the
+        rectus abdominis muscle. Activation of these receptors produces a
+        <strong>slow and sustained contraction</strong> of the skeletal muscle
+        fibers when the preparation is mounted in an organ bath.
+      </p>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="info-box slide">
+      <h2>Role of Physostigmine</h2>
+      <p>
+        Physostigmine (also called <strong>eserine</strong>) is an 
+        <strong>anticholinesterase drug</strong>. It inhibits the enzyme 
+        <strong>acetylcholinesterase (AChE)</strong>, which normally breaks down
+        acetylcholine in the synaptic region.
+      </p>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="info-box slide">
+      <h2>Potentiation of Acetylcholine Response</h2>
+      <p>
+        By inhibiting acetylcholinesterase, physostigmine allows acetylcholine
+        to remain longer in the tissue. As a result, more ACh is available to
+        bind to nicotinic receptors, leading to 
+        <strong>enhancement (potentiation) of the acetylcholine response</strong>.
+        This causes an increase in the contractile response of the muscle.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 4
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+  <div class="button-row">
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
+
+}
+
+function prevSlide() {
+
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
+
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* THEME */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Physostigmine Effect on DRC of Acetylcholine – Frog Rectus – Experiment</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+/* LEFT BUTTON */
+.top-actions{
+position:fixed;
+top:18px;
+left:22px;
+z-index:1000;
+}
+
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#ffffff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+transition:all 0.25s ease;
+box-shadow:0 4px 12px rgba(0,0,0,0.35);
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+border-color:#fa0707;
+}
+
+/* MODALS */
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:950px;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+}
+
+th,td{
+border:1px solid #444;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Dose Response Curve of Acetylcholine on Frog Rectus Abdominis
+(Effect of Physostigmine)
+</h1>
+
+<!-- LEFT BUTTONS -->
+<div class="top-actions">
+
+<button class="dropdown-btn" onclick="toggleFullscreen()">
+⛶ Full Screen
+</button>
+
+<button class="dropdown-btn" onclick="openProcedure()">
+📋 Procedure
+</button>
+
+</div>
+
+<!-- RIGHT BUTTON -->
+<div class="top-right-tools">
+<button class="theme-toggle" onclick="toggleTheme()">
+🌗 Theme
+</button>
+</div>
+
+<div class="video-frame">
+
+<button class="start-btn" id="startBtn" onclick="startExperiment()">
+▶ Start Practical
+</button>
+
+<video id="experimentVideo" controls>
+<source src="{% static 'experiments/physostigmine-drc-acetylcholine-frog-rectus/videos/drc_experiment.mp4' %}" type="video/mp4">
+</video>
+
+</div>
+
+<div class="button-row" style="justify-content:center;margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="openModal()">
+View Observations 📊
+</button>
+
+<button class="exp-btn"
+onclick="goToGraph()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+<!-- OBSERVATION MODAL -->
+
+<div class="modal" id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeModal()">✖</span>
+
+<h2>Observation Table</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Dose of ACh (ml of stock)</th>
+<th>Log Dose</th>
+<th>Response without Physostigmine (mm)</th>
+<th>Response with Physostigmine (mm)</th>
+<th>% Max Response (without)</th>
+<th>% Max Response (with)</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>0.05</td>
+<td>-1.30</td>
+<td>8</td>
+<td>18</td>
+<td>10</td>
+<td>22</td>
+</tr>
+
+<tr>
+<td>0.1</td>
+<td>-1.00</td>
+<td>18</td>
+<td>38</td>
+<td>22</td>
+<td>46</td>
+</tr>
+
+<tr>
+<td>0.2</td>
+<td>-0.70</td>
+<td>35</td>
+<td>62</td>
+<td>43</td>
+<td>76</td>
+</tr>
+
+<tr>
+<td>0.4</td>
+<td>-0.40</td>
+<td>55</td>
+<td>78</td>
+<td>67</td>
+<td>95</td>
+</tr>
+
+<tr>
+<td>0.8</td>
+<td>-0.10</td>
+<td>72</td>
+<td>82</td>
+<td>88</td>
+<td>100</td>
+</tr>
+
+<tr>
+<td>1.6</td>
+<td>0.20</td>
+<td>82 (maximal)</td>
+<td>82 (maximal)</td>
+<td>100</td>
+<td>100</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<!-- PROCEDURE MODAL -->
+
+<div class="modal" id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeProcedure()">✖</span>
+
+<h2>Experimental Procedure</h2>
+
+<ol style="line-height:1.7">
+
+<li>
+Set up frog rectus abdominis muscle in organ bath and allow stabilization for 30–60 minutes.
+</li>
+
+<li>
+Add increasing volumes/concentrations of acetylcholine 
+(e.g., 0.1, 0.2, 0.4, 0.8 ml of stock solution).
+</li>
+
+<li>
+Record contractions produced by each dose and wash the tissue after every response.
+</li>
+
+<li>
+Plot normal dose-response curve of ACh 
+(log dose vs % maximal response or contraction height).
+</li>
+
+<li>
+Add physostigmine to the bath 
+(e.g., 0.5–2 ml stock solution) and allow 5–10 minutes contact time.
+</li>
+
+<li>
+Repeat the ACh doses in presence of physostigmine and record new responses.
+</li>
+
+<li>
+Wash tissue and repeat the procedure if required.
+</li>
+
+</ol>
+
+</div>
+</div>
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+}
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function goToGraph(){
+location.href="/experiment/{{ experiment.slug }}/graph/";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(err=>{
+alert(`Error enabling fullscreen: ${err.message}`);
+});
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

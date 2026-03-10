@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dose Response Curve – Result & Conclusion</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+/* TOP RIGHT ACTION BUTTONS */
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform 0.25s,box-shadow 0.25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP RIGHT BUTTONS -->
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Result & Conclusion</h1>
+
+<!-- RESULT -->
+
+<div class="info-box">
+
+<h2>Result</h2>
+
+<p>
+The dose–response curve of <strong>acetylcholine (ACh)</strong> on isolated
+<strong>frog rectus abdominis muscle</strong> showed a typical
+<strong>sigmoid-shaped curve</strong> when plotted against the
+logarithm of the dose.
+</p>
+
+<p>
+Increasing concentrations of acetylcholine produced
+<strong>graded contractions</strong> of the skeletal muscle
+through activation of <strong>nicotinic acetylcholine receptors</strong>.
+</p>
+
+<p>
+In the presence of <strong>physostigmine</strong>, the same doses of
+acetylcholine produced <strong>larger contractions</strong>,
+indicating potentiation of the drug response.
+</p>
+
+</div>
+
+<!-- CONCLUSION -->
+
+<div class="info-box">
+
+<h2>Conclusion</h2>
+
+<p>
+Physostigmine acts as an <strong>anticholinesterase agent</strong>
+that inhibits the enzyme <strong>acetylcholinesterase</strong>,
+which normally breaks down acetylcholine.
+</p>
+
+<p>
+Because acetylcholine remains longer in the tissue,
+the dose-response curve shifts to the
+<strong>left side</strong>, indicating
+<strong>increased potency of acetylcholine</strong>.
+</p>
+
+<p>
+This leftward shift usually occurs without major change
+in the maximum response, demonstrating
+<strong>potentiation of acetylcholine action</strong>.
+</p>
+
+<p>
+This experiment illustrates the
+<strong>role of cholinesterase in regulating acetylcholine activity</strong>
+at nicotinic receptor sites in skeletal muscle.
+</p>
+
+</div>
+
+<!-- NAVIGATION -->
+
+<div class="button-row">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="downloadPDF()">
+Download Practical PDF 📄
+</button>
+
+<button class="exp-btn" onclick="finishPractical()">
+Finish Practical ✔
+</button>
+
+</div>
+
+</div>
+
+<!-- SCRIPTS -->
+
+<script>
+
+/* THEME */
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+<script>
+
+function downloadPDF(){
+
+fetch("/experiment/{{ experiment.slug }}/download-pdf/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+experiment:"Physostigmine Effect on DRC of Acetylcholine – Frog Rectus Abdominis"
+})
+
+})
+
+.then(res=>{
+
+if(!res.ok){
+throw new Error("PDF generation failed");
+}
+
+return res.blob();
+
+})
+
+.then(blob=>{
+
+const url=window.URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="DRC_Physostigmine_Frog_Rectus_Practical_Report.pdf";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+})
+
+.catch(err=>{
+alert("Failed to generate PDF");
+console.error(err);
+});
+
+}
+
+</script>
+
+<script>
+
+function finishPractical(){
+
+fetch("/experiment/finish/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+experiment_slug:"{{ experiment.slug }}",
+
+observations:{
+experiment:"Physostigmine Effect on DRC of Acetylcholine – Frog Rectus"
+}
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+window.location.href=data.redirect;
+})
+
+.catch(err=>{
+alert("Failed to submit practical");
+console.error(err);
+});
+
+}
+
+</script>
+
+</body>
+</html>

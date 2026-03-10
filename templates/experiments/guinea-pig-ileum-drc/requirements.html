@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ciliary Motility Experiment – Requirements</title>
+  <title>Guinea Pig Ileum – Dose Response Curve – Requirements</title>
 
-  <!-- MODEL VIEWER -->
+  <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
   <script type="module"
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
 
-  <!-- Reuse existing Rotarod intro CSS -->
+  <!-- Reuse existing intro CSS -->
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
@@ -56,71 +56,72 @@
 
   <h1 class="title">Requirements / Materials</h1>
 
-  <!-- 🐸 Animal -->
+  <!-- 🐹 EXPERIMENTAL ANIMAL -->
   <div class="info-box">
     <h2>Experimental Animal</h2>
     <ul>
-      <li>Frog (<strong>Rana tigrina</strong> or similar species)</li>
-      <li>Healthy adult frog of either sex</li>
       <li>
-        <strong>Note:</strong> Use of wild frogs is restricted/banned in many
-        regions (e.g., India) as per <strong>CPCSEA guidelines</strong>.
+        <strong>Healthy Guinea Pig (300–500 g)</strong>
       </li>
-      <li>
-        Hence, this experiment is commonly performed using
-        <strong>virtual pharmacology simulation</strong>.
-      </li>
+      <li>Animal should be fasted overnight before the experiment</li>
+      <li>Ileum segment used for isolated tissue preparation</li>
     </ul>
   </div>
 
-  <!-- ⚙ Apparatus -->
+  <!-- 💧 PHYSIOLOGICAL SOLUTION -->
   <div class="info-box">
-    <h2>Apparatus and Instruments</h2>
-    <ul>
-      <li>Frog board</li>
-      <li>Dissection instruments</li>
-      <li>Dissecting pins</li>
-      <li>Stopwatch</li>
-      <li>Dropper / Pasteur pipette</li>
-    </ul>
-  </div>
-
-  <!-- 💊 Drugs -->
-  <div class="info-box">
-    <h2>Drugs and Solutions</h2>
+    <h2>Physiological Solution</h2>
     <ul>
       <li>
-        <strong>Frog Ringer's solution / Normal saline:</strong>
-        Control solution
+        <strong>Tyrode's Solution</strong>
       </li>
       <li>
-        <strong>Acetylcholine:</strong>
-        0.1% solution or stock (1&nbsp;µg/ml)
+        Composition:
+        NaCl 8.0 g, KCl 0.2 g, CaCl₂ 0.2 g, MgCl₂ 0.1 g,
+        NaHCO₃ 1.0 g, NaH₂PO₄ 0.05 g, Glucose 1.0 g
+        in 1000 mL distilled water
       </li>
-      <li>
-        <strong>Physostigmine (Eserine):</strong>
-        0.1–1% solution or stock (1&nbsp;µg/ml)
-      </li>
-      <li>
-        <strong>Atropine:</strong>
-        0.1% solution or stock (1&nbsp;µg/ml)
-      </li>
+      <li>Maintains physiological conditions for isolated ileum tissue</li>
     </ul>
   </div>
 
-  <!-- 🧂 Indicator -->
+  <!-- 💊 DRUGS -->
   <div class="info-box">
-    <h2>Indicator Particles</h2>
+    <h2>Drugs</h2>
     <ul>
-      <li>Small poppy seeds</li>
-      <li>Cork dust</li>
-      <li>Carmine particles</li>
-      <li>Particles should be of <strong>uniform size</strong></li>
+      <li>
+        <strong>Agonist: Acetylcholine</strong>
+      </li>
+      <li>Stock solution: 1 mg/mL</li>
+      <li>Dilutions: 10⁻⁸ to 10⁻⁴ M</li>
+      <li>
+        <strong>Antagonist: Atropine</strong>
+      </li>
+      <li>Concentration range: 10⁻⁸ to 10⁻⁶ M</li>
+      <li>
+        Alternative drug pair: Histamine (agonist) and Mepyramine (antagonist)
+      </li>
     </ul>
   </div>
 
-  <!-- 🔘 Navigation Buttons -->
+  <!-- ⚙ APPARATUS -->
+  <div class="info-box">
+    <h2>Instruments / Apparatus</h2>
+    <ul>
+      <li>
+        <strong>Organ Bath</strong> (10–20 mL capacity)
+      </li>
+      <li>Aerator with oxygen supply</li>
+      <li>Isometric or isotonic transducer</li>
+      <li>Student physiograph / Kymograph with recording drum</li>
+      <li>Frontal writing lever</li>
+      <li>Dissecting instruments (scissors, forceps, threads, pins)</li>
+    </ul>
+  </div>
+
+  <!-- 🔘 NAVIGATION BUTTONS -->
   <div class="button-row">
+
     <button class="back-btn"
       onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
       ⬅ Back
@@ -130,6 +131,7 @@
       onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
       Next ▶
     </button>
+
   </div>
 
 </div>

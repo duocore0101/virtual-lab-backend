@@ -105,7 +105,12 @@ ALLOWED_PAGES = [
     "intramuscular",
     "intravenous",
 
-]
+    # 🔥 NEW ROUTE
+        "anova",
+        "t-test",
+        "chi-square",
+        "wilcoxon",
+    ]
 
 
 def experiment_page(request, slug, page):

@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dose Response Curve – Result & Conclusion</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+<style>
+
+/* TOP RIGHT ACTION BUTTONS */
+
+.top-actions{
+position:fixed;
+top:20px;
+right:25px;
+display:flex;
+gap:12px;
+z-index:9999;
+}
+
+.top-actions button{
+padding:10px 18px;
+border-radius:22px;
+border:none;
+cursor:pointer;
+font-weight:600;
+background:#ff2e2e;
+color:#fff;
+box-shadow:0 0 14px rgba(255,0,0,0.6);
+transition:transform 0.25s,box-shadow 0.25s;
+}
+
+.top-actions button:hover{
+transform:scale(1.08);
+box-shadow:0 0 22px rgba(255,0,0,0.9);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP RIGHT BUTTONS -->
+
+<div class="top-actions">
+<button onclick="toggleTheme()">🌗 Theme</button>
+<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+<div class="page-container">
+
+<h1 class="title">Result & Conclusion</h1>
+
+<!-- RESULT -->
+
+<div class="info-box">
+
+<h2>Result</h2>
+
+<p>
+The dose–response curve of <strong>acetylcholine (ACh)</strong> on isolated
+<strong>rat ileum smooth muscle</strong> shows a typical
+<strong>sigmoid-shaped curve</strong> when plotted against the logarithm
+of the dose.
+</p>
+
+<p>
+Increasing doses of acetylcholine produce
+<strong>graded contractions of the ileum</strong>
+by stimulating muscarinic receptors present on the smooth muscle.
+</p>
+
+<p>
+In the presence of <strong>atropine</strong>, acetylcholine produces
+<strong>smaller contractions at the same doses</strong>,
+and the dose–response curve shifts to the
+<strong>right side</strong>.
+</p>
+
+<p>
+The <strong>maximum response remains nearly unchanged</strong>,
+indicating that atropine acts as a
+<strong>competitive antagonist</strong>.
+</p>
+
+</div>
+
+<!-- CONCLUSION -->
+
+<div class="info-box">
+
+<h2>Conclusion</h2>
+
+<p>
+Acetylcholine acts as an <strong>agonist</strong> that produces
+contraction of rat ileum smooth muscle through
+<strong>muscarinic (M3) receptors</strong>.
+</p>
+
+<p>
+Atropine acts as a <strong>competitive muscarinic antagonist</strong>,
+blocking the receptor and requiring higher concentrations of
+acetylcholine to produce the same response.
+</p>
+
+<p>
+This results in a <strong>parallel rightward shift</strong>
+of the dose–response curve without reducing the maximal response,
+which confirms <strong>competitive antagonism</strong>.
+</p>
+
+<p>
+Thus, the experiment demonstrates that
+<strong>atropine blocks muscarinic receptors in smooth muscle,
+producing competitive antagonism against acetylcholine.</strong>
+</p>
+
+</div>
+
+<!-- NAVIGATION -->
+
+<div class="button-row">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="downloadPDF()">
+Download Practical PDF 📄
+</button>
+
+<button class="exp-btn" onclick="finishPractical()">
+Finish Practical ✔
+</button>
+
+</div>
+
+</div>
+
+<!-- SCRIPTS -->
+
+<script>
+
+/* THEME */
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+/* FULLSCREEN */
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(()=>{
+alert("Fullscreen not supported");
+});
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+<script>
+
+function downloadPDF(){
+
+fetch("/experiment/{{ experiment.slug }}/download-pdf/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+experiment:"Effect of Atropine on DRC of Acetylcholine – Rat Ileum"
+})
+
+})
+
+.then(res=>{
+
+if(!res.ok){
+throw new Error("PDF generation failed");
+}
+
+return res.blob();
+
+})
+
+.then(blob=>{
+
+const url=window.URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="DRC_Rat_Ileum_Atropine_Practical_Report.pdf";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+})
+
+.catch(err=>{
+alert("Failed to generate PDF");
+console.error(err);
+});
+
+}
+
+</script>
+
+<script>
+
+function finishPractical(){
+
+fetch("/experiment/finish/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+experiment_slug:"{{ experiment.slug }}",
+
+observations:{
+experiment:"Effect of Atropine on DRC of Acetylcholine – Rat Ileum"
+}
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+window.location.href=data.redirect;
+})
+
+.catch(err=>{
+alert("Failed to submit practical");
+console.error(err);
+});
+
+}
+
+</script>
+
+</body>
+</html>

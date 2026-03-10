@@ -1,0 +1,387 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rat Ileum – Atropine Effect on DRC – Experiment</title>
+
+<link rel="stylesheet"
+href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+<style>
+
+.video-frame{
+width:100%;
+height:480px;
+border-radius:14px;
+background:#000;
+margin-top:20px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:100%;
+height:100%;
+border-radius:14px;
+display:none;
+}
+
+.start-btn{
+padding:14px 30px;
+font-size:18px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+background:linear-gradient(135deg,#ee0a0a,#b91c1c);
+color:#fff;
+font-weight:600;
+}
+
+/* LEFT BUTTON */
+.top-actions{
+position:fixed;
+top:18px;
+left:22px;
+z-index:1000;
+}
+
+.dropdown-btn{
+background:linear-gradient(135deg,#1f2937,#111827);
+color:#ffffff;
+border:1px solid #374151;
+border-radius:10px;
+padding:8px 14px;
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+transition:all 0.25s ease;
+box-shadow:0 4px 12px rgba(0,0,0,0.35);
+}
+
+.dropdown-btn:hover{
+background:linear-gradient(135deg,#ee0a0a,#e60909);
+border-color:#fa0707;
+}
+
+/* MODALS */
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:1100px;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:white;
+}
+
+th,td{
+border:1px solid #444;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#222;
+}
+
+.close-btn{
+float:right;
+cursor:pointer;
+color:red;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+<h1 class="title">
+Effect of Atropine on Dose Response Curve of Acetylcholine on Rat Ileum
+</h1>
+
+<!-- LEFT BUTTONS -->
+<div class="top-actions">
+  <button class="dropdown-btn" onclick="toggleFullscreen()">
+    ⛶ Full Screen
+  </button>
+
+  <button class="dropdown-btn" onclick="openProcedure()">
+    📋 Procedure
+  </button>
+</div>
+
+<!-- RIGHT BUTTON -->
+<div class="top-right-tools">
+  <button class="theme-toggle" onclick="toggleTheme()">
+    🌗 Theme
+  </button>
+</div>
+
+<div class="video-frame">
+
+<button class="start-btn" id="startBtn" onclick="startExperiment()">
+▶ Start Practical
+</button>
+
+<video id="experimentVideo" controls>
+<source src="{% static 'experiments/atropine-drc-rat-ileum/videos/drc_experiment.mp4' %}" type="video/mp4">
+</video>
+
+</div>
+
+<div class="button-row" style="justify-content:center;margin-top:25px;">
+
+<button class="back-btn"
+onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+⬅ Back
+</button>
+
+<button class="exp-btn" onclick="openModal()">
+View Observations 📊
+</button>
+
+<button class="exp-btn"
+onclick="goToGraph()">
+Next ▶
+</button>
+
+</div>
+
+</div>
+
+<!-- OBSERVATION MODAL -->
+
+<div class="modal" id="obsModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeModal()">✖</span>
+
+<h2>Observation Table</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Dose of ACh (ml of stock)</th>
+<th>Log Dose</th>
+<th>Response without Atropine (mm)</th>
+<th>Response with Atropine (mm)</th>
+<th>% Max Response (without)</th>
+<th>% Max Response (with)</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>0.01</td>
+<td>-2.00</td>
+<td>5</td>
+<td>0</td>
+<td>6</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>0.02</td>
+<td>-1.70</td>
+<td>12</td>
+<td>2</td>
+<td>15</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>0.05</td>
+<td>-1.30</td>
+<td>28</td>
+<td>8</td>
+<td>35</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>0.1</td>
+<td>-1.00</td>
+<td>45</td>
+<td>18</td>
+<td>56</td>
+<td>27</td>
+</tr>
+
+<tr>
+<td>0.2</td>
+<td>-0.70</td>
+<td>65</td>
+<td>35</td>
+<td>81</td>
+<td>52</td>
+</tr>
+
+<tr>
+<td>0.4</td>
+<td>-0.40</td>
+<td>78</td>
+<td>52</td>
+<td>97</td>
+<td>78</td>
+</tr>
+
+<tr>
+<td>0.8</td>
+<td>-0.10</td>
+<td>80 (max)</td>
+<td>65</td>
+<td>100</td>
+<td>97</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+<!-- PROCEDURE MODAL -->
+
+<div class="modal" id="procedureModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeProcedure()">✖</span>
+
+<h2>Experimental Procedure</h2>
+
+<ol style="line-height:1.7">
+
+<li>
+Mount isolated rat ileum in an organ bath containing aerated physiological
+solution and allow stabilization for 30–60 minutes.
+</li>
+
+<li>
+Add a small dose of acetylcholine to check tissue sensitivity.
+</li>
+
+<li>
+Add increasing concentrations or volumes of acetylcholine and record
+the contraction responses.
+</li>
+
+<li>
+After each dose, wash the tissue and allow full relaxation before
+adding the next dose.
+</li>
+
+<li>
+Plot the normal dose-response curve of acetylcholine.
+</li>
+
+<li>
+Add atropine to the organ bath (e.g., 0.1–1 μg/ml) and allow
+5–10 minutes equilibration.
+</li>
+
+<li>
+Repeat acetylcholine doses in the presence of atropine and
+record the responses.
+</li>
+
+<li>
+Higher concentrations of atropine may be used to observe
+dose-dependent rightward shift.
+</li>
+
+<li>
+Wash the tissue to confirm reversibility of antagonism.
+</li>
+
+</ol>
+
+</div>
+</div>
+
+<script>
+
+function startExperiment(){
+
+document.getElementById("startBtn").style.display="none";
+
+let video=document.getElementById("experimentVideo");
+
+video.style.display="block";
+
+video.play();
+
+}
+
+function openModal(){
+document.getElementById("obsModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("obsModal").style.display="none";
+}
+
+function openProcedure(){
+document.getElementById("procedureModal").style.display="flex";
+}
+
+function closeProcedure(){
+document.getElementById("procedureModal").style.display="none";
+}
+
+function goToGraph(){
+location.href="/experiment/{{ experiment.slug }}/graph/";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light-mode");
+}
+
+function toggleFullscreen(){
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen().catch(err=>{
+alert(`Error enabling fullscreen: ${err.message}`);
+});
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
