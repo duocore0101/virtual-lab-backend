@@ -24,10 +24,12 @@ def experiments_view(request):
 
 
 urlpatterns = [
-   
+
     # -------------------------
     # PUBLIC HOME (NEW)
-    # -------------------------
+    # ------------------------- # HOMEPAGE
+    path("", home_view, name="home"),
+    
     # AUTH
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),

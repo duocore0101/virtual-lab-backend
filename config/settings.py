@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
 
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["gmars.co.in","www.gmars.co.in","127.0.0.1"]
 
 # --------------------------------------------------
 # APPLICATIONS
