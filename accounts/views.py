@@ -70,18 +70,20 @@ def login_view(request):
                 user.college.id if user.college else None
             )
 
+                    # Save dashboard URL in session
             if user.role == "superadmin":
-                return redirect("/superadmin/dashboard/")
+                request.session["redirect_after_intro"] = "/superadmin/dashboard/"
             elif user.role == "admin":
-                return redirect("/admin/dashboard/")
+                request.session["redirect_after_intro"] = "/admin/dashboard/"
             elif user.role == "teacher":
-                return redirect("/teacher/dashboard/")
+                request.session["redirect_after_intro"] = "/teacher/dashboard/"
             elif user.role == "student":
-                return redirect("/student/dashboard/")
+                request.session["redirect_after_intro"] = "/student/dashboard/"
 
-            logout(request)
-            request.session.flush()
-            return redirect("/login/")
+            # Redirect to intro video first
+            return redirect("/intro-video/")
+
+           
 
         # =====================================================
         # REGISTRATION
@@ -248,6 +250,19 @@ def login_view(request):
         "teachers": teachers
     })
 
+# =====================================================
+# INTRO VIDEO PAGE
+# =====================================================
+def intro_video_view(request):
+
+    if not request.session.get("user_id"):
+        return redirect("/login/")
+
+    redirect_url = request.session.get("redirect_after_intro", "/")
+
+    return render(request, "auth/intro_video.html", {
+        "redirect_url": redirect_url
+    })
 
 # =====================================================
 # LOGOUT

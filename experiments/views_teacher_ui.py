@@ -86,7 +86,8 @@ def teacher_experiments(request):
 
     experiments = Experiment.objects.filter(
         is_active=True
-    ).order_by("name")
+    ).order_by("number")
+
 
     return render(
         request,

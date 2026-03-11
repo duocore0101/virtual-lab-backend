@@ -9,25 +9,84 @@
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
 
   <style>
-    /* 🔥 Student Request Badge */
-    .badge-count {
+
+    /* ================= HEADER FIX ================= */
+
+    .sa-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:100px;
+      padding:0 25px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo img{
+      height:85px;
+      width:auto;
+      transition:0.3s ease;
+      object-fit:contain;
+    }
+
+    /* ================= BADGE ================= */
+
+    .badge{
       background: var(--accent-red);
-      color: #fff;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 20px;
-      margin-left: 8px;
-      box-shadow: var(--shadow-red);
+      color:#fff;
+      font-size:12px;
+      padding:5px 12px;
+      border-radius:20px;
+      font-weight:600;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* 🔥 Student Request Badge */
+
+    .badge-count{
+      background: var(--accent-red);
+      color:#fff;
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:20px;
+      margin-left:8px;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:900px){
+
+      .sa-header{
+        height:90px;
+        padding:0 15px;
+      }
+
+      .logo img{
+        height:80px;
+      }
+
+      .badge{
+        font-size:10px;
+        padding:4px 10px;
+      }
+
     }
 
   </style>
+
 </head>
+
 <body>
 
 <!-- ================= HEADER ================= -->
 <header class="sa-header">
-  <div class="logo-area">
-    <img src="{% static 'images/gmars-logo.png' %}" class="logo" alt="G-MARS">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" class="logo" alt="G-MARS">
     <span class="badge">TEACHER</span>
   </div>
 
@@ -63,23 +122,25 @@
 
       <!-- 🔥 NEW: STUDENT REQUESTS -->
       <a href="/teacher/student-requests/">
-  📨 <span>Student Requests</span>
-  {% if pending_student_requests > 0 %}
-    <span class="badge-count">
-      {{ pending_student_requests }}
-    </span>
-  {% endif %}
-</a>
+        📨 <span>Student Requests</span>
+        {% if pending_student_requests > 0 %}
+        <span class="badge-count">
+          {{ pending_student_requests }}
+        </span>
+        {% endif %}
+      </a>
 
       <a href="/teacher/experiments/">🧪 <span>Experiments</span></a>
       <a href="/teacher/manage-batches/">📦 <span>Manage Batches</span></a>
       <a href="/teacher/attempts/">📊 <span>Attempts</span></a>
+
       {% with request.path as path %}
-<a href="{% url 'teacher-exams' %}"
-   class="{% if '/teacher/exams/' in path or '/teacher/attempt/' in path %}active{% endif %}">
-  📝 <span>Exam Management</span>
-</a>
-{% endwith %}
+      <a href="{% url 'teacher-exams' %}"
+         class="{% if '/teacher/exams/' in path or '/teacher/attempt/' in path %}active{% endif %}">
+        📝 <span>Exam Management</span>
+      </a>
+      {% endwith %}
+
       <a href="/teacher/support/">🎧 <span>Support</span></a>
 
       <a href="/teacher/settings/">⚙ <span>Settings</span></a>

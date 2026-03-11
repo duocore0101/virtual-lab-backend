@@ -9,28 +9,85 @@
 
   <style>
 
-    /* ================= HEADER BADGE ================= */
-    .student-badge {
-      background: linear-gradient(135deg, #6a5af9, #8b7fff);
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-left: 10px;
+    /* ================= HEADER FIX ================= */
+
+    .sa-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:100px;
+      padding:0 25px;
     }
-</style>
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo img{
+      height:85px;
+      width:auto;
+      transition:0.3s ease;
+      object-fit:contain;
+    }
+
+    /* ================= BADGE ================= */
+
+    .badge{
+      background: var(--accent-red);
+      color:#fff;
+      font-size:12px;
+      padding:5px 12px;
+      border-radius:20px;
+      font-weight:600;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* 🔥 Student Request Badge */
+
+    .badge-count{
+      background: var(--accent-red);
+      color:#fff;
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:20px;
+      margin-left:8px;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:900px){
+
+      .sa-header{
+        height:90px;
+        padding:0 15px;
+      }
+
+      .logo img{
+        height:80px;
+      }
+
+      .badge{
+        font-size:10px;
+        padding:4px 10px;
+      }
+
+    }
+
+  </style>
 </head>
 <body>
 
 <!-- ================= HEADER ================= -->
 <header class="sa-header">
 
-  <div class="logo-area">
-    <img src="{% static 'images/gmars-logo.png' %}" 
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" 
          class="logo" 
          alt="G-MARS">
-    <span class="student-badge">Student Panel</span>
+    <span class="badge">Student Panel</span>
   </div>
 
   <div class="header-actions">

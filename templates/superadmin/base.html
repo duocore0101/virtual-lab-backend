@@ -6,12 +6,82 @@
   <title>{% block title %}Super Admin | G-MARS{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}??v=10001">
 </head>
+<style>
+
+    /* ================= HEADER FIX ================= */
+
+    .sa-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:100px;
+      padding:0 25px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo img{
+      height:85px;
+      width:auto;
+      transition:0.3s ease;
+      object-fit:contain;
+    }
+
+    /* ================= BADGE ================= */
+
+    .badge{
+      background: var(--accent-red);
+      color:#fff;
+      font-size:12px;
+      padding:5px 12px;
+      border-radius:20px;
+      font-weight:600;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* 🔥 Student Request Badge */
+
+    .badge-count{
+      background: var(--accent-red);
+      color:#fff;
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:20px;
+      margin-left:8px;
+      box-shadow:var(--shadow-red);
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:900px){
+
+      .sa-header{
+        height:90px;
+        padding:0 15px;
+      }
+
+      .logo img{
+        height:80px;
+      }
+
+      .badge{
+        font-size:10px;
+        padding:4px 10px;
+      }
+
+    }
+
+  </style>
 <body>
 
 <!-- ================= HEADER ================= -->
 <header class="sa-header">
-  <div class="logo-area">
-    <img src="{% static 'images/gmars-logo.png' %}" class="logo">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" class="logo">
     <span class="badge">SUPER ADMIN</span>
   </div>
 

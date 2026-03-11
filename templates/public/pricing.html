@@ -275,7 +275,271 @@ body.light-mode .navbar{
   background:var(--gold);
   color:#000;
 }
+/* ============================= */
+/* FLOATING TRIAL PANEL */
+/* ============================= */
 
+.trial-panel{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  width:260px;
+  border-radius:14px;
+  overflow:hidden;
+
+  background:rgba(255,215,0,0.08);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,215,0,0.25);
+
+  font-family:'Poppins',sans-serif;
+  box-shadow:
+  0 10px 40px rgba(0,0,0,0.4),
+  inset 0 0 15px rgba(255,255,255,0.08);
+
+  z-index:999;
+}
+
+/* ============================= */
+/* BUTTON STYLE */
+/* ============================= */
+
+.trial-btn{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px 20px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.35s ease;
+  overflow:hidden;
+}
+
+/* VIDEO BUTTON (GOLD) */
+
+.trial-btn.video{
+  background:linear-gradient(
+    135deg,
+    #fff4c2,
+    #ffd700,
+    #d4a017
+  );
+  color:#3a2c00;
+}
+
+/* BROCHURE BUTTON (WHITE) */
+
+.trial-btn.brochure{
+  background:linear-gradient(
+    135deg,
+    #ffffff,
+    #f2f2f2
+  );
+  color:#333;
+  text-decoration:none;
+  border-top:1px solid rgba(255,215,0,0.25);
+}
+
+/* ============================= */
+/* GLITTER SHINE EFFECT */
+/* ============================= */
+
+.trial-btn::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:60%;
+  height:100%;
+  background:linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.8),
+      transparent
+  );
+  transform:skewX(-25deg);
+}
+
+.trial-btn:hover::before{
+  animation:shine 1s ease;
+}
+
+@keyframes shine{
+  100%{
+    left:130%;
+  }
+}
+
+/* ============================= */
+/* HOVER EFFECT */
+/* ============================= */
+
+.trial-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:
+  0 10px 20px rgba(0,0,0,0.4),
+  0 0 12px rgba(255,215,0,0.45);
+}
+
+/* ICON */
+
+.trial-icon{
+  font-size:20px;
+}
+
+/* ============================= */
+/* VIDEO POPUP */
+/* ============================= */
+
+.video-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.video-popup.active{
+  display:flex;
+}
+
+.video-box{
+  width:85%;
+  max-width:900px;
+  position:relative;
+}
+
+.video-box video{
+  width:100%;
+  border-radius:10px;
+}
+
+.close-video{
+  position:absolute;
+  top:-45px;
+  right:0;
+  font-size:32px;
+  cursor:pointer;
+}
+/* ============================= */
+/* FLOATING CONTACT ICONS */
+/* ============================= */
+
+.floating-contact{
+
+position:fixed;
+
+right:20px;   /* desktop right */
+left:auto;    /* reset mobile override */
+
+bottom:120px;
+
+display:flex;
+flex-direction:column;
+gap:14px;
+
+z-index:998;
+
+}
+
+/* icon container */
+
+.floating-contact a{
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+transition:0.3s ease;
+
+}
+
+/* icon size */
+
+.floating-contact img{
+
+width:50px;
+height:50px;
+
+object-fit:contain;
+
+transition:0.3s ease;
+
+}
+
+/* hover animation */
+
+.floating-contact a:hover img{
+
+transform:scale(1.15) translateY(-4px);
+
+}
+
+/* whatsapp glow */
+
+.floating-contact .whatsapp:hover img{
+
+filter:drop-shadow(0 0 12px #25D366);
+
+}
+
+/* gmail glow */
+
+.floating-contact .email:hover img{
+
+filter:drop-shadow(0 0 12px #EA4335);
+
+}
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media(max-width:768px){
+
+.floating-contact{
+
+left:12px;    /* move to left */
+right:auto;
+bottom:20px;
+gap:8px;
+
+}
+
+.floating-contact img{
+
+width:43px;
+height:43px;
+
+}
+
+}
+
+/* ============================= */
+/* MOBILE RESPONSIVE */
+/* ============================= */
+
+@media(max-width:768px){
+
+.trial-panel{
+  width:90%;
+  right:5%;
+  left:5%;
+  bottom:20px;
+}
+
+.trial-btn{
+  justify-content:center;
+  font-size:15px;
+}
+
+.trial-icon{
+  font-size:18px;
+}
+
+}
 /* ================= MOBILE ================= */
 @media(max-width:900px){
 
@@ -302,7 +566,28 @@ body.light-mode .navbar{
     flex-direction:column;
   }
 }
+.trial-panel{
 
+  width:170px;        /* smaller panel */
+  right:15px;
+  left:auto;          /* remove centering */
+  bottom:18px;
+
+  border-radius:12px;
+
+}
+
+.trial-btn{
+
+  padding:9px 12px;
+  font-size:12px;
+  gap:8px;
+
+}
+
+.trial-icon{
+  font-size:14px;
+}
 </style>
 </head>
 
@@ -386,7 +671,66 @@ CONTACT SALES
 
 </div>
 </section>
+<!-- ================================== -->
+<!-- FREE TRIAL + BROCHURE PANEL -->
+<!-- ================================== -->
 
+<div class="trial-panel">
+
+  <!-- FREE VIDEO TRIAL -->
+  <div class="trial-btn video" onclick="openVideo()">
+    <span class="trial-icon">➤</span>
+    Free Video Trial
+  </div>
+
+  <!-- DOWNLOAD BROCHURE -->
+  <a class="trial-btn brochure"
+     href="{% static 'brochure/gmars-brochure.pdf' %}"
+     download>
+
+     <span class="trial-icon">⬇</span>
+     Download Brochure
+  </a>
+
+</div>
+
+
+<!-- ================================== -->
+<!-- VIDEO POPUP PLAYER -->
+<!-- ================================== -->
+
+<div class="video-popup" id="videoPopup">
+
+  <div class="video-box">
+
+    <div class="close-video" onclick="closeVideo()">✕</div>
+
+    <video controls id="trialVideo">
+      <source src="{% static 'videos/free-trial.mp4' %}" type="video/mp4">
+    </video>
+
+  </div>
+
+</div>
+<!-- FLOATING CONTACT BUTTONS -->
+
+<div class="floating-contact">
+
+<a href="https://wa.me/917875526666?text=Hello%20GMARS%20Tech%20Solutions%20Team,%20We%20are%20interested%20in%20purchasing%20the%20GMARS%20Tech%20Solutions%20software."
+target="_blank"
+class="whatsapp">
+
+<img src="{% static 'images/whatsappppp.png' %}" alt="WhatsApp">
+
+</a>
+
+<a href="mailto:info@gmars.co.in" class="email">
+
+<img src="{% static 'images/email.png' %}" alt="Email">
+
+</a>
+
+</div>
 <script>
 const toggleBtn=document.getElementById("themeToggle");
 
@@ -408,6 +752,18 @@ if(toggleBtn){
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
+}
+
+function openVideo(){
+  document.getElementById("videoPopup").classList.add("active");
+}
+
+function closeVideo(){
+  const popup = document.getElementById("videoPopup");
+  const video = document.getElementById("trialVideo");
+
+  popup.classList.remove("active");
+  video.pause();
 }
 </script>
 

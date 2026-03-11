@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
-from accounts.views import login_view, logout_view
+from accounts.views import login_view, logout_view, intro_video_view
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
@@ -28,8 +28,10 @@ urlpatterns = [
     # -------------------------
     # PUBLIC HOME (NEW)
     # -------------------------
-    path("", home_view, name="home"),
-    path('pricing/', pricing_view, name='pricing'),
+    # AUTH
+    path("login/", login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
+    path("intro-video/", intro_video_view, name="intro-video"),
 
     # -------------------------
 # PUBLIC PAGES

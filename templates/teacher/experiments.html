@@ -6,19 +6,17 @@
 {% block content %}
 
 <style>
+
 /* ================================
    MODERN EXPERIMENTS UI
-   (LIGHT + DARK MODE SUPPORT)
 ================================ */
 
-/* Wrapper */
 .experiments-wrapper {
     padding: 30px;
     max-width: 1200px;
     margin: auto;
 }
 
-/* Header */
 .page-header h2 {
     font-size: 28px;
     font-weight: 700;
@@ -29,7 +27,6 @@
     margin-top: 6px;
 }
 
-/* Card (THEME BASED) */
 .experiments-card {
     margin-top: 25px;
     background: var(--bg-card);
@@ -37,10 +34,8 @@
     padding: 25px;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-soft);
-    transition: 0.3s ease;
 }
 
-/* Table */
 .modern-table {
     width: 100%;
     border-collapse: collapse;
@@ -59,20 +54,15 @@
     padding: 18px 14px;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-main);
-    vertical-align: middle;
 }
 
-/* Row Hover */
-.modern-table tbody tr {
-    transition: 0.3s ease;
+.section-title td{
+    font-weight:700;
+    font-size:16px;
+    background:rgba(0,0,0,0.04);
+    color:var(--accent-red);
 }
 
-.modern-table tbody tr:hover {
-    background: rgba(255, 0, 0, 0.05);
-    transform: scale(1.01);
-}
-
-/* Status Badges */
 .status-badge {
     padding: 6px 14px;
     border-radius: 20px;
@@ -92,7 +82,6 @@
     border: 1px solid rgba(255,26,26,0.4);
 }
 
-/* Action Buttons */
 .action-group {
     display: flex;
     gap: 12px;
@@ -106,13 +95,6 @@
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.run-btn:hover {
-    background: var(--accent-red-dark);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-red);
 }
 
 .exam-btn {
@@ -123,97 +105,349 @@
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
-    transition: 0.3s ease;
 }
 
-.exam-btn:hover {
-    background: rgba(255,0,0,0.1);
-    transform: translateY(-3px);
-}
-
-/* Empty State */
-.empty-row {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-muted);
-}
-
-/* Responsive */
-@media(max-width:768px){
-    .action-group {
-        flex-direction: column;
-    }
-}
 </style>
 
 <div class="experiments-wrapper">
 
-    <!-- Header -->
-    <div class="page-header">
-        <h2>Experiments</h2>
-        <p>Run experiments, manage exams and monitor activity</p>
-    </div>
+<div class="page-header">
+<h2>Experiments</h2>
+<p>Run experiments, manage exams and monitor activity</p>
+</div>
 
-    <!-- Card -->
-    <div class="experiments-card">
+<div class="experiments-card">
 
-        <table class="modern-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Experiment Name</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+<table class="modern-table">
 
-            <tbody>
+<thead>
+<tr>
+<th>#</th>
+<th>Experiment Name</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
 
-            {% for exp in experiments %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
+<tbody>
 
-                    <td>
-                        <strong>{{ exp.name }}</strong>
-                    </td>
+<!-- A -->
+<tr class="section-title">
+<td colspan="4">A. Introduction & Basic Concepts</td>
+</tr>
 
-                    <td>
-                        <span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
-                            {% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
-                        </span>
-                    </td>
+{% for exp in experiments %}
+{% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
 
-                    <td>
-                        <div class="action-group">
+{% endif %}
+{% endfor %}
 
-                            <!-- Run -->
-                            <a href="/experiment/{{ exp.slug }}/"
-                               class="run-btn">
-                                Run
-                            </a>
+<!-- B -->
+<tr class="section-title">
+<td colspan="4">B. Animal Ethics, Handling & Laboratory Techniques</td>
+</tr>
 
-                            <!-- Manage Exam -->
-                            <a href="/teacher/experiment/{{ exp.slug }}/exam/"
-                               class="exam-btn">
-                                Manage Exam
-                            </a>
+{% for exp in experiments %}
+{% if exp.slug == "lab-animal-maintenance" or exp.slug == "blood-withdrawal-techniques" or exp.slug == "routes-drug-administration" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
 
-                        </div>
-                    </td>
-                </tr>
+{% endif %}
+{% endfor %}
 
-            {% empty %}
-                <tr>
-                    <td colspan="4" class="empty-row">
-                        No experiments available
-                    </td>
-                </tr>
-            {% endfor %}
+<!-- C -->
+<tr class="section-title">
+<td colspan="4">C. Autonomic & Peripheral Pharmacology</td>
+</tr>
 
-            </tbody>
-        </table>
+{% for exp in experiments %}
+{% if exp.slug == "rabbit-eye-drug-effects" or exp.slug == "ciliary-motility-frog" or exp.slug == "guinea-pig-ileum-drc" or exp.slug == "saline-purgative-frog-intestine" or exp.slug == "spasmogens-spasmolytics-rabbit-jejunum" or exp.slug == "gastrointestinal-motility-mice-rats" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
 
-    </div>
+{% endif %}
+{% endfor %}
+
+<!-- D -->
+<tr class="section-title">
+<td colspan="4">D. Central Nervous System (CNS) Pharmacology</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "rotarod" or exp.slug == "actophotometer" or exp.slug == "stereotyped-behavior" or exp.slug == "anticataleptic-activity" or exp.slug == "anticonvulsant-mes-ptz" or exp.slug == "epm-anxiolytic-activity" or exp.slug == "chlorpromazine" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- E -->
+<tr class="section-title">
+<td colspan="4">E. Cardiovascular & Renal Pharmacology</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "frog-heart" or exp.slug == "potassium-frog-heart" or exp.slug == "calcium-effect-frog-heart" or exp.slug == "acetylcholine-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- F -->
+<tr class="section-title">
+<td colspan="4">F. Analgesic, Anti-Inflammatory & Antipyretic Models</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "analgesic-activity-hot-plate" or exp.slug == "tail-flick" or exp.slug == "carrageenan-edema" or exp.slug == "test-for-pyrogens" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- G -->
+<tr class="section-title">
+<td colspan="4">G. Endocrine & Metabolic Pharmacology</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "insulin-hypoglycaemic-rabbit" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- H -->
+<tr class="section-title">
+<td colspan="4">H. Gastrointestinal & Anti-Ulcer Studies</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "anti-ulcer-shay-nsaids" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- I -->
+<tr class="section-title">
+<td colspan="4">I. Local Anaesthetics & Allergy Models</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "corneal-reflex" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" or exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- J -->
+<tr class="section-title">
+<td colspan="4">J. In-Vitro Bioassay & Dose-Response Studies</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" or exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- K -->
+<tr class="section-title">
+<td colspan="4">K. Toxicology Studies</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "acute-oral-toxicity" or exp.slug == "acute-skin-irritation-oecd-404" or exp.slug == "eye-irritation-oecd405" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+<!-- L -->
+<tr class="section-title">
+<td colspan="4">L. Biochemical, Pharmacokinetics & Biostatistics</td>
+</tr>
+
+{% for exp in experiments %}
+{% if exp.slug == "serum-biochemical-parameters" or exp.slug == "pharmacokinetic-parameters" or exp.slug == "biostatistical-methods" %}
+<tr>
+<td>{{ exp.number }}</td>
+<td><strong>{{ exp.name }}</strong></td>
+<td>
+<span class="status-badge {% if exp.is_active %}status-active{% else %}status-inactive{% endif %}">
+{% if exp.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
+</span>
+</td>
+<td>
+<div class="action-group">
+<a href="/experiment/{{ exp.slug }}/" class="run-btn">Run</a>
+<a href="/teacher/experiment/{{ exp.slug }}/exam/" class="exam-btn">Manage Exam</a>
+</div>
+</td>
+</tr>
+
+{% endif %}
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
 
 </div>
 
