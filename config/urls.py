@@ -29,7 +29,7 @@ urlpatterns = [
     # PUBLIC HOME (NEW)
     # ------------------------- # HOMEPAGE
     path("", home_view, name="home"),
-    
+
     # AUTH
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
@@ -40,6 +40,7 @@ urlpatterns = [
 # -------------------------
 path("features/", features_view, name="features"),
 path("experiments/", experiments_view, name="experiments"),
+path("pricing/", pricing_view, name="pricing"),
 path('about/', views.about, name='about'),
 
     # -------------------------
