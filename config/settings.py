@@ -22,9 +22,10 @@ load_dotenv()
 # SECURITY
 # --------------------------------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
+
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["gmars.co.in", "www.gmars.co.in", "127.0.0.1"]
+ALLOWED_HOSTS = ["gmars.co.in", "www.gmars.co.in", "127.0.0.1", "localhost"]
 
 # --------------------------------------------------
 # APPLICATIONS
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     # Third-party
     'rest_framework',
     'corsheaders',
-    'storages',  # AWS S3
+    'storages',
 
     # Local apps
     'accounts',
@@ -99,7 +100,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # --------------------------------------------------
-# DATABASE (POSTGRESQL)
+# DATABASE
 # --------------------------------------------------
 DATABASES = {
     'default': {
@@ -141,34 +142,43 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
-
-# Optional but recommended
 AWS_QUERYSTRING_AUTH = False
+
 AWS_S3_OBJECT_PARAMETERS = {
     "CacheControl": "max-age=86400",
 }
 
 # --------------------------------------------------
-# STATIC FILES (SERVE FROM S3)
+# STATIC & MEDIA STORAGE
 # --------------------------------------------------
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+if DEBUG:
+    # LOCAL DEVELOPMENT
+    STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+    STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# --------------------------------------------------
-# MEDIA FILES (SERVE FROM S3)
-# --------------------------------------------------
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / "media"
 
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+else:
+    # PRODUCTION (AWS S3)
 
-MEDIA_ROOT = BASE_DIR / "media"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+
+    MEDIA_ROOT = BASE_DIR / "media"
 
 # --------------------------------------------------
 # DEFAULT PRIMARY KEY
