@@ -22,6 +22,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  overflow: hidden; /* Prevent body scroll */
 }
 
 body::before{
@@ -29,118 +30,227 @@ body::before{
   position:absolute;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.45);
-  backdrop-filter:blur(4px);
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
 }
 
 .main-card{
   position:relative;
   z-index:1;
-  width:560px;
-  background:rgba(255,255,255,0.95);
-  padding:35px;
-  border-radius:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  width:500px;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter: blur(15px);
+  padding:25px 30px;
+  border-radius:24px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.3);
   text-align:center;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo{
-  width:130px;
-  margin-bottom:15px;
+  width:85px;
+  margin-bottom:8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 
 h1{
-  font-size:22px;
-  margin-bottom:5px;
-  font-weight:600;
+  font-size:20px;
+  margin-bottom:2px;
+  font-weight:700;
+  color: #2d3436;
 }
 
 .subtitle{
-  font-size:14px;
-  color:#777;
-  margin-bottom:20px;
+  font-size:13px;
+  color:#636e72;
+  margin-bottom:15px;
 }
 
-.error{
-  color:#d63031;
-  font-size:13px;
-  margin-bottom:10px;
+.error, .success{
+  font-size:12px;
+  margin-bottom:8px;
+  padding: 8px;
+  border-radius: 8px;
 }
-
-.success{
-  color:#27ae60;
-  font-size:13px;
-  margin-bottom:10px;
-}
+.error { background: #fee2e2; color: #dc2626; }
+.success { background: #dcfce7; color: #16a34a; }
 
 form{
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
 }
 
 input, select{
-  padding:12px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  font-size:14px;
+  padding:10px 14px;
+  border:1.5px solid rgba(0,0,0,0.08);
+  border-radius:10px;
+  font-size:13px;
   outline:none;
   width:100%;
+  background: rgba(255,255,255,0.9);
+  transition: all 0.2s;
 }
 
 input:focus, select:focus{
   border-color:#ff4d4d;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
 }
 
 .btn{
   padding:12px;
-  background:#ff4d4d;
+  background: linear-gradient(135deg, #ff4d4d, #e03c3c);
   border:none;
   color:white;
-  font-weight:500;
-  border-radius:8px;
+  font-weight:600;
+  border-radius:10px;
   cursor:pointer;
   transition:0.3s;
   grid-column:span 2;
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
 }
 
 .btn:hover{
-  background:#e03c3c;
+  transform:translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
+}
+
+/* ================================
+   PREMIUM SUBJECT CARDS (COMPACT)
+================================ */
+#subjectCheckboxContainer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px !important;
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 5px 2px !important;
+    margin-top: 5px;
+}
+
+.subject-checkbox-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fff;
+    border: 1.5px solid #eee;
+    padding: 8px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #444;
+    min-height: 50px;
+}
+
+.subject-checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.subject-checkbox-label:hover {
+    border-color: #ff4d4d;
+    background: #fffafa;
+}
+
+.subject-checkbox-label:has(input:checked) {
+    background: #fff5f5;
+    border-color: #ff4d4d;
+    color: #ff4d4d;
+}
+
+.subject-checkbox-label:has(input:checked)::after {
+    content: "✓";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4d4d;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .switch-text{
-  margin-top:10px;
-  font-size:13px;
-  color:#666;
+  margin-top:12px;
+  font-size:12px;
+  color:#636e72;
 }
 
 .switch-text span{
   color:#ff4d4d;
   cursor:pointer;
-  font-weight:500;
+  font-weight:600;
+  text-decoration: underline;
 }
 
 .register-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
+  gap:10px;
   text-align:left;
 }
 
-.full{
-  grid-column:span 2;
+.register-grid > div {
+  transition: all 0.3s ease-in-out;
 }
 
 #signupForm{
   display:none;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Compact Scrollbar */
+#subjectCheckboxContainer::-webkit-scrollbar {
+  width: 4px;
+}
+#subjectCheckboxContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+#subjectCheckboxContainer::-webkit-scrollbar-thumb {
+  background: #ff4d4d50;
+  border-radius: 10px;
+}
+
+@media(max-height: 800px) {
+    .main-card {
+        padding: 20px 25px;
+    }
+    .logo { width: 70px; }
+    h1 { font-size: 18px; }
+    .register-grid { gap: 8px; }
 }
 
 @media(max-width:600px){
   .main-card{
-    width:90%;
+    width:95%;
   }
   .register-grid{
-    grid-template-columns:1fr;
+    grid-template-columns: 1fr;
   }
   .full{
     grid-column:span 1;
@@ -180,60 +290,108 @@ Don't have an account?
 </form>
 
 <!-- REGISTER -->
-<form method="post" action="/login/" id="signupForm">
+<form method="post" action="/login/" id="signupForm" enctype="multipart/form-data">
 {% csrf_token %}
 <input type="hidden" name="action" value="register">
 
 <div class="register-grid">
 
-<select name="role" id="roleSelect" required onchange="handleRoleChange()">
-<option value="">Select Role</option>
-<option value="admin">Principal / Admin</option>
-<option value="teacher">Teacher</option>
-<option value="student">Student</option>
-</select>
+  <div class="full">
+    <select name="role" id="roleSelect" required onchange="handleRoleChange()">
+      <option value="">Select Role</option>
+      <option value="admin">Principal / Admin</option>
+      <option value="teacher">Teacher</option>
+      <option value="student">Student</option>
+    </select>
+  </div>
 
-<!-- Principal -->
-<div id="collegeTextDiv">
-<input type="text" name="college_name" placeholder="Enter New College Name">
-</div>
+  <!-- 🔥 Principal Specific -->
+  <div id="logoDiv" style="display:none;" class="full">
+    <label style="font-size: 11px; color: #555; display: block; margin-bottom: 3px; font-weight: 500;">Attach College Logo</label>
+    <input type="file" name="logo" accept="image/*" style="padding: 5px 10px;">
+  </div>
 
-<!-- Teacher / Student -->
-<div id="collegeDropdownDiv" style="display:none;">
-<select name="college_id" id="collegeDropdown" onchange="filterTeachers()">
-<option value="">Select College</option>
-{% for college in colleges %}
-<option value="{{ college.id }}">{{ college.name }}</option>
-{% endfor %}
-</select>
-</div>
+  <div id="collegeTextDiv" style="display:none;" class="full">
+    <input type="text" name="college_name" placeholder="Enter New College Name">
+  </div>
 
-<!-- Student Teacher -->
-<div id="teacherDropdownDiv" style="display:none;">
-<select name="teacher_id" id="teacherDropdown">
-<option value="">Select Teacher</option>
-{% for teacher in teachers %}
-<option value="{{ teacher.id }}" data-college="{{ teacher.college.id }}">
-{{ teacher.first_name }} ({{ teacher.college.name }})
-</option>
-{% endfor %}
-</select>
-</div>
+  <div id="addressDiv" style="display:none;" class="full">
+    <input type="text" name="college_address" placeholder="College Address">
+  </div>
 
-<!-- 🔥 Student Roll Number -->
-<div id="rollNoDiv" style="display:none;">
-<input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
-</div>
+  <!-- Teacher / Student -->
+  <div id="collegeDropdownDiv" style="display:none;" class="full">
+    <select name="college_id" id="collegeDropdown" onchange="filterTeachers()">
+      <option value="">Select College</option>
+      {% for college in colleges %}
+        <option value="{{ college.id }}">{{ college.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-<input type="text" name="fullname" placeholder="Full Name" required>
-<input type="email" name="email" placeholder="Email address" required>
+  <!-- Student Teacher -->
+  <div id="teacherDropdownDiv" style="display:none;" class="full">
+    <select name="teacher_id" id="teacherDropdown" onchange="filterStudentSubjects()">
+      <option value="">Select Teacher</option>
+      {% for teacher in teachers %}
+        <option value="{{ teacher.id }}" data-college="{{ teacher.college.id }}">
+          {{ teacher.first_name }} ({{ teacher.college.name }})
+        </option>
+      {% endfor %}
+    </select>
+  </div>
 
-<input type="text" name="mobile" placeholder="Mobile Number" required>
-<input type="password" name="password" placeholder="Password" required>
+  <!-- 🔥 Student Subject Selection (New) -->
+  <div id="studentSubjectDiv" style="display:none;" class="full">
+    <select name="requested_subject" id="studentSubjectDropdown" required>
+      <option value="">Select Subject</option>
+    </select>
+  </div>
 
-<input type="password" name="confirm_password" placeholder="Confirm Password" required class="full">
+  <!-- 🔥 Student Roll Number -->
+  <div id="rollNoDiv" style="display:none;" class="full">
+    <input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
+  </div>
 
-<button type="submit" class="btn full">Register</button>
+  <div><input type="text" name="fullname" placeholder="Full Name" required></div>
+  <div><input type="email" name="email" placeholder="Email address" required></div>
+
+  <div><input type="text" name="mobile" placeholder="Mobile Number" required></div>
+  <div><input type="password" name="password" placeholder="Password" required></div>
+
+  <div class="full">
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+  </div>
+
+  <!-- Teacher Subject Checkboxes -->
+  <div id="subjectDiv" style="display:none;" class="full">
+    <label style="display:block; margin:5px 0; font-weight:600; font-size:12px; color:#444; text-align: left;">Assign Subjects:</label>
+    <div id="subjectCheckboxContainer">
+        <label class="subject-checkbox-label" id="label_dpharm_2">
+            <input type="checkbox" name="subject" value="dpharm_2"> 2ND YR D.PHARM: PHARMACOLOGY
+        </label>
+        <label class="subject-checkbox-label" id="label_bpharm_4">
+            <input type="checkbox" name="subject" value="bpharm_4"> 2ND YR B.PHARM: PHARM-I
+        </label>
+        <label class="subject-checkbox-label" id="label_bpharm_5">
+            <input type="checkbox" name="subject" value="bpharm_5"> 3RD YR B.PHARM: PHARM-II
+        </label>
+        <label class="subject-checkbox-label" id="label_bpharm_6">
+            <input type="checkbox" name="subject" value="bpharm_6"> 3RD YR B.PHARM: PHARM-III
+        </label>
+    </div>
+  </div>
+
+  <div id="planDiv" style="display:none;" class="full">
+    <select name="selected_plan">
+      <option value="">Select College Plan</option>
+      <option value="single">Single Experiment (₹1,000)</option>
+      <option value="dpharm">D.Pharm Plan (₹11,999)</option>
+      <option value="combo">D.Pharm + B.Pharm (₹19,999)</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn full" id="registerBtn">Create Account</button>
 
 </div>
 
@@ -265,8 +423,21 @@ function handleRoleChange(){
   let rollDiv=document.getElementById("rollNoDiv");
   let rollInput=document.getElementById("rollNoInput");
 
+  // 🔥 NEW FIELDS
+  let logoDiv=document.getElementById("logoDiv");
+  let addressDiv=document.getElementById("addressDiv");
+  let planDiv=document.getElementById("planDiv");
+  let subjectDiv=document.getElementById("subjectDiv");
+  let registerBtn=document.getElementById("registerBtn");
+
   if(role==="admin"){
     textDiv.style.display="block";
+    logoDiv.style.display="block";
+    addressDiv.style.display="block";
+    planDiv.style.display="block";
+    subjectDiv.style.display="none";
+    registerBtn.innerText="Request for Quotation";
+
     dropdownDiv.style.display="none";
     teacherDiv.style.display="none";
     rollDiv.style.display="none";
@@ -274,19 +445,68 @@ function handleRoleChange(){
   }
   else if(role==="teacher"){
     textDiv.style.display="none";
+    logoDiv.style.display="none";
+    addressDiv.style.display="none";
+    planDiv.style.display="none";
+    subjectDiv.style.display="block";
+    registerBtn.innerText="Register";
+
     dropdownDiv.style.display="block";
     teacherDiv.style.display="none";
     rollDiv.style.display="none";
     rollInput.removeAttribute("required");
   }
-  else if(role==="student"){
+    else if(role==="student"){
     textDiv.style.display="none";
+    logoDiv.style.display="none";
+    addressDiv.style.display="none";
+    planDiv.style.display="none";
+    subjectDiv.style.display="none";
+    registerBtn.innerText="Register";
+
     dropdownDiv.style.display="block";
     teacherDiv.style.display="block";
+    document.getElementById("studentSubjectDiv").style.display="block";
     rollDiv.style.display="block";
     rollInput.setAttribute("required","required");
   }
 }
+
+const teacherSubjects = {
+    {% for teacher in teachers %}
+        "{{ teacher.id }}": "{{ teacher.subject }}",
+    {% endfor %}
+};
+
+const subjectDisplayNames = {
+    "dpharm_2": "2ND YR D.PHARM: PHARMACOLOGY",
+    "bpharm_4": "2ND YR B.PHARM: PHARM-I",
+    "bpharm_5": "3RD YR B.PHARM: PHARM-II",
+    "bpharm_6": "3RD YR B.PHARM: PHARM-III"
+};
+
+function filterStudentSubjects() {
+    let teacherId = document.getElementById("teacherDropdown").value;
+    let subjectDropdown = document.getElementById("studentSubjectDropdown");
+    let subjectsStr = teacherSubjects[teacherId] || "";
+    
+    // Clear existing options except first
+    subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
+    
+    if (subjectsStr) {
+        let subjects = subjectsStr.split(",");
+        subjects.forEach(sub => {
+            if (sub.trim()) {
+                let option = document.createElement("option");
+                option.value = sub.trim();
+                option.text = subjectDisplayNames[sub.trim()] || sub.trim();
+                subjectDropdown.add(option);
+            }
+        });
+    }
+}
+
+const collegePlans = {{ college_plans|safe }};
 
 function filterTeachers(){
   let collegeId=document.getElementById("collegeDropdown").value;
@@ -299,6 +519,33 @@ function filterTeachers(){
   });
 
   teacherDropdown.value="";
+
+  // 🔥 ALSO FILTER SUBJECTS FOR TEACHERS
+  filterSubjects(collegeId);
+}
+
+function filterSubjects(collegeId) {
+    let container = document.getElementById("subjectCheckboxContainer");
+    let labels = container.querySelectorAll(".subject-checkbox-label");
+    let plan = collegePlans[collegeId];
+
+    // Reset all checkboxes first
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+    labels.forEach(label => {
+        let val = label.querySelector('input').value;
+
+        if (plan === 'dpharm') {
+            // Only show D.Pharm subject
+            label.style.display = (val === 'dpharm_2') ? "block" : "none";
+        } else if (plan === 'combo') {
+            // Show all subjects
+            label.style.display = "block";
+        } else {
+            // Default show nothing specific
+            label.style.display = "block";
+        }
+    });
 }
 </script>
 

@@ -15,7 +15,7 @@ def experiment_page(request, slug, page):
 
     # 🔥 ADDED: Role Protection (Student + Admin only)
     role = request.session.get("role")
-    if role not in ["student","teacher", "admin"]:
+    if role not in ["student","teacher", "admin", "superadmin"]:
         return redirect("/login/")
 
     # Validate page
@@ -39,8 +39,8 @@ def experiment_page(request, slug, page):
         # 🔥 Use session-based name (your project standard)
         "student": request.session.get("name"),
 
-        # 🔥 Demo mode for admin
-        "demo_mode": role == "admin",
+        # 🔥 Demo mode for admin / superadmin
+        "demo_mode": role in ["admin", "superadmin"],
     }
 
     return render(request, template_path, context)

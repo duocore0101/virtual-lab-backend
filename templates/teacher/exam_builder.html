@@ -325,6 +325,70 @@ body.dark-mode select:focus {
     box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
 }
 
+/* ============================= */
+/* IMAGE PREVIEW MODAL */
+/* ============================= */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content-box {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border: 3px solid white;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background: #ff416c;
+    color: white;
+    font-size: 24px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid white;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+}
+
+.modal-close-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: #ff4b2b;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 </style>
 
 <div class="builder-wrapper">
@@ -361,16 +425,24 @@ body.dark-mode select:focus {
     <h4>Question 1 – Spotting</h4>
 
     <div class="builder-box">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="add_spotting">
 
-            <input type="file" name="image" required>
+            <label><strong>Select Specimen from Bank</strong></label>
+            <select name="bank_id" required>
+                <option value="">-- Select Image --</option>
+                {% for item in spotting_bank %}
+                    <option value="{{ item.id }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label style="margin-top:10px; display:block;"><strong>Marks</strong></label>
             <input type="number" name="marks" value="1" required>
 
             <button type="submit"
                     class="btn-custom btn-success"
-                    style="margin-top:10px;">
+                    style="margin-top:20px;">
                 Add Spotting
             </button>
         </form>
@@ -384,12 +456,28 @@ body.dark-mode select:focus {
             <div class="question-card" data-marks="{{ spot.marks }}">
 
                 <div style="display:flex; gap:15px; align-items:center;">
-                    <img src="{{ spot.image.url }}"
-                         width="70"
-                         height="70"
-                         style="object-fit:cover; border-radius:8px;">
+                    {% if spot.bank_item %}
+                        <img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}"
+                             width="70"
+                             height="70"
+                             style="object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid #ddd;"
+                             onclick="openImageModal(this.src)"
+                             title="Click to preview">
+                    {% else %}
+                        <img src="{{ spot.image.url }}"
+                             width="70"
+                             height="70"
+                             style="object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid #ddd;"
+                             onclick="openImageModal(this.src)"
+                             title="Click to preview">
+                    {% endif %}
 
-                    <span class="badge">Spotting</span>
+                    <div style="display:flex; flex-direction:column;">
+                        <span class="badge" style="width:fit-content; margin-left:0;">Spotting</span>
+                        {% if spot.bank_item %}
+                            <small style="margin-top:4px; opacity:0.8;">{{ spot.bank_item.name }}</small>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div style="display:flex; gap:10px; align-items:center;">
@@ -740,7 +828,27 @@ body.dark-mode select:focus {
 
 </div>
 
+<!-- IMAGE PREVIEW MODAL -->
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <div class="modal-content-box" onclick="event.stopPropagation()">
+        <div class="modal-close-btn" onclick="closeImageModal()">&times;</div>
+        <img id="modalImg" class="modal-img" src="">
+    </div>
+</div>
+
 <script>
+function openImageModal(src) {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+    modalImg.src = src;
+    modal.style.display = "flex";
+}
+
+function closeImageModal() {
+    const modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+}
+
 function toggleSection(id) {
     const sections = ["manual-mcq","manual-short","bank-mcq","bank-short"];
     sections.forEach(sec => {

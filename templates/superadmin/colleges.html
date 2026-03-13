@@ -142,6 +142,21 @@
                   Activate
                 {% endif %}
               </a>
+
+              <a href="/superadmin/delete-college/{{ college.id }}/"
+                  onclick="return confirm('CRITICAL: Are you sure? This will PERMANENTLY delete this college and ALL its teachers/students.')"
+                  style="
+                      padding:6px 14px;
+                      margin-left:8px;
+                      border-radius:6px;
+                      text-decoration:none;
+                      font-size:13px;
+                      color:white;
+                      background: #000;
+                      transition:0.3s;
+                  ">
+                Delete
+              </a>
             </td>
           </tr>
           {% empty %}
@@ -193,15 +208,21 @@ document.getElementById("liveSearch").addEventListener("keyup", function() {
                 ? `<span style="background:#d4edda;color:#155724;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;">ACTIVE</span>`
                 : `<span style="background:#f8d7da;color:#721c24;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;">INACTIVE</span>`;
 
-            let actionBtn = college.is_active
-                ? `<a href="/superadmin/toggle-college/${college.id}/"
-                      style="padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:#dc3545;">
-                      Deactivate
-                   </a>`
-                : `<a href="/superadmin/toggle-college/${college.id}/"
-                      style="padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:#28a745;">
-                      Activate
-                   </a>`;
+            let toggleColor = college.is_active ? '#dc3545' : '#28a745';
+            let toggleText = college.is_active ? 'Deactivate' : 'Activate';
+
+            let actionBtn = `
+                <a href="/superadmin/toggle-college/${college.id}/"
+                   onclick="return confirm('Are you sure? This will affect all users under this college.')"
+                   style="padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:${toggleColor};">
+                   ${toggleText}
+                </a>
+                <a href="/superadmin/delete-college/${college.id}/"
+                   onclick="return confirm('CRITICAL: Are you sure? This will PERMANENTLY delete this college and ALL its teachers/students.')"
+                   style="padding:6px 14px;margin-left:8px;border-radius:6px;text-decoration:none;font-size:13px;color:white;background:#000;">
+                   Delete
+                </a>
+            `;
 
             tableBody.innerHTML += `
                 <tr style="border-bottom:1px solid #eee;">

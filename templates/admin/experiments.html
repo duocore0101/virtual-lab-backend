@@ -5,71 +5,591 @@
 
 {% block content %}
 
-<div style="padding:20px;">
+<style>
+/* ================================
+   PREMIUM EXPERIMENTS UI (ADMIN)
+================================ */
 
-  <!-- ================= PAGE HEADER ================= -->
-  <div style="margin-bottom:20px;">
-    <h2 style="margin:0;">Experiments</h2>
-    <p style="margin:4px 0; color:gray;">
-      Manage and view experiments assigned in your college
-    </p>
+.experiments-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 60px;
+}
+
+.sa-hero {
+    margin-bottom: 40px;
+}
+
+/* Section Styling */
+.experiment-section {
+    margin-bottom: 50px;
+    animation: fadeIn 0.5s ease backwards;
+}
+
+.section-label {
+    display: inline-block;
+    background: var(--accent-red, #f44336);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(244, 67, 54, 0.2);
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--text-main, #333);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.section-header h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border-color, #eee), transparent);
+}
+
+/* Card List (Vertical) */
+.experiment-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Experiment Card */
+.exp-card {
+    background: var(--bg-card, #fff);
+    border: 1px solid var(--border-color, #eee);
+    border-radius: 16px;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.exp-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-red, #f44336);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.exp-card:hover {
+    transform: translateX(8px);
+    border-color: var(--accent-red, #f44336);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.exp-card:hover::before {
+    opacity: 1;
+}
+
+.exp-info {
+    flex: 1;
+}
+
+.exp-number {
+    font-size: 14px;
+    color: var(--accent-red, #f44336);
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.exp-name {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-main, #333);
+}
+
+.exp-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.status-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(0, 230, 118, 0.1);
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.2);
+}
+
+.premium-run-btn {
+    background: linear-gradient(135deg, var(--accent-red, #f44336), #b32424);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+/* Category Toggle */
+.category-switcher {
+    display: flex;
+    background: var(--bg-card, #fff);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color, #eee);
+    width: fit-content;
+    margin-bottom: 30px;
+    gap: 4px;
+}
+
+.toggle-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #888;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+    background: var(--accent-red, #f44336);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+}
+
+.toggle-btn:hover:not(.active) {
+    background: rgba(244, 67, 54, 0.1);
+    color: var(--accent-red, #f44336);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<div class="experiments-container">
+
+  <!-- Hero Section -->
+  <div class="sa-hero">
+    <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px;">Experiments</h1>
+    <p style="color: gray;">View and manage simulations available for your college plan.</p>
   </div>
 
-  <!-- ================= TABLE ================= -->
-  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+  <!-- Category Switcher (Only for Combo Plan) -->
+  {% if selected_plan == 'combo' %}
+  <div class="category-switcher">
+    <button class="toggle-btn active" onclick="filterExperiments('db-pharm', this)">D+B.PHARM</button>
+    <button class="toggle-btn" onclick="filterExperiments('d-pharm', this)">D.PHARM</button>
+  </div>
+  {% endif %}
 
-    <table style="width:100%; border-collapse:collapse;">
-      <thead>
-        <tr style="background:#f5f5f5; text-align:left;">
-          <th style="padding:12px;">#</th>
-          <th style="padding:12px;">Experiment</th>
-          <th style="padding:12px;">Teacher</th>
-          <th style="padding:12px;">Status</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
+  <!-- Section Container -->
+  <div id="sections-wrapper">
+    <!-- Note: Slugs must match superadmin template for consistency -->
+    
+    <!-- A. Introduction -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION A</span>
+        <h2>Introduction & Basic Concepts</h2>
+      </div>
+      <div class="experiment-grid">
         {% for exp in experiments %}
-        <tr style="border-bottom:1px solid #eee;">
-          <td style="padding:12px;">{{ forloop.counter }}</td>
-          <td style="padding:12px;">
-            <a href="/experiment/{{ exp.slug }}/intro/"
-              style="color:#007bff; font-weight:600; text-decoration:none;">
-              {{ exp.name }}
-            </a>
-          </td>
-          <td style="padding:12px;">
-            {{ exp.teacher.first_name }}
-          </td>
-          <td style="padding:12px;">
-
-            {% if exp.is_active %}
-              <span style="background:#d4edda; color:#155724; padding:5px 10px; border-radius:20px; font-size:12px;">
-                Active
-              </span>
-            {% else %}
-              <span style="background:#f8d7da; color:#721c24; padding:5px 10px; border-radius:20px; font-size:12px;">
-                Inactive
-              </span>
-            {% endif %}
-
-          </td>
-        </tr>
-
-        {% empty %}
-        <tr>
-          <td colspan="4" style="padding:20px; text-align:center; color:gray;">
-            No experiments found
-          </td>
-        </tr>
+          {% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
         {% endfor %}
+      </div>
+    </section>
 
-      </tbody>
-    </table>
+    <!-- B. Ethics & Handling -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION B</span>
+        <h2>Ethics, Handling & Techniques</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "lab-animal-maintenance" or exp.slug == "blood-withdrawal-techniques" or exp.slug == "routes-drug-administration" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
 
+    <!-- C. Autonomic Pharmacology -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION C</span>
+        <h2>Autonomic & Peripheral Pharmacology</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "rabbit-eye-drug-effects" or exp.slug == "ciliary-motility-frog" or exp.slug == "guinea-pig-ileum-drc" or exp.slug == "saline-purgative-frog-intestine" or exp.slug == "spasmogens-spasmolytics-rabbit-jejunum" or exp.slug == "gastrointestinal-motility-mice-rats" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- D. CNS -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION D</span>
+        <h2>Central Nervous System (CNS)</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "rotarod" or exp.slug == "actophotometer" or exp.slug == "stereotyped-behavior" or exp.slug == "anticataleptic-activity" or exp.slug == "anticonvulsant-mes-ptz" or exp.slug == "epm-anxiolytic-activity" or exp.slug == "chlorpromazine" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- E. CVS & Renal -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION E</span>
+        <h2>Cardiovascular & Renal Pharmacology</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "frog-heart" or exp.slug == "potassium-frog-heart" or exp.slug == "calcium-effect-frog-heart" or exp.slug == "acetylcholine-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- F. Analgesic -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION F</span>
+        <h2>Analgesic & Anti-Inflammatory</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "analgesic-activity-hot-plate" or exp.slug == "tail-flick" or exp.slug == "carrageenan-edema" or exp.slug == "test-for-pyrogens" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- G. Endocrine -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION G</span>
+        <h2>Endocrine & Metabolic Pharmacology</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "insulin-hypoglycaemic-rabbit" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- H. GI -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION H</span>
+        <h2>Gastrointestinal & Anti-Ulcer</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "anti-ulcer-shay-nsaids" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- I. Anaesthetics -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION I</span>
+        <h2>Anaesthetics & Allergy Models</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "corneal-reflex" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" or exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- J. Bioassay -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION J</span>
+        <h2>In-Vitro Bioassay Studies</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" or exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- K. Toxicology -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION K</span>
+        <h2>Toxicology Studies</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "acute-oral-toxicity" or exp.slug == "acute-skin-irritation-oecd-404" or exp.slug == "eye-irritation-oecd405" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- L. Biomechanics -->
+    <section class="experiment-section">
+      <div class="section-header">
+        <span class="section-label">SECTION L</span>
+        <h2>Biomechanics & Biostatistics</h2>
+      </div>
+      <div class="experiment-grid">
+        {% for exp in experiments %}
+          {% if exp.slug == "serum-biochemical-parameters" or exp.slug == "pharmacokinetic-parameters" or exp.slug == "biostatistical-methods" %}
+            <div class="exp-card" data-exp-number="{{ exp.number }}">
+              <div class="exp-info">
+                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                <h3 class="exp-name">{{ exp.name }}</h3>
+              </div>
+              <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+                <a href="/experiment/{{ exp.slug }}/intro/" class="premium-run-btn">
+                  <span>Run</span> ⚡
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
   </div>
 
 </div>
+
+<script>
+const D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35];
+
+function filterExperiments(category, btn) {
+    if(!btn) return;
+    
+    // Update active button
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.exp-card');
+    let counter = 1;
+    
+    cards.forEach(card => {
+        const originalNum = card.getAttribute('data-exp-number');
+        const expNumInt = parseInt(originalNum);
+        const numberSpan = card.querySelector('.exp-number');
+        
+        if (category === 'db-pharm') {
+            card.style.display = 'flex';
+            numberSpan.textContent = `Experiment #${originalNum}`;
+        } else {
+            // D.PHARM filtering
+            if (D_PHARM_NUMBERS.includes(expNumInt)) {
+                card.style.display = 'flex';
+                numberSpan.textContent = `Experiment #${counter}`;
+                counter++;
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+
+    // Hide sections that have no visible experiments
+    updateSectionVisibility();
+}
+
+function updateSectionVisibility() {
+    document.querySelectorAll('.experiment-section').forEach(section => {
+        const hasVisibleCards = section.querySelector('.exp-card[style*="display: flex"]') !== null;
+        section.style.display = hasVisibleCards ? 'block' : 'none';
+    });
+}
+
+// Initial Cleanup (Hide empty sections if D.Pharm only)
+window.addEventListener('DOMContentLoaded', () => {
+    {% if selected_plan == 'dpharm' %}
+        // If the backend already filtered the list, we just need to re-number and hide empty sections
+        let counter = 1;
+        document.querySelectorAll('.exp-card').forEach(card => {
+            card.style.display = 'flex';
+            card.querySelector('.exp-number').textContent = `Experiment #${counter}`;
+            counter++;
+        });
+    {% else %}
+        // For combo, ensure initial flex state for cards
+        document.querySelectorAll('.exp-card').forEach(c => c.style.display = 'flex');
+    {% endif %}
+    
+    updateSectionVisibility();
+});
+</script>
 
 {% endblock %}

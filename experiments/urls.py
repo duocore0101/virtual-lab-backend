@@ -45,6 +45,7 @@ from .views_superadmin_ui import (
     # ACTIVE / DEACTIVE ACTIONS
     superadmin_toggle_user,
     superadmin_toggle_college,
+    superadmin_delete_college,
 )
 
 # =========================
@@ -107,6 +108,8 @@ from .views_teacher_ui import (
     delete_exam_spotting,
     teacher_exam_attempts,
     evaluate_attempt,
+    export_students_pdf,
+    export_students_excel,
 )
 
 # =========================
@@ -212,6 +215,11 @@ urlpatterns = [
         "superadmin/toggle-college/<int:college_id>/",
         superadmin_toggle_college,
         name="superadmin-toggle-college"
+    ),
+    path(
+        "superadmin/delete-college/<int:college_id>/",
+        superadmin_delete_college,
+        name="superadmin-delete-college"
     ),
 
         # =================================================
@@ -393,6 +401,16 @@ path(
         "teacher/attempts/",
         teacher_attempts,
         name="teacher-attempts"
+    ),
+    path(
+        "teacher/export-students-pdf/",
+        export_students_pdf,
+        name="teacher-export-students-pdf"
+    ),
+    path(
+        "teacher/export-students-excel/",
+        export_students_excel,
+        name="teacher-export-students-excel"
     ),
 
     path(

@@ -41,6 +41,13 @@ class StudentApproval(models.Model):
     )
 
     approved_by_teacher = models.BooleanField(default=False)
+    
+    requested_subject = models.CharField(
+        max_length=255, 
+        null=True, 
+        blank=True,
+        help_text="Subject requested by student"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -482,7 +489,22 @@ class ExamShortAnswer(models.Model):
 
     def __str__(self):
         return f"{self.exam.title} - Short Answer"
-    
+
+# =========================================================
+# 🔥 SPOTTING BANK (MASTER STORAGE)
+# =========================================================
+class SpottingBank(models.Model):
+    name = models.CharField(max_length=255)
+    image_slug = models.CharField(
+        max_length=100,
+        help_text="Filename in static/spotting_images/ (including extension, e.g., 'digitalis.jpg')"
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.image_slug})"
+
 # =========================================================
 # 🔥 EXAM SPOTTING (QUESTION 1)
 # =========================================================
@@ -494,8 +516,17 @@ class ExamSpotting(models.Model):
         related_name="spotting_questions"
     )
 
+    bank_item = models.ForeignKey(
+        SpottingBank,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     image = models.ImageField(
-        upload_to="exam_spotting/"
+        upload_to="exam_spotting/",
+        null=True,
+        blank=True
     )
 
     marks = models.PositiveIntegerField(default=1)

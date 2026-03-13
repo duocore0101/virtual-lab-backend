@@ -1,0 +1,15 @@
+<div class="exp-card" data-exp-number="{{ exp.number }}">
+    <div class="exp-info">
+        <span class="exp-number">Experiment #{{ exp.number }}</span>
+        <h3 class="exp-name">{{ exp.name }}</h3>
+    </div>
+    <div class="exp-actions">
+        <span class="status-tag">ACTIVE</span>
+        <a href="/experiment/{{ exp.slug }}/" class="premium-btn btn-run">
+            Run ⚡
+        </a>
+        <a href="/teacher/experiment/{{ exp.slug }}/exam/" class="premium-btn btn-manage">
+            Manage Exam
+        </a>
+    </div>
+</div>

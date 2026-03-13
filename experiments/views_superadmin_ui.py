@@ -83,6 +83,9 @@ def approve_principal_request(request, request_id):
     college = College.objects.create(
         name=principal_request.college_name,
         code=college_code,
+        address=principal_request.college_address,
+        logo=principal_request.logo,
+        selected_plan=principal_request.selected_plan,
         is_active=True
     )
 
@@ -253,7 +256,7 @@ def superadmin_experiments(request):
     if request.session.get("role") != "superadmin":
         return redirect("/login/")
 
-    experiments = Experiment.objects.select_related("teacher").order_by("name")
+    experiments = Experiment.objects.filter(is_active=True).order_by("number")
     return render(request, "superadmin/experiments.html", {"experiments": experiments})
 
 
@@ -422,4 +425,25 @@ def superadmin_toggle_college(request, college_id):
     college.save()
 
     User.objects.filter(college=college).update(is_active=college.is_active)
+    return redirect("/superadmin/colleges/")
+def superadmin_delete_college(request, college_id):
+    """
+    Deletes a college and ALL associated users.
+    Use with caution.
+    """
+    if request.session.get("role") != "superadmin":
+        return redirect("/login/")
+
+    college = get_object_or_404(College, id=college_id)
+    college_name = college.name
+
+    # Delete the college itself (CASCADE handles User and TeacherRequest)
+    college.delete()
+
+    AuditLog.objects.create(
+        actor=request.user,
+        action="delete",
+        message=f"Deleted college: {college_name} and all its associated data."
+    )
+
     return redirect("/superadmin/colleges/")

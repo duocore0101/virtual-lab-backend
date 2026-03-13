@@ -32,6 +32,101 @@
     <input type="email" name="email" placeholder="Teacher Email" required>
     <input type="password" name="password" placeholder="Password" required>
 
+    <!-- Teacher Subject Selection (Checkboxes) -->
+    <style>
+      .subject-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 15px;
+          margin-top: 15px;
+      }
+      .subject-card {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          background: #fff;
+          border: 2px solid #eee;
+          padding: 15px 10px;
+          border-radius: 14px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 12px;
+          font-weight: 600;
+          color: #555;
+          min-height: 90px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+      }
+      .subject-card input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+      }
+      .subject-card:hover {
+          border-color: #ff4d4d80;
+          background: #fdf6f6;
+          transform: translateY(-3px);
+      }
+      .subject-card:has(input:checked) {
+          border-color: #ff4d4d;
+          background: #fff5f5;
+          color: #ff4d4d;
+          box-shadow: 0 8px 20px rgba(255, 77, 77, 0.1);
+      }
+      .subject-card:has(input:checked)::after {
+          content: "✓";
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: #ff4d4d;
+          color: white;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          font-size: 14px;
+      }
+    </style>
+
+    <h3 style="margin-top:20px;">Teacher Subjects</h3>
+    <div class="subject-grid">
+      {% if request.user.college.selected_plan == 'dpharm' %}
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="dpharm_2" checked> SECOND YEAR D.PHARM: PHARMACOLOGY
+        </label>
+      {% elif request.user.college.selected_plan == 'combo' %}
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="dpharm_2"> SECOND YEAR D.PHARM: PHARMACOLOGY
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_4"> SECOND YEAR B. PHARM ( SEM-IV) : PHARMACOLOGY-I
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_5"> THIRD YEAR B.PHARM(SEM-V): PHARMACOLOGY-II
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_6"> THIRD YEAR B.PHARM (SEM-VI) : PHARMACOLOGY-III
+        </label>
+      {% else %}
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="dpharm_2"> SECOND YEAR D.PHARM: PHARMACOLOGY
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_4"> SECOND YEAR B. PHARM ( SEM-IV) : PHARMACOLOGY-I
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_5"> THIRD YEAR B.PHARM(SEM-V): PHARMACOLOGY-II
+        </label>
+        <label class="subject-card">
+          <input type="checkbox" name="subject" value="bpharm_6"> THIRD YEAR B.PHARM (SEM-VI) : PHARMACOLOGY-III
+        </label>
+      {% endif %}
+    </div>
+
     <!-- Assign Practicals -->
     <h3 style="margin-top:20px;">Assign Practicals</h3>
 

@@ -1,56 +1,159 @@
 {% extends "teacher/base.html" %}
-{% block title %}Create Exam{% endblock %}
+{% block title %}Create Exam | Exam Management{% endblock %}
 
 {% block content %}
 
-<div style="padding:30px; max-width:600px;">
+<style>
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
 
-    <h2>Create Exam</h2>
+.glass-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 35px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
 
-    <form method="POST">
-        {% csrf_token %}
+.glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+}
 
-        <div style="margin-bottom:15px;">
-            <label>Exam Title</label>
-            <input type="text" name="title" class="form-control" required>
+.form-header {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.form-header h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-main);
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #ff4b2b;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #ff4b2b;
+    box-shadow: 0 0 0 4px rgba(255, 75, 43, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 15px rgba(255, 75, 43, 0.3);
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 75, 43, 0.4);
+    filter: brightness(1.1);
+}
+</style>
+
+<div class="form-container">
+    <div class="glass-card">
+        <div class="form-header">
+            <div>
+                <p style="text-transform:uppercase; font-size:10px; font-weight:800; color:#ff4b2b; letter-spacing:1px; margin-bottom:5px;">New Assessment</p>
+                <h2>Create Exam</h2>
+            </div>
+            <a href="/teacher/exams/?subject={{ subject_code|default:'' }}" class="back-link">
+                <span>←</span> Back to list
+            </a>
         </div>
 
-        <div style="margin-bottom:15px;">
-            <label>Select Examination</label>
-            <select name="exam_type" class="form-control" required>
-                <option value="">-- Select --</option>
-                <option value="internal_1">Internal Examination Practical Sessional 1st</option>
-                <option value="internal_2">Internal Examination Practical Sessional 2nd</option>
-                <option value="external">External Examination Practical End Semester University Examination</option>
-            </select>
-        </div>
+        <form method="POST">
+{% csrf_token %}
 
-        <div style="margin-bottom:15px;">
-            <label>Select Year</label>
-            <select name="year" class="form-control" required>
-                <option value="">-- Select --</option>
-                <option value="dpharm_2">D. Pharm II Year</option>
-                <option value="bpharm_4">B. Pharm II (Semester IV)</option>
-                <option value="bpharm_56">B. Pharm III (Semester V, VI)</option>
-                <option value="mpharm_12">M.Pharm I (Semester I, II)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>Exam Title</label>
+                <input type="text" name="title" class="form-input" placeholder="e.g. Mid-Term Practical 2024" required>
+            </div>
 
-        <div style="margin-bottom:15px;">
-            <label>Duration (Minutes)</label>
-            <input type="number" name="duration" class="form-control" placeholder="120 for 2 hours" required>
-        </div>
+            <div class="form-group">
+                <label>Examination Category</label>
+                <select name="exam_type" class="form-input" required>
+                    <option value="">-- Select Category --</option>
+                    <option value="internal_1">Internal Examination Practical Sessional 1st</option>
+                    <option value="internal_2">Internal Examination Practical Sessional 2nd</option>
+                    <option value="external">External Examination Practical End Semester University Examination</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn btn-success">
-            Create Exam
-        </button>
+            <div class="form-group">
+                <label>Duration (Minutes)</label>
+                <input type="number" name="duration" class="form-input" placeholder="e.g. 120" required>
+            </div>
 
-        <a href="/teacher/exams/" class="btn btn-secondary">
-            Cancel
-        </a>
-
-    </form>
-
+            <button type="submit" class="submit-btn">
+                Confirm & Create Exam
+            </button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

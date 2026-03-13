@@ -6,7 +6,29 @@ from .models import (
     ShortAnswerBank,
     ExamMCQ,
     ExamShortAnswer,
+    ExamSpotting,
+    SpottingBank
 )
+
+# =========================================================
+# SPOTTING BANK ADMIN
+# =========================================================
+@admin.register(SpottingBank)
+class SpottingBankAdmin(admin.ModelAdmin):
+    list_display = ("name", "image_slug", "is_active", "created_at")
+    list_filter = ("is_active",)
+    search_fields = ("name", "image_slug")
+
+# =========================================================
+# EXAM SPOTTING
+# =========================================================
+@admin.register(ExamSpotting)
+class ExamSpottingAdmin(admin.ModelAdmin):
+    list_display = ("exam", "get_specimen_name", "marks", "order")
+    
+    def get_specimen_name(self, obj):
+        return obj.bank_item.name if obj.bank_item else "Manual Image"
+    get_specimen_name.short_description = "Specimen"
 
 # =========================================================
 # EXPERIMENT ADMIN

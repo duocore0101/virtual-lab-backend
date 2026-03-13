@@ -24,6 +24,8 @@ from .models import (
 
 from .serializers import ExperimentSerializer
 
+D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+
 
 # -------------------------
 # API: LIST ALL EXPERIMENTS
@@ -118,7 +120,7 @@ def experiment_page(request, slug, page):
     # 🔥 UPDATED: Allow Admin Demo Mode
     role = request.session.get("role")
 
-    if role not in ["student","teacher", "admin"]:
+    if role not in ["student","teacher", "admin", "superadmin"]:
         return redirect("/login/")
 
     if page not in ALLOWED_PAGES:
@@ -130,6 +132,16 @@ def experiment_page(request, slug, page):
         is_active=True
     )
 
+    # 🔥 Plan-based Access Control
+    if role != "superadmin":
+        college = request.user.college
+        if college and college.selected_plan == 'dpharm':
+            if experiment.number not in D_PHARM_NUMBERS:
+                return redirect("/login/") # Or a restricted access page
+        elif college and college.selected_plan == 'single':
+            # Handle single experiment plan
+            pass
+
     template_path = f"experiments/{slug}/{page}.html"
 
     return render(
@@ -138,7 +150,7 @@ def experiment_page(request, slug, page):
         {
             "experiment": experiment,
             "student": request.session.get("name"),
-            "demo_mode": role == "admin",  # 🔥 SAFE ADDITION
+            "demo_mode": role in ["admin", "superadmin"],  # 🔥 SAFE ADDITION
         }
     )
 
@@ -155,7 +167,7 @@ def finish_practical(request):
     role = request.session.get("role")
 
     # 🔥 UPDATED: Allow admin but do not save
-    if role not in ["student","teacher", "admin"]:
+    if role not in ["student","teacher", "admin", "superadmin"]:
         return JsonResponse({"error": "Unauthorized"}, status=401)
 
     try:
@@ -173,8 +185,8 @@ def finish_practical(request):
         is_active=True
     )
 
-    # 🔥 ADMIN DEMO MODE (NO DATABASE SAVE)
-    if role == "admin":
+    # 🔥 ADMIN/SUPERADMIN DEMO MODE (NO DATABASE SAVE)
+    if role in ["admin", "superadmin"]:
         return JsonResponse({
             "status": "success",
             "redirect": f"/experiment/{experiment.slug}/"
@@ -217,7 +229,7 @@ def generate_rotarod_pdf(request, slug):
     role = request.session.get("role")
 
     # 🔥 UPDATED: Allow admin demo
-    if role not in ["student","teacher","admin"]:
+    if role not in ["student", "teacher", "admin", "superadmin"]:
         return HttpResponse("Unauthorized", status=401)
 
     try:

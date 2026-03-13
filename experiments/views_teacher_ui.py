@@ -1,7 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.utils.timezone import now
 import csv
+import io
+import os
+import openpyxl
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, HRFlowable
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from django.conf import settings
 from experiments.models import StudentApproval
 from accounts.models import User
 from .models import (
@@ -16,7 +27,12 @@ from .models import (
     ExperimentAttempt,
     ExamSpotting,
     ExamPractical,
+    SpottingBank
 )
+
+D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+
+D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
 
 
 # =====================================================
@@ -34,9 +50,14 @@ def teacher_dashboard(request):
         college=teacher.college
     )
 
-    experiments = Experiment.objects.filter(
-    is_active=True
-).order_by("order", "name")
+    subject_list = teacher.subject.split(",") if teacher.subject else []
+    
+    experiments = Experiment.objects.filter(is_active=True).order_by("number")
+
+    # 🔥 Plan-based filtering
+    college = teacher.college
+    if college and college.selected_plan == 'dpharm':
+        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
 
     attempts = ExperimentAttempt.objects.filter(
         experiment__is_active=True,
@@ -62,31 +83,326 @@ def teacher_students(request):
     if request.session.get("role") != "teacher":
         return redirect("/login/")
 
+    subject_code = request.GET.get("subject")
+    
     students = User.objects.filter(
         role="student",
         created_by=request.user,
         college=request.user.college
-    ).order_by("first_name")
+    ).order_by("roll_no")
+
+    if subject_code:
+        students = students.filter(subject=subject_code)
+
+    # Subject name for header
+    subject_map = {
+        "dpharm_2": "2ND YR D.PHARM",
+        "bpharm_4": "2ND YR B.PHARM (SEM-IV)",
+        "bpharm_5": "3RD YR B.PHARM (SEM-V)",
+        "bpharm_6": "3RD YR B.PHARM (SEM-VI)"
+    }
+    subject_name = subject_map.get(subject_code, "All Students")
+
+    # Fetch batches to map students
+    from .models import Batch
+    batches = Batch.objects.filter(teacher=request.user)
+    
+    # Map batches to students
+    for student in students:
+        student.assigned_batch_name = "---"
+        if student.roll_no and student.roll_no.isdigit():
+            roll_int = int(student.roll_no)
+            for batch in batches:
+                if batch.start_roll <= roll_int <= batch.end_roll:
+                    student.assigned_batch_name = batch.name
+                    break
 
     return render(
         request,
         "teacher/students.html",
         {
-            "students": students
+            "students": students,
+            "subject_name": subject_name,
+            "subject_code": subject_code
         }
     )
+
+
+# =====================================================
+# EXPORT STUDENTS → PDF (Branded)
+# =====================================================
+def export_students_pdf(request):
+    if request.session.get("role") != "teacher":
+        return redirect("/login/")
+
+    subject_code = request.GET.get("subject")
+    teacher = request.user
+    college = teacher.college
+
+    students = User.objects.filter(
+        role="student",
+        created_by=teacher,
+        college=college
+    ).order_by("roll_no")
+
+    if subject_code:
+        students = students.filter(subject=subject_code)
+
+    # Batch mapping logic (same as teacher_students view)
+    batches = Batch.objects.filter(teacher=teacher)
+    for student in students:
+        student.assigned_batch_name = "---"
+        if student.roll_no and student.roll_no.isdigit():
+            roll_int = int(student.roll_no)
+            for b in batches:
+                if b.start_roll <= roll_int <= b.end_roll:
+                    student.assigned_batch_name = b.name
+                    break
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=50)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # --- Header (Logo and Name) ---
+    header_data = []
+    college_name = college.name if college else "Virtual Lab System"
+    college_address = college.address if college and college.address else ""
+    
+    logo_part = None
+    if college and college.logo:
+        try:
+            logo_path = college.logo.path
+            if os.path.exists(logo_path):
+                logo_part = Image(logo_path, width=65, height=65)
+        except Exception:
+            pass
+
+    name_style = ParagraphStyle(
+        'CollegeNameStyle',
+        parent=styles['Normal'],
+        fontName='Times-Bold',
+        fontSize=22,
+        textColor=colors.black,
+        alignment=0, # Left
+        leading=24
+    )
+
+    address_style = ParagraphStyle(
+        'AddressStyle',
+        parent=styles['Normal'],
+        fontName='Times-Roman',
+        fontSize=9,
+        textColor=colors.grey,
+        alignment=0, # Left
+    )
+    
+    # Header Content (Name + Address)
+    header_info = [Paragraph(college_name, name_style)]
+    if college_address:
+        header_info.append(Paragraph(college_address, address_style))
+
+    if logo_part:
+        # Table for Logo and info alignment
+        header_table = Table([[logo_part, header_info]], colWidths=[80, 450])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ]))
+        elements.append(header_table)
+    else:
+        elements.extend(header_info)
+    
+    elements.append(Spacer(1, 15))
+    
+    # Horizontal Line
+    elements.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#ff4b2b"), spaceAfter=15))
+    
+    # Title "Student List" (Centered and Underlined)
+    title_style = ParagraphStyle(
+        'MainTitleStyle',
+        parent=styles['Normal'],
+        fontName='Times-Bold',
+        fontSize=16,
+        alignment=1, # Center
+        spaceAfter=15,
+    )
+    elements.append(Paragraph("<u>STUDENT LIST</u>", title_style))
+
+    subtitle_style = ParagraphStyle(
+        'SubtitleStyle',
+        parent=styles['Normal'],
+        fontName='Times-Roman',
+        fontSize=11,
+        alignment=1, # Centered with title
+        spaceAfter=20,
+        textColor=colors.darkgrey
+    )
+    subject_map = {
+        "dpharm_2": "2ND YR D.PHARM",
+        "bpharm_4": "2ND YR B.PHARM (SEM-IV)",
+        "bpharm_5": "3RD YR B.PHARM (SEM-V)",
+        "bpharm_6": "3RD YR B.PHARM (SEM-VI)"
+    }
+    subtitle = f"Subject: {subject_map.get(subject_code, 'All Subjects')}"
+    elements.append(Paragraph(subtitle, subtitle_style))
+
+    # --- Table Data ---
+    data = [["Roll No", "Batch", "Student Name", "Email ID", "Mobile", "Status"]]
+    for s in students:
+        status = "Active" if s.is_active else "Inactive"
+        data.append([
+            s.roll_no or "---",
+            s.assigned_batch_name,
+            f"{s.first_name} {s.last_name}",
+            s.email,
+            s.mobile or "---",
+            status
+        ])
+
+    table = Table(data, colWidths=[55, 75, 135, 135, 75, 50]) # Total width = 525 (fits in 535 available)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#ff4b2b")),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
+        ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#fff5f5")]),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+    elements.append(table)
+
+    # --- Page Setup (Border, Footer) ---
+    def page_setup(canvas, doc):
+        canvas.saveState()
+        
+        # --- Page Border ---
+        canvas.setStrokeColor(colors.HexColor("#ff4b2b"))
+        canvas.setLineWidth(1)
+        canvas.rect(20, 20, A4[0]-40, A4[1]-40) # Standard page border
+        
+        # --- GMARS Logo and Footer ---
+        try:
+            gmars_logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo.png')
+            if os.path.exists(gmars_logo_path):
+                # Increased Height further
+                canvas.drawImage(gmars_logo_path, A4[0] - 115, 1, width=85, height=90, mask='auto')
+        except Exception:
+            pass
+        
+        canvas.setFont('Times-Italic', 8)
+        canvas.drawRightString(A4[0] - 120, 40, "powered by Gmars Tech Solutions")
+        
+        canvas.setFont('Times-Roman', 8)
+        canvas.drawString(40, 40, f"Generated on: {now().strftime('%d-%m-%Y %H:%M')}")
+        canvas.drawCentredString(A4[0]/2, 40, f"Page {canvas.getPageNumber()}")
+        canvas.restoreState()
+
+    try:
+        doc.build(elements, onFirstPage=page_setup, onLaterPages=page_setup)
+    except Exception as e:
+        return HttpResponse(f"Error generating PDF: {str(e)}", status=500)
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Students_{subject_code or "All"}.pdf"'
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
+
+
+# =====================================================
+# EXPORT STUDENTS → EXCEL (Formatted)
+# =====================================================
+def export_students_excel(request):
+    if request.session.get("role") != "teacher":
+        return redirect("/login/")
+
+    subject_code = request.GET.get("subject")
+    teacher = request.user
+
+    students = User.objects.filter(
+        role="student",
+        created_by=teacher,
+        college=teacher.college
+    ).order_by("roll_no")
+
+    if subject_code:
+        students = students.filter(subject=subject_code)
+
+    # Batch mapping logic
+    batches = Batch.objects.filter(teacher=teacher)
+    for student in students:
+        student.assigned_batch_name = "---"
+        if student.roll_no and student.roll_no.isdigit():
+            roll_int = int(student.roll_no)
+            for b in batches:
+                if b.start_roll <= roll_int <= b.end_roll:
+                    student.assigned_batch_name = b.name
+                    break
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Students List"
+
+    # Header Row
+    headers = ["Roll No", "Batch", "Student Name", "Email ID", "Mobile No", "Status"]
+    ws.append(headers)
+
+    # Styling Header
+    header_fill = PatternFill(start_color="FF4B2B", end_color="FF4B2B", fill_type="solid")
+    header_font = Font(color="FFFFFF", bold=True)
+    alignment = Alignment(horizontal="center", vertical="center")
+    
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = alignment
+
+    # Data Rows
+    for s in students:
+        ws.append([
+            s.roll_no or "---",
+            s.assigned_batch_name,
+            f"{s.first_name} {s.last_name}",
+            s.email,
+            s.mobile or "---",
+            "Active" if s.is_active else "Inactive"
+        ])
+
+    # Column Widths
+    column_widths = [12, 15, 30, 35, 15, 12]
+    for i, width in enumerate(column_widths):
+        ws.column_dimensions[get_column_letter(i+1)].width = width
+
+    buffer = io.BytesIO()
+    wb.save(buffer)
+    
+    response = HttpResponse(
+        buffer.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = f'attachment; filename="Students_{subject_code or "All"}.xlsx"'
+    return response
 
 
 # =====================================================
 # TEACHER → EXPERIMENTS LIST
 # =====================================================
 def teacher_experiments(request):
-    if request.session.get("role") != "teacher":
+    if request.session.get("role") not in ["teacher", "superadmin"]:
         return redirect("/login/")
 
-    experiments = Experiment.objects.filter(
-        is_active=True
-    ).order_by("number")
+    experiments = Experiment.objects.filter(is_active=True).order_by("number")
+
+    # 🔥 Plan-based filtering
+    college = request.user.college
+    if college and college.selected_plan == 'dpharm':
+        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
 
 
     return render(
@@ -261,9 +577,10 @@ def approve_student_request(request, student_id):
     approval.approved_by_teacher = True
     approval.save()
 
-    # Activate student
+    # Activate student and assign subject
     student = approval.student
     student.is_active = True
+    student.subject = approval.requested_subject  # 🔥 NEW: Assign the requested subject
     student.save()
 
     return redirect("/teacher/student-requests/")
@@ -383,9 +700,14 @@ def teacher_assign_practical(request, batch_id):
         teacher=request.user
     )
 
-    experiments = Experiment.objects.filter(
-        is_active=True
-    ).order_by("name")
+    experiments = Experiment.objects.filter(is_active=True).order_by("number")
+
+    college = request.user.college
+    if college and college.selected_plan == 'dpharm':
+        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
+    elif college and college.selected_plan == 'single':
+        # Handle single experiment plan
+        pass
 
     if request.method == "POST":
         selected_experiments = request.POST.getlist("experiments")
@@ -419,15 +741,25 @@ def teacher_exams(request):
     if request.session.get("role") != "teacher":
         return redirect("/login/")
 
+    subject_code = request.GET.get("subject")
+    
     exams = Exam.objects.filter(
         teacher=request.user
     )
+    
+    if subject_code:
+        # Derive year from subject_code
+        target_year = subject_code
+        if subject_code in ["bpharm_5", "bpharm_6"]:
+            target_year = "bpharm_56"
+        exams = exams.filter(year=target_year)
 
     return render(
         request,
         "teacher/exams.html",
         {
-            "exams": exams
+            "exams": exams,
+            "subject_code": subject_code
         }
     )
 
@@ -435,14 +767,22 @@ def teacher_create_exam(request):
     if request.session.get("role") != "teacher":
         return redirect("/login/")
 
+    subject_code = request.GET.get("subject")
+
     if request.method == "POST":
         title = request.POST.get("title")
         exam_type = request.POST.get("exam_type")
-        year = request.POST.get("year")
+        # year is now determined by subject context
         duration = request.POST.get("duration")
 
+        # Derive year from subject_code
+        # Mapping: dpharm_2 -> dpharm_2, bpharm_4 -> bpharm_4, bpharm_5/6 -> bpharm_56
+        year = subject_code
+        if subject_code in ["bpharm_5", "bpharm_6"]:
+            year = "bpharm_56"
+
         if not all([title, exam_type, year, duration]):
-            return redirect("/teacher/exams/")
+            return redirect(f"/teacher/exams/?subject={subject_code or ''}")
 
         Exam.objects.create(
             teacher=request.user,
@@ -452,13 +792,15 @@ def teacher_create_exam(request):
             duration_minutes=int(duration)
         )
 
-        return redirect("/teacher/exams/")
+        return redirect(f"/teacher/exams/?subject={subject_code or ''}")
 
-    return render(request, "teacher/create_exam.html")
+    return render(request, "teacher/create_exam.html", {"subject_code": subject_code})
 
 def teacher_edit_exam(request, exam_id):
     if request.session.get("role") != "teacher":
         return redirect("/login/")
+
+    subject_code = request.GET.get("subject")
 
     exam = get_object_or_404(
         Exam,
@@ -469,21 +811,33 @@ def teacher_edit_exam(request, exam_id):
     if request.method == "POST":
         exam.title = request.POST.get("title")
         exam.exam_type = request.POST.get("exam_type")
-        exam.year = request.POST.get("year")
+        
+        # Derived from subject context if provided, otherwise keep existing
+        if subject_code:
+            year = subject_code
+            if subject_code in ["bpharm_5", "bpharm_6"]:
+                year = "bpharm_56"
+            exam.year = year
+            
         exam.duration_minutes = int(request.POST.get("duration"))
         exam.save()
 
-        return redirect("/teacher/exams/")
+        return redirect(f"/teacher/exams/?subject={subject_code or ''}")
 
     return render(
         request,
         "teacher/edit_exam.html",
-        {"exam": exam}
+        {
+            "exam": exam,
+            "subject_code": subject_code
+        }
     )
 
 def teacher_toggle_exam(request, exam_id):
     if request.session.get("role") != "teacher":
         return redirect("/login/")
+
+    subject_code = request.GET.get("subject")
 
     exam = get_object_or_404(
         Exam,
@@ -494,7 +848,7 @@ def teacher_toggle_exam(request, exam_id):
     exam.is_active = not exam.is_active
     exam.save()
 
-    return redirect("/teacher/exams/")
+    return redirect(f"/teacher/exams/?subject={subject_code or ''}")
 
 def teacher_exam_builder(request, exam_id):
     if request.session.get("role") != "teacher":
@@ -522,9 +876,12 @@ def teacher_exam_builder(request, exam_id):
             if exam.year != "dpharm_2":
                 return redirect(request.path)
 
+            bank_id = request.POST.get("bank_id")
+            bank_item = get_object_or_404(SpottingBank, id=bank_id)
+
             ExamSpotting.objects.create(
                 exam=exam,
-                image=request.FILES.get("image"),
+                bank_item=bank_item,
                 marks=int(request.POST.get("marks", 1)),
                 order=exam.spotting_questions.count() + 1
             )
@@ -745,6 +1102,7 @@ def teacher_exam_builder(request, exam_id):
             "mcqs": exam.mcqs.all(),
             "short_answers": exam.short_answers.all(),
             "spotting_questions": exam.spotting_questions.all(),
+            "spotting_bank": SpottingBank.objects.filter(is_active=True).order_by("name"),
             "practicals": exam.practicals.all(),
             "experiments_list": Experiment.objects.filter(is_active=True),
             "major_practical": major_practical,

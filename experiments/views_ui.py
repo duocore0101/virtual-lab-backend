@@ -1,5 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Experiment
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
+import json
+
+from .models import (
+    Experiment, 
+    Exam, 
+    ExamAttempt, 
+    Batch, 
+    BatchExperiment, 
+    StudentApproval
+)
+
+D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
 
 # -------------------------
 # STUDENT DASHBOARD
@@ -9,7 +23,6 @@ def student_dashboard(request):
         return redirect("/login/")
 
     student = request.user
-
     experiments = []
 
     # 🔥 Ensure student has roll number
@@ -18,8 +31,6 @@ def student_dashboard(request):
             roll_number = int(student.roll_no)
 
             # 🔥 Find matching batch created by student's teacher
-            from .models import Batch, BatchExperiment
-
             batch = Batch.objects.filter(
                 teacher=student.created_by,
                 start_roll__lte=roll_number,
@@ -36,6 +47,11 @@ def student_dashboard(request):
                     is_active=True
                 ).order_by("order")
 
+                # 🔥 Plan-based filtering
+                college = student.college
+                if college and college.selected_plan == 'dpharm':
+                    experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
+
         except ValueError:
             # Roll number not numeric
             experiments = []
@@ -48,11 +64,10 @@ def student_dashboard(request):
             "experiments": experiments,
         }
     )
+
 # =====================================================
 # 🔥 STUDENT → EXAM DASHBOARD
 # =====================================================
-from .models import Exam, ExamAttempt
-
 def student_exam_dashboard(request):
 
     if request.session.get("role") != "student":
@@ -100,12 +115,10 @@ def student_exam_dashboard(request):
             "exam_data": exam_data
         }
     )
+
 # =====================================================
 # 🔥 STUDENT → START / RESUME EXAM
 # =====================================================
-from django.shortcuts import get_object_or_404
-from django.utils.timezone import now
-
 def start_exam(request, exam_id):
 
     if request.session.get("role") != "student":
@@ -162,10 +175,6 @@ def start_exam(request, exam_id):
 # =====================================================
 # 🔥 STUDENT → SUBMIT EXAM
 # =====================================================
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-
 @csrf_exempt
 def submit_exam(request, exam_id):
 
@@ -211,7 +220,7 @@ def submit_exam(request, exam_id):
     for mcq in exam.mcqs.all():
         selected = mcq_answers.get(str(mcq.id))
         if selected and selected == mcq.correct_option:
-            mcq_score += mcq.marks
+            mcq_score += int(mcq.marks or 0)
 
     attempt.mcq_score = mcq_score
 
@@ -227,14 +236,15 @@ def submit_exam(request, exam_id):
         "status": "success",
         "redirect": "/student/exams/"
     })
+
 # -------------------------
 # EXPERIMENT INTRO PAGE
 # -------------------------
 def experiment_intro(request, slug):
 
-    # 🔥 UPDATED: Allow student + admin
+    # 🔥 UPDATED: Allow student + admin + superadmin
     role = request.session.get("role")
-    if role not in ["student","teacher","admin"]:
+    if role not in ["student", "teacher", "admin", "superadmin"]:
         return redirect("/login/")
 
     experiment = get_object_or_404(
@@ -243,12 +253,19 @@ def experiment_intro(request, slug):
         is_active=True
     )
 
+    # 🔥 Plan-based Access Control
+    if role != "superadmin":
+        college = request.user.college
+        if college and college.selected_plan == 'dpharm':
+            if experiment.number not in D_PHARM_NUMBERS:
+                return redirect("/login/")
+
     return render(
         request,
         f"experiments/{slug}/intro.html",
         {
             "experiment": experiment,
-            "demo_mode": role == "admin"  # optional for banner
+            "demo_mode": role in ["admin", "superadmin"]  # optional for banner
         }
     )
 
@@ -258,9 +275,9 @@ def experiment_intro(request, slug):
 # -------------------------
 def experiment_run(request, slug):
 
-    # 🔥 UPDATED: Allow student + admin
+    # 🔥 UPDATED: Allow student + admin + superadmin
     role = request.session.get("role")
-    if role not in ["student","teacher", "admin"]:
+    if role not in ["student", "teacher", "admin", "superadmin"]:
         return redirect("/login/")
 
     experiment = get_object_or_404(
@@ -269,12 +286,19 @@ def experiment_run(request, slug):
         is_active=True
     )
 
+    # 🔥 Plan-based Access Control
+    if role != "superadmin":
+        college = request.user.college
+        if college and college.selected_plan == 'dpharm':
+            if experiment.number not in D_PHARM_NUMBERS:
+                return redirect("/login/")
+
     return render(
         request,
         f"experiments/{slug}/experiment.html",
         {
             "experiment": experiment,
-            "demo_mode": role == "admin"  # optional for banner
+            "demo_mode": role in ["admin", "superadmin"]  # optional for banner
         }
     )
 
@@ -284,9 +308,9 @@ def experiment_run(request, slug):
 # -------------------------
 def experiment_conclusion(request, slug):
 
-    # 🔥 UPDATED: Allow student + admin
+    # 🔥 UPDATED: Allow student + admin + superadmin
     role = request.session.get("role")
-    if role not in ["student","teacher", "admin"]:
+    if role not in ["student", "teacher", "admin", "superadmin"]:
         return redirect("/login/")
 
     experiment = get_object_or_404(
@@ -295,12 +319,19 @@ def experiment_conclusion(request, slug):
         is_active=True
     )
 
+    # 🔥 Plan-based Access Control
+    if role != "superadmin":
+        college = request.user.college
+        if college and college.selected_plan == 'dpharm':
+            if experiment.number not in D_PHARM_NUMBERS:
+                return redirect("/login/")
+
     return render(
         request,
         f"experiments/{slug}/conclusion.html",
         {
             "experiment": experiment,
-            "demo_mode": role == "admin"  # optional
+            "demo_mode": role in ["admin", "superadmin"]  # optional
         }
     )
 

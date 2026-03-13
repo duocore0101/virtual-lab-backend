@@ -25,6 +25,7 @@
           <th style="padding:12px;">Name</th>
           <th style="padding:12px;">Email</th>
           <th style="padding:12px;">Mobile</th>
+          <th style="padding:12px;">Subject</th>
           <th style="padding:12px;">Date</th>
           <th style="padding:12px;">Status</th>
           <th style="padding:12px; text-align:center;">Action</th>
@@ -38,6 +39,11 @@
           <td style="padding:12px;">{{ req.fullname }}</td>
           <td style="padding:12px;">{{ req.email }}</td>
           <td style="padding:12px;">{{ req.mobile }}</td>
+          <td style="padding:12px;">
+            <span style="font-size: 11px; font-weight: 600; color: #666; background: #eee; padding: 2px 8px; border-radius: 4px;">
+              {{ req.get_subject_display }}
+            </span>
+          </td>
           <td style="padding:12px;">
             {{ req.created_at|date:"d M Y" }}
           </td>

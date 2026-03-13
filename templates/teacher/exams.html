@@ -4,14 +4,11 @@
 {% block content %}
 
 <style>
-
 /* ============================= */
-/* PAGE WRAPPER */
+/* PAGE WRAPPER & THEME */
 /* ============================= */
 .exam-wrapper {
-    padding: 40px;
-    background: linear-gradient(135deg, #f4f6fb, #eef2ff);
-    min-height: 100vh;
+    padding: 30px;
 }
 
 /* ============================= */
@@ -21,165 +18,205 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .exam-header h2 {
+    font-size: 24px;
     font-weight: 700;
-    color: #2c3e50;
-    letter-spacing: 0.5px;
+    margin: 0;
+    color: var(--text-main);
 }
 
-/* ============================= */
-/* CREATE BUTTON */
-/* ============================= */
 .create-btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
     color: #fff;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 20px rgba(255, 75, 43, 0.3);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .create-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 12px 25px rgba(255, 75, 43, 0.4);
+    filter: brightness(1.1);
+    color: #fff;
 }
 
 /* ============================= */
-/* TABLE CARD */
+/* TABLE PANEL (GLASSMORPHISM) */
 /* ============================= */
 .exam-card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
-/* ============================= */
-/* TABLE */
-/* ============================= */
 .exam-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.exam-table thead {
-    background: #4f46e5;
-    color: white;
-}
-
 .exam-table th {
-    padding: 14px;
+    background: rgba(255, 75, 43, 0.05);
+    padding: 16px;
     text-align: left;
-    font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .exam-table td {
-    padding: 14px;
+    padding: 16px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.exam-table tbody tr {
-    transition: all 0.3s ease;
-    border-bottom: 1px solid #eee;
+.exam-table tr:last-child td {
+    border-bottom: none;
 }
 
-.exam-table tbody tr:hover {
-    background: #f1f5ff;
-    transform: scale(1.01);
+.exam-table tr {
+    transition: background 0.2s ease;
+}
+
+.exam-table tr:hover {
+    background: rgba(255, 75, 43, 0.02);
 }
 
 /* ============================= */
 /* STATUS BADGES */
 /* ============================= */
 .badge {
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    display: inline-block;
 }
 
 .badge-active {
-    background: #dcfce7;
-    color: #166534;
+    background: rgba(0, 230, 118, 0.1);
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.2);
 }
 
 .badge-inactive {
-    background: #fee2e2;
-    color: #991b1b;
+    background: rgba(255, 75, 43, 0.1);
+    color: #ff416c;
+    border: 1px solid rgba(255, 75, 43, 0.2);
 }
 
 /* ============================= */
-/* ACTION LINKS */
+/* ACTION BUTTONS */
 /* ============================= */
-.action-links a {
+.action-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 500;
-    margin-right: 10px;
-    transition: 0.3s;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+    background: var(--bg-main);
+    font-size: 12px;
+    font-weight: 700;
+    gap: 6px;
 }
 
-.action-build {
-    color: #4f46e5;
+.action-btn:hover {
+    transform: translateY(-2px);
+    background: var(--bg-panel);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.action-edit {
-    color: #0ea5e9;
+.btn-build { 
+    color: #6366f1; 
+    border-color: rgba(99, 102, 241, 0.4); 
+    background: rgba(99, 102, 241, 0.05);
+}
+.btn-edit { 
+    color: #0ea5e9; 
+    border-color: rgba(14, 165, 233, 0.4); 
+    background: rgba(14, 165, 233, 0.05);
+}
+.btn-attempts { 
+    color: #10b981; 
+    border-color: rgba(16, 185, 129, 0.4); 
+    background: rgba(16, 185, 129, 0.05);
+}
+.btn-toggle { 
+    color: #f97316; 
+    border-color: rgba(249, 115, 22, 0.4); 
+    background: rgba(249, 115, 22, 0.05);
 }
 
-.action-toggle {
-    color: #f97316;
+.action-btn i {
+    font-style: normal;
+    font-size: 16px;
 }
 
-.action-links a:hover {
-    text-decoration: underline;
-    opacity: 0.8;
-}
-
-.empty-row {
+.empty-state {
+    padding: 60px;
     text-align: center;
-    padding: 20px;
-    color: #777;
-    font-style: italic;
+    color: var(--text-muted);
 }
-
 </style>
 
 <div class="exam-wrapper">
 
     <div class="exam-header">
-        <h2>📘 Exam Management</h2>
-        <a href="/teacher/exams/create/" class="create-btn">
-            + Create Exam
+        <h2>Exams: <span style="color:#ff4b2b;">Management</span></h2>
+        <a href="/teacher/exams/create/?subject={{ subject_code|default:'' }}" class="create-btn">
+            <span style="font-size:20px;">+</span> Create Exam
         </a>
     </div>
 
     <div class="exam-card">
-
         <table class="exam-table">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Year</th>
+                    <th>Exam Title</th>
+                    <th>Target Year</th>
                     <th>Duration</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th style="text-align:right;">Actions</th>
                 </tr>
             </thead>
-
             <tbody>
                 {% for exam in exams %}
                 <tr>
-                    <td><strong>{{ exam.title }}</strong></td>
-                    <td>{{ exam.get_year_display }}</td>
-                    <td>{{ exam.duration_minutes }} mins</td>
+                    <td>
+                        <div style="font-weight:700; font-size:15px;">{{ exam.title }}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">{{ exam.exam_type }}</div>
+                    </td>
+                    <td>
+                        <span style="background:var(--bg-main); padding:4px 10px; border-radius:6px; border:1px solid var(--border-color); font-size:12px; font-weight:600;">
+                            {{ exam.get_year_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="color:var(--text-muted);">🕒 {{ exam.duration_minutes }} mins</span>
+                    </td>
                     <td>
                         {% if exam.is_active %}
                             <span class="badge badge-active">Active</span>
@@ -187,32 +224,34 @@
                             <span class="badge badge-inactive">Inactive</span>
                         {% endif %}
                     </td>
-                    <td class="action-links">
-    <a href="/teacher/exams/{{ exam.id }}/builder/" 
-       class="action-build">Build</a>
-
-    <a href="/teacher/exams/{{ exam.id }}/edit/" 
-       class="action-edit">Edit</a>
-
-    <a href="/teacher/exams/{{ exam.id }}/attempts/" 
-       style="color:#10b981; font-weight:600;">
-       Attempts
-    </a>
-
-    <a href="/teacher/exams/{{ exam.id }}/toggle/" 
-       class="action-toggle">Toggle</a>
-</td>
+                    <td>
+                        <div class="action-group" style="justify-content: flex-end;">
+                            <a href="/teacher/exams/{{ exam.id }}/builder/?subject={{ subject_code|default:'' }}" class="action-btn btn-build">
+                                Build
+                            </a>
+                            <a href="/teacher/exams/{{ exam.id }}/edit/?subject={{ subject_code|default:'' }}" class="action-btn btn-edit">
+                                Edit
+                            </a>
+                            <a href="/teacher/exams/{{ exam.id }}/attempts/?subject={{ subject_code|default:'' }}" class="action-btn btn-attempts">
+                                Attempts
+                            </a>
+                            <a href="/teacher/exams/{{ exam.id }}/toggle/?subject={{ subject_code|default:'' }}" class="action-btn btn-toggle">
+                                Toggle
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="empty-row">
-                        No exams created yet.
+                    <td colspan="5" class="empty-state">
+                        <div style="font-size:40px; margin-bottom:15px;">🗒️</div>
+                        <p style="margin:0;">No exams have been created yet.</p>
+                        <p style="font-size:13px; margin-top:5px;">Click the "+ Create Exam" button to get started.</p>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 
 </div>

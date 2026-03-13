@@ -77,8 +77,56 @@
 
     }
 
-  </style>
+    /* ================= SIDEBAR DROPDOWN ================= */
+    .sidebar-dropdown {
+      position: relative;
+    }
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+      cursor: pointer;
+      gap: 14px;
+    }
+    .dropdown-trigger:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .dropdown-trigger .arrow {
+      margin-left: auto;
+      transition: 0.3s;
+    }
+    .sidebar-dropdown.active .arrow {
+      transform: rotate(180deg);
+    }
+    .dropdown-content {
+      display: none;
+      background: rgba(0,0,0,0.1);
+      padding-left: 10px;
+    }
+    .sidebar-dropdown.active .dropdown-content {
+      display: block;
+    }
+    .dropdown-content a {
+      font-size: 12.5px !important;
+      padding: 10px 20px !important;
+      opacity: 0.8;
+    }
+    .dropdown-content a:hover {
+      opacity: 1;
+      background: rgba(255,255,255,0.05);
+    }
+    .active-sub {
+      background: var(--accent-red) !important;
+      color: #fff !important;
+      opacity: 1 !important;
+      border-radius: 4px;
+    }
 
+  </style>
 </head>
 
 <body>
@@ -116,34 +164,36 @@
   <aside class="sa-sidebar">
     <nav>
 
-      <a href="/teacher/dashboard/">🏠 <span>Dashboard</span></a>
-
-      <a href="/teacher/students/">🎓 <span>Students</span></a>
+      <a href="/teacher/dashboard/" class="{% if '/teacher/dashboard/' in path %}active{% endif %}">🏠 <span>Dashboard</span></a>
 
       <!-- 🔥 NEW: STUDENT REQUESTS -->
-      <a href="/teacher/student-requests/">
+      <a href="/teacher/student-requests/" class="{% if '/teacher/student-requests/' in path %}active{% endif %}">
         📨 <span>Student Requests</span>
-        {% if pending_student_requests > 0 %}
+        {% if pending_student_requests_count > 0 %}
         <span class="badge-count">
-          {{ pending_student_requests }}
+          {{ pending_student_requests_count }}
         </span>
         {% endif %}
       </a>
+      <a href="/teacher/experiments/" class="{% if '/teacher/experiments/' in path %}active{% endif %}">🧪 <span>Experiments</span></a>
 
-      <a href="/teacher/experiments/">🧪 <span>Experiments</span></a>
-      <a href="/teacher/manage-batches/">📦 <span>Manage Batches</span></a>
-      <a href="/teacher/attempts/">📊 <span>Attempts</span></a>
-
-      {% with request.path as path %}
-      <a href="{% url 'teacher-exams' %}"
-         class="{% if '/teacher/exams/' in path or '/teacher/attempt/' in path %}active{% endif %}">
-        📝 <span>Exam Management</span>
-      </a>
-      {% endwith %}
-
-      <a href="/teacher/support/">🎧 <span>Support</span></a>
-
-      <a href="/teacher/settings/">⚙ <span>Settings</span></a>
+      <!-- 🔥 NEW: SUBJECT SPECIFIC STUDENTS (DROPDOWN) -->
+      <div class="sidebar-dropdown">
+        <div class="dropdown-trigger" onclick="this.parentElement.classList.toggle('active')">
+          🎓 <span>Select Subject</span>
+          <span class="arrow">▾</span>
+        </div>
+        <div class="dropdown-content">
+          {% for sub in teacher_subjects %}
+            <a href="/teacher/students/?subject={{ sub.code }}" 
+               class="{% if sub.code == request.GET.subject %}active-sub{% endif %}">
+               • {{ sub.name }}
+            </a>
+          {% empty %}
+            <span style="padding:10px 15px; font-size:11px; color:#888;">No subjects assigned</span>
+          {% endfor %}
+        </div>
+      </div>
 
     </nav>
   </aside>

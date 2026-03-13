@@ -8,6 +8,8 @@ import csv
 from accounts.models import User, TeacherRequest
 from .models import Experiment, ExperimentAttempt, AuditLog
 
+D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+
 
 # =====================================================
 # ADMIN DASHBOARD (COLLEGE SCOPED)
@@ -34,6 +36,14 @@ def admin_dashboard(request):
     experiments = Experiment.objects.filter(
         teacher__college=college
     )
+
+    # 🔥 Plan-based filtering
+    if college.selected_plan == 'dpharm':
+        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
+    elif college.selected_plan == 'single':
+        # For 'single', we might need a specific experiment ID assigned to the college.
+        # For now, let's keep it empty or handle it if we have more info.
+        pass
 
     attempts = ExperimentAttempt.objects.filter(
         experiment__teacher__college=college,
@@ -122,6 +132,7 @@ def approve_teacher_request(request, request_id):
         role="teacher",
         college=request.user.college,
         created_by=request.user,
+        subject=teacher_request.subject,
         is_active=True,
         password=teacher_request.password
     )
@@ -230,17 +241,28 @@ def admin_students(request):
 # ADMIN → EXPERIMENTS LIST
 # =====================================================
 def admin_experiments(request):
-    if request.session.get("role") != "admin":
+    if request.session.get("role") not in ["admin", "superadmin"]:
         return redirect("/login/")
 
-    # 🔥 Fetch all experiments like superadmin
+    # 🔥 Plan-based filtering
     experiments = Experiment.objects.select_related("teacher").order_by("name")
+
+    selected_plan = 'combo'
+    if request.session.get("role") == "admin":
+        college = request.user.college
+        selected_plan = college.selected_plan
+        if selected_plan == 'dpharm':
+            experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
+        elif selected_plan == 'single':
+            # Handle single experiment plan
+            pass
 
     return render(
         request,
         "admin/experiments.html",
         {
-            "experiments": experiments
+            "experiments": experiments,
+            "selected_plan": selected_plan
         }
     )
 
@@ -330,10 +352,19 @@ def create_teacher(request):
 
     experiments = Experiment.objects.all()
 
+    college = request.user.college
+    if college and college.selected_plan == 'dpharm':
+        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
+    elif college and college.selected_plan == 'single':
+        # Handle single experiment plan
+        pass
+
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
         password = request.POST.get("password")
+        subject_list = request.POST.getlist("subject")
+        subject = ",".join(subject_list)
         assigned_experiments = request.POST.getlist("experiments")
 
         if User.objects.filter(email=email).exists():

@@ -8,19 +8,139 @@
 <div style="padding:20px;">
 
   <!-- ================= PAGE HEADER ================= -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
     <div>
-      <h2 style="margin:0;">My Students</h2>
-      <p style="margin:4px 0; color:var(--text-muted);">
-        Manage and monitor your assigned students
+      <h2 style="margin:0;">Students: <span style="color:var(--accent-red);">{{ subject_name }}</span></h2>
+      <p style="margin:4px 0; font-size:13px; color:var(--text-muted);">
+        Detailed list of students enrolled in this subject
       </p>
     </div>
 
-    <a href="/teacher/export/students/"
-       class="create-teacher-btn export-btn">
-       ⬇ Export Students CSV
+    <div style="display:flex; gap:12px;">
+      <a href="/teacher/export-students-pdf/?subject={{ subject_code|default:'' }}"
+         class="premium-export-btn pdf-btn">
+         <span class="icon">📄</span> PDF
+      </a>
+      <a href="/teacher/export-students-excel/?subject={{ subject_code|default:'' }}"
+         class="premium-export-btn excel-btn">
+         <span class="icon">📊</span> Excel
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= MANAGEMENT ACTIONS (RED THEME) ================= -->
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; margin-bottom:30px;">
+    <a href="/teacher/manage-batches/#batch-overview" class="premium-mgmt-btn assign-btn">
+      <span class="icon">🔗</span>
+      <div class="btn-text">
+        <span class="label">Assign</span>
+        <span class="title">Experiments</span>
+      </div>
+    </a>
+
+    <a href="/teacher/manage-batches/" class="premium-mgmt-btn batch-btn">
+      <span class="icon">📦</span>
+      <div class="btn-text">
+        <span class="label">Manage</span>
+        <span class="title">Batches</span>
+      </div>
+    </a>
+
+    <a href="{% url 'teacher-exams' %}?subject={{ subject_code|default:'' }}" class="premium-mgmt-btn exam-btn">
+      <span class="icon">📝</span>
+      <div class="btn-text">
+        <span class="label">Exam</span>
+        <span class="title">Management</span>
+      </div>
     </a>
   </div>
+
+  <style>
+    .premium-mgmt-btn {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 24px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    /* 🔥 RED GRADIENT THEME */
+    .assign-btn {
+      background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(255, 75, 43, 0.3);
+    }
+    .batch-btn {
+      background: linear-gradient(135deg, #cb2d3e 0%, #ef473a 100%);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(203, 45, 62, 0.3);
+    }
+    .exam-btn {
+      background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(235, 51, 73, 0.3);
+    }
+    .premium-mgmt-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+      border-color: rgba(255,255,255,0.3);
+      filter: brightness(1.1);
+    }
+    .premium-mgmt-btn .icon {
+      font-size: 28px;
+    }
+    .premium-mgmt-btn .btn-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .premium-mgmt-btn .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.9;
+      font-weight: 700;
+    }
+    .premium-mgmt-btn .title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    /* PREMIUM EXPORT BUTTONS */
+    .premium-export-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .pdf-btn {
+      background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+      box-shadow: 0 6px 15px rgba(255, 75, 43, 0.3);
+    }
+    .excel-btn {
+      background: linear-gradient(135deg, #1d976c 0%, #93f9b9 100%);
+      box-shadow: 0 6px 15px rgba(29, 151, 108, 0.2);
+    }
+    .premium-export-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      color: #fff !important;
+    }
+    .premium-export-btn .icon {
+      font-size: 16px;
+    }
+  </style>
 
   <!-- ================= TABLE ================= -->
   <div class="table-wrapper panel">
@@ -28,64 +148,71 @@
     <table class="table" style="width:100%;">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
           <th>Roll No</th>
-          <th>Mobile</th>
+          <th>Batch</th>
+          <th>Student Name</th>
+          <th>Email ID</th>
+          <th>Mobile No</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
-
       <tbody>
-
         {% for student in students %}
         <tr>
-          <td>{{ forloop.counter }}</td>
-
           <td>
-            <strong>{{ student.first_name }}</strong>
+            <span class="roll-badge">{{ student.roll_no|default:"---" }}</span>
           </td>
-
+          <td>
+            <span class="batch-name-badge">{{ student.assigned_batch_name }}</span>
+          </td>
+          <td>
+            <div style="font-weight:600;">{{ student.first_name }} {{ student.last_name }}</div>
+          </td>
           <td>{{ student.email }}</td>
-
-          <!-- 🔥 ROLL NUMBER -->
+          <td>{{ student.mobile|default:"---" }}</td>
           <td>
-            {% if student.roll_no %}
-              {{ student.roll_no }}
+            {% if student.is_active %}
+            <span class="badge" style="background:rgba(0,230,118,0.1); color:#00e676;">Active</span>
             {% else %}
-              —
+            <span class="badge" style="background:rgba(255,26,26,0.1); color:#ff1a1a;">Inactive</span>
             {% endif %}
           </td>
-
-          <!-- 🔥 MOBILE NUMBER -->
           <td>
-            {% if student.mobile %}
-              {{ student.mobile }}
-            {% else %}
-              —
-            {% endif %}
-          </td>
-
-          <td>
-            <span class="status {% if student.is_active %}active{% else %}inactive{% endif %}">
-              {% if student.is_active %}ACTIVE{% else %}INACTIVE{% endif %}
-            </span>
+             <a href="#" class="view-btn">View Details</a>
           </td>
         </tr>
-
         {% empty %}
         <tr>
-          <td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">
-            No students found
+          <td colspan="7" style="text-align:center; padding:40px; color:var(--text-muted);">
+            No students found for this subject.
           </td>
         </tr>
         {% endfor %}
-
       </tbody>
     </table>
-
   </div>
+
+  <style>
+    .roll-badge {
+      background: var(--bg-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      color: #ff4b2b;
+    }
+    .batch-name-badge {
+      background: rgba(255, 75, 43, 0.1);
+      color: #ff4b2b;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 75, 43, 0.2);
+    }
+  </style>
 
 </div>
 

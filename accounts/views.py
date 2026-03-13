@@ -137,6 +137,10 @@ def login_view(request):
                         "teachers": teachers
                     })
 
+                college_address = request.POST.get("college_address")
+                selected_plan = request.POST.get("selected_plan")
+                logo = request.FILES.get("logo")
+
                 if not college_name:
                     return render(request, "auth/login.html", {
                         "error": "Please enter college name",
@@ -149,6 +153,9 @@ def login_view(request):
                     email=email,
                     mobile=mobile,
                     college_name=college_name,
+                    college_address=college_address,
+                    logo=logo,
+                    selected_plan=selected_plan,
                     password=make_password(password),
                     status="pending"
                 )
@@ -156,7 +163,8 @@ def login_view(request):
                 return render(request, "auth/login.html", {
                     "message": "Your registration request has been sent to Superadmin for approval.",
                     "colleges": colleges,
-                    "teachers": teachers
+                    "teachers": teachers,
+                    "college_plans": {str(c.id): c.selected_plan for c in colleges}
                 })
 
             # =====================================================
@@ -172,6 +180,8 @@ def login_view(request):
                     })
 
                 college = College.objects.get(id=college_id)
+                subject_list = request.POST.getlist("subject")
+                subject = ",".join(subject_list)
 
                 if TeacherRequest.objects.filter(email=email, status="pending").exists():
                     return render(request, "auth/login.html", {
@@ -185,6 +195,7 @@ def login_view(request):
                     email=email,
                     mobile=mobile,
                     college=college,
+                    subject=subject,
                     password=make_password(password),
                     status="pending"
                 )
@@ -192,7 +203,8 @@ def login_view(request):
                 return render(request, "auth/login.html", {
                     "message": "Registration successful. Waiting for Admin approval.",
                     "colleges": colleges,
-                    "teachers": teachers
+                    "teachers": teachers,
+                    "college_plans": {str(c.id): c.selected_plan for c in colleges}
                 })
 
             # =====================================================
@@ -231,10 +243,13 @@ def login_view(request):
                     password=make_password(password)
                 )
 
+                requested_subject = request.POST.get("requested_subject")
+
                 # 🔥 CREATE TEACHER APPROVAL ENTRY
                 StudentApproval.objects.create(
                     student=student,
                     selected_teacher=created_by_user,
+                    requested_subject=requested_subject,
                     approval_status="pending",
                     approved_by_teacher=False
                 )
@@ -242,12 +257,16 @@ def login_view(request):
                 return render(request, "auth/login.html", {
                     "message": "Registration successful. Waiting for approval.",
                     "colleges": colleges,
-                    "teachers": teachers
+                    "teachers": teachers,
+                    "college_plans": {str(c.id): c.selected_plan for c in colleges}
                 })
+
+    college_plans = {str(c.id): c.selected_plan for c in colleges}
 
     return render(request, "auth/login.html", {
         "colleges": colleges,
-        "teachers": teachers
+        "teachers": teachers,
+        "college_plans": college_plans
     })
 
 # =====================================================
