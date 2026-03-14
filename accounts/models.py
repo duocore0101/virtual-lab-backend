@@ -7,7 +7,7 @@ from django.db import models
 # =====================================================
 class College(models.Model):
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=50, unique=True)
+    code = models.CharField(max_length=100, unique=True)
     address = models.TextField(blank=True, null=True)
     logo = models.ImageField(upload_to="college_logos/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

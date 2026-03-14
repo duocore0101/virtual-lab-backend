@@ -73,11 +73,12 @@ def approve_principal_request(request, request_id):
         status="pending"
     )
 
-    # Generate unique college code
-    college_code = principal_request.college_name.lower().replace(" ", "_")
+    # Generate unique college code (FAILS-SAFE: Truncate to 50 for DB limit)
+    college_code = principal_request.college_name.lower().replace(" ", "_")[:50]
 
     if College.objects.filter(code=college_code).exists():
-        college_code = f"{college_code}_{principal_request.id}"
+        # If collision, use first 40 chars + _ + original ID (max 50 total)
+        college_code = f"{college_code[:40]}_{principal_request.id}"[:50]
 
     # Create College
     college = College.objects.create(

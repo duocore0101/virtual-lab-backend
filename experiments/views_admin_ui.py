@@ -35,7 +35,7 @@ def admin_dashboard(request):
 
     experiments = Experiment.objects.filter(
         teacher__college=college
-    )
+    ).order_by("number")
 
     # 🔥 Plan-based filtering
     if college.selected_plan == 'dpharm':
@@ -245,7 +245,7 @@ def admin_experiments(request):
         return redirect("/login/")
 
     # 🔥 Plan-based filtering
-    experiments = Experiment.objects.select_related("teacher").order_by("name")
+    experiments = Experiment.objects.select_related("teacher").order_by("number")
 
     selected_plan = 'combo'
     if request.session.get("role") == "admin":
@@ -306,7 +306,7 @@ def teacher_detail_admin(request, teacher_id):
     )
 
     # Assigned Experiments
-    experiments = Experiment.objects.filter(teacher=teacher)
+    experiments = Experiment.objects.filter(teacher=teacher).order_by("number")
 
     # Completed Attempts
     attempts = ExperimentAttempt.objects.filter(

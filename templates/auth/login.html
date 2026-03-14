@@ -312,11 +312,11 @@ Don't have an account?
   </div>
 
   <div id="collegeTextDiv" style="display:none;" class="full">
-    <input type="text" name="college_name" placeholder="Enter New College Name">
+    <input type="text" name="college_name" id="collegeNameInput" placeholder="Enter New College Name">
   </div>
 
   <div id="addressDiv" style="display:none;" class="full">
-    <input type="text" name="college_address" placeholder="College Address">
+    <input type="text" name="college_address" id="collegeAddressInput" placeholder="College Address">
   </div>
 
   <!-- Teacher / Student -->
@@ -383,7 +383,7 @@ Don't have an account?
   </div>
 
   <div id="planDiv" style="display:none;" class="full">
-    <select name="selected_plan">
+    <select name="selected_plan" id="planSelect">
       <option value="">Select College Plan</option>
       <option value="single">Single Experiment (₹1,000)</option>
       <option value="dpharm">D.Pharm Plan (₹11,999)</option>
@@ -417,18 +417,30 @@ function toggleLogin(){
 
 function handleRoleChange(){
   let role=document.getElementById("roleSelect").value;
-  let textDiv=document.getElementById("collegeTextDiv");
-  let dropdownDiv=document.getElementById("collegeDropdownDiv");
-  let teacherDiv=document.getElementById("teacherDropdownDiv");
-  let rollDiv=document.getElementById("rollNoDiv");
-  let rollInput=document.getElementById("rollNoInput");
+  // Containers
+  let textDiv = document.getElementById("collegeTextDiv");
+  let dropdownDiv = document.getElementById("collegeDropdownDiv");
+  let teacherDiv = document.getElementById("teacherDropdownDiv");
+  let rollDiv = document.getElementById("rollNoDiv");
+  let logoDiv = document.getElementById("logoDiv");
+  let addressDiv = document.getElementById("addressDiv");
+  let planDiv = document.getElementById("planDiv");
+  let subjectDiv = document.getElementById("subjectDiv");
+  let studentSubjectDiv = document.getElementById("studentSubjectDiv");
 
-  // 🔥 NEW FIELDS
-  let logoDiv=document.getElementById("logoDiv");
-  let addressDiv=document.getElementById("addressDiv");
-  let planDiv=document.getElementById("planDiv");
-  let subjectDiv=document.getElementById("subjectDiv");
-  let registerBtn=document.getElementById("registerBtn");
+  // Inputs
+  let rollInput = document.getElementById("rollNoInput");
+  let collegeNameInput = document.getElementById("collegeNameInput");
+  let collegeAddressInput = document.getElementById("collegeAddressInput");
+  let planSelect = document.getElementById("planSelect");
+  let collegeDropdown = document.getElementById("collegeDropdown");
+  let teacherDropdown = document.getElementById("teacherDropdown");
+  let studentSubjectDropdown = document.getElementById("studentSubjectDropdown");
+  let registerBtn = document.getElementById("registerBtn");
+
+  // Reset required attributes
+  const inputsToReset = [collegeNameInput, collegeAddressInput, planSelect, collegeDropdown, teacherDropdown, studentSubjectDropdown, rollInput];
+  inputsToReset.forEach(input => { if(input) input.removeAttribute("required"); });
 
   if(role==="admin"){
     textDiv.style.display="block";
@@ -436,12 +448,16 @@ function handleRoleChange(){
     addressDiv.style.display="block";
     planDiv.style.display="block";
     subjectDiv.style.display="none";
-    registerBtn.innerText="Request for Quotation";
-
     dropdownDiv.style.display="none";
     teacherDiv.style.display="none";
+    studentSubjectDiv.style.display="none";
     rollDiv.style.display="none";
-    rollInput.removeAttribute("required");
+
+    if(collegeNameInput) collegeNameInput.setAttribute("required","required");
+    if(collegeAddressInput) collegeAddressInput.setAttribute("required","required");
+    if(planSelect) planSelect.setAttribute("required","required");
+
+    registerBtn.innerText="Request for Quotation";
   }
   else if(role==="teacher"){
     textDiv.style.display="none";
@@ -449,26 +465,32 @@ function handleRoleChange(){
     addressDiv.style.display="none";
     planDiv.style.display="none";
     subjectDiv.style.display="block";
-    registerBtn.innerText="Register";
-
     dropdownDiv.style.display="block";
     teacherDiv.style.display="none";
+    studentSubjectDiv.style.display="none";
     rollDiv.style.display="none";
-    rollInput.removeAttribute("required");
+
+    if(collegeDropdown) collegeDropdown.setAttribute("required","required");
+
+    registerBtn.innerText="Register";
   }
-    else if(role==="student"){
+  else if(role==="student"){
     textDiv.style.display="none";
     logoDiv.style.display="none";
     addressDiv.style.display="none";
     planDiv.style.display="none";
     subjectDiv.style.display="none";
-    registerBtn.innerText="Register";
-
     dropdownDiv.style.display="block";
     teacherDiv.style.display="block";
-    document.getElementById("studentSubjectDiv").style.display="block";
+    studentSubjectDiv.style.display="block";
     rollDiv.style.display="block";
-    rollInput.setAttribute("required","required");
+
+    if(collegeDropdown) collegeDropdown.setAttribute("required","required");
+    if(teacherDropdown) teacherDropdown.setAttribute("required","required");
+    if(studentSubjectDropdown) studentSubjectDropdown.setAttribute("required","required");
+    if(rollInput) rollInput.setAttribute("required","required");
+
+    registerBtn.innerText="Register";
   }
 }
 
