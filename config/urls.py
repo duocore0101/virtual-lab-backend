@@ -5,7 +5,7 @@ from accounts.views import login_view, logout_view, intro_video_view
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from .views import pricing_view
+from .views import pricing_view, gallery_view
 
 # -------------------------
 # PUBLIC HOME PAGE
@@ -41,6 +41,7 @@ urlpatterns = [
 path("features/", features_view, name="features"),
 path("experiments/", experiments_view, name="experiments"),
 path("pricing/", pricing_view, name="pricing"),
+path("gallery/", gallery_view, name="gallery"),
 path('about/', views.about, name='about'),
 
     # -------------------------

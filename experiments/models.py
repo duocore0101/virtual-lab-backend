@@ -337,6 +337,16 @@ class Exam(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
+    @property
+    def total_max_marks(self):
+        """Calculates total marks from all sections"""
+        total = self.viva_marks
+        total += sum(q.marks for q in self.mcqs.all())
+        total += sum(q.marks for q in self.short_answers.all())
+        total += sum(q.marks for q in self.spotting_questions.all())
+        total += sum(q.marks for q in self.practicals.all())
+        return total
+
     def __str__(self):
         return f"{self.title} - {self.teacher.first_name}"
     
@@ -368,6 +378,15 @@ class MCQBank(models.Model):
         help_text="Optional topic/category"
     )
 
+    # 🔥 NEW: Link to Experiment
+    experiment = models.ForeignKey(
+        'Experiment',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="mcq_bank"
+    )
+
     is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -390,6 +409,15 @@ class ShortAnswerBank(models.Model):
     topic = models.CharField(
         max_length=100,
         blank=True
+    )
+
+    # 🔥 NEW: Link to Experiment
+    experiment = models.ForeignKey(
+        'Experiment',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="short_answer_bank"
     )
 
     is_active = models.BooleanField(default=True)
@@ -644,3 +672,39 @@ class ExamAttempt(models.Model):
 
     def __str__(self):
         return f"{self.student} → {self.exam.title}"
+
+# =========================================================
+# 🔥 SESSIONAL CONTINUOUS MARKS (MANUAL ENTRY)
+# =========================================================
+class SessionalContinuousMark(models.Model):
+    """
+    Stores the 5-mark 'Continuous Mode' assessment for a student 
+    per subject and academic year.
+    """
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="sessional_marks",
+        limit_choices_to={"role": "student"}
+    )
+    teacher = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="managed_sessional_marks",
+        limit_choices_to={"role": "teacher"}
+    )
+    year = models.CharField(max_length=50) # e.g., "dpharm_2"
+    
+    # We use a unique key for the 'pair' or 'subject' context 
+    # to differentiate marks across different subjects/years.
+    subject_code = models.CharField(max_length=50) 
+    
+    continuous_score = models.FloatField(default=0)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("student", "year", "subject_code")
+
+    def __str__(self):
+        return f"{self.student.roll_no} - {self.subject_code} - {self.continuous_score}"

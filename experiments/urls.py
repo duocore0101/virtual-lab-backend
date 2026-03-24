@@ -88,6 +88,7 @@ from .views_teacher_ui import (
     create_student,
     reject_student_request,
     approve_student_request,
+    approve_all_student_requests,
     teacher_student_requests,
     # Teacher clickable pages
     teacher_students,
@@ -106,10 +107,17 @@ from .views_teacher_ui import (
     delete_exam_mcq,
     delete_exam_short,
     delete_exam_spotting,
+    delete_exam_practical,
     teacher_exam_attempts,
     evaluate_attempt,
     export_students_pdf,
     export_students_excel,
+    export_exam_questions_pdf,
+    export_exam_submissions_pdf,
+    sessional_marksheet_select,
+    sessional_marksheet_view,
+    save_continuous_mark,
+    export_sessional_marksheet_pdf,
 )
 
 # =========================
@@ -457,6 +465,12 @@ path(
 ),
 
 path(
+    "teacher/student-requests/approve-all/",
+    approve_all_student_requests,
+    name="approve-all-student-requests"
+),
+
+path(
     "teacher/student-requests/reject/<int:student_id>/",
     reject_student_request,
     name="reject-student-request"
@@ -495,11 +509,16 @@ path(
     teacher_toggle_exam,
     name="teacher-toggle-exam"
 ),
-path(
-    "teacher/exams/<int:exam_id>/builder/",
-    teacher_exam_builder,
-    name="teacher-exam-builder"
-),
+    path(
+        "teacher/exams/<int:exam_id>/builder/",
+        teacher_exam_builder,
+        name="teacher-exam-builder"
+    ),
+    path(
+        "teacher/exams/<int:exam_id>/download-questions/",
+        export_exam_questions_pdf,
+        name="teacher-exam-download-pdf"
+    ),
 path(
     "teacher/mcq/delete/<int:mcq_id>/",
     delete_exam_mcq,
@@ -516,10 +535,42 @@ path(
     name="delete-exam-spotting"
 ),
 path(
+    "teacher/practical/delete/<int:practical_id>/",
+    delete_exam_practical,
+    name="delete-exam-practical"
+),
+path(
     "teacher/exams/<int:exam_id>/attempts/",
     teacher_exam_attempts,
     name="teacher-exam-attempts"
 ),
+    path(
+        "teacher/exams/<int:exam_id>/download-attempts-pdf/",
+        export_exam_submissions_pdf,
+        name="teacher-exam-download-attempts-pdf"
+    ),
+    
+    # 🔥 SESSIONAL MARKSHEET
+    path(
+        "teacher/sessional-marksheet/select/",
+        sessional_marksheet_select,
+        name="sessional-marksheet-select"
+    ),
+    path(
+        "teacher/sessional-marksheet/view/",
+        sessional_marksheet_view,
+        name="sessional-marksheet-view"
+    ),
+    path(
+        "teacher/sessional-marksheet/save-mark/",
+        save_continuous_mark,
+        name="save-continuous-mark"
+    ),
+    path(
+        "teacher/sessional-marksheet/download-pdf/",
+        export_sessional_marksheet_pdf,
+        name="download-sessional-pdf"
+    ),
     # =================================================
     # PRACTICALS (⚠ ORDER IS CRITICAL)
     # =================================================

@@ -9,38 +9,94 @@
 /* ============================= */
 /* PAGE WRAPPER */
 /* ============================= */
+/* ============================= */
+/* PAGE WRAPPER */
+/* ============================= */
 .builder-wrapper {
     padding: 40px;
-    background: linear-gradient(135deg, #f4f6fb, #eef2ff);
+    background: var(--bg-main);
     min-height: 100vh;
 }
 
 /* ============================= */
-/* SECTION CARD (GLASS STYLE) */
+/* SECTION CARD (PREMIUM GLASS) */
 /* ============================= */
 .section-card {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(14px);
-    border-radius: 18px;
-    padding: 28px;
-    margin-bottom: 35px;
-    border: 1px solid rgba(0,0,0,0.05);
-
-    /* 🔥 Strong Multi-Layer Shadow */
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.08),
-        0 25px 60px rgba(79, 70, 229, 0.08),
-        0 2px 8px rgba(0, 0, 0, 0.04);
-
-    transition: all 0.35s ease;
+    background: rgba(var(--card-rgb, 255, 255, 255), 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 35px;
+    margin-bottom: 40px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: var(--text-main);
 }
 
 .section-card:hover {
-    transform: translateY(-6px);
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.12),
-        0 35px 80px rgba(79, 70, 229, 0.12),
-        0 5px 15px rgba(0, 0, 0, 0.06);
+    transform: translateY(-8px);
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.2),
+        0 10px 10px -5px rgba(255, 26, 26, 0.1);
+    border-color: var(--accent-red);
+}
+
+/* Theme helper logic */
+body:not(.light-theme) .section-card {
+    --card-rgb: 20, 20, 20;
+}
+.light-theme .section-card {
+    --card-rgb: 255, 255, 255;
+}
+
+/* ============================= */
+/* BANK ITEM (REFINED HOVER) */
+/* ============================= */
+/* ============================= */
+/* BANK ITEM (REFINED HOVER) */
+/* ============================= */
+.bank-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: var(--text-main);
+}
+
+.bank-item:hover {
+    background: rgba(var(--accent-red-rgb, 255, 26, 26), 0.05);
+    border-color: var(--accent-red);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(255, 26, 26, 0.1);
+}
+
+.bank-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--accent-red);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.bank-item:hover::after {
+    transform: scaleY(1);
+}
+
+body:not(.light-theme) .bank-item {
+    --accent-red-rgb: 255, 26, 26;
 }
 
 /* ============================= */
@@ -51,64 +107,80 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
 }
 
 .section-card h3,
 .section-card h4 {
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 10px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+    letter-spacing: -0.025em;
 }
 
 /* ============================= */
 /* TOTAL BADGES */
 /* ============================= */
+/* ============================= */
+/* TOTAL BADGES */
+/* ============================= */
 .total-questions {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-dark));
     color: #fff;
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 700;
     font-size: 14px;
-    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+    box-shadow: var(--shadow-red);
 }
 
 /* ============================= */
 /* BUTTONS */
 /* ============================= */
 .btn-custom {
-    padding: 9px 16px;
-    border-radius: 10px;
+    padding: 10px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s ease;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-red-dark));
     color: white;
-    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-red);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background: #374151;
-    color: white;
+    background: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #16a34a, #22c55e);
+    background: linear-gradient(135deg, #10b981, #059669);
     color: white;
-    box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
 }
 
 .btn-danger {
     background: linear-gradient(135deg, #dc2626, #ef4444);
     color: white;
-    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+    box-shadow: var(--shadow-red-soft, 0 6px 15px rgba(239, 68, 68, 0.3));
 }
 
 .btn-custom:hover {
@@ -119,13 +191,18 @@
 /* ============================= */
 /* BUILDER BOX */
 /* ============================= */
+/* ============================= */
+/* BUILDER BOX */
+/* ============================= */
 .builder-box {
-    margin-top: 20px;
-    padding: 20px;
-    background: #f9fafc;
-    border-radius: 14px;
-    border: 1px solid #e5e7eb;
+    margin-top: 25px;
+    padding: 25px;
+    background: rgba(var(--text-rgb, 0,0,0), 0.03);
+    border-radius: 18px;
+    border: 1px solid var(--border-color);
 }
+body:not(.light-theme) .builder-box { --text-rgb: 255,255,255; }
+.light-theme .builder-box { --text-rgb: 0,0,0; }
 
 /* ============================= */
 /* INPUTS */
@@ -134,21 +211,22 @@ textarea,
 input,
 select {
     width: 100%;
-    padding: 11px 14px;
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
     margin-top: 12px;
     font-size: 14px;
-    transition: 0.25s ease;
-    background: #fff;
+    transition: all 0.25s ease;
+    background: var(--bg-main);
+    color: var(--text-main);
 }
 
 textarea:focus,
 input:focus,
 select:focus {
     outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 4px rgba(255, 26, 26, 0.15);
 }
 
 /* ============================= */
@@ -163,30 +241,27 @@ select:focus {
 /* ============================= */
 /* QUESTION CARD */
 /* ============================= */
+/* ============================= */
+/* QUESTION CARD */
+/* ============================= */
 .question-card {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 16px;
-    margin-top: 16px;
+    background: var(--bg-card);
+    padding: 22px;
+    border-radius: 18px;
+    margin-top: 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    border: 1px solid #e5e7eb;
-
-    /* 🔥 Elevated Card Shadow */
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.08),
-        0 15px 40px rgba(99, 102, 241, 0.08);
-
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    color: var(--text-main);
 }
 
 .question-card:hover {
     transform: translateY(-4px);
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.12),
-        0 25px 60px rgba(99, 102, 241, 0.15);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--accent-red);
 }
 /* ============================= */
 /* BADGES */
@@ -202,15 +277,16 @@ select:focus {
 }
 
 /* ============================= */
-/* BANK LIST SCROLL */
+/* BANK LIST & CARDS (PREMIUM) */
 /* ============================= */
 .bank-list {
-    max-height: 300px;
+    max-height: 500px;
     overflow-y: auto;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 10px;
-    background: #fff;
+    padding: 15px;
+    background: rgba(248, 250, 252, 0.5);
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
 }
 
 .bank-list::-webkit-scrollbar {
@@ -220,6 +296,197 @@ select:focus {
 .bank-list::-webkit-scrollbar-thumb {
     background: #6366f1;
     border-radius: 10px;
+}
+
+
+.bank-item:hover {
+    border-color: #6366f1;
+    background: #f8faff;
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+}
+
+.bank-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #6366f1;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.bank-item:hover::before {
+    opacity: 1;
+}
+
+.bank-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #4f46e5;
+}
+
+.bank-item-content {
+    flex: 1;
+    font-size: 15px;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.bank-item-meta {
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.bank-item-tag {
+    background: rgba(var(--accent-red-rgb, 255, 26, 26), 0.1);
+    color: var(--accent-red);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================= */
+/* PREVIEW MODAL (PREMIUM) */
+/* ============================= */
+.detail-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: modalBG 0.3s ease;
+}
+
+.detail-modal-content {
+    background: var(--bg-card);
+    width: 90%;
+    max-width: 650px;
+    border-radius: 24px;
+    position: relative;
+    animation: modalContent 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+@keyframes modalBG { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalContent { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+.modal-header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    padding: 24px 30px;
+    color: white;
+}
+
+.modal-header h3 { color: white !important; margin: 0; font-size: 20px; }
+
+.modal-body {
+    padding: 30px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.preview-q-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.preview-option {
+    background: var(--bg-main);
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+    transition: 0.2s;
+}
+
+.preview-option.correct {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.preview-option.correct::after {
+    content: '✓ Correct Answer';
+    float: right;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ============================= */
+/* PREVIEW TABLE (SIMULATOR STYLE) */
+/* ============================= */
+.preview-table-container {
+    width: 100%;
+    margin-top: 15px;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.preview-table thead {
+    background: linear-gradient(135deg, #ff2e2e, #ff5f5f);
+}
+
+.preview-table th {
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.preview-table td {
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    height: 38px;
+}
+
+.preview-table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
 }
 
 /* ============================= */
@@ -389,6 +656,94 @@ body.dark-mode select:focus {
     to { opacity: 1; }
 }
 
+/* ============================= */
+/* SPOTTING GRID PICKER */
+/* ============================= */
+.spotting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 12px;
+    background: rgba(var(--text-rgb, 0,0,0), 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+}
+
+.spotting-item {
+    position: relative;
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-card);
+}
+
+.spotting-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.spotting-item:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.spotting-item.selected {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.spotting-item .name-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    font-size: 11px;
+    padding: 8px 4px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-weight: 600;
+}
+
+.spotting-item:hover .name-overlay,
+.spotting-item.selected .name-overlay {
+    opacity: 1;
+}
+
+.spotting-item.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #6366f1;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
 </style>
 
 <div class="builder-wrapper">
@@ -430,19 +785,29 @@ body.dark-mode select:focus {
             <input type="hidden" name="action" value="add_spotting">
 
             <label><strong>Select Specimen from Bank</strong></label>
-            <select name="bank_id" required>
-                <option value="">-- Select Image --</option>
+            <input type="hidden" name="bank_id" id="selected_bank_id" required>
+
+            <div class="spotting-grid">
                 {% for item in spotting_bank %}
-                    <option value="{{ item.id }}">{{ item.name }}</option>
+                    <div class="spotting-item" data-id="{{ item.id }}" data-name="{{ item.name }}" onclick="selectSpotting(this, '{{ item.id }}')">
+                        <img src="{% static 'spotting_images/' %}{{ item.image_slug }}" alt="{{ item.name }}">
+                        <div class="name-overlay">{{ item.name }}</div>
+                    </div>
                 {% endfor %}
-            </select>
+            </div>
+
+            <div id="selection-status" style="margin-top: 10px; font-size: 14px; color: var(--text-main); font-weight: 600; min-height: 20px;">
+                <span style="opacity: 0.5; font-weight: normal;">Please select an image from the gallery above</span>
+            </div>
 
             <label style="margin-top:10px; display:block;"><strong>Marks</strong></label>
             <input type="number" name="marks" value="1" required>
 
             <button type="submit"
+                    id="addSpottingBtn"
                     class="btn-custom btn-success"
-                    style="margin-top:20px;">
+                    style="margin-top:20px;"
+                    disabled>
                 Add Spotting
             </button>
         </form>
@@ -517,7 +882,7 @@ body.dark-mode select:focus {
     <!-- ========================= -->
     <div class="section-card">
 
-        <h4>Question 2 – Add Questions</h4>
+        <h4>Question {% if exam.year == "dpharm_2" %}2{% else %}1{% endif %} – MCQs and Short Answers</h4>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
             <button class="btn-custom btn-primary" onclick="toggleSection('manual-mcq')">+ Manual MCQ</button>
@@ -575,23 +940,53 @@ body.dark-mode select:focus {
                 {% csrf_token %}
                 <input type="hidden" name="action" value="add_bank_mcq">
 
-                <input type="text" id="mcqSearch" placeholder="Search MCQs..." onkeyup="filterMCQ()">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label><strong>Filter by Experiment</strong></label>
+                        <select id="mcqExpFilter" onchange="filterMCQ()">
+                            <option value="all">-- All Experiments --</option>
+                            {% for exp in experiments_list %}
+                                <option value="{{ exp.id }}">{{ exp.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label><strong>Search Question</strong></label>
+                        <input type="text" id="mcqSearch" placeholder="Search MCQs..." onkeyup="filterMCQ()">
+                    </div>
+                </div>
 
                 <div id="mcqList" class="bank-list">
                     {% for q in mcq_bank %}
-                        <div class="question-card">
-                            <label style="display:flex; gap:10px;">
-                                <input type="checkbox" name="selected_mcqs" value="{{ q.id }}">
-                                {{ q.question_text|truncatechars:100 }}
-                            </label>
+                        <div class="bank-item" 
+                             data-exp="{{ q.experiment_id|default:'all' }}" 
+                             data-text="{{ q.question_text|lower }}"
+                             onclick="showMCQDetail('{{ q.question_text|escapejs }}', '{{ q.option_a|escapejs }}', '{{ q.option_b|escapejs }}', '{{ q.option_c|escapejs }}', '{{ q.option_d|escapejs }}', '{{ q.correct_option|escapejs }}')">
+                            
+                            <input type="checkbox" name="selected_mcqs" value="{{ q.id }}" onclick="event.stopPropagation()">
+                            
+                            <div class="bank-item-content">
+                                <strong>{{ forloop.counter }}.</strong> {{ q.question_text }}
+                                <div class="bank-item-meta">
+                                    <span class="bank-item-tag">MCQ</span>
+                                    {% if q.experiment %}
+                                        <small style="color: #6366f1; font-weight: 600;">{{ q.experiment.name }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div style="color: #94a3b8; font-size: 12px;">
+                                Click to preview
+                            </div>
                         </div>
                     {% empty %}
-                        <p>No MCQs available.</p>
+                        <p style="text-align: center; padding: 20px; color: #999;">No MCQs available in the bank.</p>
                     {% endfor %}
+                    <p id="noMCQMsg" style="display: none; text-align: center; padding: 20px; color: #999;">No matching MCQs found.</p>
                 </div>
 
-                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
-                    Add Selected
+                <button type="submit" class="btn-custom btn-success" style="margin-top:15px; width: 100%;">
+                    Add Selected MCQs
                 </button>
             </form>
         </div>
@@ -602,23 +997,53 @@ body.dark-mode select:focus {
                 {% csrf_token %}
                 <input type="hidden" name="action" value="add_bank_short">
 
-                <input type="text" id="shortSearch" placeholder="Search Short Questions..." onkeyup="filterShort()">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label><strong>Filter by Experiment</strong></label>
+                        <select id="shortExpFilter" onchange="filterShort()">
+                            <option value="all">-- All Experiments --</option>
+                            {% for exp in experiments_list %}
+                                <option value="{{ exp.id }}">{{ exp.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label><strong>Search Question</strong></label>
+                        <input type="text" id="shortSearch" placeholder="Search Short Questions..." onkeyup="filterShort()">
+                    </div>
+                </div>
 
                 <div id="shortList" class="bank-list">
                     {% for q in short_bank %}
-                        <div class="question-card">
-                            <label style="display:flex; gap:10px;">
-                                <input type="checkbox" name="selected_shorts" value="{{ q.id }}">
-                                {{ q.question_text|truncatechars:100 }}
-                            </label>
+                        <div class="bank-item" 
+                             data-exp="{{ q.experiment_id|default:'all' }}" 
+                             data-text="{{ q.question_text|lower }}"
+                             onclick="showShortDetail('{{ q.question_text|escapejs }}')">
+                            
+                            <input type="checkbox" name="selected_shorts" value="{{ q.id }}" onclick="event.stopPropagation()">
+                            
+                            <div class="bank-item-content">
+                                <strong>{{ forloop.counter }}.</strong> {{ q.question_text }}
+                                <div class="bank-item-meta">
+                                    <span class="bank-item-tag" style="background:#fef3c7; color:#d97706;">Short Answer</span>
+                                    {% if q.experiment %}
+                                        <small style="color: #6366f1; font-weight: 600;">{{ q.experiment.name }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div style="color: #94a3b8; font-size: 12px;">
+                                Click to preview
+                            </div>
                         </div>
                     {% empty %}
-                        <p>No Short Questions available.</p>
+                        <p style="text-align: center; padding: 20px; color: #999;">No short questions available in the bank.</p>
                     {% endfor %}
+                    <p id="noShortMsg" style="display: none; text-align: center; padding: 20px; color: #999;">No matching short questions found.</p>
                 </div>
 
-                <button type="submit" class="btn-custom btn-success" style="margin-top:10px;">
-                    Add Selected
+                <button type="submit" class="btn-custom btn-success" style="margin-top:15px; width: 100%;">
+                    Add Selected Short Questions
                 </button>
             </form>
         </div>
@@ -628,14 +1053,17 @@ body.dark-mode select:focus {
             <h4>Added Questions</h4>
 
             {% for mcq in exam.mcqs.all %}
-    <div class="question-card" data-marks="{{ mcq.marks }}">
+    <div class="question-card" 
+         data-marks="{{ mcq.marks }}" 
+         style="cursor:pointer;"
+         onclick="showMCQDetail('{{ mcq.question_text|escapejs }}', '{{ mcq.option_a|escapejs }}', '{{ mcq.option_b|escapejs }}', '{{ mcq.option_c|escapejs }}', '{{ mcq.option_d|escapejs }}', '{{ mcq.correct_option|escapejs }}')">
         
         <div style="flex:1; min-width:250px;">
-            {{ mcq.question_text }}
+            <strong>Q{{ forloop.counter }}.</strong> {{ mcq.question_text }}
             <span class="badge">MCQ</span>
         </div>
 
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:10px; align-items:center;" onclick="event.stopPropagation()">
             <form method="POST" style="display:flex; gap:5px;">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="update_mcq_marks">
@@ -656,13 +1084,16 @@ body.dark-mode select:focus {
 {% endfor %}
 
             {% for short in exam.short_answers.all %}
-                <div class="question-card" data-marks="{{ short.marks }}">
+                <div class="question-card" 
+                     data-marks="{{ short.marks }}" 
+                     style="cursor:pointer;"
+                     onclick="showShortDetail('{{ short.question_text|escapejs }}')">
                     <div style="width:60%;">
-                        {{ short.question_text }}
+                        <strong>Q{{ forloop.counter }}.</strong> {{ short.question_text }}
                         <span class="badge">Short</span>
                     </div>
 
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:10px;" onclick="event.stopPropagation()">
                         <form method="POST" style="display:flex; gap:5px;">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="update_short_marks">
@@ -684,7 +1115,7 @@ body.dark-mode select:focus {
 <!-- ========================= -->
 <div class="section-card">
 
-    <h4>Question 3 – Major Experiment</h4>
+    <h4>Question {% if exam.year == "dpharm_2" %}3{% else %}2{% endif %} (A) – Major Experiment</h4>
 
     {% if not major_practical %}
         <div class="builder-box">
@@ -711,20 +1142,23 @@ body.dark-mode select:focus {
 
     {% for p in practicals %}
         {% if p.practical_type == "major" %}
-            <div class="question-card" data-marks="{{ p.marks }}">
-                <div>
+            <div class="question-card" 
+                 data-marks="{{ p.marks }}"
+                 style="cursor:pointer;"
+                 onclick="showPracticalDetail('{{ p.title|escapejs }}', '{{ p.practical_type|title|escapejs }}', '{{ p.aim|escapejs }}', '{{ p.marks }}', '{{ p.experiment.slug|escapejs }}')">
+                <div style="flex: 1;">
                     <strong>{{ p.title }}</strong>
-                    <span class="badge">Major</span>
+                    <span class="badge">{{ p.practical_type|title }}</span>
                     <p style="font-size:13px; opacity:0.7;">Aim: {{ p.aim }}</p>
                 </div>
                 {% if p.experiment.slug %}
-                    <div style="margin-top:10px;">
+                    <div style="margin-top:10px;" onclick="event.stopPropagation()">
                         <video width="100%" controls style="max-width:400px; border-radius:10px;">
                             <source src="{% static 'experiment_videos/' %}{{ p.experiment.slug }}.mp4" type="video/mp4">
                         </video>
                     </div>
                 {% endif %}
-                <div style="display:flex; gap:10px;">
+                <div style="display:flex; gap:10px;" onclick="event.stopPropagation()">
                     <form method="POST" style="display:flex; gap:5px;">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="update_practical_marks">
@@ -732,6 +1166,7 @@ body.dark-mode select:focus {
                         <input type="number" name="marks" value="{{ p.marks }}" style="width:60px;">
                         <button type="submit" class="btn-custom btn-success">✔</button>
                     </form>
+                    <a href="{% url 'delete-exam-practical' p.id %}" class="btn-custom btn-danger">Delete</a>
                 </div>
             </div>
         {% endif %}
@@ -742,7 +1177,7 @@ body.dark-mode select:focus {
 
 <div class="section-card">
 
-    <h4>Question 4 – Minor Experiment</h4>
+    <h4>Question {% if exam.year == "dpharm_2" %}3{% else %}2{% endif %} (B) – Minor Experiment</h4>
 
     {% if not minor_practical %}
         <div class="builder-box">
@@ -769,20 +1204,23 @@ body.dark-mode select:focus {
 
     {% for p in practicals %}
         {% if p.practical_type == "minor" %}
-            <div class="question-card" data-marks="{{ p.marks }}">
-                <div>
+            <div class="question-card" 
+                 data-marks="{{ p.marks }}"
+                 style="cursor:pointer;"
+                 onclick="showPracticalDetail('{{ p.title|escapejs }}', '{{ p.practical_type|title|escapejs }}', '{{ p.aim|escapejs }}', '{{ p.marks }}', '{{ p.experiment.slug|escapejs }}')">
+                <div style="flex: 1;">
                     <strong>{{ p.title }}</strong>
-                    <span class="badge">Minor</span>
+                    <span class="badge">{{ p.practical_type|title }}</span>
                     <p style="font-size:13px; opacity:0.7;">Aim: {{ p.aim }}</p>
                 </div>
                 {% if p.experiment.slug %}
-                    <div style="margin-top:10px;">
+                    <div style="margin-top:10px;" onclick="event.stopPropagation()">
                         <video width="100%" controls style="max-width:400px; border-radius:10px;">
                             <source src="{% static 'experiment_videos/' %}{{ p.experiment.slug }}.mp4" type="video/mp4">
                         </video>
                     </div>
                 {% endif %}
-                <div style="display:flex; gap:10px;">
+                <div style="display:flex; gap:10px;" onclick="event.stopPropagation()">
                     <form method="POST" style="display:flex; gap:5px;">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="update_practical_marks">
@@ -790,6 +1228,7 @@ body.dark-mode select:focus {
                         <input type="number" name="marks" value="{{ p.marks }}" style="width:60px;">
                         <button type="submit" class="btn-custom btn-success">✔</button>
                     </form>
+                    <a href="{% url 'delete-exam-practical' p.id %}" class="btn-custom btn-danger">Delete</a>
                 </div>
             </div>
         {% endif %}
@@ -801,7 +1240,7 @@ body.dark-mode select:focus {
 <!-- ========================= -->
 <div class="section-card question-card" data-marks="{{ exam.viva_marks|default:0 }}">
 
-    <h4>Question 5 – Viva</h4>
+    <h4>Question {% if exam.year == "dpharm_2" %}4{% else %}3{% endif %} – Viva</h4>
 
     <div class="builder-box">
 
@@ -836,6 +1275,21 @@ body.dark-mode select:focus {
     </div>
 </div>
 
+<!-- QUESTION DETAIL MODAL -->
+<div id="qDetailModal" class="detail-modal" onclick="closeQDetailModal()">
+    <div class="detail-modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Question Preview</h3>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Dynamic Content -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-custom btn-secondary" onclick="closeQDetailModal()">Close Preview</button>
+        </div>
+    </div>
+</div>
+
 <script>
 function openImageModal(src) {
     const modal = document.getElementById("imageModal");
@@ -859,26 +1313,205 @@ function toggleSection(id) {
 }
 
 function filterMCQ() {
-    let input = document.getElementById("mcqSearch").value.toLowerCase();
-    let items = document.querySelectorAll("#mcqList .question-card");
+    let query = document.getElementById("mcqSearch").value.toLowerCase();
+    let expFilter = document.getElementById("mcqExpFilter").value;
+    let items = document.querySelectorAll("#mcqList .bank-item");
+    let hasResults = false;
 
     items.forEach(item => {
-        item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+        let text = item.getAttribute("data-text");
+        let exp = item.getAttribute("data-exp");
+        
+        let matchesQuery = text.includes(query);
+        let matchesExp = (expFilter === "all" || exp === expFilter);
+
+        if (matchesQuery && matchesExp) {
+            item.style.display = "block";
+            hasResults = true;
+        } else {
+            item.style.display = "none";
+        }
     });
+
+    document.getElementById("noMCQMsg").style.display = hasResults ? "none" : "block";
 }
 
 function filterShort() {
-    let input = document.getElementById("shortSearch").value.toLowerCase();
-    let items = document.querySelectorAll("#shortList .question-card");
+    let query = document.getElementById("shortSearch").value.toLowerCase();
+    let expFilter = document.getElementById("shortExpFilter").value;
+    let items = document.querySelectorAll("#shortList .bank-item");
+    let hasResults = false;
 
     items.forEach(item => {
-        item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+        let text = item.getAttribute("data-text");
+        let exp = item.getAttribute("data-exp");
+        
+        let matchesQuery = text.includes(query);
+        let matchesExp = (expFilter === "all" || exp === expFilter);
+
+        if (matchesQuery && matchesExp) {
+            item.style.display = "block";
+            hasResults = true;
+        } else {
+            item.style.display = "none";
+        }
     });
+
+    document.getElementById("noShortMsg").style.display = hasResults ? "none" : "block";
 }
+
+// ===============================
+// EXPERIMENT TABLE DATA
+// ===============================
+</script>
+{{ experiment_tables|json_script:"exp-tables-data" }}
+<script>
+const expTables = JSON.parse(document.getElementById('exp-tables-data').textContent);
 
 // ===============================
 // LIVE TOTAL MARKS CALCULATION
 // ===============================
+// ===============================
+// QUESTION DETAIL MODAL LOGIC
+// ===============================
+function showMCQDetail(text, a, b, c, d, correct) {
+    const modal = document.getElementById("qDetailModal");
+    const content = modal.querySelector(".detail-modal-content");
+    const body = document.getElementById("modalBody");
+
+    content.style.maxWidth = "650px"; // Default size
+    
+    let optionsHtml = '';
+    const options = [
+        { label: 'A', text: a },
+        { label: 'B', text: b },
+        { label: 'C', text: c },
+        { label: 'D', text: d }
+    ];
+    
+    options.forEach(opt => {
+        const isCorrect = opt.label === correct;
+        optionsHtml += `
+            <div class="preview-option ${isCorrect ? 'correct' : ''}">
+                <strong>${opt.label}:</strong> ${opt.text}
+            </div>
+        `;
+    });
+    
+    body.innerHTML = `
+        <div class="preview-q-text">${text}</div>
+        <div class="options-container">
+            ${optionsHtml}
+        </div>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+            <span class="badge" style="background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;">1 Mark</span>
+        </div>
+    `;
+    
+    modal.style.display = "flex";
+}
+
+function showShortDetail(text) {
+    const modal = document.getElementById("qDetailModal");
+    const content = modal.querySelector(".detail-modal-content");
+    const modalBody = document.getElementById("modalBody");
+
+    content.style.maxWidth = "650px"; // Default size
+
+    modalBody.innerHTML = `
+        <div class="preview-q-text">${text}</div>
+        <div class="bank-item-meta" style="margin-top:20px;">
+            <span class="bank-item-tag" style="background:#fef3c7; color:#d97706;">Short Answer (Empty Box in Paper)</span>
+        </div>
+        <div style="border: 1px dashed #cbd5e1; height: 120px; border-radius: 12px; margin-top: 15px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px;">
+            [ Student Space for Answer ]
+        </div>
+    `;
+    modal.style.display = "flex";
+}
+
+function showPracticalDetail(title, type, aim, marks, slug) {
+    const modal = document.getElementById("qDetailModal");
+    const content = modal.querySelector(".detail-modal-content");
+    const modalBody = document.getElementById("modalBody");
+
+    content.style.maxWidth = "950px"; // Expand for tables
+
+    const displayAim = aim && aim !== 'None' ? aim : `To study ${title}`;
+
+    // Get table HTML or fallback to generic placeholder
+    const tableHtml = expTables[slug] || `
+        <div style="height: 60px; border: 1px dashed #cbd5e1; border-radius: 8px; margin-top: 10px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 13px;">
+            [ Observation Table Placeholder ]
+        </div>
+    `;
+
+    modalBody.innerHTML = `
+        <div class="preview-q-text">${title}</div>
+        <div style="margin-bottom: 20px;">
+            <span class="badge" style="margin:0">${type}</span>
+            <span class="badge" style="background:#10b981;">${marks} Marks</span>
+        </div>
+        
+        <div style="background: #ffffff; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="margin-bottom: 25px;">
+                <h5 style="color: #6366f1; margin: 0 0 10px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Aim
+                </h5>
+                <p style="font-size: 15px; color: #334155; margin: 0; line-height: 1.6; background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #6366f1;">${displayAim}</p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h5 style="color: #6366f1; margin: 0 0 10px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Requirement / Apparatus
+                </h5>
+                <div style="height: 40px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px;"></div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h5 style="color: #6366f1; margin: 0 0 10px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Theory / Principle
+                </h5>
+                <div style="height: 60px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px;"></div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h5 style="color: #6366f1; margin: 0 0 10px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Procedure
+                </h5>
+                <div style="height: 60px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px;"></div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h5 style="color: #6366f1; margin: 0 0 15px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Observation Table
+                </h5>
+                <div class="preview-table-container" style="overflow-x: auto;">
+                    ${tableHtml}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <h5 style="color: #6366f1; margin: 0 0 10px 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%;"></span>
+                    Result / Conclusion
+                </h5>
+                <div style="height: 60px; border-bottom: 1px solid #e2e8f0;"></div>
+            </div>
+        </div>
+    `;
+    modal.style.display = "flex";
+}
+
+function closeQDetailModal() {
+    document.getElementById("qDetailModal").style.display = "none";
+}
+
 function calculateLiveTotal() {
     let total = 0;
 
@@ -903,6 +1536,29 @@ document.addEventListener("input", function(e) {
         }
     }
 });
+
+function selectSpotting(element, id) {
+    // Remove selected class from all
+    document.querySelectorAll('.spotting-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // Add selected class to clicked
+    element.classList.add('selected');
+    
+    // Update hidden input
+    document.getElementById('selected_bank_id').value = id;
+    
+    // Update status text
+    const name = element.getAttribute('data-name');
+    document.getElementById('selection-status').innerHTML = `Selected: <span style="color: #6366f1;">${name}</span>`;
+    
+    // Enable button
+    document.getElementById('addSpottingBtn').disabled = false;
+    
+    // Visual feedback
+    document.getElementById('addSpottingBtn').style.opacity = "1";
+}
 
 // Calculate on page load
 document.addEventListener("DOMContentLoaded", function() {

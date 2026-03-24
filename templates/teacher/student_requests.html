@@ -17,6 +17,14 @@
     </div>
 
     <div>
+      {% if pending_approvals %}
+      <a href="/teacher/student-requests/approve-all/" 
+         class="activate-btn" 
+         style="margin-right: 15px; background: var(--accent-green); box-shadow: var(--shadow-green);"
+         onclick="return confirm('Are you sure you want to approve ALL pending students?')">
+         ✨ Approve All
+      </a>
+      {% endif %}
       <span style="
           background: var(--accent-red);
           padding:8px 14px;

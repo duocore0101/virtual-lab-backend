@@ -1,0 +1,57 @@
+54|1|introduction-to-pharmacology|Introduction to Pharmacology, Experimental Pharmacology, its Scope, Objectives, and Foundational Concepts
+4|2|experimental-instruments|Study of Commonly Used Instruments in Experimental Pharmacology
+60|3|lab-animals|Study of common laboratory animals in experimental pharmacology
+3|3|common-laboratory-animals|Study of common laboratory animals in experimental pharmacology.
+12|4|in-vitro-pharmacology-pss|Introduction to in-vitro pharmacology and physiological salt solutions
+6|5|dose-calculation-stock-solution|Study of dose calculation and stock solution preparation in pharmacological experiments.
+11|6|lab-animal-maintenance|Maintenance of laboratory animals as per CPCSEA guidelines (handling & restraining).
+13|7|blood-withdrawal-techniques|Common laboratory techniques: Blood withdrawal; Serum and plasma separation; Anaesthetics and euthanasia for animal studies.
+14|8|routes-drug-administration|Study of different routes of drug administration in small animals (rats/mice).
+5|9|rabbit-eye-drug-effects|Effect of drugs on rabbit eye (pupil size / intraocular pressure).
+22|10|ciliary-motility-frog|Effect of drugs on frog’s ciliary motility in frog oesophagus.
+55|11|guinea-pig-ileum-drc|Effect of agonists and antagonists on guinea pig ileum.
+24|12|saline-purgative-frog-intestine|Effect of saline purgative on frog intestine.
+52|13|spasmogens-spasmolytics-rabbit-jejunum|Effect of spasmogens and spasmolytics using rabbit jejunum.
+56|14|gastrointestinal-motility-mice-rats|Effect of Drugs on Gastrointestinal Motility in Mice/Rats
+1|15|rotarod|Effect of skeletal muscle relaxants using Rota-rod apparatus.
+2|16|actophotometer|Effect of drugs on locomotor activity using actophotometer.
+7|17|stereotyped-behavior|Study of stereotype behavior of drugs on rat/mice.
+8|18|anticataleptic-activity|Study of Anti-Catatonic (Anti-Cataleptic) Activity in Rats/Mice
+9|19|anticonvulsant-mes-ptz|Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
+10|20|epm-anxiolytic-activity|Study of anxiolytic activity of drugs using elevated plus maze method.
+49|21|chlorpromazine|Taming and hypnosis potentiating effect of chlorpromazine in mice/rat.
+15|22|frog-heart|Study of isolation and perfusion of frog heart.
+18|23|potassium-frog-heart|Study of effect of potassium ions on isolated frog heart.
+19|24|calcium-effect-frog-heart|Study of effect of calcium ions on isolated frog heart.
+16|25|acetylcholine-frog-heart|Study of effect of acetylcholine on isolated frog heart.
+17|26|adrenaline-frog-heart|Study of effect of adrenaline on isolated frog heart.
+21|27|dog-bp-drugs|Effect of drugs on blood pressure and heart rate of dog.
+20|28|diuretic-activity|Study of diuretic activity of drugs using rats/mice.
+25|29|analgesic-activity-hot-plate|Evaluation of analgesic activity by hot plate method.
+27|30|tail-flick|Evaluation of analgesic activity by tail flick method.
+29|31|carrageenan-edema|Evaluation of anti-inflammatory activity using carrageenan-induced paw edema model.
+23|32|test-for-pyrogens|Test for pyrogens (rabbit method).
+28|33|insulin-hypoglycaemic-rabbit|Study of insulin-induced hypoglycaemic effect in rabbit.
+53|34|anti-ulcer-shay-nsaids|Study of anti-ulcer activity using pylorus-ligated (Shay) rat model and NSAIDs-induced ulcer model.
+32|35|corneal-reflex|Study surface anaesthetic activity by loss of corneal reflex in rabbit
+33|36|infiltration-anaesthetic-wheal|Study infiltration anaesthetic activity by loss of cutaneous sensation in guinea pig wheal
+35|37|conduction-anaesthetic-frog|Study conduction anaesthetic activity by loss of reflex withdrawal in frog
+30|38|mast-cell-stabilizing-activity|Evaluation of anti-allergic activity by mast cell stabilization assay.
+51|39|diphenhydramine-asthma-guinea-pig|Effect of diphenhydramine in experimentally produced asthma in guinea pig.
+36|40|bioassay-assembly|Introduction to bioassay & assembly setup.
+37|41|acetylcholine-drc-frog-rectus|Dose-response curve (DRC) of acetylcholine using frog rectus abdominis muscle.
+57|42|physostigmine-drc-acetylcholine-frog-rectus|Effect of physostigmine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum.
+58|43|atropine-modification-drc-acetylcholine-rat-ileum|Effect of atropine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum.
+38|44|bioassay-histamine|Bioassay of histamine using guinea pig ileum by matching method.
+39|45|oxytocin-interpolation|Bioassay of oxytocin using rat uterine horn by interpolation method.
+40|46|serotonin-bioassay|Bioassay of serotonin (5-HT) using rat fundus strip by three-point method.
+41|47|bioassay-acetylcholine-rat-ileum|Bioassay of acetylcholine using rat ileum/colon by four-point method.
+46|48|pA2-prazosin-schild|Determination of PA₂ value of prazosin using rat anococcygenus muscle (Schild’s plot method).
+45|49|histamine-drc-ileum|Determination of PD₂ value using guinea pig ileum.
+43|50|acute-oral-toxicity|Determination of acute oral toxicity (LD₅₀) of a drug from given data.
+44|51|acute-skin-irritation-oecd-404|Determination of acute skin irritation/corrosion of a test substance.
+42|52|eye-irritation-oecd405|Determination of acute eye irritation/corrosion of a test substance.
+47|53|serum-biochemical-parameters|Estimation of serum biochemical parameters using semi-autoanalyser.
+48|54|pharmacokinetic-parameters|Calculation of pharmacokinetic parameters from given data.
+59|55|biostatistical-methods|Biostatistical methods in experimental pharmacology: Student’s t-test; ANOVA; Chi-square test; Wilcoxon signed-rank test.
+61|56|preclinical-types|Preclinical Experiments: Types and Details (In Vivo, In Vitro, Ex Vivo)

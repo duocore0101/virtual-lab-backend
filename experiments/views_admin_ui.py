@@ -8,7 +8,7 @@ import csv
 from accounts.models import User, TeacherRequest
 from .models import Experiment, ExperimentAttempt, AuditLog
 
-D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36]
 
 
 # =====================================================

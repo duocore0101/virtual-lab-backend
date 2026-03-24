@@ -1,0 +1,288 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>In Vitro Experiments – Theory</title>
+
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+    <style>
+        /* ================= SLIDE SYSTEM ================= */
+
+        .slide-container {
+            position: relative;
+            min-height: 260px;
+        }
+
+        .slide {
+            display: none;
+            animation: slideIn .5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-counter {
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 🔝 TOP RIGHT ACTION BUTTONS */
+
+        .top-actions {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 9999;
+        }
+
+        .top-actions button {
+            padding: 10px 18px;
+            border-radius: 22px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            background: #ff2e2e;
+            color: #fff;
+            box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .top-actions button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-actions">
+        <button onclick="toggleTheme()">🌗 Theme</button>
+        <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+    </div>
+
+    <div class="page-container">
+
+        <h1 class="title">
+            In Vitro Experiments
+        </h1>
+
+        <div class="slide-container">
+
+            <!-- ================= SLIDE 1 ================= -->
+
+            <div class="info-box slide active">
+
+                <h2>Definition</h2>
+
+                <p style="font-size:18px; text-align:center; line-height:1.7; font-weight:500;">
+
+                    <strong>In Vitro experiments</strong> are experiments performed
+                    outside any living organism in an artificial environment
+                    such as <strong>glassware or plasticware</strong> (test tubes, culture plates, etc.).
+
+                </p>
+
+                <p style="font-size:18px; text-align:center; margin-top:15px;">
+
+                    <strong>Purpose:</strong> Quick screening of drug activity on
+                    specific biological targets such as
+                    <strong>receptors, enzymes, or cultured cells.</strong>
+
+                </p>
+
+            </div>
+
+
+            <!-- ================= SLIDE 2 ================= -->
+
+            <div class="info-box slide">
+
+                <h2>Step-by-Step Procedure</h2>
+
+
+
+                <ul style="font-size:17px; line-height:1.8;">
+
+                    <li>Prepare the test system: Culture cells (e.g., cancer cell lines) or isolated enzymes/proteins in
+                        a multi-well plate or test tube.</li>
+
+                    <li>Add known concentrations of the test drug.</li>
+
+                    <li>Incubate under controlled conditions (37°C, specific pH, CO₂).</li>
+
+                    <li>Measure the response using instruments such as spectrophotometer, ELISA reader, or fluorescence
+                        reader.</li>
+
+                    <li>Calculate <strong>IC₅₀</strong> or <strong>EC₅₀</strong> values (concentration producing 50%
+                        inhibition or effect).</li>
+
+                    <li>Interpret the data and compare results with standard drugs.</li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- ================= SLIDE 3 ================= -->
+
+            <div class="info-box slide">
+
+                <h2>Advantages & Limitations</h2>
+
+                <h3 style="margin-bottom:10px;">Advantages</h3>
+
+                <ul style="font-size:17px; line-height:1.7;">
+                    <li>Fast and inexpensive</li>
+                    <li>High-throughput screening possible</li>
+                    <li>Ethical – no animal use</li>
+                    <li>Highly controlled experimental conditions</li>
+                </ul>
+
+                <br>
+
+                <h3 style="margin-bottom:10px;">Disadvantages</h3>
+
+                <ul style="font-size:17px; line-height:1.7;">
+                    <li>No whole-body effects</li>
+                    <li>Does not account for absorption, metabolism, and distribution</li>
+                    <li>Results may not always translate directly to humans</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="slide-counter">
+            Slide <span id="currentSlide">1</span> / 3
+        </div>
+
+
+        <div class="button-row">
+
+            <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+
+            <button id="nextButton" class="exp-btn" onclick="nextSlide()">
+                Next ▶
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let slides = document.querySelectorAll(".slide");
+        let index = 0;
+
+        function showSlide(i) {
+
+            slides.forEach(s => s.classList.remove("active"));
+            slides[i].classList.add("active");
+
+            document.getElementById("currentSlide").innerText = i + 1;
+
+            if (i === slides.length - 1) {
+
+                document.getElementById("nextButton").innerText = "Go to Experiment Page ▶";
+
+            }
+
+            else {
+
+                document.getElementById("nextButton").innerText = "Next ▶";
+
+            }
+
+        }
+
+        function nextSlide() {
+
+            if (index < slides.length - 1) {
+
+                index++;
+                showSlide(index);
+
+            }
+
+            else {
+
+                location.href = "/experiment/{{ experiment.slug }}/run/";
+
+            }
+
+        }
+
+        function prevSlide() {
+
+            if (index > 0) {
+
+                index--;
+                showSlide(index);
+
+            }
+
+            else {
+
+                location.href = "/experiment/{{ experiment.slug }}/run/";
+
+            }
+
+        }
+
+        document.addEventListener("keydown", function (e) {
+
+            if (e.key === "Enter") nextSlide();
+            if (e.key === "Escape") prevSlide();
+
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle("light-mode");
+        }
+
+        function toggleFullscreen() {
+
+            if (!document.fullscreenElement) {
+
+                document.documentElement.requestFullscreen().catch(() => {
+                    alert("Fullscreen not supported");
+                });
+
+            }
+
+            else {
+
+                document.exitFullscreen();
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

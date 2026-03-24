@@ -169,6 +169,11 @@
     border-color: rgba(249, 115, 22, 0.4); 
     background: rgba(249, 115, 22, 0.05);
 }
+.btn-download { 
+    color: #2563eb; 
+    border-color: rgba(37, 99, 235, 0.4); 
+    background: rgba(37, 99, 235, 0.05);
+}
 
 .action-btn i {
     font-style: normal;
@@ -186,9 +191,14 @@
 
     <div class="exam-header">
         <h2>Exams: <span style="color:#ff4b2b;">Management</span></h2>
-        <a href="/teacher/exams/create/?subject={{ subject_code|default:'' }}" class="create-btn">
-            <span style="font-size:20px;">+</span> Create Exam
-        </a>
+        <div style="display:flex; gap:12px;">
+            <a href="/teacher/sessional-marksheet/select/?subject={{ subject_code|default:'' }}" class="create-btn" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);">
+                <span style="font-size:20px;">📊</span> Sessional Marksheet
+            </a>
+            <a href="/teacher/exams/create/?subject={{ subject_code|default:'' }}" class="create-btn">
+                <span style="font-size:20px;">+</span> Create Exam
+            </a>
+        </div>
     </div>
 
     <div class="exam-card">
@@ -226,6 +236,9 @@
                     </td>
                     <td>
                         <div class="action-group" style="justify-content: flex-end;">
+                            <a href="/teacher/exams/{{ exam.id }}/download-questions/?subject={{ subject_code|default:'' }}" class="action-btn btn-download" title="Download Question Paper">
+                                Download Paper
+                            </a>
                             <a href="/teacher/exams/{{ exam.id }}/builder/?subject={{ subject_code|default:'' }}" class="action-btn btn-build">
                                 Build
                             </a>
@@ -236,7 +249,7 @@
                                 Attempts
                             </a>
                             <a href="/teacher/exams/{{ exam.id }}/toggle/?subject={{ subject_code|default:'' }}" class="action-btn btn-toggle">
-                                Toggle
+                                {% if exam.is_active %}Deactivate{% else %}Activate{% endif %}
                             </a>
                         </div>
                     </td>

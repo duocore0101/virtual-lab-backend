@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
 import json
-
+import re
 from .models import (
     Experiment, 
     Exam, 
@@ -12,8 +12,25 @@ from .models import (
     BatchExperiment, 
     StudentApproval
 )
+from .experiment_tables import EXPERIMENT_TABLES
 
-D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+def make_table_editable(html_string, prefix):
+    """
+    Replaces empty <td></td> with <td><input name="prefix_row_col"></td>
+    """
+    if not html_string:
+        return ""
+    
+    def replacer(match):
+        nonlocal cell_count
+        cell_count += 1
+        return f'<td><input type="text" name="{prefix}_cell_{cell_count}" class="table-input"></td>'
+    
+    cell_count = 0
+    modified_html = re.sub(r'<td>\s*</td>', replacer, html_string)
+    return modified_html
+
+D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36]
 
 # -------------------------
 # STUDENT DASHBOARD
@@ -75,10 +92,18 @@ def student_exam_dashboard(request):
 
     student = request.user
 
-    # 🔥 Fetch active exams from student's teacher
+    # 🔥 Get student's subject from their profile
+    # (Mapping bpharm_5/6 -> bpharm_56 for exam filtering)
+    subject_code = student.subject
+    target_year = subject_code
+    if subject_code in ["bpharm_5", "bpharm_6"]:
+        target_year = "bpharm_56"
+
+    # 🔥 Fetch active exams matching student's year/subject
     exams = Exam.objects.filter(
         teacher=student.created_by,
-        is_active=True
+        is_active=True,
+        year=target_year
     )
 
     exam_data = []
@@ -125,6 +150,8 @@ def start_exam(request, exam_id):
         return redirect("/login/")
 
     student = request.user
+    # Determine plan from student's subject code instead of college plan
+    is_dpharm = student.subject == "dpharm_2"
 
     # 🔥 Fetch exam safely
     exam = get_object_or_404(
@@ -156,7 +183,14 @@ def start_exam(request, exam_id):
     mcqs = exam.mcqs.all()
     short_answers = exam.short_answers.all()
     spotting_questions = exam.spotting_questions.all()
-    practicals = exam.practicals.all()
+    
+    # Process Practicals to include editable tables
+    practicals_raw = exam.practicals.all()
+    practicals = []
+    for p in practicals_raw:
+        table_html = EXPERIMENT_TABLES.get(p.experiment.slug, "")
+        p.editable_table = make_table_editable(table_html, f"practical_{p.id}")
+        practicals.append(p)
 
     return render(
         request,
@@ -169,6 +203,7 @@ def start_exam(request, exam_id):
             "spotting_questions": spotting_questions,
             "practicals": practicals,
             "duration": exam.duration_minutes,
+            "is_dpharm": is_dpharm,
         }
     )
 
@@ -339,25 +374,7 @@ def experiment_conclusion(request, slug):
 # 🔥 STUDENT → VIEW EXAM RESULT
 # =====================================================
 def student_view_result(request, exam_id):
-
-    if request.session.get("role") != "student":
-        return redirect("/login/")
-
-    student = request.user
-
-    attempt = get_object_or_404(
-        ExamAttempt,
-        student=student,
-        exam_id=exam_id,
-        status="approved",
-        teacher_approved=True
-    )
-
-    return render(
-        request,
-        "student/view_result.html",
-        {
-            "attempt": attempt,
-            "exam": attempt.exam
-        }
-    )
+    """
+    Disable this view for students. They should not see their result.
+    """
+    return redirect("/student/exams/")

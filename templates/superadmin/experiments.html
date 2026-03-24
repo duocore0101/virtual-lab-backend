@@ -213,7 +213,7 @@
     </div>
     <div class="experiment-grid">
       {% for exp in experiments %}
-        {% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" %}
+        {% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" or exp.slug == "preclinical-types" %}
           <div class="exp-card" data-exp-number="{{ exp.number }}">
             <div class="exp-info">
               <span class="exp-number">Experiment #{{ exp.number }}</span>
@@ -520,7 +520,7 @@
 </div>
 
 <script>
-const D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35];
+const D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36];
 
 function filterExperiments(category, btn) {
     // Update active button

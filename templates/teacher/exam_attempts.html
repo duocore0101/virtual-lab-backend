@@ -1,39 +1,243 @@
 {% extends "teacher/base.html" %}
+{% block title %}{{ exam.title }} - Submissions{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
-    <h3>{{ exam.title }} - Submitted Attempts</h3>
-    <hr>
+<style>
+    /* ================= PREMIUM THEME ================= */
+    :root {
+        --sub-glass-bg: rgba(255, 255, 255, 0.88);
+        --sub-glass-border: rgba(255, 255, 255, 0.6);
+        --sub-accent: #6366f1;
+        --sub-accent-light: #eef2ff;
+    }
 
-    {% if attempts %}
-        <table class="table table-bordered">
+    body.dark-mode {
+        --sub-glass-bg: rgba(30, 41, 59, 0.85);
+        --sub-glass-border: rgba(255, 255, 255, 0.1);
+        --sub-accent: #818cf8;
+        --sub-accent-light: rgba(99, 102, 241, 0.1);
+    }
+
+    .attempts-wrapper {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 25px;
+    }
+
+    /* ================= HEADER ================= */
+    .attempts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 35px;
+    }
+
+    .attempts-header h1 {
+        font-size: 26px;
+        font-weight: 800;
+        margin: 0;
+        color: var(--text-main);
+    }
+
+    /* ================= GLASS CARD ================= */
+    .glass-card {
+        background: var(--sub-glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--sub-glass-border);
+        border-radius: 28px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        overflow: hidden;
+    }
+
+    /* ================= TABLE UI ================= */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--sub-glass-border);
+    }
+
+    .custom-table thead th {
+        background: var(--sub-accent-light);
+        color: var(--sub-accent);
+        font-size: 11px;
+        letter-spacing: 1.2px;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 22px 24px;
+        text-align: left;
+        border: 1px solid var(--sub-glass-border);
+    }
+
+    .custom-table tbody td {
+        padding: 20px 24px;
+        border: 1px solid var(--sub-glass-border);
+        vertical-align: middle;
+        color: var(--text-main);
+        transition: 0.2s;
+    }
+
+    body.dark-mode .custom-table tbody td {
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .custom-table tbody tr:hover td {
+        background: rgba(99, 102, 241, 0.05);
+        color: var(--sub-accent);
+    }
+
+    .roll-pill {
+        display: inline-block;
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
+        font-weight: 800;
+        color: var(--sub-accent);
+        background: var(--sub-accent-light);
+        padding: 5px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .student-name {
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .sub-time {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+
+    .score-badge {
+        font-weight: 800;
+        color: var(--sub-accent);
+    }
+
+    /* ================= STATUS BADGES ================= */
+    .status-badge {
+        font-size: 11px;
+        font-weight: 800;
+        padding: 6px 14px;
+        border-radius: 50px;
+        text-transform: uppercase;
+    }
+
+    .bg-eval { background: #dcfce7; color: #166534; }
+    .bg-pend { background: #fef3c7; color: #92400e; }
+
+    /* ================= ACTION BUTTONS ================= */
+    .btn-action {
+        padding: 10px 18px;
+        border-radius: 14px;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-eval-primary {
+        background: var(--sub-accent);
+        color: white;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-eval-outline {
+        border: 1.5px solid var(--sub-accent);
+        color: var(--sub-accent);
+    }
+
+    .btn-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4);
+        color: white;
+        background: #4f46e5;
+    }
+
+</style>
+
+<div class="attempts-wrapper">
+
+    <!-- HEADER AREA -->
+    <div class="attempts-header">
+        <div>
+            <h1>{{ exam.title }}</h1>
+            <div style="font-size: 14px; color: var(--sub-accent); font-weight: 700; margin-top: 2px; opacity: 0.9;">
+                {{ exam.get_exam_type_display }}
+            </div>
+            <div class="text-muted" style="font-size: 13px; font-weight: 600; margin-top: 5px;">Exam Submissions & Grading Dashboard</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'teacher-exam-download-attempts-pdf' exam.id %}" class="btn btn-action btn-eval-primary" style="border-radius: 50px;">
+                <i class="fas fa-file-pdf"></i> Download Student List
+            </a>
+            <a href="{% url 'teacher-exams' %}" class="btn btn-action btn-eval-outline" style="border-radius: 50px;">
+                <i class="fas fa-arrow-left"></i> Back to Exams
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN GLASS CARD -->
+    <div class="glass-card">
+        <table class="custom-table">
             <thead>
                 <tr>
-                    <th>Student</th>
-                    <th>MCQ Score</th>
-                    <th>Submitted At</th>
-                    <th>Action</th>
+                    <th style="width: 15%;">Roll Number</th>
+                    <th style="width: 30%;">Student Name</th>
+                    <th style="width: 20%;">Evaluation Status</th>
+                    <th style="width: 15%;">Final marks</th>
+                    <th style="text-align: right; width: 20%;">Grading Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for attempt in attempts %}
                 <tr>
-                    <td>{{ attempt.student.first_name }}</td>
-                    <td>{{ attempt.mcq_score }}</td>
-                    <td>{{ attempt.submitted_at }}</td>
                     <td>
+                        <span class="roll-pill">{{ attempt.student.roll_no|default:"N/A" }}</span>
+                    </td>
+                    <td>
+                        <div class="student-name">{{ attempt.student.first_name }} {{ attempt.student.last_name }}</div>
+                        <div class="sub-time">Sub: {{ attempt.submitted_at|date:"d M, Y | H:i" }}</div>
+                    </td>
+                    <td>
+                        {% if attempt.status == "submitted" %}
+                            <span class="status-badge bg-pend">Pending Grading</span>
+                        {% else %}
+                            <span class="status-badge bg-eval">Evaluation Done</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if attempt.status == "approved" %}
+                            <span class="score-badge">{{ attempt.total_score }} / {{ exam.total_max_marks }}</span>
+                        {% else %}
+                            <span class="text-muted italic" style="font-size:12px;">Waiting...</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">
                         <a href="{% url 'evaluate-attempt' attempt.id %}" 
-                           class="btn btn-sm btn-primary">
-                           Evaluate
+                           class="btn-action {% if attempt.status == 'approved' %}btn-eval-outline{% else %}btn-eval-primary{% endif %}">
+                           {% if attempt.status == 'approved' %}
+                           <i class="fas fa-edit"></i> Re-mark
+                           {% else %}
+                           <i class="fas fa-check-circle"></i> Grade Paper
+                           {% endif %}
                         </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 80px; color: var(--text-muted); font-style: italic;">
+                        <div style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;"><i class="fas fa-folder-open"></i></div>
+                        No submissions received for this exam yet.
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>No submissions yet.</p>
-    {% endif %}
+    </div>
 </div>
 
 {% endblock %}

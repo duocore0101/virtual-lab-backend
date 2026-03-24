@@ -1,0 +1,264 @@
+{% extends "teacher/base.html" %}
+{% block title %}Sessional Marksheet - {{ ex1.title }}{% endblock %}
+
+{% block content %}
+<style>
+    .marksheet-wrapper {
+        margin: 40px auto;
+        padding: 0 40px;
+    }
+
+    /* ================= HEADER ================= */
+    .marksheet-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 35px;
+    }
+
+    .header-info h1 {
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 5px;
+        color: var(--text-main);
+    }
+
+    .header-info p {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    /* ================= ACTION BUTTONS ================= */
+    .header-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-sess {
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-sess-pdf {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1.5px solid #fecaca;
+    }
+
+    .btn-sess-pdf:hover {
+        background: #dc2626;
+        color: white;
+    }
+
+    .btn-sess-back {
+        background: var(--bg-panel);
+        border: 1.5px solid var(--border-color);
+        color: var(--text-main);
+    }
+
+    /* ================= TABLE GRID ================= */
+    .glass-grid-card {
+        background: var(--bg-panel);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .sess-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .sess-table thead th {
+        background: rgba(99, 102, 241, 0.05);
+        color: #6366f1;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 22px 15px;
+        text-align: center;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+        border-right: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .sess-table tbody td {
+        padding: 18px 15px;
+        text-align: center;
+        border-bottom: 1px solid rgba(0,0,0,0.03);
+        border-right: 1px solid rgba(0,0,0,0.03);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .sess-table tr:hover td {
+        background: rgba(99, 102, 241, 0.02);
+    }
+
+    /* ================= INPUT STYLING ================= */
+    .cont-input {
+        width: 70px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border-color);
+        background: var(--bg-main);
+        color: #6366f1;
+        font-weight: 800;
+        text-align: center;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .cont-input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    .auto-save-status {
+        font-size: 10px;
+        font-weight: 700;
+        display: block;
+        margin-top: 4px;
+        opacity: 0;
+        transition: 0.3s;
+    }
+
+    /* ================= HIGHLIGHT COLUMNS ================= */
+    .col-avg { color: #8b5cf6; background: rgba(139, 92, 246, 0.02); }
+    .col-final { color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.02); }
+
+</style>
+
+<div class="marksheet-wrapper">
+    
+    <!-- HEADER -->
+    <div class="marksheet-header">
+        <div class="header-info">
+            <h1>Sessional Marksheet: Consolidated</h1>
+            <p>Subject: {{ ex1.title }} | Year: {{ ex1.get_year_display }}</p>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'download-sessional-pdf' %}?ex1={{ ex1.id }}&ex2={{ ex2.id }}" class="btn-sess btn-sess-pdf">
+                <i class="fas fa-file-pdf"></i> Download Result PDF
+            </a>
+            <a href="{% url 'teacher-exams' %}" class="btn-sess btn-sess-back">
+                <i class="fas fa-arrow-left"></i> Back to Exams
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="glass-grid-card">
+        <table class="sess-table">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Roll No</th>
+                    <th style="text-align: left; width: 220px;">Student Name</th>
+                    <th style="width: 120px;">Continuous Mode<br>(5 Marks)</th>
+                    <th style="width: 100px;">Sessional 1<br>({{ ex1.total_max_marks }} M)</th>
+                    <th style="width: 100px;">Sessional 2<br>({{ ex2.total_max_marks }} M)</th>
+                    <th style="width: 80px;">Average</th>
+                    <th style="width: 80px;">Conversion(10)</th>
+                    <th style="width: 100px; border-right: none;">Final Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr data-student-id="{{ row.student.id }}">
+                    <td style="font-family: 'JetBrains Mono', monospace;">{{ row.student.roll_no|default:"---" }}</td>
+                    <td style="text-align: left;">{{ row.student.first_name }} {{ row.student.last_name }}</td>
+                    <td>
+                        <input type="number" step="0.5" max="5" min="0" 
+                               value="{{ row.continuous }}" 
+                               class="cont-input"
+                               onchange="saveMark(this, {{ row.student.id }})">
+                        <span class="auto-save-status">Saved</span>
+                    </td>
+                    <td>{{ row.mark_1 }}</td>
+                    <td>{{ row.mark_2 }}</td>
+                    <td class="col-avg" id="avg-{{ row.student.id }}">{{ row.average }}</td>
+                    <td class="col-avg" id="conv-{{ row.student.id }}">{{ row.converted }}</td>
+                    <td class="col-final" id="final-{{ row.student.id }}" style="border-right: none;">{{ row.final_total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function saveMark(input, studentId) {
+        const val = input.value;
+        const statusSpan = input.parentNode.querySelector('.auto-save-status');
+
+        // Logic check
+        if (val > 5) {
+            alert("Continuous marks cannot exceed 5");
+            input.value = 5;
+            return;
+        }
+
+        // Visual feedback
+        input.style.borderColor = "#6366f1";
+        
+        const formData = new FormData();
+        formData.append('student_id', studentId);
+        formData.append('score', val);
+        formData.append('year', "{{ ex1.year }}");
+        formData.append('subject_code', "{{ ex1.title }}");
+
+        fetch("{% url 'save-continuous-mark' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                // Show "Saved"
+                statusSpan.style.opacity = "1";
+                statusSpan.style.color = "#10b981";
+                setTimeout(() => { statusSpan.style.opacity = "0"; }, 2000);
+                
+                // Recalculate Final Total locally for UX
+                recalculateRow(studentId, parseFloat(val));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            statusSpan.innerText = "Error";
+            statusSpan.style.color = "#dc2626";
+            statusSpan.style.opacity = "1";
+        });
+    }
+
+    function recalculateRow(studentId, newContMark) {
+        const converted = parseFloat(document.getElementById(`conv-${studentId}`).innerText);
+        const finalCell = document.getElementById(`final-${studentId}`);
+        const total = newContMark + converted;
+        finalCell.innerText = total.toFixed(2);
+        
+        // Glow effect
+        finalCell.style.transition = "0.5s";
+        finalCell.style.color = "#10b981";
+        finalCell.style.transform = "scale(1.1)";
+        setTimeout(() => {
+            finalCell.style.transform = "scale(1)";
+        }, 500);
+    }
+</script>
+{% endblock %}

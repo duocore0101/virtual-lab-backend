@@ -37,3 +37,23 @@ def teacher_context(request):
         "teacher_subjects": teacher_subjects,
         "pending_student_requests_count": pending_count
     }
+
+def global_dashboard_context(request):
+    """
+    Provides a dynamic dashboard_url based on the user's role.
+    """
+    if not request.user.is_authenticated:
+        return {}
+    
+    role = request.session.get("role")
+    
+    dashboard_urls = {
+        "student": "/student/dashboard/",
+        "teacher": "/teacher/experiments/",
+        "admin": "/admin/experiments/",
+        "superadmin": "/superadmin/experiments/"
+    }
+    
+    return {
+        "dashboard_url": dashboard_urls.get(role, "/student/dashboard/")
+    }

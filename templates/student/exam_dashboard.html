@@ -26,7 +26,7 @@
                     <td>{{ item.exam.get_year_display }}</td>
                     <td>
                         {% if item.status == "Approved" %}
-                            <span class="badge bg-success">{{ item.status }}</span>
+                            <span class="badge bg-success">Completed</span>
                         {% elif item.status == "Submitted" %}
                             <span class="badge bg-warning text-dark">{{ item.status }}</span>
                         {% elif item.status == "In Progress" %}
@@ -38,16 +38,13 @@
                     <td>
                         {% if item.status == "Not Started" %}
                             <a href="{% url 'start-exam' item.exam.id %}" 
-   class="btn btn-sm btn-success">
-   Start
-</a>
+                               class="btn btn-sm btn-success">
+                               Start
+                            </a>
                         {% elif item.status == "In Progress" %}
                             <a href="#" class="btn btn-sm btn-primary">Resume</a>
-                        {% elif item.status == "Approved" %}
-                            <a href="{% url 'student-view-result' item.exam.id %}" 
-                            class="btn btn-sm btn-info">
-                            View Result
-                            </a>
+                        {% elif item.status == "Approved" or item.status == "Submitted" %}
+                            <span class="text-muted" style="font-size: 12px italic;">Exam Submitted</span>
                         {% else %}
                             -
                         {% endif %}

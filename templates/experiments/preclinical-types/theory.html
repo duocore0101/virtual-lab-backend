@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Preclinical Experiments – Theory</title>
+
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+    <style>
+        /* ================= SLIDE SYSTEM ================= */
+        .slide-container {
+            position: relative;
+            min-height: 260px;
+        }
+
+        .slide {
+            display: none;
+            animation: slideIn .5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-counter {
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 🔝 TOP RIGHT ACTION BUTTONS */
+        .top-actions {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 9999;
+        }
+
+        .top-actions button {
+            padding: 10px 18px;
+            border-radius: 22px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            background: #ff2e2e;
+            color: #fff;
+            box-shadow: 0 0 14px rgba(255, 0, 0, .6);
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .top-actions button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 22px rgba(255, 0, 0, .9);
+        }
+
+        /* ================= TABLE STYLE ================= */
+
+        .stat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .stat-table th {
+            background: #ff2e2e;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .stat-table td {
+            padding: 10px;
+            border: 1px solid #333;
+            text-align: center;
+            background: #1e1e1e;
+            color: #ddd;
+        }
+
+        .stat-table tr:hover td {
+            background: #2b2b2b;
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        ul.pre-list {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-top: 15px;
+        }
+
+        ul.pre-list li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 🔝 TOP RIGHT BUTTONS -->
+    <div class="top-actions">
+        <button onclick="toggleTheme()">🌗 Theme</button>
+        <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+    </div>
+
+    <div class="page-container">
+
+        <h1 class="title">Theory / Principle</h1>
+
+        <div class="slide-container">
+
+            <!-- ================= SLIDE 1 ================= -->
+            <div class="info-box slide active">
+
+                <div class="stat-title">
+                    What Are Preclinical Experiments?
+                </div>
+
+                <p style="text-align:center;font-size:16px;">
+                    Preclinical experiments are laboratory studies performed before
+                    human clinical trials (Phase I–III) to evaluate the safety and
+                    effectiveness of a drug candidate.
+                </p>
+
+                <ul class="pre-list">
+                    <li><strong>Safety (Toxicity)</strong> – Determines whether the drug causes harmful effects.</li>
+                    <li><strong>Efficacy (Therapeutic Effect)</strong> – Evaluates whether the drug produces the
+                        intended pharmacological action.</li>
+                    <li><strong>Pharmacokinetics (ADME)</strong> – Studies absorption, distribution, metabolism, and
+                        excretion of drugs.</li>
+                    <li><strong>Pharmacodynamics</strong> – Examines the mechanism of action and biological effects of
+                        the drug.</li>
+                </ul>
+
+            </div>
+
+            <!-- ================= SLIDE 2 ================= -->
+            <div class="info-box slide">
+
+                <div class="stat-title">
+                    Main Types of Preclinical Experiments
+                </div>
+
+                <table class="stat-table">
+
+                    <tr>
+                        <th>Type</th>
+                        <th>Meaning (Latin)</th>
+                        <th>Biological System Used</th>
+                        <th>Complexity Level</th>
+                        <th>Animal Use</th>
+                    </tr>
+
+                    <tr>
+                        <td><strong>In Vitro</strong></td>
+                        <td>"In glass"</td>
+                        <td>Isolated cells, enzymes, or biomolecules (test tubes, cell culture plates)</td>
+                        <td>Lowest</td>
+                        <td>None</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Ex Vivo</strong></td>
+                        <td>"Out of the living"</td>
+                        <td>Functional organs or tissues removed from animals and maintained in artificial medium</td>
+                        <td>Medium</td>
+                        <td>Yes (tissue only)</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>In Vivo</strong></td>
+                        <td>"Within the living"</td>
+                        <td>Whole living animal used for experimentation</td>
+                        <td>Highest</td>
+                        <td>Yes (whole animal)</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="slide-counter">
+            Slide <span id="currentSlide">1</span> / 2
+        </div>
+
+        <div class="button-row">
+            <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+            <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+        </div>
+
+    </div>
+
+    <script>
+
+        let slides = document.querySelectorAll(".slide");
+        let index = 0;
+
+        function showSlide(i) {
+            slides.forEach(s => s.classList.remove("active"));
+            slides[i].classList.add("active");
+            document.getElementById("currentSlide").innerText = i + 1;
+        }
+
+        function nextSlide() {
+            if (index < slides.length - 1) {
+                index++;
+                showSlide(index);
+            } else {
+                location.href = "/experiment/{{ experiment.slug }}/run/";
+            }
+        }
+
+        function prevSlide() {
+            if (index > 0) {
+                index--;
+                showSlide(index);
+            } else {
+                location.href = "/experiment/{{ experiment.slug }}/intro/";
+            }
+        }
+
+        /* keyboard */
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") nextSlide();
+            if (e.key === "Escape") prevSlide();
+        });
+
+        /* theme */
+        function toggleTheme() {
+            document.body.classList.toggle("light-mode");
+        }
+
+        /* fullscreen */
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {
+                    alert("Fullscreen not supported");
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

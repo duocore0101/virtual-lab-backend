@@ -6,3 +6,7 @@ def pricing_view(request):
 
 def about(request):
     return render(request, 'public/about.html')
+
+
+def gallery_view(request):
+    return render(request, "public/gallery.html")

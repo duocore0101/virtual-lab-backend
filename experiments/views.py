@@ -24,7 +24,7 @@ from .models import (
 
 from .serializers import ExperimentSerializer
 
-D_PHARM_NUMBERS = [1, 2, 3, 7, 8, 9, 10, 15, 16, 19, 20, 23, 24, 25, 26, 29, 30, 32, 35]
+D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36]
 
 
 # -------------------------
@@ -112,6 +112,9 @@ ALLOWED_PAGES = [
         "t-test",
         "chi-square",
         "wilcoxon",
+        "in-vitro",
+        "ex-vivo",
+        "in-vivo",
     ]
 
 
@@ -185,11 +188,16 @@ def finish_practical(request):
         is_active=True
     )
 
-    # 🔥 ADMIN/SUPERADMIN DEMO MODE (NO DATABASE SAVE)
-    if role in ["admin", "superadmin"]:
+    # 🔥 UPDATED DEMO MODE: Admin, Superadmin, and Teachers (NO DATABASE SAVE)
+    if role in ["admin", "superadmin", "teacher"]:
+        redirect_urls = {
+            "admin": "/admin/experiments/",
+            "superadmin": "/superadmin/experiments/",
+            "teacher": "/teacher/experiments/"
+        }
         return JsonResponse({
             "status": "success",
-            "redirect": f"/experiment/{experiment.slug}/"
+            "redirect": redirect_urls.get(role, "/login/")
         })
 
     # ================= ORIGINAL STUDENT LOGIC BELOW =================
@@ -199,10 +207,6 @@ def finish_practical(request):
         experiment=experiment,
         completed_at=now()
     )
-
-    # 🔥 SAFE (OPTIONAL FUTURE STORAGE LOGIC)
-    # If later you add roll_no field in model,
-    # you can attach it here without breaking anything.
 
     for param, value in observations.items():
         Observation.objects.create(

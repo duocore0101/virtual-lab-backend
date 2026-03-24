@@ -246,7 +246,7 @@
         <section class="experiment-section" style="animation-delay: 0.1s;">
             <div class="section-header"><span class="section-label">SECTION A</span><h2>Introduction & Basic Concepts</h2></div>
             <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" %}
+                {% for exp in experiments %}{% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" or exp.slug == "preclinical-types" %}
                 <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
                     <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
                     <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>

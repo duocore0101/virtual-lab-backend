@@ -9,6 +9,28 @@
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}?v=10002">
 
   <style>
+    /* 🔥 Logo Theme Match */
+    .sa-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100px;
+      padding: 0 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      height: 85px;
+      width: auto;
+      transition: 0.3s ease;
+      object-fit: contain;
+    }
+
     /* 🔥 Request Badge */
     .req-badge {
       background: red;
@@ -24,8 +46,8 @@
 
 <!-- ================= HEADER ================= -->
 <header class="sa-header">
-  <div class="logo-area">
-    <img src="{% static 'images/gmars-logo.png' %}" class="logo" alt="G-MARS">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" class="logo">
     <span class="badge">ADMIN</span>
   </div>
 
