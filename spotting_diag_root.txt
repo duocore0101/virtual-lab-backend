@@ -1,0 +1,30 @@
+--- Records ---
+Name: Specimen 1, Slug: acto.jpeg
+Name: Specimen 2, Slug: albino.jpeg
+Name: Specimen 3, Slug: ang.jpeg
+Name: Specimen 4, Slug: cat.jpeg
+Name: Specimen 5, Slug: container.jpeg
+Name: Specimen 6, Slug: convul.jpeg
+Name: Specimen 7, Slug: diuretic.jpeg
+Name: Specimen 8, Slug: dog.jpeg
+Name: Specimen 9, Slug: electro.jpeg
+Name: Specimen 10, Slug: four.jpeg
+Name: Specimen 11, Slug: frog.jpeg
+Name: Specimen 12, Slug: guini.jpeg
+Name: Specimen 13, Slug: hot.jpeg
+Name: Specimen 14, Slug: instruments.jpeg
+Name: Specimen 15, Slug: kymo.jpeg
+Name: Specimen 16, Slug: mice.jpeg
+Name: Specimen 17, Slug: plusmaze.jpeg
+Name: Specimen 18, Slug: pole.jpeg
+Name: Specimen 19, Slug: rabbit.jpeg
+Name: Specimen 20, Slug: rat1.jpeg
+Name: Specimen 21, Slug: separation.jpeg
+Name: Specimen 22, Slug: stair.jpeg
+Name: Specimen 23, Slug: staircase.jpeg
+Name: Specimen 24, Slug: student.jpeg
+Name: Specimen 25, Slug: testtube.jpeg
+Name: Specimen 26, Slug: yellow.jpeg
+Name: Specimen 27, Slug: ymaze.jpeg
+--- Files ---
+['acto.jpeg', 'albino.jpeg', 'ang.jpeg', 'cat.jpeg', 'container.jpeg', 'convul.jpeg', 'diuretic.jpeg', 'dog.jpeg', 'electro.jpeg', 'four.jpeg', 'frog.jpeg', 'guini.jpeg', 'hot.jpeg', 'instruments.jpeg', 'kymo.jpeg', 'mice.jpeg', 'plusmaze.jpeg', 'pole.jpeg', 'rabbit.jpeg', 'rat1.jpeg', 'separation.jpeg', 'stair.jpeg', 'staircase.jpeg', 'student.jpeg', 'testtube.jpeg', 'yellow.jpeg', 'ymaze.jpeg']
