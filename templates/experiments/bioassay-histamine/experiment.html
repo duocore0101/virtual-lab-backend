@@ -1,12 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Bioassay of Histamine – Experiment</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
 
   <style>
     .video-frame {
@@ -69,7 +69,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
     }
@@ -89,7 +89,8 @@
       font-size: 14px;
     }
 
-    th, td {
+    th,
+    td {
       border: 1px solid #444;
       padding: 8px;
       text-align: center;
@@ -110,156 +111,156 @@
 
 <body>
 
-<div class="page-container">
+  <div class="page-container">
 
-  <h1 class="title">
-    Bioassay of Histamine using Guinea Pig Ileum (Matching Method)
-  </h1>
+    <h1 class="title">
+      Bioassay of Histamine using Guinea Pig Ileum (Matching Method)
+    </h1>
 
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="toggleFullscreen()">
-      ⛶ Full Screen
-    </button>
-  </div>
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="toggleFullscreen()">
+        ⛶ Full Screen
+      </button>
+    </div>
 
-  <!-- VIDEO FRAME -->
-  <div class="video-frame">
-    <button class="start-btn" id="startBtn" onclick="startExperiment()">
-      ▶ Start Practical
-    </button>
+    <!-- VIDEO FRAME -->
+    <div class="video-frame">
+      <button class="start-btn" id="startBtn" onclick="startExperiment()">
+        ▶ Start Practical
+      </button>
 
-    <video id="experimentVideo" controls>
-      <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_experiment.mp4' %}" type="video/mp4">
-    </video>
-  </div>
+      <video id="experimentVideo" controls>
+        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_45.mp4' %}" type="video/mp4">
+      </video>
+    </div>
 
-  <!-- NAVIGATION -->
-  <div class="button-row" style="justify-content:center; margin-top:25px;">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Back
-    </button>
+    <!-- NAVIGATION -->
+    <div class="button-row" style="justify-content:center; margin-top:25px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
 
-    <button class="exp-btn" onclick="openModal()">
-      View Observations 📊
-    </button>
+      <button class="exp-btn" onclick="openModal()">
+        View Observations 📊
+      </button>
 
-    <button class="exp-btn" onclick="goToGraph()">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- ================= OBSERVATION MODAL ================= -->
-<div class="modal" id="obsModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-
-    <h2 style="text-align:center;">
-      Observation Table – Matching Method
-    </h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Sr. No.</th>
-          <th>Substance</th>
-          <th>Volume Added (ml)</th>
-          <th>Conc. in Bath (µg/ml approx.)</th>
-          <th>Response Height (mm)</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Standard (S1)</td>
-          <td>0.2</td>
-          <td>0.005–0.007</td>
-          <td>15</td>
-          <td>Low</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Standard (S2)</td>
-          <td>0.4</td>
-          <td>0.01–0.013</td>
-          <td>35</td>
-          <td>Medium</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Standard (S3)</td>
-          <td>0.6</td>
-          <td>0.015–0.02</td>
-          <td>55</td>
-          <td>High</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Test (T1)</td>
-          <td>0.3</td>
-          <td>?</td>
-          <td>28</td>
-          <td>Too low</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Test (T2)</td>
-          <td>0.45</td>
-          <td>?</td>
-          <td>38</td>
-          <td>Close</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Standard (S2 repeat)</td>
-          <td>0.4</td>
-          <td>0.01–0.013</td>
-          <td>36</td>
-          <td>Matches T2</td>
-        </tr>
-      </tbody>
-    </table>
+      <button class="exp-btn" onclick="goToGraph()">
+        Next ▶
+      </button>
+    </div>
 
   </div>
-</div>
 
-<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  <!-- ================= OBSERVATION MODAL ================= -->
+  <div class="modal" id="obsModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">✖</span>
 
-<script>
-function startExperiment() {
-  document.getElementById("startBtn").style.display = "none";
-  let video = document.getElementById("experimentVideo");
-  video.style.display = "block";
-  video.play();
-}
+      <h2 style="text-align:center;">
+        Observation Table – Matching Method
+      </h2>
 
-function openModal() {
-  document.getElementById("obsModal").style.display = "flex";
-}
+      <table>
+        <thead>
+          <tr>
+            <th>Sr. No.</th>
+            <th>Substance</th>
+            <th>Volume Added (ml)</th>
+            <th>Conc. in Bath (µg/ml approx.)</th>
+            <th>Response Height (mm)</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Standard (S1)</td>
+            <td>0.2</td>
+            <td>0.005–0.007</td>
+            <td>15</td>
+            <td>Low</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Standard (S2)</td>
+            <td>0.4</td>
+            <td>0.01–0.013</td>
+            <td>35</td>
+            <td>Medium</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Standard (S3)</td>
+            <td>0.6</td>
+            <td>0.015–0.02</td>
+            <td>55</td>
+            <td>High</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Test (T1)</td>
+            <td>0.3</td>
+            <td>?</td>
+            <td>28</td>
+            <td>Too low</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Test (T2)</td>
+            <td>0.45</td>
+            <td>?</td>
+            <td>38</td>
+            <td>Close</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Standard (S2 repeat)</td>
+            <td>0.4</td>
+            <td>0.01–0.013</td>
+            <td>36</td>
+            <td>Matches T2</td>
+          </tr>
+        </tbody>
+      </table>
 
-function closeModal() {
-  document.getElementById("obsModal").style.display = "none";
-}
+    </div>
+  </div>
 
-function goToGraph() {
-  location.href = "/experiment/{{ experiment.slug }}/graph/";
-}
+  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
 
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+  <script>
+    function startExperiment() {
+      document.getElementById("startBtn").style.display = "none";
+      let video = document.getElementById("experimentVideo");
+      video.style.display = "block";
+      video.play();
+    }
 
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+    function openModal() {
+      document.getElementById("obsModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("obsModal").style.display = "none";
+    }
+
+    function goToGraph() {
+      location.href = "/experiment/{{ experiment.slug }}/graph/";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
 </body>
+
 </html>

@@ -1,13 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Laboratory Animal Maintenance – Experiment</title>
 
   <!-- SAME CSS USED IN OTHER PRACTICALS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
 
   <style>
     /* ================= VIDEO FRAME ================= */
@@ -21,7 +21,8 @@
       position: relative;
     }
 
-    iframe, video {
+    iframe,
+    video {
       width: 100%;
       height: 100%;
       border-radius: 14px;
@@ -72,69 +73,69 @@
 
 <body>
 
-<div class="page-container">
+  <div class="page-container">
 
-  <!-- TITLE -->
-  <h1 class="title">
-    Laboratory Animal Maintenance as per CPCSEA Guidelines
-  </h1>
+    <!-- TITLE -->
+    <h1 class="title">
+      Laboratory Animal Maintenance as per CPCSEA Guidelines
+    </h1>
 
-  <!-- FULL SCREEN BUTTON -->
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="toggleFullscreen()">
-      ⛶ Full Screen
-    </button>
+    <!-- FULL SCREEN BUTTON -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="toggleFullscreen()">
+        ⛶ Full Screen
+      </button>
+    </div>
+
+    <!-- ================= VIDEO FRAME ================= -->
+    <div class="video-frame">
+      <video controls>
+        <source src="{% static 'experiments/lab-animal-maintenance/videos/lab_animal_maintenance1.mp4' %}"
+          type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- ================= NAVIGATION BUTTONS ================= -->
+    <div class="button-row" style="justify-content:center; margin-top:25px;">
+
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="finishPractical()">
+        Finish Practical ✔
+      </button>
+
+    </div>
+
   </div>
 
-  <!-- ================= VIDEO FRAME ================= -->
-  <div class="video-frame">
-    <video controls>
-      <source src="{% static 'experiments/lab-animal-maintenance/videos/lab_animal_maintenance.mp4' %}" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
+  <!-- THEME TOGGLE -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
 
-  <!-- ================= NAVIGATION BUTTONS ================= -->
-  <div class="button-row" style="justify-content:center; margin-top:25px;">
-    
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Back
-    </button>
+  <script>
+    function finishPractical() {
+      location.href = "{{ dashboard_url }}";
+    }
 
-    <button class="exp-btn"
-      onclick="finishPractical()">
-      Finish Practical ✔
-    </button>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 
-  </div>
-
-</div>
-
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
-
-<script>
-function finishPractical() {
-  location.href = "{{ dashboard_url }}";
-}
-
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
-</script>
-
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(err => {
-      alert(`Error enabling fullscreen: ${err.message}`);
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error enabling fullscreen: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
 </body>
+
 </html>

@@ -1,12 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Bioassay of Acetylcholine – Experiment</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
 
   <style>
     .video-frame {
@@ -69,7 +69,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
     }
@@ -89,7 +89,8 @@
       font-size: 14px;
     }
 
-    th, td {
+    th,
+    td {
       border: 1px solid #444;
       padding: 8px;
       text-align: center;
@@ -110,186 +111,185 @@
 
 <body>
 
-<div class="page-container">
+  <div class="page-container">
 
-  <h1 class="title">
-    Bioassay of Acetylcholine (ACh) using Isolated Rat Ileum – Four Point Method
-  </h1>
+    <h1 class="title">
+      Bioassay of Acetylcholine (ACh) using Isolated Rat Ileum – Four Point Method
+    </h1>
 
-  <div class="top-actions">
-  <button class="dropdown-btn" onclick="toggleTheme()">
-    🌗 Theme
-  </button>
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="toggleTheme()">
+        🌗 Theme
+      </button>
 
-  <button class="dropdown-btn" onclick="toggleFullscreen()">
-    ⛶ Full Screen
-  </button>
-</div>
+      <button class="dropdown-btn" onclick="toggleFullscreen()">
+        ⛶ Full Screen
+      </button>
+    </div>
 
-  <!-- VIDEO FRAME -->
-  <div class="video-frame">
-    <button class="start-btn" id="startBtn" onclick="startExperiment()">
-      ▶ Start Practical
-    </button>
+    <!-- VIDEO FRAME -->
+    <div class="video-frame">
+      <button class="start-btn" id="startBtn" onclick="startExperiment()">
+        ▶ Start Practical
+      </button>
 
-    <video id="experimentVideo" controls>
-      <!-- ✅ CHANGE VIDEO PATH HERE -->
-      <source src="{% static 'experiments/bioassay-acetylcholine-rat-ileum/videos/ach-bioassay.mp4' %}" type="video/mp4">
-    </video>
-  </div>
+      <video id="experimentVideo" controls>
+        <!-- ✅ CHANGE VIDEO PATH HERE -->
+        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_48.mp4' %}" type="video/mp4">
+      </video>
+    </div>
 
-  <!-- NAVIGATION -->
-  <div class="button-row" style="justify-content:center; margin-top:25px;">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Back
-    </button>
+    <!-- NAVIGATION -->
+    <div class="button-row" style="justify-content:center; margin-top:25px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
 
-    <button class="exp-btn" onclick="openModal()">
-      View Observations 📊
-    </button>
+      <button class="exp-btn" onclick="openModal()">
+        View Observations 📊
+      </button>
 
-    <button class="exp-btn"
-      onclick="goToGraph()">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- ================= OBSERVATION MODAL ================= -->
-<div class="modal" id="obsModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-
-    <h2 style="text-align:center;">
-      Observation Table – Four Point Bioassay of ACh
-    </h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Cycle</th>
-          <th>S1 (0.1 ml)</th>
-          <th>S2 (0.4 ml)</th>
-          <th>T1 (0.2 ml)</th>
-          <th>T2 (0.8 ml)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td id="s1_1"></td>
-          <td id="s2_1"></td>
-          <td id="t1_1"></td>
-          <td id="t2_1"></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td id="s1_2"></td>
-          <td id="s2_2"></td>
-          <td id="t1_2"></td>
-          <td id="t2_2"></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td id="s1_3"></td>
-          <td id="s2_3"></td>
-          <td id="t1_3"></td>
-          <td id="t2_3"></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td id="s1_4"></td>
-          <td id="s2_4"></td>
-          <td id="t1_4"></td>
-          <td id="t2_4"></td>
-        </tr>
-        <tr style="font-weight:bold;">
-          <td>Mean</td>
-          <td id="mean_s1"></td>
-          <td id="mean_s2"></td>
-          <td id="mean_t1"></td>
-          <td id="mean_t2"></td>
-        </tr>
-      </tbody>
-    </table>
+      <button class="exp-btn" onclick="goToGraph()">
+        Next ▶
+      </button>
+    </div>
 
   </div>
-</div>
 
-<script>
+  <!-- ================= OBSERVATION MODAL ================= -->
+  <div class="modal" id="obsModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">✖</span>
 
-function startExperiment() {
-  document.getElementById("startBtn").style.display = "none";
-  let video = document.getElementById("experimentVideo");
-  video.style.display = "block";
-  video.play();
+      <h2 style="text-align:center;">
+        Observation Table – Four Point Bioassay of ACh
+      </h2>
 
-  video.onended = function() {
-    fillObservations();
-  };
-}
+      <table>
+        <thead>
+          <tr>
+            <th>Cycle</th>
+            <th>S1 (0.1 ml)</th>
+            <th>S2 (0.4 ml)</th>
+            <th>T1 (0.2 ml)</th>
+            <th>T2 (0.8 ml)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td id="s1_1"></td>
+            <td id="s2_1"></td>
+            <td id="t1_1"></td>
+            <td id="t2_1"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td id="s1_2"></td>
+            <td id="s2_2"></td>
+            <td id="t1_2"></td>
+            <td id="t2_2"></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td id="s1_3"></td>
+            <td id="s2_3"></td>
+            <td id="t1_3"></td>
+            <td id="t2_3"></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td id="s1_4"></td>
+            <td id="s2_4"></td>
+            <td id="t1_4"></td>
+            <td id="t2_4"></td>
+          </tr>
+          <tr style="font-weight:bold;">
+            <td>Mean</td>
+            <td id="mean_s1"></td>
+            <td id="mean_s2"></td>
+            <td id="mean_t1"></td>
+            <td id="mean_t2"></td>
+          </tr>
+        </tbody>
+      </table>
 
-function fillObservations() {
+    </div>
+  </div>
 
-  // ================= CYCLE DATA =================
+  <script>
 
-  // Cycle 1
-  document.getElementById("s1_1").innerText = 10;
-  document.getElementById("s2_1").innerText = 15;
-  document.getElementById("t1_1").innerText = 12;
-  document.getElementById("t2_1").innerText = 16;
+    function startExperiment() {
+      document.getElementById("startBtn").style.display = "none";
+      let video = document.getElementById("experimentVideo");
+      video.style.display = "block";
+      video.play();
 
-  // Cycle 2
-  document.getElementById("s1_2").innerText = 11;
-  document.getElementById("s2_2").innerText = 15;
-  document.getElementById("t1_2").innerText = 13;
-  document.getElementById("t2_2").innerText = 15;
+      video.onended = function () {
+        fillObservations();
+      };
+    }
 
-  // Cycle 3
-  document.getElementById("s1_3").innerText = 10;
-  document.getElementById("s2_3").innerText = 14;
-  document.getElementById("t1_3").innerText = 13;
-  document.getElementById("t2_3").innerText = 16;
+    function fillObservations() {
 
-  // Cycle 4
-  document.getElementById("s1_4").innerText = 11;
-  document.getElementById("s2_4").innerText = 15;
-  document.getElementById("t1_4").innerText = 14;
-  document.getElementById("t2_4").innerText = 15;
+      // ================= CYCLE DATA =================
 
-  // ================= MEAN VALUES =================
+      // Cycle 1
+      document.getElementById("s1_1").innerText = 10;
+      document.getElementById("s2_1").innerText = 15;
+      document.getElementById("t1_1").innerText = 12;
+      document.getElementById("t2_1").innerText = 16;
 
-  document.getElementById("mean_s1").innerText = "10.5 mm";
-  document.getElementById("mean_s2").innerText = "14.75 mm";
-  document.getElementById("mean_t1").innerText = "13 mm";
-  document.getElementById("mean_t2").innerText = "15.5 mm";
-}
+      // Cycle 2
+      document.getElementById("s1_2").innerText = 11;
+      document.getElementById("s2_2").innerText = 15;
+      document.getElementById("t1_2").innerText = 13;
+      document.getElementById("t2_2").innerText = 15;
 
-function openModal() {
-  document.getElementById("obsModal").style.display = "flex";
-}
+      // Cycle 3
+      document.getElementById("s1_3").innerText = 10;
+      document.getElementById("s2_3").innerText = 14;
+      document.getElementById("t1_3").innerText = 13;
+      document.getElementById("t2_3").innerText = 16;
 
-function closeModal() {
-  document.getElementById("obsModal").style.display = "none";
-}
+      // Cycle 4
+      document.getElementById("s1_4").innerText = 11;
+      document.getElementById("s2_4").innerText = 15;
+      document.getElementById("t1_4").innerText = 14;
+      document.getElementById("t2_4").innerText = 15;
 
-function goToGraph() {
-  location.href = "/experiment/{{ experiment.slug }}/graph/";
-}
+      // ================= MEAN VALUES =================
 
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
-</script>
+      document.getElementById("mean_s1").innerText = "10.5 mm";
+      document.getElementById("mean_s2").innerText = "14.75 mm";
+      document.getElementById("mean_t1").innerText = "13 mm";
+      document.getElementById("mean_t2").innerText = "15.5 mm";
+    }
+
+    function openModal() {
+      document.getElementById("obsModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("obsModal").style.display = "none";
+    }
+
+    function goToGraph() {
+      location.href = "/experiment/{{ experiment.slug }}/graph/";
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 
 </body>
+
 </html>
