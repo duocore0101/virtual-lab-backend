@@ -326,8 +326,12 @@ class Exam(models.Model):
         help_text="Duration in minutes (e.g. 120 for 2 hours)"
     )
     viva_marks = models.PositiveIntegerField(
-    default=0,
-    help_text="Maximum Viva marks for this exam"
+        default=0,
+        help_text="Maximum Viva marks for this exam"
+    )
+    practical_record_marks = models.PositiveIntegerField(
+        default=0,
+        help_text="Maximum Practical Record Maintenance marks (Only D.Pharm)"
     )
     is_active = models.BooleanField(default=False)
 
@@ -340,7 +344,7 @@ class Exam(models.Model):
     @property
     def total_max_marks(self):
         """Calculates total marks from all sections"""
-        total = self.viva_marks
+        total = self.viva_marks + self.practical_record_marks
         total += sum(q.marks for q in self.mcqs.all())
         total += sum(q.marks for q in self.short_answers.all())
         total += sum(q.marks for q in self.spotting_questions.all())
@@ -640,6 +644,14 @@ class ExamAttempt(models.Model):
     # -------------------------
     # TIMESTAMPS
     # -------------------------
+    # 🔥 External Seat Number (University Exam)
+    seat_number = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Required only for External University Examinations"
+    )
+
     started_at = models.DateTimeField(auto_now_add=True)
     submitted_at = models.DateTimeField(null=True, blank=True)
 
@@ -660,6 +672,7 @@ class ExamAttempt(models.Model):
     spotting_score = models.FloatField(default=0)
     practical_score = models.FloatField(default=0)
     viva_score = models.FloatField(default=0)
+    practical_record_score = models.FloatField(default=0)
 
     total_score = models.FloatField(default=0)
 

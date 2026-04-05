@@ -280,156 +280,220 @@ textarea:focus, input[type="text"]:focus {
         <!-- SETUP DYNAMIC QUESTION COUNTER -->
         <script>var q_counter = 1;</script>
 
-        <!-- 1. SPOTTING SECTION (Q1 - ONLY D.PHARM) -->
-        {% if is_dpharm and spotting_questions %}
-        <div class="section-heading">
-            QUESTION <span id="q_spot_num"></span>: SPOTTING
-        </div>
-        <script>document.getElementById('q_spot_num').innerText = q_counter; q_counter++;</script>
-        
-        {% for spot in spotting_questions %}
-        <div class="q-card">
-            <span class="q-label">Spot {{ forloop.counter }} ({{ spot.marks }} Marks)</span>
-            <div class="spot-img-container">
-                {% if spot.image %}
-                <img src="{{ spot.image.url }}" class="spot-img">
-                {% elif spot.bank_item and spot.bank_item.image_slug %}
-                <img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}" class="spot-img">
-                {% else %}
-                <div style="padding:40px; background:#f3f4f6; border-radius:12px; color:#666;">
-                    <i class="fas fa-image" style="font-size: 24px; display:block; margin-bottom:10px;"></i>
-                    Specimen Image Not Available
-                </div>
-                {% endif %}
+        {% if is_dpharm %}
+            <!-- ===================================================== -->
+            <!-- D.PHARM PATTERN (SPECIFIC ORDER) -->
+            <!-- ===================================================== -->
+
+            <!-- Q1. SYNOPSIS SECTION (MCQ + SHORT) -->
+            {% if mcqs or short_answers %}
+            <div class="section-heading">
+                QUESTION <span id="q_syn_num_dp"></span>: SYNOPSIS (A. MCQ, B. SHORT ANSWERS)
             </div>
-            <input type="text" name="spotting_{{ spot.id }}" placeholder="Identify the specimen image above...">
-        </div>
-        {% endfor %}
-        {% endif %}
+            <script>document.getElementById('q_syn_num_dp').innerText = q_counter; q_counter++;</script>
 
-        <!-- 2. SYNOPSIS SECTION (MCQ + SHORT) -->
-        {% if mcqs or short_answers %}
-        <div class="section-heading">
-            QUESTION <span id="q_synopsis_num"></span>: SYNOPSIS
-        </div>
-        <script>document.getElementById('q_synopsis_num').innerText = q_counter; q_counter++;</script>
-
-        <!-- MCQs -->
-        {% if mcqs %}
-        <div style="font-weight: 700; color:var(--accent-primary); margin-bottom: 15px; padding-left: 10px;">
-            Part A: Multiple Choice Questions
-        </div>
-        {% for m in mcqs %}
-        <div class="q-card">
-            <span class="q-label">{{ forloop.counter }}. {{ m.question_text }}</span>
-            <div class="options-grid">
-                <label class="opt-btn">
-                    <input type="radio" name="mcq_{{ m.id }}" value="A"> A) {{ m.option_a }}
-                </label>
-                <label class="opt-btn">
-                    <input type="radio" name="mcq_{{ m.id }}" value="B"> B) {{ m.option_b }}
-                </label>
-                <label class="opt-btn">
-                    <input type="radio" name="mcq_{{ m.id }}" value="C"> C) {{ m.option_c }}
-                </label>
-                <label class="opt-btn">
-                    <input type="radio" name="mcq_{{ m.id }}" value="D"> D) {{ m.option_d }}
-                </label>
+            <!-- MCQs -->
+            {% if mcqs %}
+            <div style="font-weight: 700; color:var(--accent-primary); margin-bottom: 15px; padding-left: 10px;">
+                Part A: Multiple Choice Questions
             </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-
-        <!-- SHORT ANSWERS -->
-        {% if short_answers %}
-        <div style="font-weight: 700; color:var(--accent-primary); margin: 30px 0 15px 0; padding-left: 10px;">
-            Part B: Short Answer Questions
-        </div>
-        {% for s in short_answers %}
-        <div class="q-card">
-            <span class="q-label">{{ forloop.counter }}. {{ s.question_text }}</span>
-            <textarea name="short_{{ s.id }}" rows="5" placeholder="Enter your detailed answer here..."></textarea>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endif %}
-
-        <!-- 3. PRACTICAL SECTION (MAJOR/MINOR) -->
-        {% if practicals %}
-        <div class="section-heading">
-            QUESTION <span id="q_prac_main_num"></span>: MAJOR & MINOR EXPERIMENTS
-        </div>
-        <script>document.getElementById('q_prac_main_num').innerText = q_counter; q_counter++;</script>
-
-        {% for p in practicals %}
-        <div class="q-card">
-            <div style="margin-bottom: 25px;">
-                <span style="font-size: 13px; font-weight: 700; color: var(--accent-primary); text-transform: uppercase;">
-                    {% if p.practical_type == "major" %}(A) Major Experiment{% else %}(B) Minor Experiment{% endif %}
-                </span>
-                <div style="font-size: 18px; font-weight: 700;">{{ p.title }}</div>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <span class="q-label">🎯 Aim</span>
-                <div style="padding:15px; background:#f9fafb; border-radius:12px; border:1.5px dashed #e5e7eb; color: #374151;">
-                    {{ p.aim }}
+            {% for m in mcqs %}
+            <div class="q-card">
+                <span class="q-label">{{ forloop.counter }}. {{ m.question_text }}</span>
+                <div class="options-grid">
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="A"> A) {{ m.option_a }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="B"> B) {{ m.option_b }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="C"> C) {{ m.option_c }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="D"> D) {{ m.option_d }}</label>
                 </div>
             </div>
+            {% endfor %}
+            {% endif %}
 
-            <div style="margin-bottom: 20px;">
-                <span class="q-label">🧪 Requirements</span>
-                <textarea name="practical_{{ p.id }}_requirements" rows="3" placeholder="List apparatus, reagents, and instruments..."></textarea>
+            <!-- SHORT ANSWERS -->
+            {% if short_answers %}
+            <div style="font-weight: 700; color:var(--accent-primary); margin: 30px 0 15px 0; padding-left: 10px;">
+                Part B: Short Answer Questions
             </div>
-
-            <div style="margin-bottom: 20px;">
-                <span class="q-label">📘 Theory / Principle</span>
-                <textarea name="practical_{{ p.id }}_theory" rows="4" placeholder="Explain the scientific principle..."></textarea>
+            {% for s in short_answers %}
+            <div class="q-card">
+                <span class="q-label">{{ forloop.counter }}. {{ s.question_text }}</span>
+                <textarea name="short_{{ s.id }}" rows="5" placeholder="Enter your detailed answer here..."></textarea>
             </div>
+            {% endfor %}
+            {% endif %}
+            {% endif %}
 
-            <div style="margin-bottom: 20px;">
-                <span class="q-label">📝 Procedure</span>
-                <textarea name="practical_{{ p.id }}_procedure" rows="5" placeholder="Step-by-step experiment methodology..."></textarea>
+            <!-- Q2. EXPERIMENT SECTION (SPOTTING + MAJOR + MINOR) -->
+            <div class="section-heading">
+                QUESTION <span id="q_exp_num_dp"></span>: EXPERIMENT
             </div>
+            <script>document.getElementById('q_exp_num_dp').innerText = q_counter; q_counter++;</script>
 
-            <!-- EDITABLE OBSERVATION TABLE -->
-            <div style="margin-bottom: 20px;">
-                <span class="q-label">📊 Observation Table</span>
-                <div class="table-wrapper">
-                    {% if p.editable_table %}
-                        {{ p.editable_table|safe }}
-                    {% else %}
-                        <div style="padding:30px; border:2px dashed #eee; text-align:center;">No observation table required</div>
+            <!-- A. SPOTTING -->
+            {% if spotting_questions %}
+            <div style="font-weight: 700; color:var(--accent-primary); margin-bottom: 15px; padding-left: 10px;">
+                Part A: Spotting
+            </div>
+            {% for spot in spotting_questions %}
+            <div class="q-card">
+                <span class="q-label">Spot {{ forloop.counter }} ({{ spot.marks }} Marks)</span>
+                <div class="spot-img-container">
+                    {% if spot.image %}<img src="{{ spot.image.url }}" class="spot-img">
+                    {% elif spot.bank_item and spot.bank_item.image_slug %}<img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}" class="spot-img">
                     {% endif %}
                 </div>
+                <input type="text" name="spotting_{{ spot.id }}" placeholder="Identify the specimen image above...">
             </div>
+            {% endfor %}
+            {% endif %}
 
-            <div style="margin-bottom: 10px;">
-                <span class="q-label">🏁 Conclusion / Result</span>
-                <textarea name="practical_{{ p.id }}_conclusion" rows="3" placeholder="Enter final result or study outcome..."></textarea>
-            </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-
-        <!-- 4. VIVA SECTION -->
-        {% if exam.viva_marks > 0 %}
-        <div class="section-heading">
-            QUESTION <span id="q_viva_num"></span>: VIVA
-        </div>
-        <script>document.getElementById('q_viva_num').innerText = q_counter; q_counter++;</script>
-        
-        <div class="q-card" style="border-style: dashed; background: #fafafa;">
-            <div style="text-align:center; padding:20px;">
-                <h3 style="margin:0; font-size: 20px; color: var(--text-muted);">Oral Examination</h3>
-                <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">
-                    This section will be evaluated by the examiner during the clinical practical.
-                </p>
-                <div style="display:inline-block; padding:8px 20px; background:var(--accent-primary); color:white; border-radius:30px; font-weight:700; margin-top:15px;">
-                    Max Marks: {{ exam.viva_marks }}
+            <!-- B & C. MAJOR/MINOR -->
+            {% for p in practicals %}
+            <div class="q-card">
+                <span style="font-size: 13px; font-weight: 700; color: var(--accent-primary); text-transform: uppercase;">
+                    {% if p.practical_type == "major" %}Part B: Major Experiment{% else %}Part C: Minor Experiment{% endif %}
+                </span>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 15px;">{{ p.title }}</div>
+                
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">🎯 Aim</span>
+                    <div style="padding:15px; background:#f9fafb; border-radius:12px; border:1.5px dashed #e5e7eb; color: #374151;">{{ p.aim }}</div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">🧪 Requirements</span>
+                    <textarea name="practical_{{ p.id }}_requirements" rows="3" placeholder="List apparatus, reagents, and instruments..."></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">📘 Theory / Principle</span>
+                    <textarea name="practical_{{ p.id }}_theory" rows="4" placeholder="Explain the scientific principle..."></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">📝 Procedure</span>
+                    <textarea name="practical_{{ p.id }}_procedure" rows="5" placeholder="Step-by-step experiment methodology..."></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">📊 Observation Table</span>
+                    <div class="table-wrapper">{% if p.editable_table %}{{ p.editable_table|safe }}{% else %}<div style="padding:30px; border:2px dashed #eee; text-align:center;">No observation table required</div>{% endif %}</div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span class="q-label">🏁 Conclusion / Result</span>
+                    <textarea name="practical_{{ p.id }}_conclusion" rows="3" placeholder="Enter final result or study outcome..."></textarea>
                 </div>
             </div>
-        </div>
+            {% endfor %}
+
+            <!-- Q3. VIVA SECTION -->
+            <div class="section-heading">
+                QUESTION <span id="q_viva_num_dp"></span>: VIVA VOCE
+            </div>
+            <script>document.getElementById('q_viva_num_dp').innerText = q_counter; q_counter++;</script>
+            <div class="q-card" style="border-style: dashed; background: #fafafa;">
+                <div style="text-align:center; padding:20px;">
+                    <h3 style="margin:0; font-size: 20px; color: var(--text-muted);">Oral Examination</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">This section will be evaluated by the examiner during the clinical practical.</p>
+                </div>
+            </div>
+
+            <!-- Q4. PRACTICAL RECORD MAINTENANCE -->
+            <div class="section-heading">
+                QUESTION <span id="q_record_num_dp"></span>: PRACTICAL RECORD MAINTENANCE
+            </div>
+            <script>document.getElementById('q_record_num_dp').innerText = q_counter; q_counter++;</script>
+            <div class="q-card" style="border-style: dashed; background: #f0fdf4;">
+                <div style="text-align:center; padding:20px;">
+                    <h3 style="margin:0; font-size: 20px; color: #15803d;">Record Maintenance</h3>
+                    <p style="color: #166534; font-size: 14px; margin-top: 10px;">Marks are awarded based on your practical record maintenance and lab performance.</p>
+                </div>
+            </div>
+
+        {% else %}
+            <!-- ===================================================== -->
+            <!-- STANDARD PATTERN (OTHERS) -->
+            <!-- ===================================================== -->
+
+            <!-- 1. SPOTTING SECTION (Q1 - ONLY IF EXISTS) -->
+            {% if spotting_questions %}
+            <div class="section-heading">QUESTION <span id="q_spot_num"></span>: SPOTTING</div>
+            <script>document.getElementById('q_spot_num').innerText = q_counter; q_counter++;</script>
+            {% for spot in spotting_questions %}
+            <div class="q-card">
+                <span class="q-label">Spot {{ forloop.counter }} ({{ spot.marks }} Marks)</span>
+                <div class="spot-img-container">
+                    {% if spot.image %}<img src="{{ spot.image.url }}" class="spot-img">
+                    {% elif spot.bank_item and spot.bank_item.image_slug %}<img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}" class="spot-img">
+                    {% endif %}
+                </div>
+                <input type="text" name="spotting_{{ spot.id }}" placeholder="Identify the specimen image above...">
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- 2. SYNOPSIS SECTION (MCQ + SHORT) -->
+            {% if mcqs or short_answers %}
+            <div class="section-heading">QUESTION <span id="q_synopsis_num"></span>: SYNOPSIS</div>
+            <script>document.getElementById('q_synopsis_num').innerText = q_counter; q_counter++;</script>
+            {% if mcqs %}
+            <div style="font-weight: 700; color:var(--accent-primary); margin-bottom: 15px; padding-left: 10px;">Part A: Multiple Choice Questions</div>
+            {% for m in mcqs %}
+            <div class="q-card">
+                <span class="q-label">{{ forloop.counter }}. {{ m.question_text }}</span>
+                <div class="options-grid">
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="A"> A) {{ m.option_a }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="B"> B) {{ m.option_b }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="C"> C) {{ m.option_c }}</label>
+                    <label class="opt-btn"><input type="radio" name="mcq_{{ m.id }}" value="D"> D) {{ m.option_d }}</label>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if short_answers %}
+            <div style="font-weight: 700; color:var(--accent-primary); margin: 30px 0 15px 0; padding-left: 10px;">Part B: Short Answer Questions</div>
+            {% for s in short_answers %}
+            <div class="q-card">
+                <span class="q-label">{{ forloop.counter }}. {{ s.question_text }}</span>
+                <textarea name="short_{{ s.id }}" rows="5" placeholder="Enter your detailed answer here..."></textarea>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+
+            <!-- 3. PRACTICAL SECTION (MAJOR/MINOR) -->
+            {% if practicals %}
+            <div class="section-heading">QUESTION <span id="q_prac_main_num"></span>: MAJOR & MINOR EXPERIMENTS</div>
+            <script>document.getElementById('q_prac_main_num').innerText = q_counter; q_counter++;</script>
+            {% for p in practicals %}
+            <div class="q-card">
+                <div style="margin-bottom: 25px;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-primary); text-transform: uppercase;">
+                        {% if p.practical_type == "major" %}(A) Major Experiment{% else %}(B) Minor Experiment{% endif %}
+                    </span>
+                    <div style="font-size: 18px; font-weight: 700;">{{ p.title }}</div>
+                </div>
+                <div style="margin-bottom: 20px;"><span class="q-label">🎯 Aim</span><div style="padding:15px; background:#f9fafb; border-radius:12px; border:1.5px dashed #e5e7eb; color: #374151;">{{ p.aim }}</div></div>
+                <div style="margin-bottom: 20px;"><span class="q-label">🧪 Requirements</span><textarea name="practical_{{ p.id }}_requirements" rows="3" placeholder="List apparatus, reagents, and instruments..."></textarea></div>
+                <div style="margin-bottom: 20px;"><span class="q-label">📘 Theory / Principle</span><textarea name="practical_{{ p.id }}_theory" rows="4" placeholder="Explain the scientific principle..."></textarea></div>
+                <div style="margin-bottom: 20px;"><span class="q-label">📝 Procedure</span><textarea name="practical_{{ p.id }}_procedure" rows="5" placeholder="Step-by-step experiment methodology..."></textarea></div>
+                <div style="margin-bottom: 20px;">
+                    <span class="q-label">📊 Observation Table</span>
+                    <div class="table-wrapper">{% if p.editable_table %}{{ p.editable_table|safe }}{% else %}<div style="padding:30px; border:2px dashed #eee; text-align:center;">No observation table required</div>{% endif %}</div>
+                </div>
+                <div style="margin-bottom: 10px;"><span class="q-label">🏁 Conclusion / Result</span><textarea name="practical_{{ p.id }}_conclusion" rows="3" placeholder="Enter final result or study outcome..."></textarea></div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- 4. VIVA SECTION -->
+            {% if exam.viva_marks > 0 %}
+            <div class="section-heading">QUESTION <span id="q_viva_num"></span>: VIVA</div>
+            <script>document.getElementById('q_viva_num').innerText = q_counter; q_counter++;</script>
+            <div class="q-card" style="border-style: dashed; background: #fafafa;">
+                <div style="text-align:center; padding:20px;">
+                    <h3 style="margin:0; font-size: 20px; color: var(--text-muted);">Oral Examination</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">This section will be evaluated by the examiner during the clinical practical.</p>
+                </div>
+            </div>
+            {% endif %}
         {% endif %}
 
         <button type="button" id="submitBtn" class="submit-btn" onclick="submitExam()">

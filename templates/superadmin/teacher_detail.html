@@ -1,52 +1,263 @@
 {% extends "superadmin/base.html" %}
-{% block title %}Teacher Detail{% endblock %}
+{% block title %}Teacher Detail | {{ teacher.first_name }}{% endblock %}
 
 {% block content %}
 
 <style>
-.table-wrapper { margin-top:20px; }
-.table { width:100%; border-collapse:collapse; }
-.table th, .table td { padding:12px; border-bottom:1px solid #eee; }
-.table tr:hover { background:#f9fbff; }
-.count-box {
-  background:#e8fff4;
-  padding:12px 18px;
-  border-radius:8px;
-  font-weight:600;
-  margin-top:10px;
-  display:inline-block;
-}
+  /* ===============================
+     TEACHER DETAIL THEME
+  =============================== */
+  .detail-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 35px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    gap: 35px;
+    align-items: center;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .teacher-avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent-red), #ff4d4d);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 40px;
+    font-weight: 700;
+    box-shadow: var(--shadow-red);
+    flex-shrink: 0;
+  }
+
+  .info-group {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .subj-pill {
+    background: rgba(255, 26, 26, 0.1);
+    color: var(--accent-red);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 26, 26, 0.2);
+    display: inline-block;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  /* Group Management */
+  .subject-section {
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease;
+  }
+
+  .subject-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    border-left: 4px solid var(--accent-red);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .subject-title .stu-count {
+    font-size: 12px;
+    background: var(--border-color);
+    padding: 2px 10px;
+    border-radius: 12px;
+    color: var(--text-muted);
+  }
+
+  .table-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .custom-table th {
+    text-align: left;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .custom-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-main);
+  }
+
+  .custom-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .custom-table tr:hover {
+    background: rgba(255, 26, 26, 0.03);
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  @media(max-width: 768px) {
+    .detail-card { flex-direction: column; text-align: center; }
+    .info-group { width: 100%; }
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(var(--bg-header-rgb), 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+  }
+
+  .back-btn:hover {
+    background: var(--accent-red);
+    color: #fff;
+    border-color: var(--accent-red);
+    transform: translateX(-5px);
+    box-shadow: var(--shadow-red);
+  }
+
+  .back-btn i {
+    font-size: 12px;
+    transition: 0.3s;
+  }
 </style>
 
-<h2>{{ teacher.first_name }}</h2>
+<div class="page-container">
+  
+  <a href="/superadmin/college/{{ teacher.college.id }}/" class="back-btn">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to College Detail</span>
+  </a>
 
-<div class="count-box">
-  Total Students: {{ total_students }}
-</div>
+  <div class="detail-card">
+    <div class="teacher-avatar">
+      {{ teacher.first_name|slice:":1" }}
+    </div>
+    <div class="info-group">
+      <div class="field">
+        <span class="label">Full Name</span>
+        <span class="value">{{ teacher.first_name }}</span>
+      </div>
+      <div class="field">
+        <span class="label">Email Address</span>
+        <span class="value">{{ teacher.email }}</span>
+      </div>
+      <div class="field">
+        <span class="label">Mobile Number</span>
+        <span class="value">{{ teacher_mobile|default:"Not Provided" }}</span>
+      </div>
+      <div class="field" style="grid-column: span 2;">
+        <span class="label">Assigned Subjects</span>
+        <div>
+          {% for sub in assigned_subjects %}
+            <span class="subj-pill">{{ sub }}</span>
+          {% empty %}
+            <span class="value" style="font-size: 13px; color: var(--text-muted);">None Assigned</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="table-wrapper">
-<table class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Student Name</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for student in students %}
-    <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ student.first_name }}</td>
-      <td>{{ student.email }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="3" style="text-align:center;">No students found</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 25px;">Classroom Enrollment</h2>
+
+  {% for subject, students in grouped_students.items %}
+  <div class="subject-section">
+    <div class="subject-title">
+      {{ subject }}
+      <span class="stu-count">{{ students|length }} Students</span>
+    </div>
+    
+    <div class="table-panel">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th style="width: 50px;">#</th>
+            <th>Student Name</th>
+            <th>Email Address</th>
+            <th>Mobile</th>
+            <th>Roll No</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td style="font-weight: 700;">{{ student.first_name }}</td>
+            <td style="color: var(--text-muted);">{{ student.email }}</td>
+            <td>{{ student.mobile|default:"-" }}</td>
+            <td><span style="color: var(--accent-red); font-weight: 700;">#{{ student.roll_no|default:"N/A" }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% empty %}
+  <div class="table-panel">
+     <div class="no-data">This teacher has no registered students yet.</div>
+  </div>
+  {% endfor %}
+
 </div>
 
 {% endblock %}

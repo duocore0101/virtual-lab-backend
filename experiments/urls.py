@@ -1,5 +1,7 @@
 from django.urls import path
 
+from accounts.views import profile_view
+
 # =========================
 # STUDENT UI VIEWS
 # =========================
@@ -125,12 +127,17 @@ from .views_teacher_ui import (
 # =========================
 from .views import (
     experiment_page,
-    generate_rotarod_pdf,
+    generate_experiment_pdf,
     finish_practical,
 )
 
 
 urlpatterns = [
+
+    # =================================================
+    # PROFILE (ALL ROLES)
+    # =================================================
+    path("profile/", profile_view, name="profile"),
 
     # =================================================
     # SUPER ADMIN (GLOBAL SAAS CONTROL)
@@ -582,7 +589,7 @@ path(
 
     path(
         "experiment/<slug:slug>/download-pdf/",
-        generate_rotarod_pdf,
+        generate_experiment_pdf,
         name="download-pdf"
     ),
 

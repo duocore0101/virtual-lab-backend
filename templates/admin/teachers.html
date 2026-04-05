@@ -4,99 +4,245 @@
 {% block title %}Teachers | Admin{% endblock %}
 
 {% block content %}
-<div class="page-container">
+  <style>
+    /* ================= PREMIUM TABLE DESIGN ================= */
+    .sa-content-panel {
+        background: var(--bg-card) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 24px !important;
+        padding: 25px !important;
+        box-shadow: var(--shadow-soft) !important;
+        margin-top: 20px;
+    }
+
+    .page-header h1 {
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text-main);
+    }
+
+    .teachers-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        margin-top: 20px;
+    }
+
+    .teachers-table th {
+        padding: 15px 20px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .teachers-table tr td {
+        padding: 12px 15px;
+        background: rgba(var(--bg-header-rgb), 0.3);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        font-size: 13px;
+    }
+
+    .teachers-table tr td:first-child {
+        border-left: 1px solid var(--border-color);
+        border-radius: 12px 0 0 12px;
+    }
+
+    .teachers-table tr td:last-child {
+        border-right: 1px solid var(--border-color);
+        border-radius: 0 12px 12px 0;
+    }
+
+    .teachers-table tr:hover td {
+        background: rgba(255, 26, 26, 0.05);
+        border-color: rgba(255, 26, 26, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Status Badges */
+    .status-pill {
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-active {
+        background: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+    }
+
+    .status-inactive {
+        background: rgba(220, 53, 69, 0.15);
+        color: #dc3545;
+    }
+
+    /* Action Buttons */
+    .action-badge {
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-deactivate {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-deactivate:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-activate {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .btn-activate:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    .tag {
+        font-size: 11px;
+        font-weight: 600;
+        background: var(--border-color);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    /* Light Theme Adjustments */
+    body.light-theme .teachers-table tr td {
+        background: #ffffff;
+    }
+  </style>
+
+<div style="padding:40px;">
 
   <!-- ================= PAGE HEADER ================= -->
-  <section class="page-header">
+  <section class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
     <div>
       <h1>Teachers</h1>
-      <p>Manage all teachers assigned across colleges</p>
+      <p style="margin-top:6px; color:var(--text-muted); font-size:15px;">Manage all teachers assigned across colleges</p>
     </div>
-
-    
   </section>
 
-  <!-- ================= TEACHERS TABLE ================= -->
-  <section class="panel">
-    <div class="panel-header">
-      <h2>Teacher List</h2>
-      <span class="text-muted">
+  <!-- ================= TEACHERS PANEL ================= -->
+  <div class="sa-content-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h2 style="margin:0; font-weight:700; font-size:18px;">Teacher List</h2>
+      <span style="color:var(--text-muted); background:var(--border-color); padding:4px 12px; border-radius:20px; font-size:13px; font-weight:600;">
         Total: {{ teachers|length }}
       </span>
     </div>
 
-    <div class="table-wrapper">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Subject</th>
-            <th>College</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+    <table class="teachers-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th style="width: 200px;">Subject</th>
+          <th>College / Role</th>
+          <th>Status</th>
+          <th style="text-align:center;">Action</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          {% for teacher in teachers %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
+      <tbody>
+        {% for teacher in teachers %}
+        <tr>
+          <td style="color:var(--text-muted); font-weight:700;">{{ forloop.counter }}</td>
 
-            <td>
-              <a href="/admin/teacher/{{ teacher.id }}/"
-                style="color:#ff4d4d; font-weight:600; text-decoration:none;">
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:30px; height:30px; background:rgba(255,26,26,0.1); color:var(--accent-red); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px;">
+                {{ teacher.first_name|slice:":1" }}
+              </div>
+              <a href="/admin/teacher/{{ teacher.id }}/" style="font-weight:700; color:var(--text-main); text-decoration:none; white-space: nowrap;">
                 {{ teacher.first_name }}
               </a>
-            </td>
+            </div>
+          </td>
 
-            <td>{{ teacher.email }}</td>
+          <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+             <span>{{ teacher.email }}</span>
+          </td>
 
-            <td style="font-size: 11px; font-weight: 600; color: #666;">
-              {{ teacher.subject }}
-            </td>
+          <td>
+             <div style="max-width: 180px; white-space: normal;">
+               <span class="tag" style="padding: 2px 6px; font-size: 10px;">{{ teacher.subject }}</span>
+             </div>
+          </td>
 
-            <td>
+          <td>
+            <div style="display:flex; flex-direction:column; max-width: 140px;">
               {% if teacher.college %}
-                {{ teacher.college.name }}
+                <span style="font-weight:600; font-size:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ teacher.college.name }}</span>
               {% else %}
-                <span class="text-muted">—</span>
+                <span class="text-muted" style="font-size:12px;">—</span>
               {% endif %}
-            </td>
+              <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">{{ teacher.role }}</span>
+            </div>
+          </td>
 
-            <td>
-              {% if teacher.is_active %}
-                <span class="status-badge active">ACTIVE</span>
-              {% else %}
-                <span class="status-badge inactive">INACTIVE</span>
-              {% endif %}
-            </td>
+          <td>
+            {% if teacher.is_active %}
+              <span class="status-pill status-active" style="padding: 4px 10px; font-size: 10px;">
+                <i class="fas fa-check-circle"></i> Active
+              </span>
+            {% else %}
+              <span class="status-pill status-inactive" style="padding: 4px 10px; font-size: 10px;">
+                <i class="fas fa-times-circle"></i> Inactive
+              </span>
+            {% endif %}
+          </td>
 
-            <td>
-              <a href="/superadmin/toggle-user/{{ teacher.id }}/"
-                 class="{% if teacher.is_active %}deactivate-btn{% else %}activate-btn{% endif %}"
-                 onclick="return confirm('Are you sure?')">
-                 {% if teacher.is_active %}
-                   ⛔ Deactivate
-                 {% else %}
-                   ✅ Activate
-                 {% endif %}
-              </a>
-            </td>
-          </tr>
-
+          <td style="text-align:center;">
+             <a href="/superadmin/toggle-user/{{ teacher.id }}/" 
+                class="action-badge {% if teacher.is_active %}btn-deactivate{% else %}btn-activate{% endif %}"
+                style="padding: 6px 12px; font-size: 11px;"
+                onclick="return confirm('Update status for {{ teacher.first_name }}?')">
+                {% if teacher.is_active %}
+                  <i class="fas fa-user-minus"></i> Deactivate
+                {% else %}
+                  <i class="fas fa-user-plus"></i> Activate
+                {% endif %}
+             </a>
+          </td>
+        </tr>
+  
           {% empty %}
           <tr>
-            <td colspan="6" style="text-align:center; color:var(--text-muted);">
-              No teachers found
+            <td colspan="7" style="padding:60px; text-align:center;">
+              <i class="fas fa-user-friends" style="font-size:40px; color:var(--border-color); margin-bottom:15px; display:block;"></i>
+              <span style="color:var(--text-muted); font-size:15px;">No teachers found for this college.</span>
             </td>
           </tr>
           {% endfor %}
         </tbody>
-      </table>
-    </div>
-  </section>
+    </table>
+  </div>
 
 </div>
 

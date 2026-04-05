@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 
@@ -155,88 +156,392 @@ body.dark-mode .theme-toggle{
   opacity:1;
   visibility:visible;
 }
-
 /* ================= EXP SECTION ================= */
-.exp-section{
-  padding:60px 60px 100px;   /* reduced top spacing */
-  min-height:100vh;
+.exp-section {
+  padding: 80px 20px;
+  min-height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at 10% 20%, rgba(255, 77, 77, 0.03) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(0, 255, 157, 0.03) 0%, transparent 40%);
 }
 
-body.dark-mode .exp-section{
-  background:var(--exp-dark);
-  color:var(--text-dark);
+body.dark-mode .exp-section {
+  background: var(--exp-dark);
 }
 
-body:not(.dark-mode) .exp-section{
-  background:#ffffff;
-  color:#000;
+.exp-inner {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.exp-inner{
-  max-width:1200px;
-  margin:0 auto;
-  width:100%;
+/* ================= PREMIUM HEADINGS ================= */
+.exp-eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #ff4d4d;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+  opacity: 0.8;
 }
 
-/* ================= HEADINGS ================= */
-.exp-eyebrow{
-  font-family:'Orbitron',monospace;
-  font-size:12px;
-  letter-spacing:3px;
-  color:var(--green);
-  margin-bottom:10px;
+.exp-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--text-light);
 }
 
-.exp-title{
-  font-family:'Orbitron',monospace;
-  font-size:44px;
-  font-weight:900;
-  line-height:1.2;
-  margin-bottom:15px;
+body.dark-mode .exp-title {
+  color: var(--text-dark);
 }
 
-.exp-title .g-accent{ color:var(--green); }
-.exp-title .g-dim{ color:var(--text-dim); }
-
-.exp-subtitle{
-  font-size:15px;
-  color:var(--text-dim);
-  max-width:700px;
-  margin-bottom:40px;
-  line-height:1.6;
+.exp-title .g-accent {
+  background: linear-gradient(135deg, #ff4d4d, #ff8080);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* ================= LIST LAYOUT ================= */
-.exp-list{
-  column-count:2;
-  column-gap:40px;
-  word-break:break-word;
+.exp-subtitle {
+  font-size: 16px;
+  color: #666;
+  max-width: 600px;
+  margin-bottom: 50px;
+  line-height: 1.7;
 }
 
-.exp-category{
-  break-inside:avoid;
-  margin-bottom:25px;
-  padding:15px;
-  border-left:4px solid var(--green);
-  background:rgba(0,255,157,0.05);
-  border-radius:8px;
+body.dark-mode .exp-subtitle {
+  color: #9aa4b7;
 }
 
-.exp-category h3{
-  margin-bottom:10px;
-  font-size:16px;
-  color:var(--green);
+/* ================= SEARCH & TOGGLE ================= */
+.controls-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
-.exp-category ol{
-  padding-left:18px;
+.search-container {
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+  position: relative;
 }
 
-.exp-category li{
-  font-size:13px;
-  margin-bottom:6px;
-  line-height:1.5;
+.search-wrapper {
+  position: relative;
+  width: 100%;
 }
+
+.search-input {
+  width: 100%;
+  padding: 14px 20px 14px 50px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  font-size: 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  color: #333;
+}
+
+body.dark-mode .search-input {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  box-shadow: none;
+}
+
+.search-input:focus {
+  border-color: #ff4d4d;
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ff4d4d;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* Category Toggle */
+.category-switcher {
+  display: flex;
+  background: rgba(0,0,0,0.03);
+  padding: 5px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.05);
+  font-family: 'Poppins', sans-serif;
+}
+
+body.dark-mode .category-switcher {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.toggle-btn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #777;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+body.dark-mode .toggle-btn {
+  color: #9aa4b7;
+}
+
+.toggle-btn.active {
+  background: #fff;
+  color: #ff4d4d;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+body.dark-mode .toggle-btn.active {
+  background: #ff4d4d;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255, 77, 77, 0.3);
+}
+
+/* ================= EXPERIMENT LIST ================= */
+.experiment-section {
+  margin-bottom: 60px;
+}
+
+.section-header {
+  margin-bottom: 25px;
+}
+
+.section-label {
+  display: inline-block;
+  color: #ff4d4d;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.section-header h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+body.dark-mode .section-header h2 {
+  color: #fff;
+}
+
+.section-header h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
+}
+
+body.dark-mode .section-header h2::after {
+  background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+}
+
+.experiment-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* Experiment Card */
+.exp-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 12px;
+  padding: 18px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: default;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+body.dark-mode .exp-card {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.05);
+  box-shadow: none;
+}
+
+.exp-card:hover {
+  transform: translateX(10px);
+  border-color: rgba(255, 77, 77, 0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+body.dark-mode .exp-card:hover {
+  background: rgba(255, 77, 77, 0.03);
+  border-color: rgba(255, 77, 77, 0.5);
+}
+
+.exp-card::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0%;
+  background: #ff4d4d;
+  transition: 0.3s;
+}
+
+.exp-card:hover::before {
+  height: 60%;
+}
+
+.exp-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.exp-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: #ff4d4d;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.exp-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+}
+
+body.dark-mode .exp-name {
+  color: #e2e8f0;
+}
+
+.status-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(0, 255, 157, 0.1);
+  color: #00bf73;
+  border: 1px solid rgba(0, 255, 157, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .exp-section {
+    padding: 40px 15px;
+  }
+  
+  .controls-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-container, .category-switcher {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .category-switcher {
+    overflow-x: auto;
+  }
+
+  .exp-card {
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .exp-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .exp-card::before {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 2px;
+  }
+
+  .exp-card:hover::before {
+    width: 60%;
+    height: 2px;
+  }
+}
+
+.search-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.1);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    color: inherit;
+}
+
+body.dark-mode .search-input {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.search-input:focus {
+    border-color: #ff4d4d;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* ============================= */
 /* FLOATING TRIAL PANEL */
 /* ============================= */
@@ -598,157 +903,297 @@ height:43px;
 <!-- EXP SECTION -->
 <section class="exp-section">
 <div class="exp-inner">
+  <p class="exp-eyebrow">Virtual Laboratory</p>
+  <h2 class="exp-title">
+    <span>Explore Our</span><br>
+    <span class="g-accent">Virtual Pharmacology</span><br>
+    <span>Experiments</span>
+  </h2>
+  <p class="exp-subtitle">
+    Comprehensive curriculum covering B.Pharm and D.Pharm standards. Explore simulations and academic modules.
+  </p>
 
-<p class="exp-eyebrow">Virtual Laboratory</p>
+  <div class="controls-row">
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="experimentSearch" class="search-input" placeholder="Quick search by name or number..." autocomplete="off">
+        </div>
+    </div>
 
-<h2 class="exp-title">
-<span class="g-dim">Explore Our</span><br>
-<span class="g-accent">Virtual Pharmacology</span><br>
-<span class="g-dim">Experiments</span>
-</h2>
+    <!-- Category Switcher -->
+    <div class="category-switcher">
+        <button class="toggle-btn active" onclick="filterExperiments('db-pharm', this)">D+B.PHARM</button>
+        <button class="toggle-btn" onclick="filterExperiments('d-pharm', this)">D.PHARM</button>
+    </div>
+  </div>
 
-<p class="exp-subtitle">
-Perform practicals digitally, record observations, analyze results, and generate professional reports — all in one intelligent platform.
-</p>
+  <!-- SECTIONS -->
+  <section class="experiment-section" style="animation-delay: 0.1s;">
+    <div class="section-header">
+      <span class="section-label">SECTION A</span>
+      <h2>Introduction & Basic Concepts</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" or exp.slug == "preclinical-types" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+                <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<div class="exp-list">
+  <section class="experiment-section" style="animation-delay: 0.15s;">
+    <div class="section-header">
+      <span class="section-label">SECTION B</span>
+      <h2>Ethics, Handling & Techniques</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "lab-animal-maintenance" or exp.slug == "blood-withdrawal-techniques" or exp.slug == "routes-drug-administration" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<div class="exp-list">
+  <section class="experiment-section" style="animation-delay: 0.2s;">
+    <div class="section-header">
+      <span class="section-label">SECTION C</span>
+      <h2>Autonomic & Peripheral Pharmacology</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "rabbit-eye-drug-effects" or exp.slug == "ciliary-motility-frog" or exp.slug == "guinea-pig-ileum-drc" or exp.slug == "saline-purgative-frog-intestine" or exp.slug == "spasmogens-spasmolytics-rabbit-jejunum" or exp.slug == "gastrointestinal-motility-mice-rats" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<h3 style="margin-bottom:20px;">Experimental Pharmacology Practical List</h3>
+  <section class="experiment-section" style="animation-delay: 0.25s;">
+    <div class="section-header">
+      <span class="section-label">SECTION D</span>
+      <h2>Central Nervous System (CNS)</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "rotarod" or exp.slug == "actophotometer" or exp.slug == "stereotyped-behavior" or exp.slug == "anticataleptic-activity" or exp.slug == "anticonvulsant-mes-ptz" or exp.slug == "epm-anxiolytic-activity" or exp.slug == "chlorpromazine" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- A -->
-<div class="exp-category">
-<h3>A. Introduction & Basic Concepts</h3>
-<ol>
-<li>Introduction to pharmacology, experimental pharmacology, its scope, objectives, and foundational concepts.</li>
-<li>Commonly used instruments in experimental pharmacology.</li>
-<li>Study of common laboratory animals in experimental pharmacology.</li>
-<li>Introduction to in-vitro pharmacology and physiological salt solutions.</li>
-<li>Study of dose calculation and stock solution preparation in pharmacological experiments.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.3s;">
+    <div class="section-header">
+      <span class="section-label">SECTION E</span>
+      <h2>Cardiovascular & Renal Pharmacology</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "frog-heart" or exp.slug == "potassium-frog-heart" or exp.slug == "calcium-effect-frog-heart" or exp.slug == "acetylcholine-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- B -->
-<div class="exp-category">
-<h3>B. Animal Ethics, Handling & Laboratory Techniques</h3>
-<ol start="6">
-<li>Maintenance of laboratory animals as per CPCSEA guidelines (handling & restraining).</li>
-<li>Common laboratory techniques: Blood withdrawal; Serum and plasma separation; Anaesthetics and euthanasia for animal studies.</li>
-<li>Study of different routes of drug administration in small animals (rats/mice).</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.35s;">
+    <div class="section-header">
+      <span class="section-label">SECTION F</span>
+      <h2>Analgesic & Anti-Inflammatory</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "analgesic-activity-hot-plate" or exp.slug == "tail-flick" or exp.slug == "carrageenan-edema" or exp.slug == "test-for-pyrogens" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- C -->
-<div class="exp-category">
-<h3>C. Autonomic & Peripheral Pharmacology</h3>
-<ol start="9">
-<li>Effect of drugs on rabbit eye (pupil size / intraocular pressure).</li>
-<li>Effect of drugs on frog’s ciliary motility in frog oesophagus.</li>
-<li>Effect of agonists and antagonists on guinea pig ileum.</li>
-<li>Effect of saline purgative on frog intestine.</li>
-<li>Effect of spasmogens and spasmolytics using rabbit jejunum.</li>
-<li>Effect of drugs on gastrointestinal motility in rat/mice.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.4s;">
+    <div class="section-header">
+      <span class="section-label">SECTION G</span>
+      <h2>Endocrine & Metabolic Pharmacology</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "insulin-hypoglycaemic-rabbit" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- D -->
-<div class="exp-category">
-<h3>D. Central Nervous System (CNS) Pharmacology</h3>
-<ol start="15">
-<li>Effect of skeletal muscle relaxants using Rota-rod apparatus.</li>
-<li>Effect of drugs on locomotor activity using actophotometer.</li>
-<li>Study of stereotype & anti-catatonic activity of drugs on rat/mice.</li>
-<li>Anticonvulsant effect of drugs by MES and PTZ method.</li>
-<li>Study of anxiolytic activity of drugs using elevated plus maze method.</li>
-<li>Taming and hypnosis potentiating effect of chlorpromazine in mice/rat.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.45s;">
+    <div class="section-header">
+      <span class="section-label">SECTION H</span>
+      <h2>Gastrointestinal & Anti-Ulcer</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "anti-ulcer-shay-nsaids" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- E -->
-<div class="exp-category">
-<h3>E. Cardiovascular & Renal Pharmacology</h3>
-<ol start="21">
-<li>Study of isolation and perfusion of frog heart.</li>
-<li>Study of effect of potassium ions on isolated frog heart.</li>
-<li>Study of effect of calcium ions on isolated frog heart.</li>
-<li>Study of effect of acetylcholine and adrenaline on isolated frog heart.</li>
-<li>Effect of drugs on blood pressure and heart rate of dog.</li>
-<li>Study of diuretic activity of drugs using rats/mice.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.5s;">
+    <div class="section-header">
+      <span class="section-label">SECTION I</span>
+      <h2>Anaesthetics & Allergy Models</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "corneal-reflex" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" or exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- F -->
-<div class="exp-category">
-<h3>F. Analgesic, Anti-Inflammatory & Antipyretic Models</h3>
-<ol start="27">
-<li>Evaluation of analgesic activity by hot plate method.</li>
-<li>Evaluation of analgesic activity by tail flick method.</li>
-<li>Evaluation of anti-inflammatory activity using carrageenan-induced paw edema model.</li>
-<li>Test for pyrogens (rabbit method).</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.55s;">
+    <div class="section-header">
+      <span class="section-label">SECTION J</span>
+      <h2>In-Vitro Bioassay Studies</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" or exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- G -->
-<div class="exp-category">
-<h3>G. Endocrine & Metabolic Pharmacology</h3>
-<ol start="31">
-<li>Study of insulin-induced hypoglycaemic effect in rabbit.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.6s;">
+    <div class="section-header">
+      <span class="section-label">SECTION K</span>
+      <h2>Toxicology Studies</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "acute-oral-toxicity" or exp.slug == "acute-skin-irritation-oecd-404" or exp.slug == "eye-irritation-oecd405" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- H -->
-<div class="exp-category">
-<h3>H. Gastrointestinal & Anti-Ulcer Studies</h3>
-<ol start="32">
-<li>Study of anti-ulcer activity using pylorus-ligated (Shay) rat model and NSAIDs-induced ulcer model.</li>
-</ol>
-</div>
+  <section class="experiment-section" style="animation-delay: 0.65s;">
+    <div class="section-header">
+      <span class="section-label">SECTION L</span>
+      <h2>Biomechanics & Biostatistics</h2>
+    </div>
+    <div class="experiment-grid">
+      {% for exp in experiments %}
+        {% if exp.slug == "serum-biochemical-parameters" or exp.slug == "pharmacokinetic-parameters" or exp.slug == "biostatistical-methods" %}
+          <div class="exp-card" data-exp-number="{{ exp.number }}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <h3 class="exp-name">{{ exp.name }}</h3>
+            </div>
+            <div class="exp-actions">
+              <span class="status-tag">ACTIVE</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 
-<!-- I -->
-<div class="exp-category">
-<h3>I. Local Anaesthetics & Allergy Models</h3>
-<ol start="33">
-<li>Study of local anaesthetic by different methods.</li>
-<li>Evaluation of anti-allergic activity by mast cell stabilization assay.</li>
-<li>Effect of diphenhydramine in experimentally produced asthma in guinea pig.</li>
-</ol>
-</div>
-
-<!-- J -->
-<div class="exp-category">
-<h3>J. In-Vitro Bioassay & Dose-Response Studies</h3>
-<ol start="36">
-<li>Introduction to bioassay & assembly setup.</li>
-<li>Dose-response curve (DRC) of acetylcholine using frog rectus abdominis muscle.</li>
-<li>Effect of physostigmine & atropine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum respectively.</li>
-<li>Bioassay of histamine using guinea pig ileum by matching method.</li>
-<li>Bioassay of oxytocin using rat uterine horn by interpolation method.</li>
-<li>Bioassay of serotonin (5-HT) using rat fundus strip by three-point method.</li>
-<li>Bioassay of acetylcholine using rat ileum/colon by four-point method.</li>
-<li>Determination of PA₂ value of prazosin using rat anococcygenus muscle (Schild’s plot method).</li>
-<li>Determination of PD₂ value using guinea pig ileum.</li>
-</ol>
-</div>
-
-<!-- K -->
-<div class="exp-category">
-<h3>K. Toxicology Studies</h3>
-<ol start="45">
-<li>Determination of acute oral toxicity (LD₅₀) of a drug from given data.</li>
-<li>Determination of acute skin irritation/corrosion of a test substance.</li>
-<li>Determination of acute eye irritation/corrosion of a test substance.</li>
-</ol>
-</div>
-
-<!-- L -->
-<div class="exp-category">
-<h3>L. Biochemical, Pharmacokinetics & Biostatistics</h3>
-<ol start="48">
-<li>Estimation of serum biochemical parameters using semi-autoanalyser.</li>
-<li>Calculation of pharmacokinetic parameters from given data.</li>
-<li>Biostatistical methods in experimental pharmacology: Student’s t-test; ANOVA; Chi-square test; Wilcoxon signed-rank test.</li>
-</ol>
 </div>
 
 </div>
@@ -853,6 +1298,78 @@ function closeVideo(){
   popup.classList.remove("active");
   video.pause();
 }
+
+// ==========================================
+// EXPERIMENT FILTERING LOGIC
+// ==========================================
+const D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36];
+
+function filterExperiments(category, btn) {
+    if(!btn) return;
+    
+    // Update active button
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    applyAllFilters();
+}
+
+function applyAllFilters() {
+    const searchInput = document.getElementById('experimentSearch');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    
+    const activeBtn = document.querySelector('.toggle-btn.active');
+    const category = activeBtn ? (activeBtn.textContent.includes('D.PHARM') && !activeBtn.textContent.includes('D+B') ? 'd-pharm' : 'db-pharm') : 'db-pharm';
+    
+    const cards = document.querySelectorAll('.exp-card');
+    let counter = 1;
+    
+    cards.forEach(card => {
+        const name = card.querySelector('.exp-name').textContent.toLowerCase();
+        const originalNum = card.getAttribute('data-exp-number') || "0";
+        const expNumInt = parseInt(originalNum);
+        
+        const isSearchMatch = name.includes(query) || originalNum.includes(query);
+        let isPlanMatch = true;
+        
+        if (category === 'd-pharm') {
+            isPlanMatch = D_PHARM_NUMBERS.includes(expNumInt);
+        }
+        
+        const numberSpan = card.querySelector('.exp-number');
+        if (isSearchMatch && isPlanMatch) {
+            card.style.display = 'flex';
+            if (category === 'd-pharm') {
+                numberSpan.textContent = `Experiment #${counter}`;
+                counter++;
+            } else {
+                numberSpan.textContent = `Experiment #${originalNum}`;
+            }
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    updateSectionVisibility();
+}
+
+function updateSectionVisibility() {
+    document.querySelectorAll('.experiment-section').forEach(section => {
+        const hasVisibleCards = section.querySelector('.exp-card[style*="display: flex"]') !== null;
+        section.style.display = hasVisibleCards ? 'block' : 'none';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('experimentSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', applyAllFilters);
+    }
+    
+    // Initialize view
+    document.querySelectorAll('.exp-card').forEach(c => c.style.display = 'flex');
+    applyAllFilters();
+});
 
 </script>
 

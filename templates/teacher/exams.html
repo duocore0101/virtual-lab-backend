@@ -185,9 +185,43 @@
     text-align: center;
     color: var(--text-muted);
 }
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        background: rgba(255, 75, 43, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-bottom: 25px;
+        backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+        background: #ff4b2b;
+        color: #fff;
+        border-color: #ff4b2b;
+        transform: translateX(-5px);
+        box-shadow: 0 8px 15px rgba(255, 75, 43, 0.2);
+    }
+
+    .back-btn i {
+        font-size: 12px;
+        transition: 0.3s;
+    }
 </style>
 
 <div class="exam-wrapper">
+
+    <a href="/teacher/students/?subject={{ subject_code|default:'' }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Subject</span>
+    </a>
 
     <div class="exam-header">
         <h2>Exams: <span style="color:#ff4b2b;">Management</span></h2>

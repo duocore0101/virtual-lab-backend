@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils.timezone import now
 import csv
 # 🔥 UPDATED IMPORT
@@ -46,7 +46,7 @@ def admin_dashboard(request):
         pass
 
     attempts = ExperimentAttempt.objects.filter(
-        experiment__teacher__college=college,
+        student__college=college,
         completed_at__isnull=False
     )
 
@@ -257,12 +257,19 @@ def admin_experiments(request):
             # Handle single experiment plan
             pass
 
+    query = request.GET.get("q", "")
+    if query:
+        experiments = experiments.filter(
+            Q(name__icontains=query) | Q(number__icontains=query)
+        )
+
     return render(
         request,
         "admin/experiments.html",
         {
             "experiments": experiments,
-            "selected_plan": selected_plan
+            "selected_plan": selected_plan,
+            "query": query
         }
     )
 
@@ -274,7 +281,7 @@ def admin_attempts(request):
         return redirect("/login/")
 
     attempts = ExperimentAttempt.objects.filter(
-        experiment__teacher__college=request.user.college,
+        student__college=request.user.college,
         completed_at__isnull=False
     ).select_related(
         "student",
@@ -305,6 +312,25 @@ def teacher_detail_admin(request, teacher_id):
         college=request.user.college
     )
 
+    # 🔥 Subject Mapping
+    subject_labels = {
+        "dpharm_2": "2nd Yr D.Pharm: Pharmacology",
+        "bpharm_4": "2nd Yr B.Pharm: Pharm-I",
+        "bpharm_5": "3rd Yr B.Pharm: Pharm-II",
+        "bpharm_6": "3rd Yr B.Pharm: Pharm-III"
+    }
+
+    # Format Teacher's Assigned Subjects
+    assigned_codes = teacher.subject.split(",") if teacher.subject else []
+    assigned_subjects = [subject_labels.get(code.strip(), code.strip()) for code in assigned_codes if code.strip()]
+
+    # 🔥 Mobile Fallback logic
+    teacher_mobile = teacher.mobile
+    if not teacher_mobile:
+        t_req = TeacherRequest.objects.filter(email=teacher.email).first()
+        if t_req:
+            teacher_mobile = t_req.mobile
+
     # Assigned Experiments
     experiments = Experiment.objects.filter(teacher=teacher).order_by("number")
 
@@ -322,23 +348,35 @@ def teacher_detail_admin(request, teacher_id):
         role="student",
         created_by=teacher,
         college=request.user.college
-    ).order_by("first_name")
+    ).select_related("student_approval")
 
-    total_students = students.count()
-    active_students = students.filter(is_active=True).count()
-    total_attempts = attempts.count()
+    # Group Students by Subject
+    grouped_students = {}
+    for student in students:
+        try:
+            subj_code = student.student_approval.requested_subject
+        except:
+            subj_code = "Unassigned"
+            
+        subj_name = subject_labels.get(subj_code, subj_code.replace("_", " ").title())
+        
+        if subj_name not in grouped_students:
+            grouped_students[subj_name] = []
+        grouped_students[subj_name].append(student)
 
     return render(
         request,
         "admin/teacher_detail.html",
         {
             "teacher": teacher,
+            "teacher_mobile": teacher_mobile,
+            "assigned_subjects": assigned_subjects,
+            "grouped_students": grouped_students,
             "experiments": experiments,
             "attempts": attempts,
-            "students": students,  # 🔥 NEW
-            "total_students": total_students,
-            "active_students": active_students,
-            "total_attempts": total_attempts,
+            "total_students": students.count(),
+            "active_students": students.filter(is_active=True).count(),
+            "total_attempts": attempts.count()
         }
     )
 
@@ -413,7 +451,7 @@ def admin_reports(request):
     college = request.user.college
 
     attempts = ExperimentAttempt.objects.filter(
-        experiment__teacher__college=college,
+        student__college=college,
         completed_at__isnull=False
     )
 
@@ -497,7 +535,7 @@ def admin_export_attempts_csv(request):
         return redirect("/login/")
 
     attempts = ExperimentAttempt.objects.filter(
-        experiment__teacher__college=request.user.college,
+        student__college=request.user.college,
         completed_at__isnull=False
     )
 

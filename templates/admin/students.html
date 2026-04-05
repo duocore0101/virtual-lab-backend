@@ -5,85 +5,236 @@
 
 {% block content %}
 
-<div style="padding:20px;">
+  <style>
+    /* ================= PREMIUM TABLE DESIGN ================= */
+    .sa-content-panel {
+        background: var(--bg-card) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 24px !important;
+        padding: 40px !important;
+        box-shadow: var(--shadow-soft) !important;
+        margin-top: 20px;
+    }
+
+    .page-header h2 {
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text-main);
+    }
+
+    .students-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        margin-top: 20px;
+    }
+
+    .students-table th {
+        padding: 15px 20px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .students-table tr td {
+        padding: 20px;
+        background: rgba(var(--bg-header-rgb), 0.3);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    .students-table tr td:first-child {
+        border-left: 1px solid var(--border-color);
+        border-radius: 12px 0 0 12px;
+    }
+
+    .students-table tr td:last-child {
+        border-right: 1px solid var(--border-color);
+        border-radius: 0 12px 12px 0;
+    }
+
+    .students-table tr:hover td {
+        background: rgba(255, 26, 26, 0.05);
+        border-color: rgba(255, 26, 26, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Status Badges */
+    .status-pill {
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-active {
+        background: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+    }
+
+    .status-inactive {
+        background: rgba(220, 53, 69, 0.15);
+        color: #dc3545;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-deactivate {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-deactivate:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-activate {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .btn-activate:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    /* Premium Export Button */
+    .export-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white !important;
+        padding: 12px 24px;
+        border-radius: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        border: none;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+
+    .export-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Light Theme Adjustments */
+    body.light-theme .students-table tr td {
+        background: #ffffff;
+    }
+  </style>
+
+<div style="padding:40px;">
 
   <!-- ================= PAGE HEADER ================= -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
     <div>
       <h2 style="margin:0;">Students</h2>
-      <p style="margin:4px 0; color:gray;">
+      <p style="margin:6px 0; color:var(--text-muted); font-size:15px;">
         Manage all students in your college
       </p>
     </div>
 
     <!-- CSV EXPORT -->
-    <a href="/admin/export/students/"
-       style="background:#007bff; color:white; padding:8px 14px; border-radius:6px; text-decoration:none;">
-       ⬇ Export Students
+    <a href="/admin/export/students/" class="export-btn">
+       <i class="fas fa-file-export"></i> <span>Export Students</span>
     </a>
   </div>
 
-  <!-- ================= TABLE ================= -->
-  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+  <!-- ================= STUDENT PANEL ================= -->
+  <div class="sa-content-panel">
 
-    <table style="width:100%; border-collapse:collapse;">
+    <table class="students-table">
       <thead>
-        <tr style="background:#f5f5f5; text-align:left;">
-          <th style="padding:12px;">#</th>
-          <th style="padding:12px;">Name</th>
-          <th style="padding:12px;">Email</th>
-          <th style="padding:12px;">Created By</th>
-          <th style="padding:12px;">Status</th>
-          <th style="padding:12px;">Action</th>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Created By</th>
+          <th>Status</th>
+          <th style="text-align:center;">Action</th>
         </tr>
       </thead>
 
       <tbody>
-
         {% for student in students %}
-        <tr style="border-bottom:1px solid #eee;">
-          <td style="padding:12px;">{{ forloop.counter }}</td>
-          <td style="padding:12px;">{{ student.first_name }}</td>
-          <td style="padding:12px;">{{ student.email }}</td>
-          <td style="padding:12px;">
-            {{ student.created_by.first_name }}
+        <tr>
+          <td style="color:var(--text-muted); font-weight:700;">{{ forloop.counter }}</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:36px; height:36px; background:rgba(0,123,255,0.1); color:#007bff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800;">
+                {{ student.first_name|slice:":1" }}
+              </div>
+              <span style="font-weight:700; color:var(--text-main);">{{ student.first_name }}</span>
+            </div>
+          </td>
+          <td>{{ student.email }}</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <i class="fas fa-user-circle" style="color:var(--text-muted); font-size:14px;"></i>
+              <span style="font-size:13px; color:var(--text-muted); font-weight:500;">{{ student.created_by.first_name }}</span>
+            </div>
           </td>
 
           <!-- STATUS -->
-          <td style="padding:12px;">
+          <td>
             {% if student.is_active %}
-              <span style="background:#d4edda; color:#155724; padding:5px 10px; border-radius:20px; font-size:12px;">
-                ACTIVE
+              <span class="status-pill status-active">
+                <i class="fas fa-check-circle"></i> Active
               </span>
             {% else %}
-              <span style="background:#f8d7da; color:#721c24; padding:5px 10px; border-radius:20px; font-size:12px;">
-                INACTIVE
+              <span class="status-pill status-inactive">
+                <i class="fas fa-times-circle"></i> Inactive
               </span>
             {% endif %}
           </td>
 
           <!-- ACTION -->
-          <td style="padding:12px;">
+          <td style="text-align:center;">
             <a href="/admin/toggle-user/{{ student.id }}/"
-               style="padding:6px 12px; border-radius:6px; text-decoration:none;
-               background:{% if student.is_active %}#dc3545{% else %}#28a745{% endif %};
-               color:white; font-size:13px;"
+               class="action-btn {% if student.is_active %}btn-deactivate{% else %}btn-activate{% endif %}"
                onclick="return confirm('Change status for this student?')">
 
                {% if student.is_active %}
-                 Deactivate
+                 <i class="fas fa-user-slash"></i> Deactivate
                {% else %}
-                 Activate
+                 <i class="fas fa-user-check"></i> Activate
                {% endif %}
             </a>
           </td>
-
         </tr>
 
         {% empty %}
         <tr>
-          <td colspan="6" style="padding:20px; text-align:center; color:gray;">
-            No students found
+          <td colspan="6" style="padding:60px; text-align:center;">
+             <i class="fas fa-users-slash" style="font-size:40px; color:var(--border-color); margin-bottom:15px; display:block;"></i>
+             <span style="color:var(--text-muted); font-size:15px;">No students found in your college record.</span>
           </td>
         </tr>
         {% endfor %}

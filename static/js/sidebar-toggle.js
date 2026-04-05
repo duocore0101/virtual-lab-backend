@@ -17,13 +17,27 @@ const SIDEBAR_KEY = "gmars-sidebar";
 // Toggle sidebar + save preference
 function toggleSidebar() {
   const sidebar = document.querySelector(".sa-sidebar");
+  const backdrop = document.querySelector(".sidebar-backdrop");
   if (!sidebar) return;
 
-  sidebar.classList.toggle("collapsed");
+  // Check if we are in mobile/tablet mode
+  if (window.innerWidth < 992) {
+    sidebar.classList.toggle("mobile-open");
+    if (backdrop) backdrop.classList.toggle("active");
+  } else {
+    sidebar.classList.toggle("collapsed");
+    // Save state only for desktop
+    const isCollapsed = sidebar.classList.contains("collapsed");
+    localStorage.setItem(SIDEBAR_KEY, isCollapsed ? "collapsed" : "expanded");
+  }
+}
 
-  // Save state
-  const isCollapsed = sidebar.classList.contains("collapsed");
-  localStorage.setItem(SIDEBAR_KEY, isCollapsed ? "collapsed" : "expanded");
+// Function to close sidebar (useful for backdrop click)
+function closeSidebar() {
+    const sidebar = document.querySelector(".sa-sidebar");
+    const backdrop = document.querySelector(".sidebar-backdrop");
+    if (sidebar) sidebar.classList.remove("mobile-open");
+    if (backdrop) backdrop.classList.remove("active");
 }
 // ---------------------------------
 // ACTIVE MENU HIGHLIGHT BY URL

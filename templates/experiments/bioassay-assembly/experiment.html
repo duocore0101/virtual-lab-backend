@@ -107,6 +107,15 @@
       Next ▶
     </button>
 
+    
+    
+    
+    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+      Download Practical PDF 📄
+    </button>
+
+
+
     <button class="exp-btn" id="finishBtn"
       onclick="finishPractical()"
       style="display:none;">
@@ -163,6 +172,76 @@ function toggleFullscreen() {
 }
 
 </script>
+
+
+
+
+
+<script>
+function downloadPDF() {
+  const slug = "{{ experiment.slug }}";
+  
+  // 1. TRY TO SCRAPE TABLE DATA FROM DOM
+  let tableData = [];
+  const table = document.querySelector('table'); 
+  if (table) {
+    const rows = table.querySelectorAll('tr');
+    rows.forEach(row => {
+      let rowData = [];
+      const cells = row.querySelectorAll('th, td');
+      cells.forEach(cell => {
+        rowData.push(cell.innerText.trim());
+      });
+      if (rowData.length > 0) rowData.push(""); // filler
+      if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
+    });
+    
+    // Save to localStorage for use on conclusion/other pages
+    if (tableData.length > 0) {
+        localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+    }
+  } 
+  
+  // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
+  if (tableData.length === 0) {
+    const saved = localStorage.getItem('exp_data_' + slug);
+    if (saved) {
+        tableData = JSON.parse(saved);
+    }
+  }
+
+  fetch(`/experiment/${slug}/download-pdf/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": "{{ csrf_token }}"
+    },
+    body: JSON.stringify({
+      table_data: tableData
+    })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("PDF generation failed");
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Practical_Report_${slug}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+</script>
+
+
+
 
 </body>
 </html>

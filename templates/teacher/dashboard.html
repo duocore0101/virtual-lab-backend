@@ -5,113 +5,142 @@
 
 {% block content %}
 
-<div style="padding:40px; max-width:1400px; margin:auto;">
+<div class="page-container">
 
   <!-- ================= HERO (THEME SAFE) ================= -->
-  <div style="
-      background: linear-gradient(
-        135deg,
-        rgba(255,0,0,0.20),
-        var(--bg-card)
-      );
-      padding:60px 50px;
-      border-radius:22px;
-      margin-bottom:35px;
-      border:1px solid var(--border-color);
-      transition: background 0.3s ease;
-  ">
-      <h1 style="font-size:38px; margin-bottom:10px;">
-        Teacher Dashboard
-      </h1>
-      <p style="color:var(--text-muted); font-size:16px;">
-        Welcome, {{ name }} 👋
-      </p>
-      <p style="color:var(--text-muted); margin-top:6px;">
-        Manage students, experiments, exams & practical attempts
-      </p>
-  </div>
+  <section class="sa-hero">
+      <h1>Teacher Dashboard</h1>
+      <p>Welcome, {{ name }} 👋</p>
+      <p>Manage students, experiments, exams & practical attempts</p>
+  </section>
 
 
   
 
 
-  <!-- ================= KPI CARDS (THEME SAFE) ================= -->
-  <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:24px;
-      margin-bottom:50px;
-  ">
+  <style>
+    /* ================= PREMIUM KPI CARDS (TEACHER) ================= */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
 
-      <!-- STUDENTS -->
-      <a href="/teacher/students/" style="
-          background: var(--bg-card);
-          padding:30px;
-          border-radius:18px;
-          border:1px solid var(--border-color);
-          text-decoration:none;
-          color:var(--text-main);
-          box-shadow: var(--shadow-soft);
-          transition:0.3s;
-      ">
-          <div style="font-size:14px; color:var(--text-muted);">
-              Your Students
+    .kpi-card {
+        background: var(--bg-card) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 24px !important;
+        padding: 30px !important;
+        text-decoration: none !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 20px !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-10px) scale(1.02) !important;
+        border-color: var(--accent-red) !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 20px rgba(255, 26, 26, 0.15) !important;
+    }
+
+    .kpi-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+        background: var(--accent-red);
+        opacity: 0.8;
+    }
+
+    .kpi-card * {
+        text-decoration: none !important;
+        border-bottom: none !important;
+    }
+
+    .kpi-card .card-icon {
+        width: 60px !important;
+        height: 60px !important;
+        background: rgba(255, 26, 26, 0.1) !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 24px !important;
+        color: var(--accent-red) !important;
+        transition: 0.4s !important;
+        margin-bottom: 0 !important;
+    }
+
+    .kpi-card:hover .card-icon {
+        background: var(--accent-red) !important;
+        color: white !important;
+        transform: rotate(10deg) scale(1.1) !important;
+    }
+
+    .kpi-card span {
+        font-size: 36px !important;
+        font-weight: 800 !important;
+        color: var(--text-main) !important;
+        line-height: 1 !important;
+        margin-top: 5px !important;
+        display: block !important;
+    }
+
+    .kpi-card .card-label {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: var(--text-muted) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* Light Theme Adjustments */
+    body.light-theme .kpi-card {
+        background: #ffffff !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+    }
+  </style>
+
+  <!-- ================= KPI CARDS (THEME SAFE) ================= -->
+  <div class="kpi-grid">
+
+      <a href="/teacher/students/" class="kpi-card">
+          <div class="card-icon">
+              <i class="fas fa-user-graduate"></i>
           </div>
-          <div style="
-              font-size:34px;
-              margin-top:10px;
-              color:var(--accent-red);
-              font-weight:700;
-          ">
-              {{ total_students }}
+          <div>
+              <div class="card-label">Your Students</div>
+              <span>{{ total_students }}</span>
           </div>
       </a>
 
       <!-- EXPERIMENTS -->
-      <a href="/teacher/experiments/" style="
-          background: var(--bg-card);
-          padding:30px;
-          border-radius:18px;
-          border:1px solid var(--border-color);
-          text-decoration:none;
-          color:var(--text-main);
-          box-shadow: var(--shadow-soft);
-          transition:0.3s;
-      ">
-          <div style="font-size:14px; color:var(--text-muted);">
-              Active Experiments
+      <a href="/teacher/experiments/" class="kpi-card">
+          <div class="card-icon">
+              <i class="fas fa-flask-vial"></i>
           </div>
-          <div style="
-              font-size:34px;
-              margin-top:10px;
-              color:var(--accent-red);
-              font-weight:700;
-          ">
-              {{ total_experiments }}
+          <div>
+              <div class="card-label">Active Experiments</div>
+              <span>{{ total_experiments }}</span>
           </div>
       </a>
 
       <!-- ATTEMPTS -->
-      <a href="/teacher/attempts/" style="
-          background: var(--bg-card);
-          padding:30px;
-          border-radius:18px;
-          border:1px solid var(--border-color);
-          text-decoration:none;
-          color:var(--text-main);
-          box-shadow: var(--shadow-soft);
-          transition:0.3s;
-      ">
-          <div style="font-size:14px; color:var(--text-muted);">
-              Completed Practicals
+      <a href="/teacher/attempts/" class="kpi-card">
+          <div class="card-icon">
+              <i class="fas fa-clipboard-check"></i>
           </div>
-          <div style="
-              font-size:34px;
-              margin-top:10px;
-              color:var(--accent-red);
-              font-weight:700;
-          ">
-              {{ total_attempts }}
+          <div>
+              <div class="card-label">Completed Practicals</div>
+              <span>{{ total_attempts }}</span>
           </div>
       </a>
 
@@ -119,37 +148,23 @@
 
 
   <!-- ================= EXAM MANAGEMENT PANEL ================= -->
-  <div style="
-      background: var(--bg-card);
-      padding:35px;
-      border-radius:18px;
-      border:1px solid var(--border-color);
-      box-shadow: var(--shadow-soft);
-      transition: background 0.3s ease;
-  ">
-
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
-          <h2 style="margin:0;">Exam Management</h2>
+  <div class="panel">
+      <div class="panel-header">
+          <h2>Exam Management</h2>
       </div>
 
-      <ul style="color:var(--text-muted); line-height:28px; margin-bottom:25px;">
+      <ul>
           <li>Add & Edit MCQ Questions</li>
           <li>Add Short Answer Questions</li>
           <li>Enable or Disable Exams</li>
           <li>View Student Exam Results</li>
       </ul>
 
-      <a href="/teacher/experiments/"
-         style="
-            background:var(--accent-red);
-            color:#fff;
-            padding:12px 22px;
-            border-radius:10px;
-            text-decoration:none;
-            font-weight:600;
-         ">
-         Manage Experiment Exams
-      </a>
+      <div style="margin-top: 25px;">
+          <a href="/teacher/experiments/" class="primary-btn">
+             Manage Experiment Exams
+          </a>
+      </div>
 
   </div>
 

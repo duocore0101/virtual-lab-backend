@@ -7,6 +7,14 @@
 
   <!-- Shared Global CSS (Same as Admin) -->
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
 
@@ -77,53 +85,250 @@
 
     }
 
-    /* ================= SIDEBAR DROPDOWN ================= */
+    /* ================= NEW SIDEBAR REDESIGN ================= */
+
+    :root {
+        --sidebar-width: 280px;
+        --sidebar-collapsed-width: 80px;
+        --accent-red: #ff1a1a;
+    }
+
+    /* Dark Theme (Default) */
+    .sa-sidebar {
+        background: var(--bg-header, #000) !important;
+        color: var(--text-main, #fff) !important;
+        border-right: 1px solid var(--border-color, #222);
+    }
+
+    /* Light Theme Overrides */
+    body.light-theme .sa-sidebar {
+        background: #ffffff !important;
+        border-right: 1px solid #dddddd !important;
+    }
+
+    body.light-theme .sa-sidebar .user-name {
+        color: #111111 !important;
+    }
+
+    body.light-theme .sa-sidebar .user-role {
+        color: #555555 !important;
+    }
+
+    body.light-theme .sa-sidebar nav a,
+    body.light-theme .sa-sidebar .dropdown-trigger {
+        color: #111111 !important;
+    }
+    
+    body.light-theme .sa-sidebar nav a:hover,
+    body.light-theme .sa-sidebar .dropdown-trigger:hover {
+        background: rgba(255, 26, 26, 0.08) !important;
+        color: var(--accent-red) !important;
+    }
+
+    body.light-theme .sa-sidebar .dropdown-content a {
+        color: #555555 !important;
+    }
+
+    body.light-theme .sa-sidebar .dropdown-content a:hover {
+        color: var(--accent-red) !important;
+    }
+
+    body {
+        font-family: 'Outfit', sans-serif !important;
+    }
+
+    .sa-sidebar {
+        width: var(--sidebar-width);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+    }
+
+    .sidebar-header {
+        padding: 30px 24px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .user-avatar {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--accent-red), #b32424);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+        color: #fff; /* Avatar initial should stay white */
+        box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: 700;
+        font-size: 16px;
+        white-space: nowrap;
+    }
+
+    .user-role {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .sa-sidebar nav a {
+        padding: 14px 24px;
+        margin: 4px 16px;
+        border-radius: 12px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .sa-sidebar nav a i {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .sa-sidebar nav a span {
+        font-size: 15px;
+    }
+
+    .sa-sidebar nav a:hover {
+        background: rgba(255, 26, 26, 0.08);
+        color: var(--accent-red);
+        transform: translateX(5px);
+        border-color: var(--border-color);
+    }
+
+    .sa-sidebar nav a.active {
+        background: linear-gradient(90deg, rgba(255, 26, 26, 0.15), transparent);
+        color: var(--accent-red);
+        border-left: 4px solid var(--accent-red);
+        border-radius: 0 12px 12px 0;
+        margin-left: 0;
+        padding-left: 20px;
+    }
+
+    .sa-sidebar nav a.active i {
+        color: var(--accent-red);
+        text-shadow: 0 0 10px rgba(255, 26, 26, 0.4);
+    }
+
+    /* Dropdown UI Refinement */
     .sidebar-dropdown {
-      position: relative;
+        margin: 4px 16px;
     }
+
     .dropdown-trigger {
-      display: flex;
-      align-items: center;
-      padding: 12px 24px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.3s;
-      cursor: pointer;
-      gap: 14px;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: 0.3s;
+        gap: 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
+
+    .dropdown-trigger i:first-child {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+    }
+
     .dropdown-trigger:hover {
-      background: rgba(255,255,255,0.1);
+        background: rgba(255, 26, 26, 0.08);
+        color: var(--accent-red);
     }
-    .dropdown-trigger .arrow {
-      margin-left: auto;
-      transition: 0.3s;
-    }
-    .sidebar-dropdown.active .arrow {
-      transform: rotate(180deg);
-    }
+
     .dropdown-content {
-      display: none;
-      background: rgba(0,0,0,0.1);
-      padding-left: 10px;
+        display: none;
+        margin-top: 5px;
+        border-left: 2px solid var(--border-color);
+        margin-left: 35px;
+        padding-left: 5px;
     }
+
     .sidebar-dropdown.active .dropdown-content {
-      display: block;
+        display: block;
     }
+
+    .sidebar-dropdown.active .arrow {
+        transform: rotate(180deg);
+    }
+
     .dropdown-content a {
-      font-size: 12.5px !important;
-      padding: 10px 20px !important;
-      opacity: 0.8;
+        margin: 2px 0 !important;
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+        background: transparent !important;
+        opacity: 0.7;
     }
+
     .dropdown-content a:hover {
-      opacity: 1;
-      background: rgba(255,255,255,0.05);
+        opacity: 1;
+        background: rgba(255, 26, 26, 0.05) !important;
+        transform: translateX(5px);
     }
-    .active-sub {
-      background: var(--accent-red) !important;
-      color: #fff !important;
-      opacity: 1 !important;
-      border-radius: 4px;
+
+    .dropdown-content a.active-sub {
+        color: var(--accent-red);
+        opacity: 1;
+        font-weight: 700;
+    }
+
+    /* Collapsed State Overrides */
+    .sa-sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .sa-sidebar.collapsed .sidebar-header,
+    .sa-sidebar.collapsed .user-details,
+    .sa-sidebar.collapsed span,
+    .sa-sidebar.collapsed .arrow {
+        display: none !important;
+    }
+
+    .sa-sidebar.collapsed .user-info {
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .sa-sidebar.collapsed nav a {
+        margin: 8px 12px;
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .sa-sidebar.collapsed nav a i {
+        margin: 0;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
   </style>
@@ -161,40 +366,56 @@
 <div class="sa-layout">
 
   <!-- ================= SIDEBAR ================= -->
+  <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
   <aside class="sa-sidebar">
+    <!-- Sidebar Profile Header -->
+    <div class="sidebar-header">
+      <div class="user-info">
+        <div class="user-avatar">{{ request.session.name|slice:":1" }}</div>
+        <div class="user-details">
+          <span class="user-name">{{ request.session.name }}</span>
+          <span class="user-role">Teacher</span>
+        </div>
+      </div>
+    </div>
+
     <nav>
+      <a href="/teacher/dashboard/" class="{% if '/teacher/dashboard/' in path %}active{% endif %}">
+        <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+      </a>
+      
+      <a href="/profile/" class="{% if '/profile/' in path %}active{% endif %}">
+        <i class="fas fa-user-circle"></i> <span>My Profile</span>
+      </a>
 
-      <a href="/teacher/dashboard/" class="{% if '/teacher/dashboard/' in path %}active{% endif %}">🏠 <span>Dashboard</span></a>
-
-      <!-- 🔥 NEW: STUDENT REQUESTS -->
       <a href="/teacher/student-requests/" class="{% if '/teacher/student-requests/' in path %}active{% endif %}">
-        📨 <span>Student Requests</span>
+        <i class="fas fa-bell"></i> <span>Student Requests</span>
         {% if pending_student_requests_count > 0 %}
-        <span class="badge-count">
-          {{ pending_student_requests_count }}
-        </span>
+        <span class="badge-count">{{ pending_student_requests_count }}</span>
         {% endif %}
       </a>
-      <a href="/teacher/experiments/" class="{% if '/teacher/experiments/' in path %}active{% endif %}">🧪 <span>Experiments</span></a>
 
-      <!-- 🔥 NEW: SUBJECT SPECIFIC STUDENTS (DROPDOWN) -->
-      <div class="sidebar-dropdown">
+      <a href="/teacher/experiments/" class="{% if '/teacher/experiments/' in path %}active{% endif %}">
+        <i class="fas fa-flask"></i> <span>Experiments</span>
+      </a>
+
+      <!-- Subject Selection Dropdown -->
+      <div class="sidebar-dropdown {% if request.GET.subject %}active{% endif %}">
         <div class="dropdown-trigger" onclick="this.parentElement.classList.toggle('active')">
-          🎓 <span>Select Subject</span>
-          <span class="arrow">▾</span>
+          <i class="fas fa-graduation-cap"></i> <span>Select Subject</span>
+          <i class="fas fa-chevron-down arrow" style="margin-left: auto; font-size: 12px; transition: 0.3s;"></i>
         </div>
         <div class="dropdown-content">
           {% for sub in teacher_subjects %}
             <a href="/teacher/students/?subject={{ sub.code }}" 
                class="{% if sub.code == request.GET.subject %}active-sub{% endif %}">
-               • {{ sub.name }}
+               <i class="fas fa-book-open" style="font-size: 12px; opacity: 0.5;"></i> {{ sub.name }}
             </a>
           {% empty %}
             <span style="padding:10px 15px; font-size:11px; color:#888;">No subjects assigned</span>
           {% endfor %}
         </div>
       </div>
-
     </nav>
   </aside>
 

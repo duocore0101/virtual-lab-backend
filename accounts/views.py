@@ -290,3 +290,86 @@ def logout_view(request):
     logout(request)
     request.session.flush()
     return redirect("/login/")
+
+# =====================================================
+# 🔥 PROFILE MANAGEMENT (ALL ROLES)
+# =====================================================
+def profile_view(request):
+    """
+    Allows Principal, Teacher, and Student to view and edit their own profiles.
+    """
+    if not request.user.is_authenticated:
+        return redirect("/login/")
+
+    user = request.user
+    college = user.college
+    success_msg = None
+    error_msg = None
+
+    if request.method == "POST":
+        fullname = request.POST.get("fullname")
+        email = request.POST.get("email")
+        mobile = request.POST.get("mobile")
+
+        # Basic validation
+        if not fullname or not email:
+            error_msg = "Name and Email are required."
+        else:
+            # Update core user info
+            user.first_name = fullname
+            user.email = email
+            user.mobile = mobile
+
+            # Role-specific updates
+            if user.role == "student":
+                user.roll_no = request.POST.get("roll_no")
+                # Update subject if it's a student (stored in User.subject)
+                user.subject = request.POST.get("subject")
+
+
+            elif user.role == "admin":
+                if college:
+                    college.name = request.POST.get("college_name")
+                    college.address = request.POST.get("college_address")
+                    
+                    # Handle logo upload
+                    logo = request.FILES.get("logo")
+                    if logo:
+                        college.logo = logo
+                    
+                    college.save()
+
+            user.save()
+            request.session["name"] = user.first_name # Update session display name
+            success_msg = "Profile updated successfully!"
+
+    # Format choices for the template
+    # Instead of full choices, we pass a simpler list
+    subject_choices = [
+        ('dpharm_2', 'SECOND YEAR D.PHARM: PHARMACOLOGY'),
+        ('bpharm_4', 'SECOND YEAR B. PHARM ( SEM-IV) : PHARMACOLOGY-I'),
+        ('bpharm_5', 'THIRD YEAR B.PHARM(SEM-V): PHARMACOLOGY-II'),
+        ('bpharm_6', 'THIRD YEAR B.PHARM (SEM-VI) : PHARMACOLOGY-III'),
+    ]
+    
+
+    # Determine base template for the role
+    base_template = "student/base.html"
+    if user.role == "teacher":
+        base_template = "teacher/base.html"
+    elif user.role == "admin":
+        base_template = "admin/base.html"
+
+    return render(
+        request,
+        "accounts/profile.html",
+        {
+            "user": user,
+            "college": college,
+            "success": success_msg,
+            "error": error_msg,
+            "subject_choices": subject_choices,
+            "role": user.role,
+            "base_template": base_template
+        }
+    )

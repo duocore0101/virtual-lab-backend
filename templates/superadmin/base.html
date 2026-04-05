@@ -5,74 +5,201 @@
   <meta charset="UTF-8">
   <title>{% block title %}Super Admin | G-MARS{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}??v=10001">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <style>
 
-    /* ================= HEADER FIX ================= */
-
-    .sa-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      height:100px;
-      padding:0 25px;
+    /* ================= HEADER & LOGO ================= */
+    .sa-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100px;
+      padding: 0 25px;
+      background: var(--bg-header);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      z-index: 1001;
     }
 
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .logo img{
-      height:85px;
-      width:auto;
-      transition:0.3s ease;
-      object-fit:contain;
+    .logo img {
+      height: 85px;
+      width: auto;
+      transition: 0.3s ease;
+      object-fit: contain;
     }
 
-    /* ================= BADGE ================= */
-
-    .badge{
+    .badge {
       background: var(--accent-red);
-      color:#fff;
-      font-size:12px;
-      padding:5px 12px;
-      border-radius:20px;
-      font-weight:600;
-      box-shadow:var(--shadow-red);
+      color: #fff;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: var(--shadow-red);
     }
 
-    /* 🔥 Student Request Badge */
-
-    .badge-count{
+    .badge-count {
       background: var(--accent-red);
-      color:#fff;
-      font-size:11px;
-      padding:3px 8px;
-      border-radius:20px;
-      margin-left:8px;
-      box-shadow:var(--shadow-red);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+      box-shadow: var(--shadow-red);
     }
 
-    /* ================= RESPONSIVE ================= */
+    /* ================= NEW SIDEBAR REDESIGN ================= */
 
-    @media(max-width:900px){
+    :root {
+        --sidebar-width: 280px;
+        --sidebar-collapsed-width: 80px;
+        --accent-red: #ff1a1a;
+    }
 
-      .sa-header{
-        height:90px;
-        padding:0 15px;
-      }
+    body {
+        font-family: 'Outfit', sans-serif !important;
+    }
 
-      .logo img{
-        height:80px;
-      }
+    /* Dark Theme (Default) */
+    .sa-sidebar {
+        width: var(--sidebar-width);
+        background: var(--bg-header, #000) !important;
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--border-color, #222);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+    }
 
-      .badge{
-        font-size:10px;
-        padding:4px 10px;
-      }
+    /* Light Theme Overrides */
+    body.light-theme .sa-sidebar {
+        background: #ffffff !important;
+        border-right: 1px solid #dddddd !important;
+    }
 
+    .sidebar-header {
+        padding: 30px 24px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-avatar {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--accent-red), #b32424);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text-main);
+        white-space: nowrap;
+    }
+
+    .user-role {
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .sa-sidebar nav a {
+        padding: 14px 24px;
+        margin: 4px 16px;
+        border-radius: 12px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: var(--text-main);
+    }
+
+    .sa-sidebar nav a i {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .sa-sidebar nav a:hover {
+        background: rgba(255, 26, 26, 0.08);
+        color: var(--accent-red);
+        transform: translateX(5px);
+        border-color: var(--border-color);
+    }
+
+    .sa-sidebar nav a.active {
+        background: linear-gradient(90deg, rgba(255, 26, 26, 0.15), transparent);
+        color: var(--accent-red);
+        border-left: 4px solid var(--accent-red);
+        border-radius: 0 12px 12px 0;
+        margin-left: 0;
+        padding-left: 20px;
+    }
+
+    /* Collapsed State Overrides */
+    .sa-sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .sa-sidebar.collapsed .sidebar-header,
+    .sa-sidebar.collapsed .user-details,
+    .sa-sidebar.collapsed span,
+    .sa-sidebar.collapsed .arrow {
+        display: none !important;
+    }
+
+    .sa-sidebar.collapsed .user-info {
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .sa-sidebar.collapsed nav a {
+        margin: 8px 12px;
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .sa-sidebar.collapsed nav a i {
+        margin: 0;
     }
 
   </style>
@@ -105,28 +232,50 @@
 
   <!-- ================= SIDEBAR ================= -->
   <aside class="sa-sidebar">
-    <nav>
-      <a href="/superadmin/dashboard/">🏠 <span>Dashboard</span></a>
+    <!-- Sidebar Profile Header -->
+    <div class="sidebar-header">
+      <div class="user-info">
+        <div class="user-avatar">{{ request.session.name|slice:":1" }}</div>
+        <div class="user-details">
+          <span class="user-name">{{ request.session.name }}</span>
+          <span class="user-role">Super Admin</span>
+        </div>
+      </div>
+    </div>
 
-      <a href="/superadmin/principal-requests/">
-        📥 <span>Principal Requests</span>
+    <nav>
+      <a href="/superadmin/dashboard/" class="{% if '/superadmin/dashboard/' in path %}active{% endif %}">
+        <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+      </a>
+
+      <a href="/superadmin/principal-requests/" class="{% if '/superadmin/principal-requests/' in path %}active{% endif %}">
+        <i class="fas fa-bell"></i> <span>Principal Requests</span>
         {% if pending_requests > 0 %}
           <span class="badge-count">{{ pending_requests }}</span>
         {% endif %}
       </a>
 
-      <a href="/superadmin/colleges/">🏫 <span>Colleges</span></a>
-      <a href="/superadmin/students/">👥 <span>Users</span></a>
-      <a href="/superadmin/experiments/">🧪 <span>Experiments</span></a>
-      <a href="/superadmin/exams/">📝 <span>Exams</span></a>
-      <a href="/superadmin/reports/">📊 <span>Reports</span></a>
-      <a href="/superadmin/billing/">💳 <span>Billing</span></a>
-      <a href="/superadmin/cms/">📚 <span>CMS</span></a>
-      <a href="/superadmin/support/">🎧 <span>Support</span></a>
-      <a href="/superadmin/settings/">⚙ <span>Settings</span></a>
-      <a href="/superadmin/audit-logs/">🔒 <span>Audit Logs</span></a>
+      <a href="/superadmin/colleges/" class="{% if '/superadmin/colleges/' in path %}active{% endif %}">
+        <i class="fas fa-university"></i> <span>Colleges</span>
+      </a>
+      
+      <a href="/superadmin/students/" class="{% if '/superadmin/students/' in path %}active{% endif %}">
+        <i class="fas fa-users"></i> <span>Users</span>
+      </a>
+      
+      <a href="/superadmin/experiments/" class="{% if '/superadmin/experiments/' in path %}active{% endif %}">
+        <i class="fas fa-flask"></i> <span>Experiments</span>
+      </a>
+
+      <!-- MOBILE LOGOUT -->
+      <a href="/logout" class="mobile-logout" style="display:none; margin-top:20px; border-top:1px solid var(--border-color); padding-top:20px;">
+        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+      </a>
     </nav>
   </aside>
+
+  <!-- Sidebar Backdrop (Mobile only) -->
+  <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
 
   <!-- ================= PAGE CONTENT ================= -->
   <main class="sa-content">

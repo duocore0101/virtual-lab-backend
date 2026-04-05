@@ -248,6 +248,9 @@ body.dark-mode .table-render-box td {
             <div class="student-info">
                 <span class="info-pill">Student: {{ attempt.student.first_name }} {{ attempt.student.last_name }}</span>
                 <span class="info-pill">Roll No: {{ attempt.student.roll_no }}</span>
+                {% if exam.exam_type == "external" %}
+                <span class="info-pill" style="background: rgba(249, 115, 22, 0.1); color: #f97316;">Seat No: {{ attempt.seat_number|default:"N/A" }}</span>
+                {% endif %}
                 <span class="info-pill">Submitted: {{ attempt.submitted_at|date:"d M, Y H:i" }}</span>
             </div>
         </div>
@@ -256,31 +259,8 @@ body.dark-mode .table-render-box td {
     <form method="POST">
         {% csrf_token %}
 
-        <!-- 1. SPOTTING SECTION (D.PHARM ONLY) -->
-        {% if is_dpharm %}
-        <div class="eval-section-title">SECTION 1: SPOTTING</div>
-        {% for spot in exam.spotting_questions.all %}
-        <div class="eval-card">
-            <div class="q-header">
-                <span class="q-text">Spot {{ forloop.counter }}</span>
-                <span class="q-marks-tag">{{ spot.marks }} Marks</span>
-            </div>
-            {% if spot.image %}
-            <img src="{{ spot.image.url }}" class="spot-preview-img">
-            {% elif spot.bank_item and spot.bank_item.image_slug %}
-            <img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}" class="spot-preview-img">
-            {% endif %}
-            
-            <div class="q-marks-tag">Student Identification:</div>
-            <div class="ans-content">
-                {{ answers.spotting|get_item:spot.id|default:"(No Answer)" }}
-            </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-
-        <!-- 2. SYNOPSIS (MCQ + SHORT) -->
-        <div class="eval-section-title">SECTION {% if is_dpharm %}2{% else %}1{% endif %}: SYNOPSIS</div>
+        <!-- 1. SYNOPSIS (MCQ + SHORT) -->
+        <div class="eval-section-title">SECTION 1: SYNOPSIS (MCQ + SHORT ANSWERS)</div>
         
         <!-- MCQs -->
         <div style="font-weight: 800; color: var(--eval-accent); margin-bottom: 15px; text-transform: uppercase; font-size: 13px;">Part A: Multiple Choice Questions</div>
@@ -299,6 +279,13 @@ body.dark-mode .table-render-box td {
             <div style="margin-top: 15px; font-size: 12px; font-weight: 700; color:#10b981;">Correct Option: {{ mcq.correct_option }}</div>
         </div>
         {% endfor %}
+        <div class="eval-card" style="border: 2px solid var(--eval-accent); background: var(--eval-accent-light); margin-top: 20px;">
+            <div class="score-input-group">
+                <label style="color: var(--eval-accent); font-weight: 800;">Grade Q1. Part A (MCQ) Marks</label>
+                <input type="number" step="0.5" name="mcq_score" value="{{ attempt.mcq_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+                <div style="font-size: 11px; margin-top: 5px; color: var(--text-muted);">Max possible: {{ mcq_total_marks|default:"Calculated" }}</div>
+            </div>
+        </div>
 
         <!-- SHORT ANSWERS -->
         <div style="font-weight: 800; color: var(--eval-accent); margin: 30px 0 15px 0; text-transform: uppercase; font-size: 13px;">Part B: Short Answer Questions</div>
@@ -313,9 +300,48 @@ body.dark-mode .table-render-box td {
             </div>
         </div>
         {% endfor %}
+        <div class="eval-card" style="border: 2px solid var(--eval-accent); background: var(--eval-accent-light); margin-top: 20px;">
+            <div class="score-input-group">
+                <label style="color: var(--eval-accent); font-weight: 800;">Grade Q1. Part B (Short Answer) Marks</label>
+                <input type="number" step="0.5" name="short_score" value="{{ attempt.short_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+            </div>
+        </div>
 
-        <!-- 3. PRACTICALS -->
-        <div class="eval-section-title">SECTION {% if is_dpharm %}3{% else %}2{% endif %}: EXPERIMENTS</div>
+        <!-- 2. EXPERIMENT SECTION -->
+        <div class="eval-section-title">SECTION 2: EXPERIMENT (SPOTTING / MAJOR / MINOR)</div>
+        
+        <!-- SPOTTING -->
+        {% if exam.spotting_questions.exists %}
+        <div style="font-weight: 800; color: var(--eval-accent); margin-bottom: 15px; text-transform: uppercase; font-size: 13px;">Part A: Spotting</div>
+        {% for spot in exam.spotting_questions.all %}
+        <div class="eval-card">
+            <div class="q-header">
+                <span class="q-text">Spot {{ forloop.counter }}</span>
+                <span class="q-marks-tag">{{ spot.marks }} Marks</span>
+            </div>
+            {% if spot.image %}
+            <img src="{{ spot.image.url }}" class="spot-preview-img">
+            {% elif spot.bank_item and spot.bank_item.image_slug %}
+            <img src="{% static 'spotting_images/' %}{{ spot.bank_item.image_slug }}" class="spot-preview-img">
+            {% endif %}
+            
+            <div class="q-marks-tag">Student Identification:</div>
+            <div class="ans-content">
+                {{ answers.spotting|get_item:spot.id|default:"(No Answer)" }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="eval-card" style="border: 2px solid var(--eval-accent); background: var(--eval-accent-light); margin-top: 20px;">
+            <div class="score-input-group">
+                <label style="color: var(--eval-accent); font-weight: 800;">Grade Q2. Part A (Spotting) Marks</label>
+                <input type="number" step="0.5" name="spotting_score" value="{{ attempt.spotting_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- MAJOR/MINOR -->
+        {% if practicals_data %}
+        <div style="font-weight: 800; color: var(--eval-accent); margin: 30px 0 15px 0; text-transform: uppercase; font-size: 13px;">Part B & C: Major & Minor Experiments</div>
         {% for prac in practicals_data %}
         <div class="eval-card">
             <div class="q-header">
@@ -355,51 +381,50 @@ body.dark-mode .table-render-box td {
             </div>
         </div>
         {% endfor %}
+        <div class="eval-card" style="border: 2px solid var(--eval-accent); background: var(--eval-accent-light); margin-top: 20px;">
+            <div class="score-input-group">
+                <label style="color: var(--eval-accent); font-weight: 800;">Grade Q2. Part B & C (Experiments) Marks</label>
+                <input type="number" step="0.5" name="practical_score" value="{{ attempt.practical_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+            </div>
+        </div>
+        {% endif %}
 
-        <!-- 4. VIVA -->
+        <!-- 3. VIVA -->
         {% if exam.viva_marks > 0 %}
-        <div class="eval-section-title">SECTION {% if is_dpharm %}4{% else %}3{% endif %}: VIVA VOCE</div>
+        <div class="eval-section-title">SECTION 3: VIVA VOCE</div>
         <div class="eval-card" style="text-align:center;">
-            <div style="font-size: 14px; font-weight: 700; color:var(--text-muted);">This student is eligible for Oral Examination.</div>
+            <div style="font-size: 14px; font-weight: 700; color:var(--text-muted);">Candidate eligible for Oral Examination.</div>
             <div style="font-size: 12px; color:var(--text-muted); margin-top: 5px;">Max Viva Marks: {{ exam.viva_marks }}</div>
+            <div class="score-input-group" style="margin-top: 15px; display: flex; flex-direction: column; align-items: center;">
+                <label style="color: var(--eval-accent);">Enter Q3. Viva Marks</label>
+                <input type="number" step="0.5" name="viva_score" id="viva_score" value="{{ attempt.viva_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 4. PRACTICAL RECORD MAINTENANCE -->
+        {% if is_dpharm and exam.practical_record_marks > 0 %}
+        <div class="eval-section-title">SECTION 4: PRACTICAL RECORD MAINTENANCE</div>
+        <div class="eval-card" style="text-align:center;">
+            <div style="font-size: 14px; font-weight: 700; color:var(--text-muted);">Evaluation of practical record book and laboratory performance.</div>
+            <div style="font-size: 12px; color:var(--text-muted); margin-top: 5px;">Max Marks: {{ exam.practical_record_marks }}</div>
+            <div class="score-input-group" style="margin-top: 15px; display: flex; flex-direction: column; align-items: center;">
+                <label style="color: var(--eval-accent);">Enter Q4. Record Maintenance Marks</label>
+                <input type="number" step="0.5" name="practical_record_score" id="practical_record_score" value="{{ attempt.practical_record_score|default:0 }}" class="live-score" required style="max-width: 200px; font-size: 20px; border: 2px solid var(--eval-accent);">
+            </div>
         </div>
         {% endif %}
 
         <!-- FINAL SCORING PANEL -->
         <div class="scoring-side-panel">
-            <div style="font-size: 18px; font-weight: 800; margin-bottom: 20px; color: var(--text-main);">Finalize Paper Evaluation</div>
-            
-            <div class="grid-scoring">
-                {% if is_dpharm %}
-                <div class="score-input-group">
-                    <label>Spotting</label>
-                    <input type="number" step="0.5" name="spotting_score" value="{{ attempt.spotting_score|default:0 }}" required>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div style="font-size: 18px; font-weight: 800; color: var(--text-main);">Finalize Paper Evaluation</div>
+                <div style="text-align: right;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Total Score</div>
+                    <div style="font-size: 32px; font-weight: 800; color: var(--eval-accent);" id="totalDisplay">0</div>
                 </div>
-                {% endif %}
-                
-                <div class="score-input-group">
-                    <label>MCQ Marks</label>
-                    <input type="number" step="0.5" name="mcq_score" value="{{ attempt.mcq_score|default:0 }}" required>
-                </div>
-
-                <div class="score-input-group">
-                    <label>Synopsis (Short)</label>
-                    <input type="number" step="0.5" name="short_score" value="{{ attempt.short_score|default:0 }}" required>
-                </div>
-
-                <div class="score-input-group">
-                    <label>Experiments</label>
-                    <input type="number" step="0.5" name="practical_score" value="{{ attempt.practical_score|default:0 }}" required>
-                </div>
-
-                {% if exam.viva_marks > 0 %}
-                <div class="score-input-group">
-                    <label>Viva Voce</label>
-                    <input type="number" step="0.5" name="viva_score" value="{{ attempt.viva_score|default:0 }}" required>
-                </div>
-                {% endif %}
             </div>
-
+            
             <button type="submit" class="btn-submit-eval">
                 🛡️ Approve & Save Final Results
             </button>
@@ -407,5 +432,19 @@ body.dark-mode .table-render-box td {
 
     </form>
 </div>
+
+<script>
+    const inputs = document.querySelectorAll('.live-score');
+    const totalDisplay = document.getElementById('totalDisplay');
+    function calculateTotal() {
+        let total = 0;
+        inputs.forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+        totalDisplay.innerText = total.toFixed(1);
+    }
+    inputs.forEach(input => input.addEventListener('input', calculateTotal));
+    calculateTotal();
+</script>
 
 {% endblock %}

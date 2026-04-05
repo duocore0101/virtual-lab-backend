@@ -16,8 +16,11 @@ def home_view(request):
 def features_view(request):
     return render(request, "public/features.html")
 
+from experiments.models import Experiment
+
 def experiments_view(request):
-    return render(request, "public/experiments.html")
+    experiments = Experiment.objects.filter(is_active=True).order_by("number")
+    return render(request, "public/experiments.html", {"experiments": experiments})
 
 
 

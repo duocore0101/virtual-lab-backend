@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password
-from accounts.models import User, College, PrincipalRequest
+from accounts.models import User, College, PrincipalRequest, TeacherRequest
 from .models import Experiment, ExperimentAttempt, AuditLog
 from django.db.models import Q
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
 
 
 # =====================================================
@@ -95,6 +97,7 @@ def approve_principal_request(request, request_id):
         username=principal_request.email,
         email=principal_request.email,
         first_name=principal_request.fullname,
+        mobile=principal_request.mobile,  # 🔥 Added mobile
         role="admin",
         college=college,
         created_by=request.user,
@@ -146,11 +149,12 @@ def create_admin(request):
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
+        mobile = request.POST.get("mobile")  # 🔥 Added mobile
         password = request.POST.get("password")
         college_name = request.POST.get("college_name")
         college_code = request.POST.get("college_code")
 
-        if not all([name, email, password, college_name, college_code]):
+        if not all([name, email, mobile, password, college_name, college_code]):
             return render(request, "superadmin/create_admin.html", {
                 "error": "All fields are required"
             })
@@ -175,6 +179,7 @@ def create_admin(request):
             username=email,
             email=email,
             first_name=name,
+            mobile=mobile,  # 🔥 Added mobile
             role="admin",
             college=college,
             created_by=request.user,
@@ -258,7 +263,21 @@ def superadmin_experiments(request):
         return redirect("/login/")
 
     experiments = Experiment.objects.filter(is_active=True).order_by("number")
-    return render(request, "superadmin/experiments.html", {"experiments": experiments})
+    
+    query = request.GET.get("q", "")
+    if query:
+        experiments = experiments.filter(
+            Q(name__icontains=query) | Q(number__icontains=query)
+        )
+
+    return render(
+        request, 
+        "superadmin/experiments.html", 
+        {
+            "experiments": experiments,
+            "query": query
+        }
+    )
 
 
 def superadmin_attempts(request):
@@ -356,6 +375,35 @@ def superadmin_college_detail(request, college_id):
 
     college = get_object_or_404(College, id=college_id)
 
+    # 🔥 Get the Admin User for this College
+    admin = User.objects.filter(college=college, role="admin").first()
+
+    # 🔥 ROBUST DATA FALLBACK (If admin mobile or logo is missing, check original request)
+    fallback_mobile = None
+    fallback_logo = None
+    if admin:
+        # Try to find the original approval request by email
+        p_req = PrincipalRequest.objects.filter(email=admin.email).first()
+        if p_req:
+            if not admin.mobile:
+                fallback_mobile = p_req.mobile
+            if not college.logo:
+                fallback_logo = p_req.logo
+
+    # 🔥 Subscription Timer Logic (Use date for calendar-precise math)
+    start_date = college.created_at.date()
+    end_date = start_date + timedelta(days=365)
+    now = timezone.now().date()
+    days_remaining = max(0, (end_date - now).days)
+
+    # 🔥 Plan Mapping
+    plan_map = {
+        "single": "SINGLE EXPERIMENT",
+        "dpharm": "D PHARM",
+        "combo": "D+B PHARM"
+    }
+    formatted_plan = plan_map.get(college.selected_plan, college.selected_plan.upper())
+
     teachers = User.objects.filter(
         role="teacher",
         college=college
@@ -366,6 +414,13 @@ def superadmin_college_detail(request, college_id):
         "superadmin/college_detail.html",
         {
             "college": college,
+            "admin": admin,
+            "fallback_mobile": fallback_mobile,
+            "fallback_logo": fallback_logo,
+            "formatted_plan": formatted_plan,
+            "subscription_start": start_date,
+            "subscription_end": end_date,
+            "days_remaining": days_remaining,
             "teachers": teachers,
             "total_teachers": teachers.count()
         }
@@ -385,17 +440,54 @@ def superadmin_teacher_detail(request, teacher_id):
         role="teacher"
     )
 
+    # 🔥 Subject Mapping
+    subject_labels = {
+        "dpharm_2": "2nd Yr D.Pharm: Pharmacology",
+        "bpharm_4": "2nd Yr B.Pharm: Pharm-I",
+        "bpharm_5": "3rd Yr B.Pharm: Pharm-II",
+        "bpharm_6": "3rd Yr B.Pharm: Pharm-III"
+    }
+
+    # Format Teacher's Assigned Subjects
+    assigned_codes = teacher.subject.split(",") if teacher.subject else []
+    assigned_subjects = [subject_labels.get(code.strip(), code.strip()) for code in assigned_codes if code.strip()]
+
+    # 🔥 Mobile Fallback logic
+    teacher_mobile = teacher.mobile
+    if not teacher_mobile:
+        t_req = TeacherRequest.objects.filter(email=teacher.email).first()
+        if t_req:
+            teacher_mobile = t_req.mobile
+
+    # Fetch Students with Approval Info
     students = User.objects.filter(
         role="student",
         created_by=teacher
-    )
+    ).select_related("student_approval")
+
+    # Group Students by Subject
+    grouped_students = {}
+    for student in students:
+        # Avoid attribute error if student_approval doesn't exist
+        try:
+            subj_code = student.student_approval.requested_subject
+        except:
+            subj_code = "Unassigned"
+            
+        subj_name = subject_labels.get(subj_code, subj_code.replace("_", " ").title())
+        
+        if subj_name not in grouped_students:
+            grouped_students[subj_name] = []
+        grouped_students[subj_name].append(student)
 
     return render(
         request,
         "superadmin/teacher_detail.html",
         {
             "teacher": teacher,
-            "students": students,
+            "teacher_mobile": teacher_mobile,
+            "assigned_subjects": assigned_subjects,
+            "grouped_students": grouped_students,
             "total_students": students.count()
         }
     )

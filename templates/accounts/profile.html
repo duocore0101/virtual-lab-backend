@@ -1,0 +1,292 @@
+{% extends base_template %}
+
+{% block title %}My Profile | G-MARS{% endblock %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        animation: fadeUp 0.5s ease;
+    }
+
+    .profile-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--accent-red), #ff4d4d);
+        padding: 40px;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        font-weight: 800;
+        margin: 0 auto 15px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .profile-header h1 {
+        font-size: 26px;
+        margin-bottom: 5px;
+        font-weight: 800;
+    }
+
+    .profile-header p {
+        opacity: 0.9;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .profile-body {
+        padding: 40px;
+    }
+
+    .form-section {
+        margin-bottom: 30px;
+    }
+
+    .form-section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--accent-red);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .grid-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        padding: 12px 16px;
+        border-radius: 12px;
+        color: var(--text-main);
+        font-size: 15px;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-red);
+        background: rgba(255, 26, 26, 0.05);
+        box-shadow: 0 0 10px rgba(255, 26, 26, 0.1);
+    }
+
+    .info-alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .success-alert {
+        background: rgba(0, 230, 118, 0.1);
+        color: #00e676;
+        border: 1px solid rgba(0, 230, 118, 0.2);
+    }
+
+    .error-alert {
+        background: rgba(255, 26, 26, 0.1);
+        color: #ff4d4d;
+        border: 1px solid rgba(255, 26, 26, 0.2);
+    }
+
+    .btn-save {
+        background: var(--accent-red);
+        color: white;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-save:hover {
+        background: var(--accent-red-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-red);
+    }
+
+    .logo-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
+        object-fit: contain;
+        background: #fff;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 15px;
+    }
+
+    .subject-pill-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .subject-pill {
+        background: rgba(255, 26, 26, 0.1);
+        color: var(--accent-red);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 26, 26, 0.2);
+    }
+
+    @media (max-width: 600px) {
+        .profile-container { padding: 20px 10px; }
+        .profile-header { padding: 30px 20px; }
+        .profile-body { padding: 25px 20px; }
+    }
+</style>
+
+<div class="profile-container">
+
+    {% if success %}
+    <div class="info-alert success-alert">
+        <span>✅</span> {{ success }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="info-alert error-alert">
+        <span>❌</span> {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="profile-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    {{ user.first_name|slice:":1" }}
+                </div>
+                <h1>{{ user.first_name }}</h1>
+                <p>{{ user.role|title }} Profile</p>
+            </div>
+
+            <div class="profile-body">
+                
+                <!-- Personal Info -->
+                <div class="form-section">
+                    <div class="form-section-title">👤 Personal Information</div>
+                    <div class="grid-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="fullname" class="form-control" value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="text" name="mobile" class="form-control" value="{{ user.mobile|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.role == "admin" and college %}
+                <!-- College Info for Admin -->
+                <div class="form-section">
+                    <div class="form-section-title">🏫 College details</div>
+                    <div class="grid-form">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>College Name</label>
+                            <input type="text" name="college_name" class="form-control" value="{{ college.name }}">
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Address</label>
+                            <textarea name="college_address" class="form-control" rows="3">{{ college.address }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>College Logo</label>
+                            {% if college.logo %}
+                            <img src="{{ college.logo.url }}" class="logo-preview">
+                            {% endif %}
+                            <input type="file" name="logo" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+                {% if user.role == "student" %}
+                <!-- Student Info -->
+                <div class="form-section">
+                    <div class="form-section-title">🎓 Student Enrollment</div>
+                    <div class="grid-form">
+                        <div class="form-group">
+                            <label>Roll Number</label>
+                            <input type="text" name="roll_no" class="form-control" value="{{ user.roll_no|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Current Subject/Year</label>
+                            <select name="subject" class="form-control">
+                                {% for code, label in subject_choices %}
+                                <option value="{{ code }}" {% if user.subject == code %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn-save">Permanently Update Profile</button>
+
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

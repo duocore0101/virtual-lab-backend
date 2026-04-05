@@ -3,99 +3,240 @@
 
 {% block content %}
 
-<div style="padding:20px;">
+  <style>
+    /* ================= PREMIUM TABLE DESIGN ================= */
+    .sa-content-panel {
+        background: var(--bg-card) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 24px !important;
+        padding: 25px !important;
+        box-shadow: var(--shadow-soft) !important;
+        margin-top: 20px;
+    }
+
+    .page-header h2 {
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text-main);
+    }
+
+    .requests-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        margin-top: 20px;
+    }
+
+    .requests-table th {
+        padding: 15px 20px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .requests-table tr td {
+        padding: 12px 15px;
+        background: rgba(var(--bg-header-rgb), 0.3);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        font-size: 13px;
+    }
+
+    .requests-table tr td:first-child {
+        border-left: 1px solid var(--border-color);
+        border-radius: 12px 0 0 12px;
+    }
+
+    .requests-table tr td:last-child {
+        border-right: 1px solid var(--border-color);
+        border-radius: 0 12px 12px 0;
+    }
+
+    .requests-table tr:hover td {
+        background: rgba(255, 26, 26, 0.05);
+        border-color: rgba(255, 26, 26, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Status Badges */
+    .status-pill {
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.15);
+        color: #ffc107;
+    }
+
+    .status-approved {
+        background: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+    }
+
+    .status-rejected {
+        background: rgba(220, 53, 69, 0.15);
+        color: #dc3545;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        text-decoration: none !important;
+        font-size: 16px;
+    }
+
+    .btn-approve {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .btn-approve:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-reject {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-reject:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .subject-tag {
+        font-size: 11px;
+        font-weight: 600;
+        background: var(--border-color);
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    /* Light Theme Adjustments */
+    body.light-theme .requests-table tr td {
+        background: #ffffff;
+    }
+  </style>
+
+<div style="padding:40px;">
 
   <!-- ================= PAGE HEADER ================= -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
     <div>
       <h2 style="margin:0;">Teacher Registration Requests</h2>
-      <p style="margin:4px 0; color:gray;">
+      <p style="margin:6px 0; color:var(--text-muted); font-size:15px;">
         Review and approve teacher registrations for your college
       </p>
     </div>
   </div>
 
-  <!-- ================= REQUEST TABLE ================= -->
-  <div style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+  <!-- ================= REQUEST PANEL ================= -->
+  <div class="sa-content-panel">
 
-    <table style="width:100%; border-collapse:collapse;">
-
+    <table class="requests-table">
       <thead>
-        <tr style="background:#f5f5f5; text-align:left;">
-          <th style="padding:12px;">Name</th>
-          <th style="padding:12px;">Email</th>
-          <th style="padding:12px;">Mobile</th>
-          <th style="padding:12px;">Subject</th>
-          <th style="padding:12px;">Date</th>
-          <th style="padding:12px;">Status</th>
-          <th style="padding:12px; text-align:center;">Action</th>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Subject</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th style="text-align:center;">Action</th>
         </tr>
       </thead>
 
       <tbody>
         {% for req in requests %}
-        <tr style="border-bottom:1px solid #eee;">
-
-          <td style="padding:12px;">{{ req.fullname }}</td>
-          <td style="padding:12px;">{{ req.email }}</td>
-          <td style="padding:12px;">{{ req.mobile }}</td>
-          <td style="padding:12px;">
-            <span style="font-size: 11px; font-weight: 600; color: #666; background: #eee; padding: 2px 8px; border-radius: 4px;">
+        <tr>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:30px; height:30px; background:rgba(255,26,26,0.1); color:var(--accent-red); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;">
+                {{ req.fullname|slice:":1" }}
+              </div>
+              <span style="font-weight:600; white-space: nowrap;">{{ req.fullname }}</span>
+            </div>
+          </td>
+          <td style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {{ req.email }}
+          </td>
+          <td style="white-space: nowrap;">{{ req.mobile }}</td>
+          <td>
+            <span class="subject-tag" style="padding: 2px 6px; font-size: 10px;">
               {{ req.get_subject_display }}
             </span>
           </td>
-          <td style="padding:12px;">
-            {{ req.created_at|date:"d M Y" }}
+          <td style="white-space: nowrap;">
+            <span style="color:var(--text-muted); font-size:12px;">{{ req.created_at|date:"d M y" }}</span>
           </td>
 
-          <!-- STATUS BADGE -->
-          <td style="padding:12px;">
+          <!-- STATUS PILL -->
+          <td>
             {% if req.status == "pending" %}
-              <span style="background:#fff3cd; color:#856404; padding:5px 10px; border-radius:20px; font-size:12px;">
-                Pending
+              <span class="status-pill status-pending" style="padding: 4px 10px; font-size: 10px;">
+                <i class="fas fa-clock"></i> Pending
               </span>
             {% elif req.status == "approved" %}
-              <span style="background:#d4edda; color:#155724; padding:5px 10px; border-radius:20px; font-size:12px;">
-                Approved
+              <span class="status-pill status-approved" style="padding: 4px 10px; font-size: 10px;">
+                <i class="fas fa-check-circle"></i> Approved
               </span>
             {% else %}
-              <span style="background:#f8d7da; color:#721c24; padding:5px 10px; border-radius:20px; font-size:12px;">
-                Rejected
+              <span class="status-pill status-rejected" style="padding: 4px 10px; font-size: 10px;">
+                <i class="fas fa-times-circle"></i> Rejected
               </span>
             {% endif %}
           </td>
 
           <!-- ACTION BUTTONS -->
-          <td style="padding:12px; text-align:center;">
-
+          <td style="text-align:center;">
             {% if req.status == "pending" %}
-
-              <a href="/admin/teacher-requests/approve/{{ req.id }}/"
-                 style="background:#28a745; color:white; padding:6px 12px; border-radius:6px; text-decoration:none; font-size:13px; margin-right:5px;">
-                 Approve
-              </a>
-
-              <a href="/admin/teacher-requests/reject/{{ req.id }}/"
-                 style="background:#dc3545; color:white; padding:6px 12px; border-radius:6px; text-decoration:none; font-size:13px;">
-                 Reject
-              </a>
-
+              <div style="display:flex; justify-content:center; gap:8px;">
+                <a href="/admin/teacher-requests/approve/{{ req.id }}/" 
+                   class="action-btn btn-approve" title="Approve" style="width: 32px; height: 32px; font-size: 14px;">
+                  <i class="fas fa-check"></i>
+                </a>
+                <a href="/admin/teacher-requests/reject/{{ req.id }}/" 
+                   class="action-btn btn-reject" title="Reject" style="width: 32px; height: 32px; font-size: 14px;">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
             {% else %}
-              <span style="color:gray; font-size:13px;">No Action</span>
+              <span style="color:var(--text-muted); font-size:12px; font-style:italic;">No Action</span>
             {% endif %}
-
           </td>
-
         </tr>
         {% empty %}
         <tr>
-          <td colspan="6" style="padding:20px; text-align:center; color:gray;">
-            No teacher registration requests found.
+          <td colspan="7" style="padding:60px; text-align:center;">
+            <i class="fas fa-inbox" style="font-size:40px; color:var(--border-color); margin-bottom:15px; display:block;"></i>
+            <span style="color:var(--text-muted); font-size:15px;">No teacher registration requests found.</span>
           </td>
         </tr>
         {% endfor %}
       </tbody>
-
     </table>
 
   </div>

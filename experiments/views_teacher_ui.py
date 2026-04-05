@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, JsonResponse
 from django.utils.timezone import now
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 import csv
 import io
 import os
@@ -62,6 +63,7 @@ def teacher_dashboard(request):
         experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
 
     attempts = ExperimentAttempt.objects.filter(
+        student__created_by=teacher,
         experiment__is_active=True,
         completed_at__isnull=False
     )
@@ -297,8 +299,8 @@ def export_students_pdf(request):
         except Exception:
             pass
         
-        canvas.setFont('Times-Italic', 8)
-        canvas.drawRightString(A4[0] - 120, 40, "powered by Gmars Tech Solutions")
+        canvas.setFont('Times-BoldItalic', 10)
+        canvas.drawRightString(A4[0] - 120, 40, "Signature of Examiner")
         
         canvas.setFont('Times-Roman', 8)
         canvas.drawString(40, 40, f"Generated on: {now().strftime('%d-%m-%Y %H:%M')}")
@@ -449,81 +451,144 @@ def export_exam_questions_pdf(request, exam_id):
     is_dpharm = exam.year == "dpharm_2"
     q_num = 1
 
-    # Q1: Spotting (Only for D.Pharm)
     if is_dpharm:
+        # =====================================================
+        # D.PHARM PATTERN
+        # =====================================================
+        
+        # Q1: Synopsis (MCQ + Short)
+        mcqs = exam.mcqs.all()
+        sas = exam.short_answers.all()
+        if mcqs.exists() or sas.exists():
+            total_synopsis_marks = sum(m.marks for m in mcqs) + sum(s.marks for s in sas)
+            elements.append(Paragraph(f"Question {q_num}: Synopsis (A. MCQ, B. Short Answers) .................... ({total_synopsis_marks} Marks)", q_title_style))
+            
+            if mcqs.exists():
+                elements.append(Paragraph("<u>A. Multiple Choice Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=5, spaceAfter=8)))
+                for i, mcq in enumerate(mcqs, 1):
+                    elements.append(Paragraph(f"{i}. {mcq.question_text}", text_style))
+                    elements.append(Paragraph(f"A) {mcq.option_a}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
+                    elements.append(Paragraph(f"B) {mcq.option_b}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
+                    elements.append(Paragraph(f"C) {mcq.option_c}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
+                    elements.append(Paragraph(f"D) {mcq.option_d}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=10)))
+            
+            if sas.exists():
+                elements.append(Paragraph("<u>B. Short Answer Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=8, spaceAfter=8)))
+                for i, sa in enumerate(sas, 1):
+                    elements.append(Paragraph(f"{i}. {sa.question_text}", text_style))
+            
+            elements.append(Spacer(1, 15))
+            q_num += 1
+
+        # Q2: Experiment (Spotting, Major, Minor)
+        spotting = exam.spotting_questions.all()
+        major = exam.practicals.filter(practical_type="major").first()
+        minor = exam.practicals.filter(practical_type="minor").first()
+        
+        if spotting.exists() or major or minor:
+            elements.append(Paragraph(f"Question {q_num}: Experiment", q_title_style))
+            
+            # A. Spotting
+            if spotting.exists():
+                total_spot_marks = sum(s.marks for s in spotting)
+                elements.append(Paragraph(f"<u>A. Spotting</u> ({total_spot_marks} Marks)", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=5, spaceAfter=8)))
+                
+                spot_list_text = []
+                for i, spot in enumerate(spotting, 1):
+                    # Use the actual filename/slug instead of the descriptive name
+                    if spot.bank_item and spot.bank_item.image_slug:
+                        # Strip extension if it exists for a cleaner look (acto instead of acto.jpg)
+                        slug_name = os.path.splitext(spot.bank_item.image_slug)[0]
+                        name = slug_name
+                    else:
+                        name = "Untitled"
+                    spot_list_text.append(f"<b>{i}.</b> {name} ({spot.marks} Marks)")
+                
+                # Join them with separate paragraphs
+                for txt in spot_list_text:
+                    elements.append(Paragraph(txt, text_style))
+                    elements.append(Spacer(1, 5))
+            
+            # B. Major Experiment
+            if major:
+                elements.append(Paragraph(f"<u>B. Major Experiment</u> ({major.marks} Marks)", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=5, spaceAfter=8)))
+                elements.append(Paragraph(f"<b>Aim:</b> {major.aim}", text_style))
+                elements.append(Spacer(1, 5))
+            
+            # C. Minor Experiment
+            if minor:
+                elements.append(Paragraph(f"<u>C. Minor Experiment</u> ({minor.marks} Marks)", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=5, spaceAfter=8)))
+                elements.append(Paragraph(f"<b>Aim:</b> {minor.aim}", text_style))
+                elements.append(Spacer(1, 5))
+            
+            elements.append(Spacer(1, 15))
+            q_num += 1
+
+        # Q3: Viva Voce
+        if exam.viva_marks > 0:
+            elements.append(Paragraph(f"Question {q_num}: Viva Voce .................................................... ({exam.viva_marks} Marks)", q_title_style))
+            elements.append(Spacer(1, 15))
+            q_num += 1
+
+        # Q4: Practical Record Maintenance
+        if exam.practical_record_marks > 0:
+            elements.append(Paragraph(f"Question {q_num}: Practical record maintenance ................................. ({exam.practical_record_marks} Marks)", q_title_style))
+            elements.append(Spacer(1, 15))
+            q_num += 1
+
+    else:
+        # =====================================================
+        # STANDARD PATTERN (B.PHARM etc.)
+        # =====================================================
+        
+        # Spotting (Usually not for B.Pharm but keeping logic if exists)
         spotting = exam.spotting_questions.all()
         if spotting.exists():
             total_marks = sum(s.marks for s in spotting)
-            elements.append(Paragraph(f"Question {q_num}: Spotting .............................................................. ({total_marks} Marks)", q_title_style))
-            
+            elements.append(Paragraph(f"Question {q_num}: Spotting ................................................. ({total_marks} Marks)", q_title_style))
             for i, spot in enumerate(spotting, 1):
-                # Vertical Layout for Spotting
                 elements.append(Paragraph(f"<b>{i}</b> ({spot.marks} Marks)", text_style))
                 if spot.bank_item and spot.bank_item.image_slug:
                     try:
                         img_path = os.path.join(settings.BASE_DIR, 'static', 'spotting_images', spot.bank_item.image_slug)
-                        if os.path.exists(img_path):
-                            elements.append(Image(img_path, width=200, height=150))
-                        else:
-                            elements.append(Paragraph("[Image Missing]", text_style))
-                    except Exception:
-                        elements.append(Paragraph("[Error Loading Image]", text_style))
+                        if os.path.exists(img_path): elements.append(Image(img_path, width=200, height=150))
+                    except: pass
                 elements.append(Spacer(1, 10))
-
-            elements.append(Spacer(1, 10))
             q_num += 1
 
-    # MCQs & Short Answers (Renamed to Synopsis)
-    mcqs = exam.mcqs.all()
-    sas = exam.short_answers.all()
-    if mcqs.exists() or sas.exists():
-        total_mcq_sa_marks = sum(m.marks for m in mcqs) + sum(s.marks for s in sas)
-        elements.append(Paragraph(f"Question {q_num}: Synopsis ................................................................ ({total_mcq_sa_marks} Marks)", q_title_style))
-        
-        if mcqs.exists():
-            elements.append(Paragraph("<u>Multiple Choice Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=5, spaceAfter=8)))
-            for i, mcq in enumerate(mcqs, 1):
-                q_text = f"{i}. {mcq.question_text}"
-                elements.append(Paragraph(q_text, text_style))
-                # Vertical Options
-                elements.append(Paragraph(f"A) {mcq.option_a}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
-                elements.append(Paragraph(f"B) {mcq.option_b}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
-                elements.append(Paragraph(f"C) {mcq.option_c}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=2)))
-                elements.append(Paragraph(f"D) {mcq.option_d}", ParagraphStyle('Opt', parent=text_style, leftIndent=20, spaceAfter=10)))
-        
-        if sas.exists():
-            elements.append(Paragraph("<u>Short Answer Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=8, spaceAfter=8)))
-            for i, sa in enumerate(sas, 1):
-                elements.append(Paragraph(f"{i}. {sa.question_text}", text_style))
-        
-        elements.append(Spacer(1, 10))
-        q_num += 1
+        # Synopsis
+        mcqs = exam.mcqs.all()
+        sas = exam.short_answers.all()
+        if mcqs.exists() or sas.exists():
+            total_marks = sum(m.marks for m in mcqs) + sum(s.marks for s in sas)
+            elements.append(Paragraph(f"Question {q_num}: Synopsis ................................................. ({total_marks} Marks)", q_title_style))
+            if mcqs.exists():
+                elements.append(Paragraph("<u>Multiple Choice Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceAfter=8)))
+                for i, mcq in enumerate(mcqs, 1):
+                    elements.append(Paragraph(f"{i}. {mcq.question_text}", text_style))
+                    elements.append(Paragraph(f"A) {mcq.option_a}, B) {mcq.option_b}, C) {mcq.option_c}, D) {mcq.option_d}", ParagraphStyle('Opt', parent=text_style, leftIndent=20)))
+            if sas.exists():
+                elements.append(Paragraph("<u>Short Answer Questions</u>", ParagraphStyle('Sub', parent=styles['Normal'], fontName='Times-Bold', fontSize=12, spaceBefore=8, spaceAfter=8)))
+                for i, sa in enumerate(sas, 1):
+                    elements.append(Paragraph(f"{i}. {sa.question_text}", text_style))
+            q_num += 1
 
-    # Major & Minor Experiment (Combined for D.Pharm Q3 and B.Pharm Q2)
-    major = exam.practicals.filter(practical_type="major").first()
-    minor = exam.practicals.filter(practical_type="minor").first()
+        # Practical
+        major = exam.practicals.filter(practical_type="major").first()
+        minor = exam.practicals.filter(practical_type="minor").first()
+        if major or minor:
+            elements.append(Paragraph(f"Question {q_num}: Experiments", q_title_style))
+            if major:
+                elements.append(Paragraph(f"<b>(A) Major Experiment</b> ({major.marks} Marks)", text_style))
+                elements.append(Paragraph(f"Aim: {major.aim}", text_style))
+            if minor:
+                elements.append(Paragraph(f"<b>(B) Minor Experiment</b> ({minor.marks} Marks)", text_style))
+                elements.append(Paragraph(f"Aim: {minor.aim}", text_style))
+            q_num += 1
 
-    if major or minor:
-        if is_dpharm:
-            elements.append(Paragraph(f"Question {q_num}: Major & Minor Experiments .............................................", q_title_style))
-        else:
-            elements.append(Paragraph(f"Question {q_num}: Major & Minor Experiments .............................................", q_title_style))
-
-        if major:
-            elements.append(Paragraph(f"<b>(A) Major Experiment</b> ({major.marks} Marks)", text_style))
-            elements.append(Paragraph(f"<b>Aim:</b> {major.aim}", text_style))
-            elements.append(Spacer(1, 10))
-
-        if minor:
-            elements.append(Paragraph(f"<b>(B) Minor Experiment</b> ({minor.marks} Marks)", text_style))
-            elements.append(Paragraph(f"<b>Aim:</b> {minor.aim}", text_style))
-            elements.append(Spacer(1, 10))
-
-        q_num += 1
-
-    # Viva
-    if exam.viva_marks > 0:
-        elements.append(Paragraph(f"Question {q_num}: Viva .............................................................. ({exam.viva_marks} Marks)", q_title_style))
+        # Viva
+        if exam.viva_marks > 0:
+            elements.append(Paragraph(f"Question {q_num}: Viva Voce .................................................... ({exam.viva_marks} Marks)", q_title_style))
         elements.append(Spacer(1, 10))
 
     # Page Footer Logic
@@ -539,8 +604,8 @@ def export_exam_questions_pdf(request, exam_id):
                 canvas.drawImage(gmars_logo_path, A4[0] - 110, 15, width=80, height=80, mask='auto')
         except Exception: pass
         
-        canvas.setFont('Times-Italic', 8)
-        canvas.drawRightString(A4[0] - 120, 40, "powered by Gmars Tech Solutions")
+        canvas.setFont('Times-BoldItalic', 10)
+        canvas.drawRightString(A4[0] - 120, 40, "Signature of Examiner")
         canvas.setFont('Times-Roman', 8)
         canvas.drawString(40, 40, f"Generated on: {now().strftime('%d-%m-%Y %H:%M')}")
         canvas.drawCentredString(A4[0]/2, 40, f"Page {canvas.getPageNumber()}")
@@ -646,11 +711,18 @@ def teacher_experiments(request):
         experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
 
 
+    query = request.GET.get("q", "")
+    if query:
+        experiments = experiments.filter(
+            Q(name__icontains=query) | Q(number__icontains=query)
+        )
+
     return render(
         request,
         "teacher/experiments.html",
         {
-            "experiments": experiments
+            "experiments": experiments,
+            "query": query
         }
     )
 
@@ -663,6 +735,7 @@ def teacher_attempts(request):
         return redirect("/login/")
 
     attempts = ExperimentAttempt.objects.filter(
+        student__created_by=request.user,
         experiment__is_active=True,
         completed_at__isnull=False
     ).select_related(
@@ -759,6 +832,7 @@ def teacher_export_attempts_csv(request):
         return redirect("/login/")
 
     attempts = ExperimentAttempt.objects.filter(
+        student__created_by=request.user,
         experiment__is_active=True,
         completed_at__isnull=False
     )
@@ -1320,6 +1394,17 @@ def teacher_exam_builder(request, exam_id):
             exam.save()
 
             return redirect(request.path)
+
+        # --------------------------------
+        # UPDATE PRACTICAL RECORD MARKS
+        # --------------------------------
+        elif action == "update_practical_record_marks":
+            
+            pr_marks = request.POST.get("practical_record_marks")
+            exam.practical_record_marks = int(pr_marks)
+            exam.save()
+            
+            return redirect(request.path)
 # --------------------------------
 # ADD MAJOR / MINOR PRACTICAL
 # --------------------------------
@@ -1564,18 +1649,29 @@ def export_exam_submissions_pdf(request, exam_id):
     elements.append(Paragraph(f"({exam.get_exam_type_display()})", type_style))
 
     # --- Table Data ---
-    data = [["Roll No", "Student Name", "Status", "Final Marks"]]
+    if exam.exam_type == "external":
+        data = [["Roll No", "Seat No", "Student Name", "Status", "Final Marks"]]
+        col_widths = [65, 80, 180, 90, 110]
+    else:
+        data = [["Roll No", "Student Name", "Status", "Final Marks"]]
+        col_widths = [80, 220, 100, 125]
+
     for att in attempts:
         status = "Evaluated" if att.status == "approved" else "Pending"
         score = f"{att.total_score} / {exam.total_max_marks}" if att.status == "approved" else "---"
-        data.append([
-            att.student.roll_no or "---",
+        
+        row = [att.student.roll_no or "---"]
+        if exam.exam_type == "external":
+            row.append(att.seat_number or "---")
+        
+        row.extend([
             f"{att.student.first_name} {att.student.last_name}",
             status,
             score
         ])
+        data.append(row)
 
-    table = Table(data, colWidths=[80, 220, 100, 125])
+    table = Table(data, colWidths=col_widths)
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#ff4b2b")),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -1605,8 +1701,8 @@ def export_exam_submissions_pdf(request, exam_id):
         except Exception:
             pass
         
-        canvas.setFont('Times-Italic', 8)
-        canvas.drawRightString(A4[0] - 120, 40, "powered by Gmars Tech Solutions")
+        canvas.setFont('Times-BoldItalic', 10)
+        canvas.drawRightString(A4[0] - 120, 40, "Signature of Examiner")
         canvas.setFont('Times-Roman', 8)
         canvas.drawString(40, 40, f"Generated on: {now().strftime('%d-%m-%Y %H:%M')}")
         canvas.drawCentredString(A4[0]/2, 40, f"Page {canvas.getPageNumber()}")
@@ -1668,12 +1764,14 @@ def evaluate_attempt(request, attempt_id):
         short_score = float(request.POST.get("short_score", 0))
         practical_score = float(request.POST.get("practical_score", 0))
         viva_score = float(request.POST.get("viva_score", 0))
+        practical_record_score = float(request.POST.get("practical_record_score", 0))
 
         attempt.spotting_score = spotting_score
         attempt.mcq_score = mcq_score
         attempt.short_score = short_score
         attempt.practical_score = practical_score
         attempt.viva_score = viva_score
+        attempt.practical_record_score = practical_record_score
 
         # 🔥 Final total calculation
         attempt.total_score = (
@@ -1681,7 +1779,8 @@ def evaluate_attempt(request, attempt_id):
             mcq_score +
             short_score +
             practical_score +
-            viva_score
+            viva_score +
+            practical_record_score
         )
 
         attempt.status = "approved"
@@ -1999,8 +2098,8 @@ def export_sessional_marksheet_pdf(request):
                 canvas.drawImage(gmars_logo_path, A4[0] - 110, 10, width=80, height=80, mask='auto')
         except: pass
         
-        canvas.setFont('Times-Italic', 8)
-        canvas.drawRightString(A4[0] - 120, 40, "powered by Gmars Tech Solutions")
+        canvas.setFont('Times-BoldItalic', 10)
+        canvas.drawRightString(A4[0] - 120, 40, "Signature of Examiner")
         canvas.setFont('Times-Roman', 8)
         canvas.drawString(40, 40, f"Generated on: {now().strftime('%d-%m-%Y %H:%M')}")
         canvas.drawCentredString(A4[0]/2, 40, f"Page {canvas.getPageNumber()}")

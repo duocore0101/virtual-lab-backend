@@ -1,61 +1,314 @@
 {% extends "superadmin/base.html" %}
-{% block title %}College Detail{% endblock %}
+{% block title %}College Detail | {{ college.name }}{% endblock %}
 
 {% block content %}
 
 <style>
-.table-wrapper { margin-top:20px; }
-.table { width:100%; border-collapse:collapse; }
-.table th, .table td { padding:12px; border-bottom:1px solid #eee; }
-.table tr:hover { background:#f9fbff; }
-.count-box {
-  background:#f4f6ff;
-  padding:12px 18px;
-  border-radius:8px;
-  font-weight:600;
-  margin-top:10px;
-  display:inline-block;
-}
+  /* ===============================
+     COLLEGE DETAIL THEME FIX
+  =============================== */
+  .detail-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .logo-box {
+    width: 160px;
+    height: 160px;
+    background: #000; /* Darker bg for logo contrast */
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-red);
+  }
+
+  .logo-box img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+  }
+
+  .no-logo-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .info-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+  }
+
+  .data-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .data-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .data-value {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .plan-pill {
+    background: rgba(255, 26, 26, 0.12);
+    color: var(--accent-red);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 26, 26, 0.3);
+    width: fit-content;
+    margin-top: 4px;
+  }
+
+  /* Teacher Table Styling */
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title .count {
+    font-size: 14px;
+    background: var(--border-color);
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: var(--text-muted);
+  }
+
+  .teacher-table-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .custom-table th {
+    text-align: left;
+    padding: 16px;
+    color: var(--accent-red);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .custom-table td {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 15px;
+  }
+
+  .custom-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .custom-table tr:hover {
+    background: rgba(255, 26, 26, 0.05);
+  }
+
+  .teacher-link {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s;
+  }
+
+  .teacher-link:hover {
+    color: var(--accent-red);
+    padding-left: 5px;
+  }
+
+  @media(max-width: 900px) {
+    .detail-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .info-grid {
+      width: 100%;
+    }
+    .plan-pill {
+      margin: 4px auto 0;
+    }
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(var(--bg-header-rgb), 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+  }
+
+  .back-btn:hover {
+    background: var(--accent-red);
+    color: #fff;
+    border-color: var(--accent-red);
+    transform: translateX(-5px);
+    box-shadow: var(--shadow-red);
+  }
+
+  .back-btn i {
+    font-size: 12px;
+    transition: 0.3s;
+  }
 </style>
 
-<h2>{{ college.name }}</h2>
+<div class="page-container">
+  
+  <a href="/superadmin/colleges/" class="back-btn">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to Colleges</span>
+  </a>
 
-<div class="count-box">
-  Total Teachers: {{ total_teachers }}
+  <div class="detail-header">
+    <div class="logo-box">
+      {% if college.logo %}
+        <img src="{{ college.logo.url }}" alt="{{ college.name }} Logo">
+      {% elif fallback_logo %}
+        <img src="{{ fallback_logo.url }}" alt="{{ college.name }} Fallback Logo">
+      {% else %}
+        <span class="no-logo-text">No Logo</span>
+      {% endif %}
+    </div>
+
+    <div class="info-grid">
+      <div class="data-item">
+        <span class="data-label">Admin Name</span>
+        <span class="data-value">{{ admin.first_name|default:"Not Assigned" }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Email Address</span>
+        <span class="data-value">{{ admin.email|default:"N/A" }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Mobile Number</span>
+        <span class="data-value">
+          {% if admin.mobile %}
+            {{ admin.mobile }}
+          {% elif fallback_mobile %}
+            {{ fallback_mobile }}
+          {% else %}
+            Not Provided
+          {% endif %}
+        </span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Institution</span>
+        <span class="data-value">{{ college.name }}</span>
+      </div>
+      <div class="data-item" style="grid-column: span 2;">
+        <span class="data-label">Full Address</span>
+        <span class="data-value">{{ college.address|default:"Address details pending..." }}</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Current Subscription</span>
+        <div class="plan-pill">{{ formatted_plan }}</div>
+      </div>
+      <div class="data-item" style="grid-column: span 2;">
+        <span class="data-label">Subscription Duration (1 Year)</span>
+        <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
+           <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 12px; flex: 1;">
+              <span class="data-label" style="font-size: 9px; color: var(--text-muted);">From Date</span>
+              <div class="data-value" style="font-size: 14px;">{{ subscription_start|date:"d M, Y" }}</div>
+           </div>
+           <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 12px; flex: 1;">
+              <span class="data-label" style="font-size: 9px; color: var(--text-muted);">To Date (Expiry)</span>
+              <div class="data-value" style="font-size: 14px; color: var(--accent-red);">{{ subscription_end|date:"d M, Y" }}</div>
+           </div>
+           <div style="background: linear-gradient(135deg, var(--accent-red), #ff4d4d); padding: 10px 20px; border-radius: 12px; text-align: center; min-width: 120px; box-shadow: var(--shadow-red);">
+              <span class="data-label" style="font-size: 9px; color: rgba(255,255,255,0.8);">Remaining</span>
+              <div class="data-value" style="font-size: 18px; color: #fff;">{{ days_remaining }} Days</div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">
+    Associated Faculty
+    <span class="count">{{ total_teachers }} Teachers</span>
+  </h2>
+
+  <div class="teacher-table-panel">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Faculty Member</th>
+          <th>Email ID</th>
+          <th>Batch Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for teacher in teachers %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>
+            <a href="/superadmin/teacher/{{ teacher.id }}/" class="teacher-link">
+               {{ teacher.first_name }}
+            </a>
+          </td>
+          <td style="color: var(--text-muted);">{{ teacher.email }}</td>
+          <td>
+            <span style="color: var(--accent-red); font-weight: 800;">{{ teacher.created_users.count }}</span> Students
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="text-align:center; padding: 50px; color: var(--text-muted);">
+            No faculty members registered for this college yet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
-<div class="table-wrapper">
-<table class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Teacher Name</th>
-      <th>Email</th>
-      <th>Students</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for teacher in teachers %}
-    <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>
-        <a href="/superadmin/teacher/{{ teacher.id }}/"
-           style="text-decoration:none;">
-           {{ teacher.first_name }}
-        </a>
-      </td>
-      <td>{{ teacher.email }}</td>
-      <td>
-        {{ teacher.created_users.count }}
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="4" style="text-align:center;">No teachers found</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-</div>
-
-{% endblock %}
+{% endblock %}

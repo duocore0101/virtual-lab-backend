@@ -7,15 +7,27 @@
 
   <!-- Admin Base CSS -->
   <link rel="stylesheet" href="{% static 'css/super_admin.css' %}?v=10002">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* 🔥 Logo Theme Match */
+    /* ================= HEADER & LOGO ================= */
     .sa-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 100px;
       padding: 0 25px;
+      background: var(--bg-header);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      z-index: 1001;
     }
 
     .logo {
@@ -31,14 +43,182 @@
       object-fit: contain;
     }
 
-    /* 🔥 Request Badge */
-    .req-badge {
-      background: red;
-      color: white;
+    .badge {
+      background: var(--accent-red);
+      color: #fff;
       font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 50px;
-      margin-left: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: var(--shadow-red);
+    }
+
+    .badge-count {
+      background: var(--accent-red);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+      box-shadow: var(--shadow-red);
+    }
+
+    /* ================= NEW SIDEBAR REDESIGN ================= */
+
+    :root {
+        --sidebar-width: 280px;
+        --sidebar-collapsed-width: 80px;
+        --accent-red: #ff1a1a;
+    }
+
+    body {
+        font-family: 'Outfit', sans-serif !important;
+    }
+
+    /* Dark Theme (Default) */
+    .sa-sidebar {
+        width: var(--sidebar-width);
+        background: var(--bg-header, #000) !important;
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--border-color, #222);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+    }
+
+    /* Light Theme Overrides */
+    body.light-theme .sa-sidebar {
+        background: #ffffff !important;
+        border-right: 1px solid #dddddd !important;
+    }
+
+    .sidebar-header {
+        padding: 30px 24px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-avatar {
+        width: 48px;
+        height: 48px;
+        background: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 26, 26, 0.1);
+        overflow: hidden;
+    }
+
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 5px;
+    }
+
+    .user-avatar-initial {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--accent-red), #b32424);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text-main);
+        white-space: nowrap;
+    }
+
+    .user-role {
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .sa-sidebar nav a {
+        padding: 14px 24px;
+        margin: 4px 16px;
+        border-radius: 12px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: var(--text-main);
+    }
+
+    .sa-sidebar nav a i {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .sa-sidebar nav a:hover {
+        background: rgba(255, 26, 26, 0.08);
+        color: var(--accent-red);
+        transform: translateX(5px);
+        border-color: var(--border-color);
+    }
+
+    .sa-sidebar nav a.active {
+        background: linear-gradient(90deg, rgba(255, 26, 26, 0.15), transparent);
+        color: var(--accent-red);
+        border-left: 4px solid var(--accent-red);
+        border-radius: 0 12px 12px 0;
+        margin-left: 0;
+        padding-left: 20px;
+    }
+
+    /* Collapsed State Overrides */
+    .sa-sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .sa-sidebar.collapsed .sidebar-header,
+    .sa-sidebar.collapsed .user-details,
+    .sa-sidebar.collapsed span,
+    .sa-sidebar.collapsed .arrow {
+        display: none !important;
+    }
+
+    .sa-sidebar.collapsed .user-info {
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .sa-sidebar.collapsed nav a {
+        margin: 8px 12px;
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .sa-sidebar.collapsed nav a i {
+        margin: 0;
     }
   </style>
 </head>
@@ -74,24 +254,54 @@
 
   <!-- ================= SIDEBAR ================= -->
   <aside class="sa-sidebar">
-    <nav>
-      <a href="/admin/dashboard/">🏠 <span>Dashboard</span></a>
-      <a href="/admin/teachers/">👨‍🏫 <span>Teachers</span></a>
-      <a href="/admin/students/">🎓 <span>Students</span></a>
+    <!-- Sidebar Profile Header -->
+    <div class="sidebar-header">
+      <div class="user-info">
+        <div class="user-avatar">
+          {% if request.user.college.logo %}
+            <img src="{{ request.user.college.logo.url }}" alt="College Logo">
+          {% else %}
+            <div class="user-avatar-initial">{{ request.session.name|slice:":1" }}</div>
+          {% endif %}
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ request.session.name }}</span>
+          <span class="user-role">College Admin</span>
+        </div>
+      </div>
+    </div>
 
-      <!-- 🔥 NEW: Teacher Requests Menu -->
-      <a href="/admin/teacher-requests/">
-        📨 <span>Teacher Requests</span>
+    <nav>
+      <a href="/admin/dashboard/" class="{% if '/admin/dashboard/' in path %}active{% endif %}">
+        <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+      </a>
+      
+      <a href="/profile/" class="{% if '/profile/' in path %}active{% endif %}">
+        <i class="fas fa-user-circle"></i> <span>My Profile</span>
+      </a>
+      
+      <a href="/admin/teachers/" class="{% if '/admin/teachers/' in path %}active{% endif %}">
+        <i class="fas fa-chalkboard-teacher"></i> <span>Teachers</span>
+      </a>
+      
+      <a href="/admin/students/" class="{% if '/admin/students/' in path %}active{% endif %}">
+        <i class="fas fa-user-graduate"></i> <span>Students</span>
+      </a>
+
+      <a href="/admin/teacher-requests/" class="{% if '/admin/teacher-requests/' in path %}active{% endif %}">
+        <i class="fas fa-bell"></i> <span>Teacher Requests</span>
         {% if pending_teacher_requests > 0 %}
-          <span class="req-badge">{{ pending_teacher_requests }}</span>
+          <span class="badge-count">{{ pending_teacher_requests }}</span>
         {% endif %}
       </a>
 
-      <a href="/admin/experiments/">🧪 <span>Experiments</span></a>
-      <a href="/admin/attempts/">📊 <span>Attempts</span></a>
-      <a href="/admin/reports/">📈 <span>Reports</span></a>
-      <a href="/admin/support/">🎧 <span>Support</span></a>
-      <a href="/admin/settings/">⚙ <span>Settings</span></a>
+      <a href="/admin/experiments/" class="{% if '/admin/experiments/' in path %}active{% endif %}">
+        <i class="fas fa-flask"></i> <span>Experiments</span>
+      </a>
+      
+      <a href="/admin/attempts/" class="{% if '/admin/attempts/' in path %}active{% endif %}">
+        <i class="fas fa-tasks"></i> <span>Attempts</span>
+      </a>
     </nav>
   </aside>
 

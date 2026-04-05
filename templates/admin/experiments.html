@@ -192,6 +192,66 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Search Bar Styling */
+.search-container {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    max-width: 600px;
+}
+
+.search-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color, #eee);
+    background: var(--bg-card, #fff);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--accent-red, #f44336);
+    box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+.quick-search-btn {
+    background: var(--accent-red, #f44336);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-search-btn:hover {
+    background: #b32424;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
+}
 </style>
 
 <div class="experiments-container">
@@ -201,6 +261,17 @@
     <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px;">Experiments</h1>
     <p style="color: gray;">View and manage simulations available for your college plan.</p>
   </div>
+
+  <!-- Search Bar -->
+  <form method="GET" action="." class="search-container">
+    <div class="search-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" id="experimentSearch" class="search-input" placeholder="Quick search by name or number..." value="{{ query|default:'' }}" autocomplete="off">
+    </div>
+    <button type="submit" class="quick-search-btn">
+      <i class="fas fa-bolt"></i> Quick Search
+    </button>
+  </form>
 
   <!-- Category Switcher (Only for Combo Plan) -->
   {% if selected_plan == 'combo' %}
@@ -539,30 +610,45 @@ function filterExperiments(category, btn) {
     document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
+    applyAllFilters();
+}
+
+function applyAllFilters() {
+    const searchInput = document.getElementById('experimentSearch');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    
+    const activeBtn = document.querySelector('.toggle-btn.active');
+    const category = activeBtn ? (activeBtn.textContent.includes('D.PHARM') && !activeBtn.textContent.includes('D+B') ? 'd-pharm' : 'db-pharm') : 'db-pharm';
+    
     const cards = document.querySelectorAll('.exp-card');
     let counter = 1;
     
     cards.forEach(card => {
+        const name = card.querySelector('.exp-name').textContent.toLowerCase();
         const originalNum = card.getAttribute('data-exp-number');
         const expNumInt = parseInt(originalNum);
-        const numberSpan = card.querySelector('.exp-number');
         
-        if (category === 'db-pharm') {
+        const isSearchMatch = name.includes(query) || originalNum.includes(query);
+        let isPlanMatch = true;
+        
+        if (category === 'd-pharm') {
+            isPlanMatch = D_PHARM_NUMBERS.includes(expNumInt);
+        }
+        
+        const numberSpan = card.querySelector('.exp-number');
+        if (isSearchMatch && isPlanMatch) {
             card.style.display = 'flex';
-            numberSpan.textContent = `Experiment #${originalNum}`;
-        } else {
-            // D.PHARM filtering
-            if (D_PHARM_NUMBERS.includes(expNumInt)) {
-                card.style.display = 'flex';
+            if (category === 'd-pharm') {
                 numberSpan.textContent = `Experiment #${counter}`;
                 counter++;
             } else {
-                card.style.display = 'none';
+                numberSpan.textContent = `Experiment #${originalNum}`;
             }
+        } else {
+            card.style.display = 'none';
         }
     });
 
-    // Hide sections that have no visible experiments
     updateSectionVisibility();
 }
 
@@ -575,20 +661,19 @@ function updateSectionVisibility() {
 
 // Initial Cleanup (Hide empty sections if D.Pharm only)
 window.addEventListener('DOMContentLoaded', () => {
+    // Add live search listener
+    const searchInput = document.getElementById('experimentSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', applyAllFilters);
+    }
+
     {% if selected_plan == 'dpharm' %}
-        // If the backend already filtered the list, we just need to re-number and hide empty sections
-        let counter = 1;
-        document.querySelectorAll('.exp-card').forEach(card => {
-            card.style.display = 'flex';
-            card.querySelector('.exp-number').textContent = `Experiment #${counter}`;
-            counter++;
-        });
+        applyAllFilters();
     {% else %}
         // For combo, ensure initial flex state for cards
         document.querySelectorAll('.exp-card').forEach(c => c.style.display = 'flex');
+        applyAllFilters();
     {% endif %}
-    
-    updateSectionVisibility();
 });
 </script>
 

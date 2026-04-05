@@ -179,6 +179,24 @@ def start_exam(request, exam_id):
             status="in_progress"
         )
 
+    # 🔥 UNIVERSITY EXTERNAL EXAM → SEAT NUMBER CHECK
+    if exam.exam_type == "external":
+        # Handle seat number submission
+        if request.method == "POST" and request.POST.get("action") == "save_seat_number":
+            seat_no = request.POST.get("seat_number")
+            if seat_no:
+                attempt.seat_number = seat_no
+                attempt.save()
+                return redirect(request.path) # Refresh to load paper
+
+        # If seat number is still missing → show entry page
+        if not attempt.seat_number:
+            return render(
+                request,
+                "student/seat_entry.html",
+                {"exam": exam, "attempt": attempt}
+            )
+
     # 🔥 Load exam questions
     mcqs = exam.mcqs.all()
     short_answers = exam.short_answers.all()
