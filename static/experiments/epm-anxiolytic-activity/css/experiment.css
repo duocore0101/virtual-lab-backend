@@ -231,24 +231,24 @@ body {
 /* ----------------------------------------------------------
    LIGHT THEME
 ----------------------------------------------------------- */
-body.light-theme {
+body.light-mode {
   background: #f7f7f7;
   color: #111;
 }
 
-body.light-theme .epm-video,
-body.light-theme .observation-section,
-body.light-theme .modal-content {
+body.light-mode .epm-video,
+body.light-mode .observation-section,
+body.light-mode .modal-content {
   background: #ffffff;
   color: #111;
   border: 1px solid #ff4d4d;
 }
 
-body.light-theme .observation-table {
+body.light-mode .observation-table {
   background: #fff;
 }
 
-body.light-theme .observation-table th {
+body.light-mode .observation-table th {
   background: #ff4d4d;
 }
 

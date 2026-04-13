@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Effect of Calcium Ions on Frog’s Heart – Experiment</title>
 
@@ -288,9 +289,7 @@ function openGraph() {
 function closeGraph() {
   document.getElementById("graphModal").style.display = "none";
 }
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
@@ -300,5 +299,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

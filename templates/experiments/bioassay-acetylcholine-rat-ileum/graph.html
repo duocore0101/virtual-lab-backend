@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Mean Contractile Response – Graph</title>
 
@@ -19,7 +20,7 @@
       transition: 0.3s ease;
     }
 
-    body.light-theme {
+    body.light-mode {
       background: #f4f6f9;
       color: #111;
     }
@@ -216,5 +217,7 @@ new Chart(ctx, {
 });
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
 <meta charset="UTF-8">
 <title>Wilcoxon Signed-Rank Test – Theory</title>
 
@@ -273,7 +274,7 @@ index++;
 showSlide(index);
 }
 else{
-location.href="/experiment/{{ experiment.slug }}/run/";
+location.href="/experiment/{{ experiment.slug }}/conclusion/";
 }
 
 }
@@ -313,5 +314,7 @@ document.exitFullscreen();
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

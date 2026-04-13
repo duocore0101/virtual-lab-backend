@@ -2,338 +2,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Gastrointestinal Motility – Charcoal Meal Method – Experiment</title>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <meta charset="UTF-8">
+  <title>Gastrointestinal Motility – Virtual Experiment</title>
 
-<link rel="stylesheet"
-href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
 
-<style>
+  <style>
+    .exp-container { padding: 30px; }
 
-.video-frame{
-width:100%;
-height:480px;
-border-radius:14px;
-background:#000;
-margin-top:20px;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      transition: 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: 25px;
+      align-items: start;
+    }
+
+   .video-box video {
+  width: 100%;
+  height: 340px;          /* control size */
+  object-fit: contain;   /* ✅ shows FULL video */
+  background: #000;      /* fills empty space nicely */
+  border-radius: 16px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.6);
 }
 
-video{
-width:100%;
-height:100%;
-border-radius:14px;
-display:none;
-}
+    .observation-box {
+      background: #1e1e1e;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04),
+                  0 0 22px rgba(0,0,0,0.6);
+    }
 
-.start-btn{
-padding:14px 30px;
-font-size:18px;
-border-radius:30px;
-border:none;
-cursor:pointer;
-background:linear-gradient(135deg,#ee0a0a,#b91c1c);
-color:#fff;
-font-weight:600;
-}
+    .observation-box h2 {
+      text-align: center;
+      margin-bottom: 14px;
+      color: #ff5252;
+    }
 
-/* LEFT BUTTON */
-.top-actions{
-position:fixed;
-top:18px;
-left:22px;
-z-index:1000;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+    }
 
-.dropdown-btn{
-background:linear-gradient(135deg,#1f2937,#111827);
-color:#ffffff;
-border:1px solid #374151;
-border-radius:10px;
-padding:8px 14px;
-font-size:14px;
-font-weight:500;
-cursor:pointer;
-transition:all 0.25s ease;
-box-shadow:0 4px 12px rgba(0,0,0,0.35);
-}
+    th {
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      padding: 10px;
+      font-size: 14px;
+    }
 
-.dropdown-btn:hover{
-background:linear-gradient(135deg,#ee0a0a,#e60909);
-border-color:#fa0707;
-}
+    td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      text-align: center;
+    }
 
-/* MODALS */
+    .right-controls {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-.modal{
-display:none;
-position:fixed;
-z-index:9999;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-}
+    .right-controls button {
+      padding: 12px 18px;
+      border-radius: 26px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255,0,0,0.6);
+    }
 
-.modal-content{
-background:#111;
-padding:30px;
-border-radius:12px;
-width:85%;
-max-width:900px;
-color:white;
-}
+    select {
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: none;
+      width: 100%;
+      background: #2a2a2a;
+      color: #fff;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-color:white;
-}
+    .nav-buttons {
+      margin-top: 35px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
 
-th,td{
-border:1px solid #444;
-padding:10px;
-text-align:center;
-}
-
-th{
-background:#222;
-}
-
-.close-btn{
-float:right;
-cursor:pointer;
-color:red;
-font-weight:bold;
-}
-
-</style>
+    .nav-buttons button {
+      padding: 12px 26px;
+      border-radius: 26px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="page-container">
-
-<h1 class="title">
-Effect of Drugs on Gastrointestinal Motility (Charcoal Meal Method)
-</h1>
-
-<!-- LEFT BUTTONS -->
+<!-- 🔝 TOP RIGHT -->
 <div class="top-actions">
-<button class="dropdown-btn" onclick="toggleFullscreen()">
-⛶ Full Screen
-</button>
-
-<button class="dropdown-btn" onclick="openProcedure()">
-📋 Procedure
-</button>
+  <button onclick="openProcedure()">Procedure</button>
+  <button onclick="toggleTheme()">🌗 Theme</button>
+  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
 </div>
 
-<!-- RIGHT BUTTON -->
-<div class="top-right-tools">
-<button class="theme-toggle" onclick="toggleTheme()">
-🌗 Theme
-</button>
+<!-- 🔬 PROCEDURE MODAL -->
+<div id="procedureModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeProcedure()">✖</span>
+    <h2>Experimental Procedure</h2>
+    <ol class="instruction-list">
+      <li>Fast animals overnight (water allowed).</li>
+      <li>Administer drugs orally or intraperitoneally (control group receives vehicle).</li>
+      <li>After 30 minutes administer charcoal meal suspension orally (0.3 mL for mice, 1 mL for rats).</li>
+      <li>After 15–30 minutes sacrifice animals by cervical dislocation.</li>
+      <li>Isolate the small intestine from pylorus to caecum.</li>
+      <li>Measure total intestinal length and distance travelled by charcoal front.</li>
+      <li>Calculate intestinal transit using formula: 
+        <br><b>% Transit = (Distance travelled / Total length) × 100</b>
+      </li>
+    </ol>
+  </div>
 </div>
 
-<div class="video-frame">
+<div class="exp-container">
+  <h1>Gastrointestinal Motility – Virtual Experiment</h1>
 
-<button class="start-btn" id="startBtn" onclick="startExperiment()">
-▶ Start Practical
-</button>
+  <div class="main-layout">
 
-<video id="experimentVideo" controls>
-<source src="{% static 'experiments/ciliary-motility-frog/videos/video_b.mp4' %}" type="video/mp4">
-</video>
-
+    <!-- 🎥 VIDEO -->
+<div class="video-box">
+  <video id="expVideo" preload="metadata">
+    <source src="{% static 'experiments/ciliary-motility-frog/videos/video_b.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
-<div class="button-row" style="justify-content:center;margin-top:25px;">
+    <!-- 📊 OBSERVATION -->
+    <div class="observation-box">
+      <h2>Observation Table</h2>
 
-<button class="back-btn"
-onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-⬅ Back
-</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Total Length (cm)</th>
+            <th>Distance (cm)</th>
+            <th>% Transit</th>
+          </tr>
+        </thead>
+        <tbody id="obsBody">
+          <tr><td colspan="4">—</td></tr>
+        </tbody>
+      </table>
 
-<button class="exp-btn" onclick="openModal()">
-View Observations 📊
-</button>
+      <div class="right-controls">
+        <button onclick="startExperiment()">▶ Start Experiment</button>
+        <button onclick="toggleDrug()">💉 Apply Drug</button>
 
-<button class="exp-btn"
-onclick="goToGraph()">
-Next ▶
-</button>
+        <select id="drugSelect" style="display:none;" onchange="selectDrug()">
+          <option value="">Select Drug / Group</option>
+          <option value="control">Control</option>
+          <option value="atropine">Atropine</option>
+          <option value="metoclopramide">Metoclopramide</option>
+        </select>
+      </div>
+    </div>
 
-</div>
+  </div>
 
-</div>
-
-<!-- OBSERVATION MODAL -->
-
-<div class="modal" id="obsModal">
-
-<div class="modal-content">
-
-<span class="close-btn" onclick="closeModal()">✖</span>
-
-<h2>Observation Table</h2>
-
-<table>
-
-<thead>
-<tr>
-<th>Group</th>
-<th>Total Intestinal Length (cm)</th>
-<th>Distance Travelled by Charcoal (cm)</th>
-<th>% Transit</th>
-</tr>
-</thead>
-
-<tbody>
-
-<tr>
-<td>Control</td>
-<td id="t1"></td>
-<td id="d1"></td>
-<td id="p1"></td>
-</tr>
-
-<tr>
-<td>Atropine</td>
-<td id="t2"></td>
-<td id="d2"></td>
-<td id="p2"></td>
-</tr>
-
-<tr>
-<td>Metoclopramide</td>
-<td id="t3"></td>
-<td id="d3"></td>
-<td id="p3"></td>
-</tr>
-
-</tbody>
-</table>
-
-</div>
-</div>
-
-<!-- PROCEDURE MODAL -->
-
-<div class="modal" id="procedureModal">
-
-<div class="modal-content">
-
-<span class="close-btn" onclick="closeProcedure()">✖</span>
-
-<h2>Experimental Procedure</h2>
-
-<ol style="line-height:1.7">
-
-<li>Fast animals overnight (water allowed).</li>
-
-<li>Administer drugs orally or intraperitoneally (control group receives vehicle).</li>
-
-<li>After 30 minutes administer charcoal meal suspension orally.</li>
-
-<li>
-Dose:
-<ul>
-<li>0.3 mL for mice</li>
-<li>1 mL for rats</li>
-</ul>
-</li>
-
-<li>After 15–30 minutes sacrifice animals by cervical dislocation.</li>
-
-<li>Isolate the small intestine from pylorus to caecum.</li>
-
-<li>Measure total intestinal length and distance travelled by charcoal front.</li>
-
-<li>
-Calculate intestinal transit using formula:
-<br><br>
-<strong>% Transit = (Distance travelled by charcoal / Total intestinal length) × 100</strong>
-</li>
-
-</ol>
-
-</div>
+  <div class="nav-buttons">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">⬅ Back</button>
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">Next ▶</button>
+  </div>
 </div>
 
 <script>
+const video = document.getElementById("expVideo");
+const obsBody = document.getElementById("obsBody");
+const drugSelect = document.getElementById("drugSelect");
 
-function startExperiment(){
+const data = {
+  control: [60, 42, "70 %"],
+  atropine: [62, 25, "40 %"],
+  metoclopramide: [61, 52, "85 %"]
+};
 
-document.getElementById("startBtn").style.display="none";
+let selectedDrug = null;
+let done = new Set();
 
-let video=document.getElementById("experimentVideo");
+function startExperiment() {
+  if (!selectedDrug) {
+    alert("Select a drug first");
+    return;
+  }
 
-video.style.display="block";
+  // Using the same video for all since only one is available for this practical
+  video.currentTime = 0;
+  video.play();
 
-video.play();
+  video.onended = () => {
+    if (done.has(selectedDrug)) return;
 
-setTimeout(()=>fillRow(1,60,42,70),30000);
-setTimeout(()=>fillRow(2,62,25,40),45000);
-setTimeout(()=>fillRow(3,61,52,85),60000);
+    if (done.size === 0) obsBody.innerHTML = ""; // Clear the placeholder
 
+    const row = document.createElement("tr");
+    const d = data[selectedDrug];
+    row.innerHTML = `
+      <td>${drugSelect.options[drugSelect.selectedIndex].text}</td>
+      <td>${d[0]}</td>
+      <td>${d[1]}</td>
+      <td>${d[2]}</td>
+    `;
+    obsBody.appendChild(row);
+    done.add(selectedDrug);
+  };
 }
 
-function fillRow(row,total,distance,percent){
-
-document.getElementById("t"+row).innerText=total;
-document.getElementById("d"+row).innerText=distance;
-document.getElementById("p"+row).innerText=percent+" %";
-
+function toggleDrug() {
+  drugSelect.style.display = "block";
+}
+function selectDrug() {
+  selectedDrug = drugSelect.value;
 }
 
-function openModal(){
-document.getElementById("obsModal").style.display="flex";
+function openProcedure() {
+  document.getElementById("procedureModal").style.display = "flex";
+}
+function closeProcedure() {
+  document.getElementById("procedureModal").style.display = "none";
 }
 
-function closeModal(){
-document.getElementById("obsModal").style.display="none";
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
 }
 
-function openProcedure(){
-document.getElementById("procedureModal").style.display="flex";
+function toggleTheme() {
+    document.body.classList.toggle("light-mode");
 }
-
-function closeProcedure(){
-document.getElementById("procedureModal").style.display="none";
-}
-
-function goToGraph(){
-location.href="/experiment/{{ experiment.slug }}/graph/";
-}
-
-function toggleTheme(){
-document.body.classList.toggle("light-mode");
-}
-
-function toggleFullscreen(){
-
-if(!document.fullscreenElement){
-
-document.documentElement.requestFullscreen().catch(err=>{
-alert(`Error enabling fullscreen: ${err.message}`);
-});
-
-}else{
-
-document.exitFullscreen();
-
-}
-
-}
-
 </script>
 
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

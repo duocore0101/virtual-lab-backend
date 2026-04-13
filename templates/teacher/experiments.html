@@ -363,7 +363,83 @@
         </div>
         <div class="experiment-grid">
             {% for exp in experiments %}
-                {% if exp.slug == "frog-heart" or exp.slug == "potassium-frog-heart" or exp.slug == "calcium-effect-frog-heart" or exp.slug == "acetylcholine-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
+                {% if exp.slug == "frog-heart" %}
+                    {% include "teacher/partials/experiment_card.html" %}
+                {% elif exp.slug == "potassium-frog-heart" %}
+                    <!-- MERGED EXPERIMENT #24 -->
+                    <div class="exp-card group-card" data-exp-number="24">
+                        <div class="exp-info">
+                            <span class="exp-number">Experiment #24</span>
+                            <h3 class="exp-name">Study of effect of calcium ions and potassium ions on isolated frog heart</h3>
+                            
+                            <div class="sub-experiments-group">
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">A.</span>
+                                        <span class="sub-title">Study of effect of potassium ions on isolated frog heart</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/potassium-frog-heart/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">B.</span>
+                                        <span class="sub-title">Study of effect of calcium ions on isolated frog heart</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/calcium-effect-frog-heart/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif exp.slug == "calcium-effect-frog-heart" %}
+                    <!-- Skip as merged into #24 -->
+                {% elif exp.slug == "acetylcholine-frog-heart" %}
+                    <!-- MERGED EXPERIMENT #25 -->
+                    <div class="exp-card group-card" data-exp-number="25">
+                        <div class="exp-info">
+                            <span class="exp-number">Experiment #25</span>
+                            <h3 class="exp-name">Study of effect of acetylcholine and adrenaline on isolated frog heart</h3>
+                            
+                            <div class="sub-experiments-group">
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">A.</span>
+                                        <span class="sub-title">Study of effect of acetylcholine on isolated frog heart</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/acetylcholine-frog-heart/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">B.</span>
+                                        <span class="sub-title">Study of effect of adrenaline on isolated frog heart</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/adrenaline-frog-heart/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif exp.slug == "adrenaline-frog-heart" %}
+                    <!-- Skip as merged into #25 -->
+                {% elif exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
                     {% include "teacher/partials/experiment_card.html" %}
                 {% endif %}
             {% endfor %}
@@ -423,7 +499,61 @@
         </div>
         <div class="experiment-grid">
             {% for exp in experiments %}
-                {% if exp.slug == "corneal-reflex" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" or exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
+                {% if exp.slug == "corneal-reflex" %}
+                    <!-- MERGED EXPERIMENT #34 (Previously #36) -->
+                    <div class="exp-card group-card" data-exp-number="34">
+                        <div class="exp-info">
+                            <span class="exp-number">Experiment #34</span>
+                            <h3 class="exp-name">Study of different types of Local Anasthetic Techniques</h3>
+                            
+                            <div class="sub-experiments-group">
+                                <!-- SUB A -->
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">A.</span>
+                                        <span class="sub-title">Study surface anaesthetic activity by loss of corneal reflex in rabbit</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/corneal-reflex/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- SUB B -->
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">B.</span>
+                                        <span class="sub-title">Study infiltration anaesthetic activity by loss of cutaneous sensation in guinea pig wheal</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/infiltration-anaesthetic-wheal/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- SUB C -->
+                                <div class="sub-item">
+                                    <div class="sub-header">
+                                        <span class="sub-label">C.</span>
+                                        <span class="sub-title">Study conduction anaesthetic activity by loss of reflex withdrawal in frog</span>
+                                    </div>
+                                    <div class="sub-actions">
+                                        <span class="status-tag">ACTIVE</span>
+                                        <a href="/experiment/conduction-anaesthetic-frog/" class="premium-btn btn-run mini">
+                                            Run ⚡
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" %}
+                    <!-- Skip these as they are merged above -->
+                {% elif exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
                     {% include "teacher/partials/experiment_card.html" %}
                 {% endif %}
             {% endfor %}
@@ -478,7 +608,7 @@
 </div>
 
 <script>
-const D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36];
+const D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 28, 29, 31, 34];
 
 function filterExperiments(category, btn) {
     if(!btn && !category) return;

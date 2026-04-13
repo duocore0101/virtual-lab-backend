@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Pharmacokinetic Parameters – Aim</title>
 
@@ -37,6 +38,10 @@
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
   </style>
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -58,9 +63,9 @@
        AIM TEXT
   ========================== -->
   <div class="info-box">
-    <p style="font-size:18px; text-align:center; font-weight:500;">
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
       To calculate key pharmacokinetic (PK) parameters such as 
-      <strong>C<sub>max</sub>, T<sub>max</sub>, Half-life (t<sub>1/2</sub>), AUC, Clearance and Volume of Distribution</strong> 
+      C<sub>max</sub>, T<sub>max</sub>, Half-life (t<sub>1/2</sub>), AUC, Clearance and Volume of Distribution 
       from given plasma concentration–time data.
     </p>
   </div>
@@ -86,9 +91,7 @@
      🔧 SCRIPTS
 ========================== -->
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -103,5 +106,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

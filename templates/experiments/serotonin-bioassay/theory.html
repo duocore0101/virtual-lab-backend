@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Bioassay of Serotonin (5-HT) – Theory</title>
 
   <!-- MODEL VIEWER -->
   <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse Rotarod CSS -->
@@ -78,7 +79,40 @@
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(0,0,0,0.6);
     }
-  </style>
+  
+    /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
+    model-viewer {
+      --progress-bar-color: #ff2e2e;
+      --progress-bar-height: 4px;
+      background-color: #f8f9fa;
+      position: relative;
+    }
+    .progress-bar {
+      display: block;
+      width: 33%;
+      height: var(--progress-bar-height);
+      max-height: var(--progress-bar-height);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 25px;
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .progress-bar.hide {
+      visibility: hidden;
+      transition: visibility 0.3s;
+    }
+    .update-bar {
+      background-color: var(--progress-bar-color);
+      width: 0%;
+      height: 100%;
+      border-radius: 25px;
+      transition: width 0.3s;
+    }
+</style>
 </head>
 
 <body>
@@ -133,14 +167,19 @@
     <!-- 🔬 MODEL PLACEHOLDER (KEPT FOR STRUCTURE CONSISTENCY) -->
     <div class="model-container">
       <model-viewer
-        src="{% static 'experiments/serotonin-bioassay/models/rat-fundus.glb' %}"
+      loading="eager"
+      reveal="auto"
+        src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/serotonin-bioassay/models/rat-fundus.glb' %}{% endif %}"
         alt="Rat Fundus Organ Bath Setup 3D Model"
         auto-rotate
         camera-controls
         exposure="1"
         shadow-intensity="1"
         ar>
-      </model-viewer>
+            <div class="progress-bar" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+    </model-viewer>
 
       <p style="margin-top:10px; font-size:14px; color:#aaa;">
         Rat Fundus Organ Bath Experimental Setup (3D Model Placeholder)
@@ -169,9 +208,7 @@ function prevSlide() {
   location.href = "/experiment/{{ experiment.slug }}/requirements/";
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -184,5 +221,25 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script>
+  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+  document.addEventListener('DOMContentLoaded', () => {
+    const mv = document.querySelector('model-viewer');
+    if (mv) {
+      const pBar = mv.querySelector('.progress-bar');
+      const uBar = mv.querySelector('.update-bar');
+      mv.addEventListener('progress', (e) => {
+        const prg = e.detail.totalProgress;
+        if (uBar) uBar.style.width = `${prg * 100}%`;
+        if (prg === 1) {
+          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+        }
+      });
+    }
+  });
+</script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

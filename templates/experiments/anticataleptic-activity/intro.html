@@ -2,11 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
     <meta charset="UTF-8">
     <title>{{ experiment.name }} | Virtual Lab</title>
 
     <link rel="stylesheet"
       href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 <body>
 
@@ -69,5 +74,7 @@
 
 </div>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

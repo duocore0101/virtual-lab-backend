@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Gastrointestinal Motility – Graph</title>
 
@@ -240,12 +241,11 @@ function renderChart(isLightMode = false) {
 renderChart(document.body.classList.contains("light-mode"));
 
 /* 🌗 THEME TOGGLE */
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-  renderChart(document.body.classList.contains("light-mode"));
-}
+
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

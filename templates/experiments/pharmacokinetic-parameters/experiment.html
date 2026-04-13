@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
 <meta charset="UTF-8">
 <title>Pharmacokinetic Parameters – Virtual Experiment</title>
 
@@ -65,7 +66,7 @@ body {
 }
 
 /* LIGHT THEME */
-body.light-theme {
+body.light-mode {
   background: linear-gradient(135deg, #eef2f3, #dfe9f3);
   color: #222;
 }
@@ -94,7 +95,7 @@ h1 {
   transition: 0.3s ease;
 }
 
-body.light-theme .info-box {
+body.light-mode .info-box {
   background: rgba(255,255,255,0.9);
   box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
@@ -122,7 +123,7 @@ table td {
   background: rgba(255,255,255,0.05);
 }
 
-body.light-theme table td {
+body.light-mode table td {
   background: rgba(0,0,0,0.03);
 }
 
@@ -148,7 +149,7 @@ input {
   font-weight: 500;
 }
 
-body.light-theme input {
+body.light-mode input {
   background: rgba(0,0,0,0.05);
   color: #222;
 }
@@ -241,7 +242,7 @@ input:focus {
   animation: slideUp 0.4s ease;
 }
 
-body.light-theme .modal-content {
+body.light-mode .modal-content {
   background: #fff;
   color: #222;
 }
@@ -413,13 +414,13 @@ function closeCalculation(){document.getElementById("calculationModal").style.di
 <script>
 const toggle=document.getElementById("themeToggle");
 if(localStorage.getItem("expTheme")==="light"){
-document.body.classList.add("light-theme");
+document.body.classList.add("light-mode");
 toggle.checked=true;
 }
 toggle.addEventListener("change",()=>{
-document.body.classList.toggle("light-theme");
+document.body.classList.toggle("light-mode");
 localStorage.setItem("expTheme",
-document.body.classList.contains("light-theme")?"light":"dark");
+document.body.classList.contains("light-mode")?"light":"dark");
 });
 </script>
 
@@ -434,5 +435,7 @@ document.exitFullscreen();
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

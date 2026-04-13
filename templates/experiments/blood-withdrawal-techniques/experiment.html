@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
 <meta charset="UTF-8">
 <title>Laboratory Techniques | Virtual Lab</title>
 
@@ -204,9 +205,9 @@ class="exp-nav-btn back-btn">
 ← Back to Introduction
 </a>
 
-<a href="{{ dashboard_url }}"
-class="exp-nav-btn finish-btn">
-✔ Finish Practical
+<a href="/experiment/{{ experiment.slug }}/conclusion/"
+class="exp-nav-btn finish-btn" style="background: linear-gradient(135deg, #10b981, #059669);">
+✔ Go to Result & Conclusion
 </a>
 
 </div>
@@ -236,5 +237,7 @@ box.classList.toggle("active");
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

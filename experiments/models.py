@@ -4,6 +4,13 @@ from django.utils.text import slugify
 
 User = settings.AUTH_USER_MODEL
 
+YEAR_CHOICES = (
+    ("dpharm_2", "D. Pharm II Year"),
+    ("bpharm_4", "B. Pharm II (Semester IV)"),
+    ("bpharm_56", "B. Pharm III (Semester V, VI)"),
+    ("mpharm_12", "M.Pharm I (Semester I, II)"),
+)
+
 
 # =========================================================
 # 🔥 STEP 1 – STUDENT APPROVAL EXTENSION (SAFE ADDITION)
@@ -256,6 +263,25 @@ class Batch(models.Model):
         return f"{self.name} ({self.start_roll}-{self.end_roll})"
 
 
+class BatchExtra(models.Model):
+    batch = models.OneToOneField(
+        Batch,
+        on_delete=models.CASCADE,
+        related_name="extra"
+    )
+
+    year = models.CharField(
+        max_length=50,
+        choices=YEAR_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Subject/Year this batch belongs to"
+    )
+
+    def __str__(self):
+        return f"Extra for {self.batch.name}"
+
+
 # =========================================================
 # 🔥 BATCH ↔ EXPERIMENT ASSIGNMENT
 # =========================================================
@@ -296,12 +322,6 @@ class Exam(models.Model):
         ("external", "External Examination Practical End Semester University Examination"),
     )
 
-    YEAR_CHOICES = (
-        ("dpharm_2", "D. Pharm II Year"),
-        ("bpharm_4", "B. Pharm II (Semester IV)"),
-        ("bpharm_56", "B. Pharm III (Semester V, VI)"),
-        ("mpharm_12", "M.Pharm I (Semester I, II)"),
-    )
 
     teacher = models.ForeignKey(
         User,

@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
     <meta charset="UTF-8">
     <title>Preclinical Experiments – Theory</title>
 
@@ -139,7 +140,7 @@
                     What Are Preclinical Experiments?
                 </div>
 
-                <p style="text-align:center;font-size:16px;">
+                <p style="text-align:justify;font-size:16px;">
                     Preclinical experiments are laboratory studies performed before
                     human clinical trials (Phase I–III) to evaluate the safety and
                     effectiveness of a drug candidate.
@@ -251,9 +252,7 @@
         });
 
         /* theme */
-        function toggleTheme() {
-            document.body.classList.toggle("light-mode");
-        }
+        
 
         /* fullscreen */
         function toggleFullscreen() {
@@ -268,6 +267,8 @@
 
     </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 
 </html>

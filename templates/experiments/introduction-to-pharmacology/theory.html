@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
 <meta charset="UTF-8">
 <title>Introduction to Pharmacology – Theory</title>
 
@@ -359,31 +360,13 @@ document.getElementById("currentSlide").innerText=i+1;
 }
 
 function nextSlide(){
-
-if(index<slides.length-1){
-index++;
-showSlide(index);
-}else{
-
-// LAST SLIDE → FINISH PRACTICAL
-fetch("/experiment/finish/",{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"X-CSRFToken":"{{ csrf_token }}"
-},
-body:JSON.stringify({
-experiment_slug:"{{ experiment.slug }}",
-observations:{}
-})
-})
-.then(res=>res.json())
-.then(data=>{
-if(data.redirect){
-window.location.href=data.redirect;
-}
-});
-}
+  if(index < slides.length - 1){
+    index++;
+    showSlide(index);
+  } else {
+    // LAST SLIDE → GO TO CONCLUSION
+    location.href = "/experiment/{{ experiment.slug }}/conclusion/";
+  }
 }
 
 function prevSlide(){
@@ -440,5 +423,7 @@ document.exitFullscreen();
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Taming and Hypnosis Potentiating Effect of Chlorpromazine – Theory</title>
 
   <!-- MODEL VIEWER -->
   <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse Rotarod CSS -->
@@ -324,5 +325,7 @@ document.exitFullscreen();
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

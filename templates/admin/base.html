@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>{% block title %}Admin | G-MARS{% endblock %}</title>
 
@@ -78,7 +79,7 @@
     /* Dark Theme (Default) */
     .sa-sidebar {
         width: var(--sidebar-width);
-        background: var(--bg-header, #000) !important;
+        background: var(--bg-header) !important;
         backdrop-filter: blur(20px);
         border-right: 1px solid var(--border-color, #222);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -88,8 +89,8 @@
     }
 
     /* Light Theme Overrides */
-    body.light-theme .sa-sidebar {
-        background: #ffffff !important;
+    body.light-mode .sa-sidebar {
+        background: var(--bg-card) !important;
         border-right: 1px solid #dddddd !important;
     }
 
@@ -318,7 +319,7 @@
 </footer>
 
 <!-- ================= SCRIPTS ================= -->
-<script src="{% static 'js/theme-toggle.js' %}"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 <script src="{% static 'js/sidebar-toggle.js' %}"></script>
 
 </body>

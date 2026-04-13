@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Anti-Catatonic Activity – Conclusion</title>
 
@@ -67,9 +68,13 @@
 
   <!-- NAVIGATION BUTTONS -->
   <div class="button-row">
-    <button class="back-btn"
+    <button class="back-btn" 
       onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
       ⬅ Back to Experiment
+    </button>
+
+    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); margin-left: 10px;">
+      Download Practical PDF 📄
     </button>
 
     <button class="exp-btn"
@@ -86,9 +91,45 @@
 </button>
 
 <script>
+function downloadPDF() {
+  const slug = "{{ experiment.slug }}";
+  let tableData = [];
+  const saved = localStorage.getItem('exp_data_' + slug);
+  if (saved) {
+      tableData = JSON.parse(saved);
+  }
+
+  fetch(`/experiment/${slug}/download-pdf/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": "{{ csrf_token }}"
+    },
+    body: JSON.stringify({
+      table_data: tableData
+    })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("PDF generation failed");
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Practical_Report_${slug}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
+}
+
 function toggleTheme() {
   document.body.classList.toggle("light-mode");
-
   if (document.body.classList.contains("light-mode")) {
     localStorage.setItem("uiTheme", "light");
   } else {
@@ -103,5 +144,7 @@ window.onload = () => {
 };
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

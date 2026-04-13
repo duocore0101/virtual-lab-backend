@@ -175,6 +175,13 @@
                    placeholder="End Roll Number"
                    class="batch-input" required>
 
+            <select name="year" class="batch-input" required>
+                <option value="">Select Subject/Year</option>
+                {% for code, name in year_choices %}
+                <option value="{{ code }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+
             <button type="submit" class="batch-btn">
                 Create Batch
             </button>
@@ -205,7 +212,12 @@
                         <td>
                             <div class="batch-name-cell">
                                 <span class="batch-icon">📂</span>
-                                <span class="name">{{ batch.name }}</span>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span class="name">{{ batch.name }}</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">
+                                        {{ batch.extra.get_year_display|default:"No Subject Assigned" }}
+                                    </span>
+                                </div>
                             </div>
                         </td>
                         <td>

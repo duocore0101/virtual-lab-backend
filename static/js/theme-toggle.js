@@ -1,37 +1,35 @@
-// ------------------------------
-// THEME TOGGLE WITH PERSISTENCE
-// ------------------------------
+/**
+ * 🌓 G-MARS GLOBAL THEME TOGGLE
+ * Handles theme persistence across all dashboard and experiment pages.
+ * Default: Dark Mode (Black)
+ */
 
-const THEME_KEY = "gmars-theme";
+const THEME_STORAGE_KEY = 'gmars-theme-preference';
+const LIGHT_MODE_CLASS = 'light-mode';
 
-// Apply saved theme on page load
-(function () {
-  const savedTheme = localStorage.getItem(THEME_KEY);
-  if (savedTheme === "light") {
-    document.body.classList.add("light-theme");
-  }
-})();
-
-// Toggle theme + save preference
+/**
+ * Toggles the theme and saves preference to localStorage.
+ */
 function toggleTheme() {
-  const isLight = document.body.classList.toggle("light-theme");
-
-  // Save preference
-  localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
-}
-function toggleTheme() {
-  document.body.classList.toggle("light-theme");
-
-  const mode = document.body.classList.contains("light-theme")
-    ? "light"
-    : "dark";
-
-  localStorage.setItem("admin-theme", mode);
+    const isLight = document.body.classList.toggle(LIGHT_MODE_CLASS);
+    localStorage.setItem(THEME_STORAGE_KEY, isLight ? 'light' : 'dark');
+    
+    // Optional: Dispatch event for other listeners
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: isLight ? 'light' : 'dark' } }));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("admin-theme");
-  if (saved === "light") {
-    document.body.classList.add("light-theme");
-  }
-});
+/**
+ * Initialize theme based on saved preference.
+ * This can be called multiple times safely.
+ */
+function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme === 'light') {
+        document.body.classList.add(LIGHT_MODE_CLASS);
+    } else {
+        document.body.classList.remove(LIGHT_MODE_CLASS);
+    }
+}
+
+// Initialize on script load
+initTheme();

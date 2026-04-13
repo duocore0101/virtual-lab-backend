@@ -293,24 +293,24 @@ body {
 /* ----------------------------------------------------------
    LIGHT THEME
 ----------------------------------------------------------- */
-body.light-theme {
+body.light-mode {
   background: #f7f7f7;
   color: #111;
 }
 
-body.light-theme .exp-container h1 {
+body.light-mode .exp-container h1 {
   color: #c30000;
   text-shadow: none;
 }
 
-body.light-theme .side-video,
-body.light-theme .modal-content {
+body.light-mode .side-video,
+body.light-mode .modal-content {
   background: #ffffff;
   color: #111;
   border: 1px solid #ff4d4d;
 }
 
-body.light-theme .toggle-label {
+body.light-mode .toggle-label {
   color: #c30000;
 }
 

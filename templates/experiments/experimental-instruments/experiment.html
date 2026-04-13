@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Experimental Instruments | Virtual Lab</title>
 
@@ -133,9 +134,9 @@
       ← Back to Introduction
     </a>
 
-    <a href="{{ dashboard_url }}"
-       class="exp-nav-btn finish-btn">
-      ✔ Finish Practical
+    <a href="/experiment/{{ experiment.slug }}/conclusion/"
+       class="exp-nav-btn finish-btn" style="background: linear-gradient(135deg, #10b981, #059669);">
+      ✔ Go to Result & Conclusion
     </a>
 
   </div>
@@ -144,10 +145,7 @@
 
 <!-- 🔧 SCRIPTS -->
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("theme-light");
-  document.body.classList.toggle("theme-dark");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -159,5 +157,7 @@ function toggleFullscreen() {
   }
 }
 </script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

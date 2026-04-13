@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Effect of Acetylcholine on Frog’s Heart – Experiment</title>
 
@@ -305,9 +306,7 @@ function closeObservation() {
   document.getElementById("observationModal").style.display = "none";
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -327,5 +326,7 @@ function closeGraph() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

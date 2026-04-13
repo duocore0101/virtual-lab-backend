@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Conduction Anaesthetic Activity – Experiment</title>
 
@@ -272,9 +273,9 @@ function toggleFullscreen() {
 }
 </script>
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

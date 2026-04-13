@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
     <meta charset="UTF-8">
     <title>Preclinical Experiments – Aim</title>
 
@@ -37,6 +38,10 @@
             box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
         }
     </style>
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -80,9 +85,7 @@
      🔧 SCRIPTS
 ========================== -->
     <script>
-        function toggleTheme() {
-            document.body.classList.toggle("light-mode");
-        }
+        
     </script>
 
     <script>
@@ -97,6 +100,8 @@
         }
     </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 
 </html>

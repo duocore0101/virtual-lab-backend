@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Insulin Hypoglycaemic Effect – Requirements</title>
 
   <!-- MODEL VIEWER -->
   <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse Rotarod CSS for consistency -->
@@ -41,7 +42,40 @@
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
-  </style>
+  
+    /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
+    model-viewer {
+      --progress-bar-color: #ff2e2e;
+      --progress-bar-height: 4px;
+      background-color: #f8f9fa;
+      position: relative;
+    }
+    .progress-bar {
+      display: block;
+      width: 33%;
+      height: var(--progress-bar-height);
+      max-height: var(--progress-bar-height);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 25px;
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .progress-bar.hide {
+      visibility: hidden;
+      transition: visibility 0.3s;
+    }
+    .update-bar {
+      background-color: var(--progress-bar-color);
+      width: 0%;
+      height: 100%;
+      border-radius: 25px;
+      transition: width 0.3s;
+    }
+</style>
 </head>
 
 <body>
@@ -94,18 +128,23 @@
   </div>
 
   <!-- 🧬 3D MODEL PLACEHOLDER -->
-  <div class="info-box" style="text-align:center;">
+  <div class="info-box" style="text-align:justify;">
     <h2>Rabbit Blood Collection – 3D View (Optional)</h2>
 
     <!-- You can later replace this with actual GLB model -->
     <model-viewer
-      src="{% static 'experiments/insulin-hypoglycaemic-rabbit/models/rabbit.glb' %}"
+      loading="eager"
+      reveal="auto"
+      src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/insulin-hypoglycaemic-rabbit/models/rabbit.glb' %}{% endif %}"
       camera-controls
       auto-rotate
       rotation-per-second="20deg"
       shadow-intensity="1"
       exposure="1.1"
       style="width:100%; height:420px; border-radius:12px;">
+          <div class="progress-bar" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
     </model-viewer>
   </div>
 
@@ -126,9 +165,7 @@
 
 <!-- 🔧 SCRIPTS -->
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -143,5 +180,25 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script>
+  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+  document.addEventListener('DOMContentLoaded', () => {
+    const mv = document.querySelector('model-viewer');
+    if (mv) {
+      const pBar = mv.querySelector('.progress-bar');
+      const uBar = mv.querySelector('.update-bar');
+      mv.addEventListener('progress', (e) => {
+        const prg = e.detail.totalProgress;
+        if (uBar) uBar.style.width = `${prg * 100}%`;
+        if (prg === 1) {
+          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+        }
+      });
+    }
+  });
+</script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    padding-bottom: 100px; /* Space for floating button */
+    padding-bottom: 100px;
 }
 
 /* Header Section */
@@ -39,7 +39,6 @@
 
 .back-btn-red:hover {
     transform: translateX(-5px);
-    box-shadow: 0 6px 15px rgba(255, 75, 43, 0.3);
     color: #fff;
 }
 
@@ -59,7 +58,6 @@
 /* Section Styling */
 .experiment-section {
     margin-bottom: 50px;
-    animation: fadeIn 0.5s ease backwards;
 }
 
 .section-label {
@@ -72,7 +70,6 @@
     font-weight: 700;
     margin-bottom: 12px;
     letter-spacing: 1px;
-    box-shadow: var(--shadow-red);
 }
 
 .section-header h2 {
@@ -92,11 +89,10 @@
     background: linear-gradient(to right, var(--border-color), transparent);
 }
 
-/* Card List */
 .experiment-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
 /* Redesigned Card for Assignment */
@@ -126,43 +122,40 @@
     transition: 0.3s;
 }
 
-.assign-card:hover {
-    transform: translateX(8px);
-    border-color: var(--accent-red);
-}
+.assign-card:hover { transform: translateX(8px); border-color: var(--accent-red); }
+.assign-card:not(.group-card).selected { border-color: var(--accent-red); background: rgba(255, 75, 43, 0.02); }
+.assign-card:not(.group-card).selected::before { opacity: 1; }
 
-.assign-card.selected {
-    border-color: var(--accent-red);
-    background: rgba(255, 75, 43, 0.02);
+/* Group Card Styling (Dashboard Match) */
+.group-card { flex-direction: column; align-items: flex-start; gap: 15px; cursor: default; }
+.group-card:hover { transform: none; }
+.sub-experiments-group { width: 100%; display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+.sub-item { 
+    background: var(--bg-main); 
+    border: 1px solid var(--border-color); 
+    padding: 12px 20px; 
+    border-radius: 12px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
 }
+.sub-item:hover { border-color: var(--accent-red); transform: translateX(5px); }
+.sub-item.selected { border-color: var(--accent-red); background: rgba(255, 75, 43, 0.05); }
 
-.assign-card.selected::before {
-    opacity: 1;
-}
+.sub-header { display: flex; align-items: center; gap: 10px; }
+.sub-label { font-weight: 800; color: var(--accent-red); font-size: 14px; }
+.sub-title { font-size: 14px; font-weight: 600; color: var(--text-main); }
 
-.exp-info {
-    flex: 1;
-}
-
-.exp-number {
-    font-size: 13px;
-    color: var(--accent-red);
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    display: block;
-}
-
-.exp-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-main);
-}
+.exp-info { flex: 1; }
+.exp-number { font-size: 13px; color: var(--accent-red); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: block; }
+.exp-name { font-size: 16px; font-weight: 700; color: var(--text-main); }
 
 /* Custom Checkbox UI */
 .custom-checkbox {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid var(--border-color);
     display: flex;
@@ -170,32 +163,19 @@
     justify-content: center;
     transition: 0.3s;
     background: #fff;
+    flex-shrink: 0;
 }
 
 .selected .custom-checkbox {
     background: var(--accent-red);
     border-color: var(--accent-red);
-    box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
 }
 
-.custom-checkbox i {
-    color: #fff;
-    font-size: 14px;
-    display: none;
-}
-
-.selected .custom-checkbox i {
-    display: block;
-}
+.custom-checkbox i { color: #fff; font-size: 12px; display: none; }
+.selected .custom-checkbox i { display: block; }
 
 /* Floating Save Button */
-.floating-actions {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 1000;
-}
-
+.floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
 .save-btn {
     padding: 16px 36px;
     border-radius: 50px;
@@ -211,207 +191,147 @@
     gap: 12px;
     transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.save-btn:hover { transform: scale(1.05) translateY(-5px); }
 
-.save-btn:hover {
-    transform: scale(1.05) translateY(-5px);
-    box-shadow: 0 15px 40px rgba(255, 75, 43, 0.5);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Hide actual checkbox */
-.hidden-checkbox {
-    display: none;
-}
+.hidden-checkbox { display: none; }
 </style>
 
 <form method="POST">
     {% csrf_token %}
     
     <div class="experiments-container">
-        <!-- Back Link & Header -->
         <div class="batch-header">
             <a href="javascript:history.back()" class="back-btn-red">
                 <span>⬅ Back to Batch Management</span>
             </a>
             <h1 class="batch-title">Assign Practicals</h1>
             <div class="batch-info">
-                Batch: <strong>{{ batch.name }}</strong> | Range: {{ batch.start_roll }} - {{ batch.end_roll }}
+                Batch: <strong>{{ batch.name }}</strong> | Range: {{ batch.start_roll }} - {{ batch.end_roll }} | Subject: <strong>{% if is_dpharm %}D.PHARM{% else %}B.PHARM{% endif %}</strong>
             </div>
         </div>
-        <!-- SECTION A -->
-        <section class="experiment-section" style="animation-delay: 0.1s;">
-            <div class="section-header"><span class="section-label">SECTION A</span><h2>Introduction & Basic Concepts</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "introduction-to-pharmacology" or exp.slug == "experimental-instruments" or exp.slug == "common-laboratory-animals" or exp.slug == "in-vitro-pharmacology-pss" or exp.slug == "dose-calculation-stock-solution" or exp.slug == "preclinical-types" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
 
-        <!-- SECTION B -->
-        <section class="experiment-section" style="animation-delay: 0.15s;">
-            <div class="section-header"><span class="section-label">SECTION B</span><h2>Ethics, Handling & Techniques</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "lab-animal-maintenance" or exp.slug == "blood-withdrawal-techniques" or exp.slug == "routes-drug-administration" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
+        {% for section in sections %}
+        <section class="experiment-section" id="section-{{ section.id }}">
+            <div class="section-header">
+                <span class="section-label">SECTION {{ section.id }}</span>
+                <h2>{{ section.title }}</h2>
             </div>
-        </section>
+            <div class="experiment-grid">
+                {% for exp in section.exps %}
+                    
+                    {% if exp.slug == "potassium-frog-heart" %}
+                        <!-- GROUP CARD #24 -->
+                        <div class="assign-card group-card" data-exp-number="24">
+                            <div class="exp-info">
+                                <span class="exp-number">Experiment #24</span>
+                                <h3 class="exp-name">Study of effect of calcium ions and potassium ions on isolated frog heart</h3>
+                                <div class="sub-experiments-group">
+                                    <label class="sub-item {% if exp.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header">
+                                            <span class="sub-label">A.</span>
+                                            <span class="sub-title">Study of effect of potassium ions on isolated frog heart</span>
+                                        </div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    
+                                    {% for sub in section.exps %}{% if sub.slug == "calcium-effect-frog-heart" %}
+                                    <label class="sub-item {% if sub.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ sub.id }}" class="hidden-checkbox" {% if sub.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header">
+                                            <span class="sub-label">B.</span>
+                                            <span class="sub-title">Study of effect of calcium ions on isolated frog heart</span>
+                                        </div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    {% endif %}{% endfor %}
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- SECTION C -->
-        <section class="experiment-section" style="animation-delay: 0.2s;">
-            <div class="section-header"><span class="section-label">SECTION C</span><h2>Autonomic & Peripheral Pharmacology</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "rabbit-eye-drug-effects" or exp.slug == "ciliary-motility-frog" or exp.slug == "guinea-pig-ileum-drc" or exp.slug == "saline-purgative-frog-intestine" or exp.slug == "spasmogens-spasmolytics-rabbit-jejunum" or exp.slug == "gastrointestinal-motility-mice-rats" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
+                    {% elif exp.slug == "acetylcholine-frog-heart" %}
+                        <!-- GROUP CARD #25 -->
+                        <div class="assign-card group-card" data-exp-number="25">
+                            <div class="exp-info">
+                                <span class="exp-number">Experiment #25</span>
+                                <h3 class="exp-name">Study of effect of acetylcholine and adrenaline on isolated frog heart</h3>
+                                <div class="sub-experiments-group">
+                                    <label class="sub-item {% if exp.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header">
+                                            <span class="sub-label">A.</span>
+                                            <span class="sub-title">Effect of acetylcholine on isolated frog heart</span>
+                                        </div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    
+                                    {% for sub in section.exps %}{% if sub.slug == "adrenaline-frog-heart" %}
+                                    <label class="sub-item {% if sub.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ sub.id }}" class="hidden-checkbox" {% if sub.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header">
+                                            <span class="sub-label">B.</span>
+                                            <span class="sub-title">Effect of adrenaline on isolated frog heart</span>
+                                        </div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    {% endif %}{% endfor %}
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- SECTION D -->
-        <section class="experiment-section" style="animation-delay: 0.25s;">
-            <div class="section-header"><span class="section-label">SECTION D</span><h2>Central Nervous System (CNS)</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "rotarod" or exp.slug == "actophotometer" or exp.slug == "stereotyped-behavior" or exp.slug == "anticataleptic-activity" or exp.slug == "anticonvulsant-mes-ptz" or exp.slug == "epm-anxiolytic-activity" or exp.slug == "chlorpromazine" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
+                    {% elif exp.slug == "corneal-reflex" %}
+                        <!-- GROUP CARD #34 -->
+                        <div class="assign-card group-card" data-exp-number="34">
+                            <div class="exp-info">
+                                <span class="exp-number">Experiment #34</span>
+                                <h3 class="exp-name">Study of different types of Local Anasthetic Techniques</h3>
+                                <div class="sub-experiments-group">
+                                    <label class="sub-item {% if exp.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header"><span class="sub-label">A.</span><span class="sub-title">Surface anaesthetic activity (Corneal reflex)</span></div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    
+                                    {% for sub in experiments %}{% if sub.slug == "infiltration-anaesthetic-wheal" %}
+                                    <label class="sub-item {% if sub.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ sub.id }}" class="hidden-checkbox" {% if sub.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header"><span class="sub-label">B.</span><span class="sub-title">Infiltration anaesthetic activity (Guinea pig wheal)</span></div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    {% endif %}{% endfor %}
 
-        <!-- SECTION E -->
-        <section class="experiment-section" style="animation-delay: 0.3s;">
-            <div class="section-header"><span class="section-label">SECTION E</span><h2>Cardiovascular & Renal Pharmacology</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "frog-heart" or exp.slug == "potassium-frog-heart" or exp.slug == "calcium-effect-frog-heart" or exp.slug == "acetylcholine-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "dog-bp-drugs" or exp.slug == "diuretic-activity" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
+                                    {% for sub in experiments %}{% if sub.slug == "conduction-anaesthetic-frog" %}
+                                    <label class="sub-item {% if sub.id in assigned_ids %}selected{% endif %}">
+                                        <input type="checkbox" name="experiments" value="{{ sub.id }}" class="hidden-checkbox" {% if sub.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                                        <div class="sub-header"><span class="sub-label">C.</span><span class="sub-title">Conduction anaesthetic activity (Frog)</span></div>
+                                        <div class="custom-checkbox"><i>✔</i></div>
+                                    </label>
+                                    {% endif %}{% endfor %}
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- SECTION F -->
-        <section class="experiment-section" style="animation-delay: 0.35s;">
-            <div class="section-header"><span class="section-label">SECTION F</span><h2>Analgesic & Anti-Inflammatory</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "analgesic-activity-hot-plate" or exp.slug == "tail-flick" or exp.slug == "carrageenan-edema" or exp.slug == "test-for-pyrogens" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
+                    {% elif exp.slug == "calcium-effect-frog-heart" or exp.slug == "adrenaline-frog-heart" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" %}
+                        <!-- Skip sub-experiments as they are inside group cards -->
+                    {% else %}
+                        <!-- REGULAR CARD -->
+                        <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}" data-exp-number="{{ exp.number }}">
+                            <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" 
+                                   {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
+                            <div class="exp-info">
+                                <span class="exp-number">Experiment #{{ exp.number }}</span>
+                                <h3 class="exp-name">{{ exp.name }}</h3>
+                            </div>
+                            <div class="custom-checkbox"><i>✔</i></div>
+                        </label>
+                    {% endif %}
 
-        <!-- SECTION G -->
-        <section class="experiment-section" style="animation-delay: 0.4s;">
-            <div class="section-header"><span class="section-label">SECTION G</span><h2>Endocrine & Metabolic Pharmacology</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "insulin-hypoglycaemic-rabbit" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
+                {% endfor %}
             </div>
         </section>
-
-        <!-- SECTION H -->
-        <section class="experiment-section" style="animation-delay: 0.45s;">
-            <div class="section-header"><span class="section-label">SECTION H</span><h2>Gastrointestinal & Anti-Ulcer</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "anti-ulcer-shay-nsaids" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
-
-        <!-- SECTION I -->
-        <section class="experiment-section" style="animation-delay: 0.5s;">
-            <div class="section-header"><span class="section-label">SECTION I</span><h2>Anaesthetics & Allergy Models</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "corneal-reflex" or exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" or exp.slug == "mast-cell-stabilizing-activity" or exp.slug == "diphenhydramine-asthma-guinea-pig" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
-
-        <!-- SECTION J -->
-        <section class="experiment-section" style="animation-delay: 0.55s;">
-            <div class="section-header"><span class="section-label">SECTION J</span><h2>In-Vitro Bioassay Studies</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" or exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
-
-        <!-- SECTION K -->
-        <section class="experiment-section" style="animation-delay: 0.6s;">
-            <div class="section-header"><span class="section-label">SECTION K</span><h2>Toxicology Studies</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "acute-oral-toxicity" or exp.slug == "acute-skin-irritation-oecd-404" or exp.slug == "eye-irritation-oecd405" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
-
-        <!-- SECTION L -->
-        <section class="experiment-section" style="animation-delay: 0.65s;">
-            <div class="section-header"><span class="section-label">SECTION L</span><h2>Biomechanics & Biostatistics</h2></div>
-            <div class="experiment-grid">
-                {% for exp in experiments %}{% if exp.slug == "serum-biochemical-parameters" or exp.slug == "pharmacokinetic-parameters" or exp.slug == "biostatistical-methods" %}
-                <label class="assign-card {% if exp.id in assigned_ids %}selected{% endif %}">
-                    <input type="checkbox" name="experiments" value="{{ exp.id }}" class="hidden-checkbox" {% if exp.id in assigned_ids %}checked{% endif %} onchange="toggleCard(this)">
-                    <div class="exp-info"><span class="exp-number">Experiment #{{ exp.number }}</span><h3 class="exp-name">{{ exp.name }}</h3></div>
-                    <div class="custom-checkbox"><i>✔</i></div>
-                </label>
-                {% endif %}{% endfor %}
-            </div>
-        </section>
+        {% endfor %}
     </div>
 
-    <!-- Floating Save Button -->
     <div class="floating-actions">
         <button type="submit" class="save-btn">
             💾 Save Assignments
@@ -420,14 +340,47 @@
 </form>
 
 <script>
+const D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 28, 29, 31, 34];
+const IS_DPHARM = {% if is_dpharm %}true{% else %}false{% endif %};
+
 function toggleCard(checkbox) {
-    const card = checkbox.closest('.assign-card');
+    const parent = checkbox.closest('.assign-card') || checkbox.closest('.sub-item');
     if (checkbox.checked) {
-        card.classList.add('selected');
+        parent.classList.add('selected');
     } else {
-        card.classList.remove('selected');
+        parent.classList.remove('selected');
     }
 }
+
+function applyFiltering() {
+    const cards = document.querySelectorAll('.assign-card[data-exp-number]');
+    let counter = 1;
+
+    cards.forEach(card => {
+        const expNum = parseInt(card.getAttribute('data-exp-number'));
+        const numberSpan = card.querySelector('.exp-number');
+
+        if (IS_DPHARM) {
+            if (D_PHARM_NUMBERS.includes(expNum)) {
+                card.style.display = 'flex';
+                numberSpan.textContent = `Experiment #${counter++}`;
+            } else {
+                card.style.display = 'none';
+            }
+        } else {
+            card.style.display = 'flex';
+            // B.Pharm keeps original numbers
+        }
+    });
+
+    // Handle sections visibility
+    document.querySelectorAll('.experiment-section').forEach(section => {
+        const visibleCards = section.querySelectorAll('.assign-card[style*="display: flex"]');
+        section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyFiltering);
 </script>
 
 {% endblock %}

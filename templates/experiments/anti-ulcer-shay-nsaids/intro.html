@@ -4,6 +4,7 @@
 
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Anti-ulcer Activity using Pylorus-ligated (SHAY) Rat Model and NSAIDS Induced Ulcer Model – Aim</title>
 
@@ -41,6 +42,10 @@
     }
   </style>
 
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -65,7 +70,7 @@
   ========================== -->
 
   <div class="info-box">
-    <p style="font-size:18px; text-align:center; font-weight:500;">
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
       To Study of Anti-ulcer activity of a drug using Pylorus-ligated (SHAY) rat model and NSAIDS induced ulcer model.
     </p>
   </div>
@@ -95,9 +100,7 @@
 ========================== -->
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -112,5 +115,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

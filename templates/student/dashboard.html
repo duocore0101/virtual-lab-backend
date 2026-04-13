@@ -162,25 +162,144 @@
 <div class="card-grid">
 
   {% for exp in experiments %}
-  <div class="section-card">
+    {% if exp.slug == "potassium-frog-heart" %}
+      <!-- MERGED EXPERIMENT #24 -->
+      <div class="section-card group-card">
+        <h3>Study of effect of calcium ions and potassium ions on isolated frog heart</h3>
+        
+        <div class="sub-experiments-group">
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">A.</span>
+              <span class="sub-title">Study of effect of potassium ions on isolated frog heart</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                {% if exp.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+              <a href="/experiment/potassium-frog-heart/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">B.</span>
+              <span class="sub-title">Study of effect of calcium ions on isolated frog heart</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge badge-active">Active</span>
+              <a href="/experiment/calcium-effect-frog-heart/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% elif exp.slug == "calcium-effect-frog-heart" %}
+      <!-- Skip merged into #24 -->
+    {% elif exp.slug == "acetylcholine-frog-heart" %}
+      <!-- MERGED EXPERIMENT #25 -->
+      <div class="section-card group-card">
+        <h3>Study of effect of acetylcholine and adrenaline on isolated frog heart</h3>
+        
+        <div class="sub-experiments-group">
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">A.</span>
+              <span class="sub-title">Study of effect of acetylcholine on isolated frog heart</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                {% if exp.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+              <a href="/experiment/acetylcholine-frog-heart/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">B.</span>
+              <span class="sub-title">Study of effect of adrenaline on isolated frog heart</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge badge-active">Active</span>
+              <a href="/experiment/adrenaline-frog-heart/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% elif exp.slug == "adrenaline-frog-heart" %}
+      <!-- Skip merged into #25 -->
+    {% elif exp.number == 34 and exp.slug == "corneal-reflex" %}
+      <!-- MERGED EXPERIMENT #34 (Previously #36) -->
+      <div class="section-card group-card">
+        <h3>Study of different types of Local Anasthetic Techniques</h3>
+        
+        <div class="sub-experiments-group">
+          <!-- SUB A -->
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">A.</span>
+              <span class="sub-title">Study surface anaesthetic activity by loss of corneal reflex in rabbit</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                {% if exp.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+              <a href="/experiment/corneal-reflex/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+          </div>
 
-    <h3>{{ exp.name }}</h3>
+          <!-- SUB B -->
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">B.</span>
+              <span class="sub-title">Study infiltration anaesthetic activity by loss of cutaneous sensation in guinea pig wheal</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge badge-active">Active</span>
+              <a href="/experiment/infiltration-anaesthetic-wheal/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
 
-    <!-- <p><strong>Aim:</strong> {{ exp.aim }}</p> -->
-
-    <p>
-      Status:
-      <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
-        {% if exp.is_active %}Active{% else %}Inactive{% endif %}
-      </span>
-    </p>
-
-    <a href="/experiment/{{ exp.slug }}/" class="btn-primary">
-      🚀 Start Practical
-    </a>
-
-  </div>
-
+          <!-- SUB C -->
+          <div class="sub-item">
+            <div class="sub-header">
+              <span class="sub-label">C.</span>
+              <span class="sub-title">Study conduction anaesthetic activity by loss of reflex withdrawal in frog</span>
+            </div>
+            <div class="sub-actions">
+              <span class="status-badge badge-active">Active</span>
+              <a href="/experiment/conduction-anaesthetic-frog/" class="btn-primary" style="margin-top:0; padding: 8px 18px;">
+                🚀 Start
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% elif exp.slug == "infiltration-anaesthetic-wheal" or exp.slug == "conduction-anaesthetic-frog" %}
+      <!-- Skip these as they are merged into #36 -->
+    {% else %}
+      <div class="section-card">
+        <h3>{{ exp.name }}</h3>
+        <p>
+          Status:
+          <span class="status-badge {% if exp.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+            {% if exp.is_active %}Active{% else %}Inactive{% endif %}
+          </span>
+        </p>
+        <a href="/experiment/{{ exp.slug }}/" class="btn-primary">
+          🚀 Start Practical
+        </a>
+      </div>
+    {% endif %}
   {% empty %}
     <p class="empty-text">No practicals assigned yet.</p>
   {% endfor %}

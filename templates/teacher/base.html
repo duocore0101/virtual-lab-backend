@@ -2,11 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>{% block title %}Teacher | G-MARS{% endblock %}</title>
 
   <!-- Shared Global CSS (Same as Admin) -->
-  <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
+  <link rel="stylesheet" href="{% static 'css/super_admin.css' %}?v=20">
   
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -95,41 +96,41 @@
 
     /* Dark Theme (Default) */
     .sa-sidebar {
-        background: var(--bg-header, #000) !important;
+        background: var(--bg-header) !important;
         color: var(--text-main, #fff) !important;
         border-right: 1px solid var(--border-color, #222);
     }
 
     /* Light Theme Overrides */
-    body.light-theme .sa-sidebar {
-        background: #ffffff !important;
+    body.light-mode .sa-sidebar {
+        background: var(--bg-card) !important;
         border-right: 1px solid #dddddd !important;
     }
 
-    body.light-theme .sa-sidebar .user-name {
+    body.light-mode .sa-sidebar .user-name {
         color: #111111 !important;
     }
 
-    body.light-theme .sa-sidebar .user-role {
+    body.light-mode .sa-sidebar .user-role {
         color: #555555 !important;
     }
 
-    body.light-theme .sa-sidebar nav a,
-    body.light-theme .sa-sidebar .dropdown-trigger {
+    body.light-mode .sa-sidebar nav a,
+    body.light-mode .sa-sidebar .dropdown-trigger {
         color: #111111 !important;
     }
     
-    body.light-theme .sa-sidebar nav a:hover,
-    body.light-theme .sa-sidebar .dropdown-trigger:hover {
+    body.light-mode .sa-sidebar nav a:hover,
+    body.light-mode .sa-sidebar .dropdown-trigger:hover {
         background: rgba(255, 26, 26, 0.08) !important;
         color: var(--accent-red) !important;
     }
 
-    body.light-theme .sa-sidebar .dropdown-content a {
+    body.light-mode .sa-sidebar .dropdown-content a {
         color: #555555 !important;
     }
 
-    body.light-theme .sa-sidebar .dropdown-content a:hover {
+    body.light-mode .sa-sidebar .dropdown-content a:hover {
         color: var(--accent-red) !important;
     }
 
@@ -432,7 +433,7 @@
 </footer>
 
 <!-- ================= SCRIPTS ================= -->
-<script src="{% static 'js/theme-toggle.js' %}"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 <script src="{% static 'js/sidebar-toggle.js' %}"></script>
 
 </body>

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Actophotometer Experiment – Theory</title>
 
@@ -187,9 +188,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 /* THEME */
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 /* FULLSCREEN */
 function toggleFullscreen() {
@@ -203,5 +202,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

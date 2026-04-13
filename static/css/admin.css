@@ -27,7 +27,7 @@
 }
 
 /* ☀️ LIGHT THEME */
-.light-theme {
+.light-mode {
   --bg-main: #ffffff;
   --bg-card: #f6f6f6;
   --bg-header: #ffffff;
@@ -162,7 +162,7 @@ body {
   );
 }
 
-.light-theme .sa-hero {
+.light-mode .sa-hero {
   background: linear-gradient(
     135deg,
     rgba(255, 26, 26, 0.15),
@@ -188,7 +188,7 @@ body {
   transition: all 0.35s ease;
 }
 
-.light-theme .kpi-card {
+.light-mode .kpi-card {
   background: linear-gradient(145deg, #ffffff, #f2f2f2);
 }
 
@@ -218,7 +218,7 @@ body {
   margin-bottom: 40px;
 }
 
-.light-theme .panel {
+.light-mode .panel {
   background: linear-gradient(145deg, #ffffff, #f2f2f2);
 }
 

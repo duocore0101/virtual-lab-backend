@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Bioassay of Acetylcholine (ACh) – Result & Conclusion</title>
 
@@ -59,7 +60,7 @@
       in the given sample was found to be:
     </p>
 
-    <p style="font-size:22px; text-align:center; font-weight:700;">
+    <p style="font-size:22px; text-align:justify; font-weight:700;">
       97.5 – 100 μg/mL
     </p>
 
@@ -148,9 +149,7 @@
 <!-- ================= SCRIPTS ================= -->
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -259,5 +258,7 @@ function finishPractical() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

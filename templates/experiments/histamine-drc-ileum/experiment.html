@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Cumulative Dose Response Curve of Histamine – Experiment</title>
 
@@ -249,9 +250,7 @@
       location.href = "/experiment/{{ experiment.slug }}/graph/";
     }
 
-    function toggleTheme() {
-      document.body.classList.toggle("light-mode");
-    }
+    
 
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
@@ -262,6 +261,8 @@
     }
   </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 
 </html>

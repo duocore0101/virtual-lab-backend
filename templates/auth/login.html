@@ -1,575 +1,613 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Login | G-MARS Pharma Solutions</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Login | G-MARS Pharma Solutions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-body{
-  height:100vh;
-  background:url("{% static 'images/pharma-bgg.png' %}") no-repeat center center/cover;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow: hidden; /* Prevent body scroll */
-}
+    body {
+      height: 100vh;
+      background:url("{% static 'images/pharma-bggg.png' %}") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      /* Prevent body scroll */
+    }
 
-body::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(3px);
-}
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+    }
 
-.main-card{
-  position:relative;
-  z-index:1;
-  width:500px;
-  background:rgba(255,255,255,0.85);
-  backdrop-filter: blur(15px);
-  padding:25px 30px;
-  border-radius:24px;
-  box-shadow:0 25px 60px rgba(0,0,0,0.3);
-  text-align:center;
-  border: 1px solid rgba(255,255,255,0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 95vh;
-  display: flex;
-  flex-direction: column;
-}
+    .main-card {
+      position: relative;
+      z-index: 1;
+      width: 500px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      padding: 25px 30px;
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-.logo{
-  width:85px;
-  margin-bottom:8px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
-}
+    .logo {
+      width: 85px;
+      margin-bottom: 8px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+    }
 
-h1{
-  font-size:20px;
-  margin-bottom:2px;
-  font-weight:700;
-  color: #2d3436;
-}
+    h1 {
+      font-size: 20px;
+      margin-bottom: 2px;
+      font-weight: 700;
+      color: #2d3436;
+    }
 
-.subtitle{
-  font-size:13px;
-  color:#636e72;
-  margin-bottom:15px;
-}
+    .subtitle {
+      font-size: 13px;
+      color: #636e72;
+      margin-bottom: 15px;
+    }
 
-.error, .success{
-  font-size:12px;
-  margin-bottom:8px;
-  padding: 8px;
-  border-radius: 8px;
-}
-.error { background: #fee2e2; color: #dc2626; }
-.success { background: #dcfce7; color: #16a34a; }
+    .error,
+    .success {
+      font-size: 12px;
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 8px;
+    }
 
-form{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+    .error {
+      background: #fee2e2;
+      color: #dc2626;
+    }
 
-input, select{
-  padding:10px 14px;
-  border:1.5px solid rgba(0,0,0,0.08);
-  border-radius:10px;
-  font-size:13px;
-  outline:none;
-  width:100%;
-  background: rgba(255,255,255,0.9);
-  transition: all 0.2s;
-}
+    .success {
+      background: #dcfce7;
+      color: #16a34a;
+    }
 
-input:focus, select:focus{
-  border-color:#ff4d4d;
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
-}
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-.btn{
-  padding:12px;
-  background: linear-gradient(135deg, #ff4d4d, #e03c3c);
-  border:none;
-  color:white;
-  font-weight:600;
-  border-radius:10px;
-  cursor:pointer;
-  transition:0.3s;
-  grid-column:span 2;
-  font-size: 14px;
-  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
-}
+    input,
+    select {
+      padding: 10px 14px;
+      border: 1.5px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.2s;
+    }
 
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
-}
+    input:focus,
+    select:focus {
+      border-color: #ff4d4d;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
+    }
 
-/* ================================
+    .btn {
+      padding: 12px;
+      background: linear-gradient(135deg, #ff4d4d, #e03c3c);
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      grid-column: span 2;
+      font-size: 14px;
+      box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
+    }
+
+    /* ================================
    PREMIUM SUBJECT CARDS (COMPACT)
 ================================ */
-#subjectCheckboxContainer {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px !important;
-    max-height: 180px;
-    overflow-y: auto;
-    padding: 5px 2px !important;
-    margin-top: 5px;
-}
-
-.subject-checkbox-label {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: #fff;
-    border: 1.5px solid #eee;
-    padding: 8px 6px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 1.2;
-    color: #444;
-    min-height: 50px;
-}
-
-.subject-checkbox-label input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-}
-
-.subject-checkbox-label:hover {
-    border-color: #ff4d4d;
-    background: #fffafa;
-}
-
-.subject-checkbox-label:has(input:checked) {
-    background: #fff5f5;
-    border-color: #ff4d4d;
-    color: #ff4d4d;
-}
-
-.subject-checkbox-label:has(input:checked)::after {
-    content: "✓";
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #ff4d4d;
-    color: white;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.switch-text{
-  margin-top:12px;
-  font-size:12px;
-  color:#636e72;
-}
-
-.switch-text span{
-  color:#ff4d4d;
-  cursor:pointer;
-  font-weight:600;
-  text-decoration: underline;
-}
-
-.register-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  text-align:left;
-}
-
-.register-grid > div {
-  transition: all 0.3s ease-in-out;
-}
-
-#signupForm{
-  display:none;
-  animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Compact Scrollbar */
-#subjectCheckboxContainer::-webkit-scrollbar {
-  width: 4px;
-}
-#subjectCheckboxContainer::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-#subjectCheckboxContainer::-webkit-scrollbar-thumb {
-  background: #ff4d4d50;
-  border-radius: 10px;
-}
-
-@media(max-height: 800px) {
-    .main-card {
-        padding: 20px 25px;
+    #subjectCheckboxContainer {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px !important;
+      max-height: 180px;
+      overflow-y: auto;
+      padding: 5px 2px !important;
+      margin-top: 5px;
     }
-    .logo { width: 70px; }
-    h1 { font-size: 18px; }
-    .register-grid { gap: 8px; }
-}
 
-@media(max-width:600px){
-  .main-card{
-    width:95%;
-  }
-  .register-grid{
-    grid-template-columns: 1fr;
-  }
-  .full{
-    grid-column:span 1;
-  }
-}
-</style>
+    .subject-checkbox-label {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #fff;
+      border: 1.5px solid #eee;
+      padding: 8px 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: #444;
+      min-height: 50px;
+    }
+
+    .subject-checkbox-label input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .subject-checkbox-label:hover {
+      border-color: #ff4d4d;
+      background: #fffafa;
+    }
+
+    .subject-checkbox-label:has(input:checked) {
+      background: #fff5f5;
+      border-color: #ff4d4d;
+      color: #ff4d4d;
+    }
+
+    .subject-checkbox-label:has(input:checked)::after {
+      content: "✓";
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff4d4d;
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .switch-text {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #636e72;
+    }
+
+    .switch-text span {
+      color: #ff4d4d;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .register-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .register-grid>div {
+      transition: all 0.3s ease-in-out;
+    }
+
+    #signupForm {
+      display: none;
+      animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Compact Scrollbar */
+    #subjectCheckboxContainer::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #subjectCheckboxContainer::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    #subjectCheckboxContainer::-webkit-scrollbar-thumb {
+      background: #ff4d4d50;
+      border-radius: 10px;
+    }
+
+    @media(max-height: 800px) {
+      .main-card {
+        padding: 20px 25px;
+      }
+
+      .logo {
+        width: 70px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .register-grid {
+        gap: 8px;
+      }
+    }
+
+    @media(max-width:600px) {
+      .main-card {
+        width: 95%;
+      }
+
+      .register-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: span 1;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="main-card">
+  <div class="main-card">
 
-<img src="{% static 'images/logo.png' %}" class="logo">
+    <img src="{% static 'images/logo.png' %}" class="logo">
 
-<h1>G-MARS Tech Solution</h1>
-<p class="subtitle">Virtual Pharmacology Lab Platform</p>
+    <h1>G-MARS Tech Solution</h1>
+    <p class="subtitle">Virtual Pharmacology Lab Platform</p>
 
-{% if message %}
-<p class="success">{{ message }}</p>
-{% endif %}
+    {% if message %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
 
-{% if error %}
-<p class="error">{{ error }}</p>
-{% endif %}
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
 
-<!-- LOGIN -->
-<form method="post" action="/login/" id="loginForm">
-{% csrf_token %}
-<input type="hidden" name="action" value="login">
-<input type="email" name="email" placeholder="Email address" required>
-<input type="password" name="password" placeholder="Password" required>
-<button type="submit" class="btn">Sign In</button>
+    <!-- LOGIN -->
+    <form method="post" action="/login/" id="loginForm">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="login">
+      <input type="email" name="email" placeholder="Email address" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit" class="btn">Sign In</button>
 
-<p class="switch-text">
-Don't have an account?
-<span onclick="toggleSignup()">Register</span>
-</p>
-</form>
+      <p class="switch-text">
+        Don't have an account?
+        <span onclick="toggleSignup()">Register</span>
+      </p>
+    </form>
 
-<!-- REGISTER -->
-<form method="post" action="/login/" id="signupForm" enctype="multipart/form-data">
-{% csrf_token %}
-<input type="hidden" name="action" value="register">
+    <!-- REGISTER -->
+    <form method="post" action="/login/" id="signupForm" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="register">
 
-<div class="register-grid">
+      <div class="register-grid">
 
-  <div class="full">
-    <select name="role" id="roleSelect" required onchange="handleRoleChange()">
-      <option value="">Select Role</option>
-      <option value="admin">Principal / Admin</option>
-      <option value="teacher">Teacher</option>
-      <option value="student">Student</option>
-    </select>
+        <div class="full">
+          <select name="role" id="roleSelect" required onchange="handleRoleChange()">
+            <option value="">Select Role</option>
+            <option value="admin">Principal / Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+
+        <!-- 🔥 Principal Specific -->
+        <div id="logoDiv" style="display:none;" class="full">
+          <label style="font-size: 11px; color: #555; display: block; margin-bottom: 3px; font-weight: 500;">Attach
+            College Logo</label>
+          <input type="file" name="logo" accept="image/*" style="padding: 5px 10px;">
+        </div>
+
+        <div id="collegeTextDiv" style="display:none;" class="full">
+          <input type="text" name="college_name" id="collegeNameInput" placeholder="Enter New College Name">
+        </div>
+
+        <div id="addressDiv" style="display:none;" class="full">
+          <input type="text" name="college_address" id="collegeAddressInput" placeholder="College Address">
+        </div>
+
+        <!-- Teacher / Student -->
+        <div id="collegeDropdownDiv" style="display:none;" class="full">
+          <select name="college_id" id="collegeDropdown" onchange="filterTeachers()">
+            <option value="">Select College</option>
+            {% for college in colleges %}
+            <option value="{{ college.id }}">{{ college.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Student Teacher -->
+        <div id="teacherDropdownDiv" style="display:none;" class="full">
+          <select name="teacher_id" id="teacherDropdown" onchange="filterStudentSubjects()">
+            <option value="">Select Teacher</option>
+            {% for teacher in teachers %}
+            <option value="{{ teacher.id }}" data-college="{{ teacher.college.id }}">
+              {{ teacher.first_name }} ({{ teacher.college.name }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- 🔥 Student Subject Selection (New) -->
+        <div id="studentSubjectDiv" style="display:none;" class="full">
+          <select name="requested_subject" id="studentSubjectDropdown" required>
+            <option value="">Select Subject</option>
+          </select>
+        </div>
+
+        <!-- 🔥 Student Roll Number -->
+        <div id="rollNoDiv" style="display:none;" class="full">
+          <input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
+        </div>
+
+        <div><input type="text" name="fullname" placeholder="Full Name" required></div>
+        <div><input type="email" name="email" placeholder="Email address" required></div>
+
+        <div><input type="text" name="mobile" placeholder="Mobile Number" required></div>
+        <div><input type="password" name="password" placeholder="Password" required></div>
+
+        <div class="full">
+          <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        </div>
+
+        <!-- Teacher Subject Checkboxes -->
+        <div id="subjectDiv" style="display:none;" class="full">
+          <label
+            style="display:block; margin:5px 0; font-weight:600; font-size:12px; color:#444; text-align: left;">Assign
+            Subjects:</label>
+          <div id="subjectCheckboxContainer">
+            <label class="subject-checkbox-label" id="label_dpharm_2">
+              <input type="checkbox" name="subject" value="dpharm_2"> 2ND YR D.PHARM: PHARMACOLOGY
+            </label>
+            <label class="subject-checkbox-label" id="label_bpharm_4">
+              <input type="checkbox" name="subject" value="bpharm_4"> 2ND YR B.PHARM: PHARM-I
+            </label>
+            <label class="subject-checkbox-label" id="label_bpharm_5">
+              <input type="checkbox" name="subject" value="bpharm_5"> 3RD YR B.PHARM: PHARM-II
+            </label>
+            <label class="subject-checkbox-label" id="label_bpharm_6">
+              <input type="checkbox" name="subject" value="bpharm_6"> 3RD YR B.PHARM: PHARM-III
+            </label>
+          </div>
+        </div>
+
+        <div id="planDiv" style="display:none;" class="full">
+          <select name="selected_plan" id="planSelect">
+            <option value="">Select College Plan</option>
+            <option value="single">Single Experiment (₹1,000)</option>
+            <option value="dpharm">D.Pharm Plan (₹11,999)</option>
+            <option value="combo">D.Pharm + B.Pharm (₹19,999)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn full" id="registerBtn">Create Account</button>
+
+      </div>
+
+      <p class="switch-text">
+        Already have an account?
+        <span onclick="toggleLogin()">Sign In</span>
+      </p>
+
+    </form>
+
   </div>
 
-  <!-- 🔥 Principal Specific -->
-  <div id="logoDiv" style="display:none;" class="full">
-    <label style="font-size: 11px; color: #555; display: block; margin-bottom: 3px; font-weight: 500;">Attach College Logo</label>
-    <input type="file" name="logo" accept="image/*" style="padding: 5px 10px;">
-  </div>
+  <script>
+    function toggleSignup() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "block";
+    }
 
-  <div id="collegeTextDiv" style="display:none;" class="full">
-    <input type="text" name="college_name" id="collegeNameInput" placeholder="Enter New College Name">
-  </div>
+    function toggleLogin() {
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "flex";
+    }
 
-  <div id="addressDiv" style="display:none;" class="full">
-    <input type="text" name="college_address" id="collegeAddressInput" placeholder="College Address">
-  </div>
+    function handleRoleChange() {
+      let role = document.getElementById("roleSelect").value;
+      // Containers
+      let textDiv = document.getElementById("collegeTextDiv");
+      let dropdownDiv = document.getElementById("collegeDropdownDiv");
+      let teacherDiv = document.getElementById("teacherDropdownDiv");
+      let rollDiv = document.getElementById("rollNoDiv");
+      let logoDiv = document.getElementById("logoDiv");
+      let addressDiv = document.getElementById("addressDiv");
+      let planDiv = document.getElementById("planDiv");
+      let subjectDiv = document.getElementById("subjectDiv");
+      let studentSubjectDiv = document.getElementById("studentSubjectDiv");
 
-  <!-- Teacher / Student -->
-  <div id="collegeDropdownDiv" style="display:none;" class="full">
-    <select name="college_id" id="collegeDropdown" onchange="filterTeachers()">
-      <option value="">Select College</option>
-      {% for college in colleges %}
-        <option value="{{ college.id }}">{{ college.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
+      // Inputs
+      let rollInput = document.getElementById("rollNoInput");
+      let collegeNameInput = document.getElementById("collegeNameInput");
+      let collegeAddressInput = document.getElementById("collegeAddressInput");
+      let planSelect = document.getElementById("planSelect");
+      let collegeDropdown = document.getElementById("collegeDropdown");
+      let teacherDropdown = document.getElementById("teacherDropdown");
+      let studentSubjectDropdown = document.getElementById("studentSubjectDropdown");
+      let registerBtn = document.getElementById("registerBtn");
 
-  <!-- Student Teacher -->
-  <div id="teacherDropdownDiv" style="display:none;" class="full">
-    <select name="teacher_id" id="teacherDropdown" onchange="filterStudentSubjects()">
-      <option value="">Select Teacher</option>
-      {% for teacher in teachers %}
-        <option value="{{ teacher.id }}" data-college="{{ teacher.college.id }}">
-          {{ teacher.first_name }} ({{ teacher.college.name }})
-        </option>
-      {% endfor %}
-    </select>
-  </div>
+      // Reset required attributes
+      const inputsToReset = [collegeNameInput, collegeAddressInput, planSelect, collegeDropdown, teacherDropdown, studentSubjectDropdown, rollInput];
+      inputsToReset.forEach(input => { if (input) input.removeAttribute("required"); });
 
-  <!-- 🔥 Student Subject Selection (New) -->
-  <div id="studentSubjectDiv" style="display:none;" class="full">
-    <select name="requested_subject" id="studentSubjectDropdown" required>
-      <option value="">Select Subject</option>
-    </select>
-  </div>
+      if (role === "admin") {
+        textDiv.style.display = "block";
+        logoDiv.style.display = "block";
+        addressDiv.style.display = "block";
+        planDiv.style.display = "block";
+        subjectDiv.style.display = "none";
+        dropdownDiv.style.display = "none";
+        teacherDiv.style.display = "none";
+        studentSubjectDiv.style.display = "none";
+        rollDiv.style.display = "none";
 
-  <!-- 🔥 Student Roll Number -->
-  <div id="rollNoDiv" style="display:none;" class="full">
-    <input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
-  </div>
+        if (collegeNameInput) collegeNameInput.setAttribute("required", "required");
+        if (collegeAddressInput) collegeAddressInput.setAttribute("required", "required");
+        if (planSelect) planSelect.setAttribute("required", "required");
 
-  <div><input type="text" name="fullname" placeholder="Full Name" required></div>
-  <div><input type="email" name="email" placeholder="Email address" required></div>
+        registerBtn.innerText = "Request for Quotation";
+      }
+      else if (role === "teacher") {
+        textDiv.style.display = "none";
+        logoDiv.style.display = "none";
+        addressDiv.style.display = "none";
+        planDiv.style.display = "none";
+        subjectDiv.style.display = "block";
+        dropdownDiv.style.display = "block";
+        teacherDiv.style.display = "none";
+        studentSubjectDiv.style.display = "none";
+        rollDiv.style.display = "none";
 
-  <div><input type="text" name="mobile" placeholder="Mobile Number" required></div>
-  <div><input type="password" name="password" placeholder="Password" required></div>
+        if (collegeDropdown) collegeDropdown.setAttribute("required", "required");
 
-  <div class="full">
-    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-  </div>
+        registerBtn.innerText = "Register";
+      }
+      else if (role === "student") {
+        textDiv.style.display = "none";
+        logoDiv.style.display = "none";
+        addressDiv.style.display = "none";
+        planDiv.style.display = "none";
+        subjectDiv.style.display = "none";
+        dropdownDiv.style.display = "block";
+        teacherDiv.style.display = "block";
+        studentSubjectDiv.style.display = "block";
+        rollDiv.style.display = "block";
 
-  <!-- Teacher Subject Checkboxes -->
-  <div id="subjectDiv" style="display:none;" class="full">
-    <label style="display:block; margin:5px 0; font-weight:600; font-size:12px; color:#444; text-align: left;">Assign Subjects:</label>
-    <div id="subjectCheckboxContainer">
-        <label class="subject-checkbox-label" id="label_dpharm_2">
-            <input type="checkbox" name="subject" value="dpharm_2"> 2ND YR D.PHARM: PHARMACOLOGY
-        </label>
-        <label class="subject-checkbox-label" id="label_bpharm_4">
-            <input type="checkbox" name="subject" value="bpharm_4"> 2ND YR B.PHARM: PHARM-I
-        </label>
-        <label class="subject-checkbox-label" id="label_bpharm_5">
-            <input type="checkbox" name="subject" value="bpharm_5"> 3RD YR B.PHARM: PHARM-II
-        </label>
-        <label class="subject-checkbox-label" id="label_bpharm_6">
-            <input type="checkbox" name="subject" value="bpharm_6"> 3RD YR B.PHARM: PHARM-III
-        </label>
-    </div>
-  </div>
+        if (collegeDropdown) collegeDropdown.setAttribute("required", "required");
+        if (teacherDropdown) teacherDropdown.setAttribute("required", "required");
+        if (studentSubjectDropdown) studentSubjectDropdown.setAttribute("required", "required");
+        if (rollInput) rollInput.setAttribute("required", "required");
 
-  <div id="planDiv" style="display:none;" class="full">
-    <select name="selected_plan" id="planSelect">
-      <option value="">Select College Plan</option>
-      <option value="single">Single Experiment (₹1,000)</option>
-      <option value="dpharm">D.Pharm Plan (₹11,999)</option>
-      <option value="combo">D.Pharm + B.Pharm (₹19,999)</option>
-    </select>
-  </div>
+        registerBtn.innerText = "Register";
+      }
+    }
 
-  <button type="submit" class="btn full" id="registerBtn">Create Account</button>
-
-</div>
-
-<p class="switch-text">
-Already have an account?
-<span onclick="toggleLogin()">Sign In</span>
-</p>
-
-</form>
-
-</div>
-
-<script>
-function toggleSignup(){
-  document.getElementById("loginForm").style.display="none";
-  document.getElementById("signupForm").style.display="block";
-}
-
-function toggleLogin(){
-  document.getElementById("signupForm").style.display="none";
-  document.getElementById("loginForm").style.display="flex";
-}
-
-function handleRoleChange(){
-  let role=document.getElementById("roleSelect").value;
-  // Containers
-  let textDiv = document.getElementById("collegeTextDiv");
-  let dropdownDiv = document.getElementById("collegeDropdownDiv");
-  let teacherDiv = document.getElementById("teacherDropdownDiv");
-  let rollDiv = document.getElementById("rollNoDiv");
-  let logoDiv = document.getElementById("logoDiv");
-  let addressDiv = document.getElementById("addressDiv");
-  let planDiv = document.getElementById("planDiv");
-  let subjectDiv = document.getElementById("subjectDiv");
-  let studentSubjectDiv = document.getElementById("studentSubjectDiv");
-
-  // Inputs
-  let rollInput = document.getElementById("rollNoInput");
-  let collegeNameInput = document.getElementById("collegeNameInput");
-  let collegeAddressInput = document.getElementById("collegeAddressInput");
-  let planSelect = document.getElementById("planSelect");
-  let collegeDropdown = document.getElementById("collegeDropdown");
-  let teacherDropdown = document.getElementById("teacherDropdown");
-  let studentSubjectDropdown = document.getElementById("studentSubjectDropdown");
-  let registerBtn = document.getElementById("registerBtn");
-
-  // Reset required attributes
-  const inputsToReset = [collegeNameInput, collegeAddressInput, planSelect, collegeDropdown, teacherDropdown, studentSubjectDropdown, rollInput];
-  inputsToReset.forEach(input => { if(input) input.removeAttribute("required"); });
-
-  if(role==="admin"){
-    textDiv.style.display="block";
-    logoDiv.style.display="block";
-    addressDiv.style.display="block";
-    planDiv.style.display="block";
-    subjectDiv.style.display="none";
-    dropdownDiv.style.display="none";
-    teacherDiv.style.display="none";
-    studentSubjectDiv.style.display="none";
-    rollDiv.style.display="none";
-
-    if(collegeNameInput) collegeNameInput.setAttribute("required","required");
-    if(collegeAddressInput) collegeAddressInput.setAttribute("required","required");
-    if(planSelect) planSelect.setAttribute("required","required");
-
-    registerBtn.innerText="Request for Quotation";
-  }
-  else if(role==="teacher"){
-    textDiv.style.display="none";
-    logoDiv.style.display="none";
-    addressDiv.style.display="none";
-    planDiv.style.display="none";
-    subjectDiv.style.display="block";
-    dropdownDiv.style.display="block";
-    teacherDiv.style.display="none";
-    studentSubjectDiv.style.display="none";
-    rollDiv.style.display="none";
-
-    if(collegeDropdown) collegeDropdown.setAttribute("required","required");
-
-    registerBtn.innerText="Register";
-  }
-  else if(role==="student"){
-    textDiv.style.display="none";
-    logoDiv.style.display="none";
-    addressDiv.style.display="none";
-    planDiv.style.display="none";
-    subjectDiv.style.display="none";
-    dropdownDiv.style.display="block";
-    teacherDiv.style.display="block";
-    studentSubjectDiv.style.display="block";
-    rollDiv.style.display="block";
-
-    if(collegeDropdown) collegeDropdown.setAttribute("required","required");
-    if(teacherDropdown) teacherDropdown.setAttribute("required","required");
-    if(studentSubjectDropdown) studentSubjectDropdown.setAttribute("required","required");
-    if(rollInput) rollInput.setAttribute("required","required");
-
-    registerBtn.innerText="Register";
-  }
-}
-
-const teacherSubjects = {
+    const teacherSubjects = {
     {% for teacher in teachers %}
-        "{{ teacher.id }}": "{{ teacher.subject }}",
-    {% endfor %}
+    "{{ teacher.id }}": "{{ teacher.subject }}",
+      {% endfor %}
 };
 
-const subjectDisplayNames = {
-    "dpharm_2": "2ND YR D.PHARM: PHARMACOLOGY",
-    "bpharm_4": "2ND YR B.PHARM: PHARM-I",
-    "bpharm_5": "3RD YR B.PHARM: PHARM-II",
-    "bpharm_6": "3RD YR B.PHARM: PHARM-III"
-};
+    const subjectDisplayNames = {
+      "dpharm_2": "2ND YR D.PHARM: PHARMACOLOGY",
+      "bpharm_4": "2ND YR B.PHARM: PHARM-I",
+      "bpharm_5": "3RD YR B.PHARM: PHARM-II",
+      "bpharm_6": "3RD YR B.PHARM: PHARM-III"
+    };
 
-function filterStudentSubjects() {
-    let teacherId = document.getElementById("teacherDropdown").value;
-    let subjectDropdown = document.getElementById("studentSubjectDropdown");
-    let subjectsStr = teacherSubjects[teacherId] || "";
-    
-    // Clear existing options except first
-    subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
-    
-    if (subjectsStr) {
+    function filterStudentSubjects() {
+      let teacherId = document.getElementById("teacherDropdown").value;
+      let subjectDropdown = document.getElementById("studentSubjectDropdown");
+      let subjectsStr = teacherSubjects[teacherId] || "";
+
+      // Clear existing options except first
+      subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
+
+      if (subjectsStr) {
         let subjects = subjectsStr.split(",");
         subjects.forEach(sub => {
-            if (sub.trim()) {
-                let option = document.createElement("option");
-                option.value = sub.trim();
-                option.text = subjectDisplayNames[sub.trim()] || sub.trim();
-                subjectDropdown.add(option);
-            }
+          if (sub.trim()) {
+            let option = document.createElement("option");
+            option.value = sub.trim();
+            option.text = subjectDisplayNames[sub.trim()] || sub.trim();
+            subjectDropdown.add(option);
+          }
         });
+      }
     }
-}
 
-const collegePlans = {{ college_plans|safe }};
+    const collegePlans = {{ college_plans| safe }};
 
-function filterTeachers(){
-  let collegeId=document.getElementById("collegeDropdown").value;
-  let teacherDropdown=document.getElementById("teacherDropdown");
-  let options=teacherDropdown.querySelectorAll("option");
+    function filterTeachers() {
+      let collegeId = document.getElementById("collegeDropdown").value;
+      let teacherDropdown = document.getElementById("teacherDropdown");
+      let options = teacherDropdown.querySelectorAll("option");
 
-  options.forEach(option=>{
-    if(!option.dataset.college) return;
-    option.style.display=(option.dataset.college===collegeId)?"block":"none";
-  });
+      options.forEach(option => {
+        if (!option.dataset.college) return;
+        option.style.display = (option.dataset.college === collegeId) ? "block" : "none";
+      });
 
-  teacherDropdown.value="";
+      teacherDropdown.value = "";
 
-  // 🔥 ALSO FILTER SUBJECTS FOR TEACHERS
-  filterSubjects(collegeId);
-}
+      // 🔥 ALSO FILTER SUBJECTS FOR TEACHERS
+      filterSubjects(collegeId);
+    }
 
-function filterSubjects(collegeId) {
-    let container = document.getElementById("subjectCheckboxContainer");
-    let labels = container.querySelectorAll(".subject-checkbox-label");
-    let plan = collegePlans[collegeId];
+    function filterSubjects(collegeId) {
+      let container = document.getElementById("subjectCheckboxContainer");
+      let labels = container.querySelectorAll(".subject-checkbox-label");
+      let plan = collegePlans[collegeId];
 
-    // Reset all checkboxes first
-    container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      // Reset all checkboxes first
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-    labels.forEach(label => {
+      labels.forEach(label => {
         let val = label.querySelector('input').value;
 
         if (plan === 'dpharm') {
-            // Only show D.Pharm subject
-            label.style.display = (val === 'dpharm_2') ? "block" : "none";
+          // Only show D.Pharm subject
+          label.style.display = (val === 'dpharm_2') ? "block" : "none";
         } else if (plan === 'combo') {
-            // Show all subjects
-            label.style.display = "block";
+          // Show all subjects
+          label.style.display = "block";
         } else {
-            // Default show nothing specific
-            label.style.display = "block";
+          // Default show nothing specific
+          label.style.display = "block";
         }
-    });
-}
-</script>
+      });
+    }
+  </script>
 
 </body>
+
 </html>

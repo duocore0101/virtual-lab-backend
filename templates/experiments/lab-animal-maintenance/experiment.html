@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Laboratory Animal Maintenance – Experiment</title>
 
@@ -112,8 +113,8 @@
 
 
 
-    <button class="exp-btn" onclick="finishPractical()">
-        Finish Practical ✔
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'" style="background: linear-gradient(135deg, #10b981, #059669);">
+        ✔ Go to Result & Conclusion
       </button>
 
     </div>
@@ -128,9 +129,7 @@
       location.href = "{{ dashboard_url }}";
     }
 
-    function toggleTheme() {
-      document.body.classList.toggle("light-mode");
-    }
+    
   </script>
 
   <script>
@@ -215,6 +214,8 @@ function downloadPDF() {
 
 
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 
 </html>

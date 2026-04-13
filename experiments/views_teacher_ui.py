@@ -32,10 +32,11 @@ from .models import (
     ExamSpotting,
     ExamPractical,
     SpottingBank,
-    SessionalContinuousMark
+    SessionalContinuousMark,
+    YEAR_CHOICES
 )
 
-D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 30, 31, 33, 36]
+D_PHARM_NUMBERS = [1, 2, 3, 6, 8, 9, 10, 11, 16, 17, 20, 21, 24, 25, 26, 27, 28, 29, 31, 34]
 
 
 # =====================================================
@@ -967,7 +968,8 @@ def teacher_manage_batches(request):
         request,
         "teacher/manage_batches.html",
         {
-            "batches": batches
+            "batches": batches,
+            "year_choices": YEAR_CHOICES
         }
     )
 
@@ -987,12 +989,16 @@ def teacher_create_batch(request):
         if not all([name, start_roll, end_roll]):
             return redirect("/teacher/manage-batches/")
 
-        Batch.objects.create(
+        batch = Batch.objects.create(
             teacher=request.user,
             name=name,
             start_roll=int(start_roll),
             end_roll=int(end_roll),
         )
+
+        year = request.POST.get("year")
+        from .models import BatchExtra
+        BatchExtra.objects.create(batch=batch, year=year)
 
         return redirect("/teacher/manage-batches/")
 
@@ -1018,6 +1024,12 @@ def teacher_edit_batch(request, batch_id):
         batch.end_roll = int(request.POST.get("end_roll"))
         batch.save()
 
+        year = request.POST.get("year")
+        from .models import BatchExtra
+        extra, created = BatchExtra.objects.get_or_create(batch=batch)
+        extra.year = year
+        extra.save()
+
         return redirect("/teacher/manage-batches/")
 
     return render(
@@ -1027,7 +1039,6 @@ def teacher_edit_batch(request, batch_id):
             "batch": batch
         }
     )
-
 
 # =====================================================
 # 🔥 TEACHER → ASSIGN PRACTICAL TO BATCH
@@ -1043,41 +1054,66 @@ def teacher_assign_practical(request, batch_id):
     )
 
     experiments = Experiment.objects.filter(is_active=True).order_by("number")
-
-    college = request.user.college
-    if college and college.selected_plan == 'dpharm':
-        experiments = experiments.filter(number__in=D_PHARM_NUMBERS)
-    elif college and college.selected_plan == 'single':
-        # Handle single experiment plan
+    is_dpharm = False
+    try:
+        if hasattr(batch, 'extra') and batch.extra.year == 'dpharm_2':
+            is_dpharm = True
+    except:
         pass
 
+    # 📂 Group experiments into Sections for cleaner rendering
+    sections = [
+        {"id": "A", "title": "Introduction & Basic Concepts", "exps": []},
+        {"id": "B", "title": "Ethics, Handling & Techniques", "exps": []},
+        {"id": "C", "title": "Autonomic & Peripheral Pharmacology", "exps": []},
+        {"id": "D", "title": "Central Nervous System (CNS)", "exps": []},
+        {"id": "E", "title": "Cardiovascular & Renal Pharmacology", "exps": []},
+        {"id": "F", "title": "Analgesic & Anti-Inflammatory", "exps": []},
+        {"id": "G", "title": "Endocrine & Metabolic Pharmacology", "exps": []},
+        {"id": "H", "title": "Gastrointestinal & Anti-Ulcer", "exps": []},
+        {"id": "I", "title": "Anaesthetics & Allergy Models", "exps": []},
+        {"id": "J", "title": "In-Vitro Bioassay Studies", "exps": []},
+        {"id": "K", "title": "Toxicology Studies", "exps": []},
+        {"id": "L", "title": "Biomechanics & Biostatistics", "exps": []},
+    ]
+
+    for exp in experiments:
+        num = exp.number
+        if 1 <= num <= 6: sections[0]["exps"].append(exp)
+        elif 7 <= num <= 9: sections[1]["exps"].append(exp)
+        elif 10 <= num <= 15: sections[2]["exps"].append(exp)
+        elif 16 <= num <= 22: sections[3]["exps"].append(exp)
+        elif 23 <= num <= 29: sections[4]["exps"].append(exp)
+        elif 30 <= num <= 33: sections[5]["exps"].append(exp)
+        elif num == 34: sections[6]["exps"].append(exp)
+        elif num == 35: sections[7]["exps"].append(exp)
+        elif 36 <= num <= 40: sections[8]["exps"].append(exp)
+        elif 41 <= num <= 50: sections[9]["exps"].append(exp)
+        elif 51 <= num <= 53: sections[10]["exps"].append(exp)
+        elif 54 <= num <= 56: sections[11]["exps"].append(exp)
+
+    assigned_ids = list(
+        BatchExperiment.objects.filter(batch=batch).values_list("experiment_id", flat=True)
+    )
+
     if request.method == "POST":
-        selected_experiments = request.POST.getlist("experiments")
-
-        # Remove old assignments
+        selected_ids = request.POST.getlist("experiments")
         BatchExperiment.objects.filter(batch=batch).delete()
-
-        for exp_id in selected_experiments:
-            BatchExperiment.objects.create(
-                batch=batch,
-                experiment_id=exp_id
-            )
-
-        return redirect("/teacher/manage-batches/")
-
-    assigned_ids = BatchExperiment.objects.filter(
-        batch=batch
-    ).values_list("experiment_id", flat=True)
+        for eid in selected_ids:
+            BatchExperiment.objects.create(batch=batch, experiment_id=eid)
+        return redirect(f"/teacher/batch/{batch_id}/assign/")
 
     return render(
         request,
         "teacher/assign_practical.html",
         {
             "batch": batch,
+            "sections": sections,
             "experiments": experiments,
-            "assigned_ids": assigned_ids
+            "assigned_ids": assigned_ids,
+            "is_dpharm": is_dpharm
         }
-    )   
+    )
 
 def teacher_exams(request):
     if request.session.get("role") != "teacher":
@@ -1453,9 +1489,42 @@ def teacher_exam_builder(request, exam_id):
 
     # 🔥 Filter experiments based on field (D.Pharm vs B.Pharm)
     experiments_list = Experiment.objects.filter(is_active=True).order_by("number")
-    if exam.year == 'dpharm_2':
-        experiments_list = experiments_list.filter(number__in=D_PHARM_NUMBERS)
     
+    # We pass the full list to template, and let the template handle 
+    # D.Pharm re-indexing/filtering just like in assign_practical
+    is_dpharm_exam = (exam.year == 'dpharm_2')
+
+    # 📂 Organize into sections for the searchable dropdown
+    builder_sections = [
+        {"id": "A", "title": "Introduction & Basic Concepts", "exps": []},
+        {"id": "B", "title": "Ethics, Handling & Techniques", "exps": []},
+        {"id": "C", "title": "Autonomic & Peripheral Pharmacology", "exps": []},
+        {"id": "D", "title": "Central Nervous System (CNS)", "exps": []},
+        {"id": "E", "title": "Cardiovascular & Renal Pharmacology", "exps": []},
+        {"id": "F", "title": "Analgesic & Anti-Inflammatory", "exps": []},
+        {"id": "G", "title": "Endocrine & Metabolic Pharmacology", "exps": []},
+        {"id": "H", "title": "Gastrointestinal & Anti-Ulcer", "exps": []},
+        {"id": "I", "title": "Anaesthetics & Allergy Models", "exps": []},
+        {"id": "J", "title": "In-Vitro Bioassay Studies", "exps": []},
+        {"id": "K", "title": "Toxicology Studies", "exps": []},
+        {"id": "L", "title": "Biomechanics & Biostatistics", "exps": []},
+    ]
+
+    for exp in experiments_list:
+        num = exp.number
+        if 1 <= num <= 6: builder_sections[0]["exps"].append(exp)
+        elif 7 <= num <= 9: builder_sections[1]["exps"].append(exp)
+        elif 10 <= num <= 15: builder_sections[2]["exps"].append(exp)
+        elif 16 <= num <= 22: builder_sections[3]["exps"].append(exp)
+        elif 23 <= num <= 29: builder_sections[4]["exps"].append(exp)
+        elif 30 <= num <= 33: builder_sections[5]["exps"].append(exp)
+        elif num == 34: builder_sections[6]["exps"].append(exp)
+        elif num == 35: builder_sections[7]["exps"].append(exp)
+        elif 36 <= num <= 40: builder_sections[8]["exps"].append(exp)
+        elif 41 <= num <= 50: builder_sections[9]["exps"].append(exp)
+        elif 51 <= num <= 53: builder_sections[10]["exps"].append(exp)
+        elif 54 <= num <= 56: builder_sections[11]["exps"].append(exp)
+
     # Get MCQ and Short Answer banks linked to filtered experiments
     # (Or all active questions if not linked)
     mcq_bank = MCQBank.objects.filter(is_active=True).order_by('experiment__name', 'question_text')
@@ -1476,7 +1545,8 @@ def teacher_exam_builder(request, exam_id):
             "experiments_list": experiments_list,
             "major_practical": major_practical,
             "minor_practical": minor_practical,
-            "experiment_tables": EXPERIMENT_TABLES,
+            "builder_sections": builder_sections,
+            "is_dpharm_exam": is_dpharm_exam,
         }
     )
     

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Conclusion – Rabbit Eye Experiment</title>
 
@@ -109,14 +110,14 @@
 <div class="page-container">
 
   <h1 class="title">Conclusion & Result</h1>
-  <p style="text-align:center;font-size:16px;">
+  <p style="text-align:justify;font-size:16px;">
     Rabbit Eye Experiment – Effect of Mydriatic & Miotic Drugs
   </p>
 
   <!-- GRAPH -->
   <div class="graph-box">
-    <h2 style="text-align:center;color:#d60000;">Result (Graph)</h2>
-    <p style="text-align:center;margin-bottom:16px;">
+    <h2 style="text-align:justify;color:#d60000;">Result (Graph)</h2>
+    <p style="text-align:justify;margin-bottom:16px;">
       Comparative Effect on Pupil Diameter
     </p>
     <canvas id="resultChart" height="120"></canvas>
@@ -156,6 +157,10 @@
       ⬅ Back
     </button>
 
+    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); margin-left: 10px;">
+      Download Practical PDF 📄
+    </button>
+
     <button class="exp-btn"
       onclick="location.href='{{ dashboard_url }}'">
       Finish Practical ▶
@@ -165,13 +170,43 @@
 </div>
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "uiTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
+function downloadPDF() {
+  const slug = "{{ experiment.slug }}";
+  let tableData = [];
+  const saved = localStorage.getItem('exp_data_' + slug);
+  if (saved) {
+      tableData = JSON.parse(saved);
+  }
+
+  fetch(`/experiment/${slug}/download-pdf/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": "{{ csrf_token }}"
+    },
+    body: JSON.stringify({
+      table_data: tableData
+    })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("PDF generation failed");
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Practical_Report_${slug}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  })
+  .catch(err => {
+    alert("Failed to generate PDF");
+    console.error(err);
+  });
 }
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -235,5 +270,7 @@ window.onload = () => {
 };
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

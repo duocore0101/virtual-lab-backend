@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Intramuscular Route | Routes of Drug Administration</title>
 
@@ -199,10 +200,7 @@
 
 <!-- 🔧 SCRIPTS -->
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("theme-light");
-  document.body.classList.toggle("theme-dark");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -223,5 +221,7 @@ function closeProcedure(e) {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

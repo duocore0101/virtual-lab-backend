@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>pA₂ Determination – Result & Conclusion</title>
 
@@ -60,7 +61,7 @@
       against noradrenaline was found to be:
     </p>
 
-    <p style="font-size:20px; text-align:center; font-weight:700;">
+    <p style="font-size:20px; text-align:justify; font-weight:700;">
       pA₂ = 6.10
     </p>
 
@@ -124,9 +125,7 @@
 
 <script>
 /* THEME */
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 /* FULLSCREEN */
 function toggleFullscreen() {
@@ -235,5 +234,7 @@ function finishPractical() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>
     Requirements – Anticonvulsant Activity by MES or PTZ Method
@@ -135,12 +136,7 @@
 </button>
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-
-  if (document.body.classList.contains("light-mode")) {
-    localStorage.setItem("uiTheme", "light");
-  } else {
+ else {
     localStorage.setItem("uiTheme", "dark");
   }
 }
@@ -152,5 +148,7 @@ window.onload = () => {
 };
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

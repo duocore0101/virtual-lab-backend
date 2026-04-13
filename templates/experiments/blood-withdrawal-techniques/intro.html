@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Blood Withdrawal Techniques – Aim</title>
 
@@ -36,6 +37,10 @@
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
   </style>
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -53,11 +58,11 @@
 
   <!-- AIM CONTENT -->
   <div class="info-box">
-    <p style="font-size:18px; text-align:center; font-weight:500;">
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
   To study common laboratory techniques:
-  <strong>Blood withdrawal</strong>;
-  <strong>Serum and plasma separation</strong>;
-  <strong>Anaesthetics and euthanasia for animal studies</strong>.
+  Blood withdrawal;
+  Serum and plasma separation;
+  Anaesthetics and euthanasia for animal studies.
 </p>
   </div>
 
@@ -77,9 +82,7 @@
 </div>
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -92,5 +95,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

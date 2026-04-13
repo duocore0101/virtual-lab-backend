@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Dog Blood Pressure Experiment – Theory</title>
 
@@ -96,7 +97,7 @@
         Arterial blood pressure is the lateral pressure exerted by blood on
         the walls of arteries. It is determined by the relationship:
       </p>
-      <p style="text-align:center; font-weight:600;">
+      <p style="text-align:justify; font-weight:600;">
         Blood Pressure =
         <br>
         Cardiac Output × Total Peripheral Resistance
@@ -201,9 +202,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 /* THEME */
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 /* FULLSCREEN */
 function toggleFullscreen() {
@@ -217,5 +216,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>
     Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
@@ -9,12 +10,16 @@
 
   <!-- MODEL VIEWER -->
   <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse Rotarod / Actophotometer Intro CSS -->
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -27,13 +32,18 @@
 
   <!-- 3D MODEL (PLACEHOLDER – CAN BE REPLACED LATER) -->
   <model-viewer
-    src="{% static 'experiments/anticonvulsant-mes-ptz/models/mes-ptz-apparatus.glb' %}"
+      loading="eager"
+      reveal="auto"
+    src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/anticonvulsant-mes-ptz/models/mes-ptz-apparatus.glb' %}{% endif %}"
     camera-controls
     auto-rotate
     shadow-intensity="1"
     exposure="1.1"
     style="width:100%; height:450px; border-radius:12px;">
-  </model-viewer>
+        <div class="progress-bar" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+    </model-viewer>
 
   <!-- INFO BOX -->
   <div class="info-box">
@@ -47,20 +57,20 @@
     </p>
 
     <p>
-      The <strong>Maximal Electroshock Seizure (MES)</strong> method and the
-      <strong>Pentylenetetrazol (PTZ)</strong> induced seizure method are
+      The Maximal Electroshock Seizure (MES) method and the
+      Pentylenetetrazol (PTZ) induced seizure method are
       standard screening models used in pharmacology to assess
       anticonvulsant activity.
     </p>
 
     <ul>
       <li>
-        <strong>MES method</strong> is used to identify drugs effective
+        MES method is used to identify drugs effective
         against generalized tonic–clonic (grand mal) seizures by observing
         abolition of hind limb tonic extension.
       </li>
       <li>
-        <strong>PTZ method</strong> is used to evaluate drugs effective
+        PTZ method is used to evaluate drugs effective
         against clonic, myoclonic, and absence (petit mal) seizures by
         measuring delay or prevention of convulsions.
       </li>
@@ -92,12 +102,7 @@
 </button>
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-
-  if (document.body.classList.contains("light-mode")) {
-    localStorage.setItem("uiTheme", "light");
-  } else {
+ else {
     localStorage.setItem("uiTheme", "dark");
   }
 }
@@ -109,5 +114,25 @@ window.onload = () => {
 };
 </script>
 
+
+<script>
+  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+  document.addEventListener('DOMContentLoaded', () => {
+    const mv = document.querySelector('model-viewer');
+    if (mv) {
+      const pBar = mv.querySelector('.progress-bar');
+      const uBar = mv.querySelector('.update-bar');
+      mv.addEventListener('progress', (e) => {
+        const prg = e.detail.totalProgress;
+        if (uBar) uBar.style.width = `${prg * 100}%`;
+        if (prg === 1) {
+          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+        }
+      });
+    }
+  });
+</script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

@@ -4,13 +4,14 @@
 
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Anti-ulcer Activity using Pylorus-ligated (SHAY) Rat Model and NSAIDS Induced Ulcer Model – Requirements</title>
 
   <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
 
   <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse existing intro CSS -->
@@ -121,9 +122,7 @@
 <!-- 🔧 SCRIPTS -->
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -138,5 +137,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

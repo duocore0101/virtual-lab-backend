@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
 <meta charset="UTF-8">
 <title>Biostatistical Methods | Virtual Lab</title>
 
@@ -117,6 +118,11 @@ onclick="location.href='/experiment/{{ experiment.slug }}/wilcoxon/'">
 Wilcoxon Signed-Rank Test (Non-parametric paired test) →
 </h2>
 
+<h2 class="section-heading"
+onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'" style="color: #10b981;">
+Result & Conclusion →
+</h2>
+
 
 <!-- ================= NAVIGATION ================= -->
 
@@ -125,11 +131,6 @@ Wilcoxon Signed-Rank Test (Non-parametric paired test) →
 <a href="/experiment/{{ experiment.slug }}/"
 class="exp-nav-btn back-btn">
 ← Back to Introduction
-</a>
-
-<a href="{{ dashboard_url }}"
-class="exp-nav-btn finish-btn">
-✔ Finish Practical
 </a>
 
 </div>
@@ -153,5 +154,7 @@ document.exitFullscreen();
 
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

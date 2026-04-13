@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Introduction to In-Vitro Pharmacology – Aim</title>
 
@@ -50,6 +51,10 @@
       left: 18px;
     }
   </style>
+  {% if cached_model_path %}
+  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
+  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
 </head>
 
 <body>
@@ -72,11 +77,11 @@
        AIM TEXT
   ========================== -->
   <div class="info-box">
-    <p style="font-size:18px; text-align:center; font-weight:500;">
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
       To study the principles of
-      <strong>in-vitro pharmacology</strong> and understand the
-      <strong>composition, preparation, and importance of physiological
-      salt solutions</strong> used in isolated tissue experiments.
+      in-vitro pharmacology and understand the
+      composition, preparation, and importance of physiological
+      salt solutions used in isolated tissue experiments.
     </p>
   </div>
 
@@ -105,9 +110,7 @@
 </button>
 
 <script>
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 </script>
 
 <script>
@@ -122,5 +125,7 @@ function toggleFullscreen() {
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

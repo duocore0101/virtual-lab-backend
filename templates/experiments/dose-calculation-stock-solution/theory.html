@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Dose Calculation – Theory</title>
 
@@ -166,7 +167,7 @@
 
   <!-- ===== OECD TABLE ===== -->
   <div style="overflow-x:auto; margin-top:20px;">
-    <table style="width:100%; border-collapse:collapse; text-align:center;">
+    <table style="width:100%; border-collapse:collapse; text-align:justify;">
       <thead>
         <tr style="background:#ff2e2e; color:white;">
           <th style="padding:8px; border:1px solid #444;">Standard Volume</th>
@@ -264,7 +265,7 @@
 
   <!-- ===== TABLE 2 ===== -->
   <div style="overflow-x:auto; margin-top:20px;">
-    <table style="width:100%; border-collapse:collapse; text-align:center;">
+    <table style="width:100%; border-collapse:collapse; text-align:justify;">
       <thead>
         <tr style="background:#ff2e2e; color:white;">
           <th style="padding:8px; border:1px solid #444;">Selected Dose</th>
@@ -355,7 +356,7 @@
   </p>
 
   <!-- ===== IMAGE PLACEHOLDER ===== -->
-  <div style="text-align:center; margin:20px 0;">
+  <div style="text-align:justify; margin:20px 0;">
     <img src="{% static 'experiments/dose-calculation-stock-solution/images/silymarin.png' %}"
          alt="Silymarin Tablet"
          style="max-width:300px; border-radius:8px;">
@@ -414,7 +415,7 @@
 
   <!-- ===== TABLE 3 ===== -->
   <div style="overflow-x:auto; margin-top:20px;">
-    <table style="width:100%; border-collapse:collapse; text-align:center;">
+    <table style="width:100%; border-collapse:collapse; text-align:justify;">
       <thead>
         <tr style="background:#ff2e2e; color:white;">
           <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
@@ -520,7 +521,7 @@
 
   <!-- ===== TABLE 4 ===== -->
   <div style="overflow-x:auto; margin-top:20px;">
-    <table style="width:100%; border-collapse:collapse; text-align:center;">
+    <table style="width:100%; border-collapse:collapse; text-align:justify;">
       <thead>
         <tr style="background:#ff2e2e; color:white;">
           <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
@@ -597,7 +598,7 @@
   </p>
 
   <!-- ===== IMAGE PLACEHOLDER ===== -->
-  <div style="text-align:center; margin:20px 0;">
+  <div style="text-align:justify; margin:20px 0;">
     <img src="{% static 'experiments/dose-calculation-stock-solution/images/gentamicin.png' %}"
          alt="Gentamicin Ampoule"
          style="max-width:300px; border-radius:8px;">
@@ -643,7 +644,7 @@
 
   <!-- ===== TABLE 5 ===== -->
   <div style="overflow-x:auto; margin-top:20px;">
-    <table style="width:100%; border-collapse:collapse; text-align:center;">
+    <table style="width:100%; border-collapse:collapse; text-align:justify;">
       <thead>
         <tr style="background:#ff2e2e; color:white;">
           <th style="padding:8px; border:1px solid #444;">Standard Dose</th>
@@ -756,7 +757,7 @@
   </p>
 
   <!-- ===== IMAGE PLACEHOLDER ===== -->
-  <div style="text-align:center; margin:20px 0;">
+  <div style="text-align:justify; margin:20px 0;">
     <img src="{% static 'experiments/dose-calculation-stock-solution/images/chemiron-tonic.png' %}"
          alt="Chemiron Blood Tonic"
          style="max-width:300px; border-radius:8px;">
@@ -905,5 +906,7 @@ function toggleFullscreen(){
 }
 </script>
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>

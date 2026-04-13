@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Bioassay Assembly – Experiment</title>
 
@@ -118,8 +119,8 @@
 
     <button class="exp-btn" id="finishBtn"
       onclick="finishPractical()"
-      style="display:none;">
-      Finish Practical ✔
+      style="display:none; background: linear-gradient(135deg, #10b981, #059669);">
+      ✔ Go to Result & Conclusion
     </button>
 
   </div>
@@ -154,12 +155,10 @@ function playNextVideo() {
 }
 
 function finishPractical() {
-  location.href = "{{ dashboard_url }}";
+  location.href = "/experiment/{{ experiment.slug }}/conclusion/";
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("light-mode");
-}
+
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -243,5 +242,7 @@ function downloadPDF() {
 
 
 
+
+<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
 </body>
 </html>
