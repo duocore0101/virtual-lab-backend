@@ -11,67 +11,36 @@
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
-
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      right: 25px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border-color: #3b82f6;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
-    }
-
-    .dropdown-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Fullscreen adjustment */
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
+      gap: 20px;
+      z-index: 9999;
     }
   </style>
   {% if cached_model_path %}
   <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
   <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
   {% endif %}
+
+  {% if cached_video_paths %}
+  <!-- 🚀 PRELOAD VIDEOS TO PREVENT BUFFERING DURING EXPERIMENT -->
+  {% for video_path in cached_video_paths %}
+  <link rel="preload" href="{% static video_path %}" as="video" type="video/mp4">
+  {% endfor %}
+  {% endif %}
 </head>
-
 <body>
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
-<div class="page-container">
-
-  <!-- =========================
-       TITLE (AIM ONLY)
-  ========================== -->
-  <h1 class="title">Aim</h1>
-
-  <!-- FULL SCREEN BUTTON -->
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="toggleFullscreen()">
-      ⛶ Full Screen
-    </button>
-  </div>
+  <div class="page-container">
+    <!-- TITLE -->
+    <h1 class="title">Aim</h1>
 
   <!-- =========================
        AIM TEXT
@@ -102,12 +71,6 @@
 
 </div>
 
-<!-- =========================
-     🌗 THEME TOGGLE BUTTON
-========================== -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
 
 <script>
 
@@ -126,6 +89,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

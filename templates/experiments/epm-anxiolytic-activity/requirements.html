@@ -6,91 +6,164 @@
   <meta charset="UTF-8">
   <title>Elevated Plus Maze – Requirements</title>
 
+  <!-- MODEL VIEWER -->
+  <script type="module"
+    src="{% static 'js/model-viewer.min.js' %}">
+  </script>
+
   <!-- Reuse SAME CSS -->
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 3D MODEL THEME FIX */
+    model-viewer {
+      width: 100%;
+      height: 400px;
+      background-color: #1a1a1a;
+      border-radius: 12px;
+      --poster-color: transparent;
+      outline: none;
+    }
+
+    body.light-mode model-viewer {
+      background-color: #f3f4f6;
+    }
+  </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate the anxiolytic activity of drugs using the Elevated Plus Maze (EPM) method in mice or rats.</span>
+  </div>
+
+  
+
+  
+
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
 
 <div class="page-container">
 
   <!-- TITLE -->
-  <h1 class="title">
-    Requirements – Elevated Plus Maze (EPM) Experiment
-  </h1>
+  <h1 class="title">Requirements / Materials</h1>
 
   <!-- REQUIREMENTS LIST -->
   <div class="info-box">
     <h2>Materials Required</h2>
     <ul>
       <li>
-        Healthy mice or rats (either sex, 20–30 g for mice / 150–250 g for rats)
+        <strong>Animals:</strong> Healthy mice or rats (20–30 g or 150–250 g)
       </li>
       <li>
-        Elevated Plus Maze apparatus consisting of:
-        <ul>
-          <li>Two open arms</li>
-          <li>Two closed arms with side walls</li>
-          <li>Central platform</li>
-        </ul>
+        <strong>Apparatus:</strong> Elevated Plus Maze (Open/Closed arms)
       </li>
       <li>
-        Standard anxiolytic drug (e.g. Diazepam)
+        <strong>Standard Drug:</strong> Diazepam (2 mg/kg)
       </li>
       <li>
-        Test drug solution
+        <strong>Control:</strong> Normal saline or vehicle
       </li>
       <li>
-        Normal saline or suitable vehicle (control)
-      </li>
-      <li>
-        Stopwatch or digital timer
-      </li>
-      <li>
-        Observation sheet or data recording table
-      </li>
-      <li>
-        Quiet, well-lit experimental room
+        <strong>Misc:</strong> Digital timer, observation sheet
       </li>
     </ul>
   </div>
 
+  <!-- 3D MODEL SECTION -->
+  <div class="info-box" style="padding: 10px; margin-bottom: 30px;">
+    <h2 style="margin-left: 15px;">Apparatus: Elevated Plus Maze</h2>
+    <model-viewer
+      loading="eager"
+      reveal="auto"
+      src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/epm-anxiolytic-activity/models/elevated-plus-maze.glb' %}{% endif %}"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1"
+      exposure="1.1">
+      <div class="progress-bar" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+    </model-viewer>
+    <p style="text-align: center; font-size: 14px; color: #aaa; margin-top: 10px;">
+      3D Interactive Model: Use mouse to rotate and zoom
+    </p>
+  </div>
+
   <!-- NAVIGATION -->
   <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Previous
+    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
     </button>
 
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
-      Next: Experiment ▶
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
     </button>
   </div>
 
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
+<!-- 🔧 SCRIPTS -->
 <script>
- else {
-    localStorage.setItem("uiTheme", "dark");
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
   }
 }
 
-/* Load saved theme */
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
+document.addEventListener('DOMContentLoaded', () => {
+  const mv = document.querySelector('model-viewer');
+  if (mv) {
+    const pBar = mv.querySelector('.progress-bar');
+    const uBar = mv.querySelector('.update-bar');
+    mv.addEventListener('progress', (e) => {
+      const prg = e.detail.totalProgress;
+      if (uBar) uBar.style.width = `${prg * 100}%`;
+      if (prg === 1) {
+        setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+      }
+    });
   }
-};
+});
 </script>
 
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

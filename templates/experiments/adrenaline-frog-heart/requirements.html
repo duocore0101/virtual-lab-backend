@@ -1,19 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Effect of Adrenaline on Frog’s Heart – Requirements</title>
 
   <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
+  <script type="module" src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse existing intro CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -46,99 +45,105 @@
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Requirements / Materials</h1>
-
-  <!-- ⚙ APPARATUS -->
-  <div class="info-box">
-    <h2>Apparatus</h2>
-    <ul>
-      <li>Frog board, dissection tools, pithing needle</li>
-      <li>
-        Perfusion apparatus: Syme’s cannula, rubber tubing,
-        Mariotte’s bottle, stand
-      </li>
-      <li>Kymograph (or digital recorder) with lever and thread</li>
-      <li>Syringe for drug injection</li>
-      <li>Aerator (optional)</li>
-    </ul>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> TO Study the Effect of Adrenaline (Epinephrine) on Isolated Frog Heart Experiment</span>
   </div>
 
-  <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
-  <div class="info-box">
-    <h2>Physiological Solution</h2>
-    <ul>
-      <li>
-        <strong>Frog Ringer’s solution</strong>
-        (same composition as before)
-      </li>
-    </ul>
+
+
+
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
+
   </div>
 
-  <!-- 💊 DRUGS -->
-  <div class="info-box">
-    <h2>Drugs</h2>
-    <ul>
-      <li>
-        <strong>Adrenaline (Epinephrine) bitartrate</strong> –
-        Typically 1:10,000 or 1:100,000 solution;
-        doses <strong>0.05–0.5 ml</strong>
-      </li>
-      <li>
-        <strong>Propranolol</strong> (optional, as antagonist)
-      </li>
-    </ul>
+  <div class="page-container">
+
+    <h1 class="title">Requirements / Materials</h1>
+
+    <!-- 🐸 ANIMAL -->
+    <div class="info-box">
+      <h2>Experimental Animal</h2>
+      <ul>
+        <li><strong>Healthy frog</strong></li>
+      </ul>
+    </div>
+
+    <!-- 💊 DRUGS -->
+    <div class="info-box">
+      <h2>Drugs</h2>
+      <ul>
+        <li>
+          <strong>Adrenaline (Epinephrine) bitartrate</strong> –
+          Typically 1:10,000 or 1:100,000 solution;
+          doses <strong>0.05–0.5 ml</strong>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
+    <div class="info-box">
+      <h2>Physiological Solution</h2>
+      <ul>
+        <li>
+          <strong>Frog Ringer’s solution</strong>
+
+        </li>
+      </ul>
+    </div>
+
+    <!-- ⚙ APPARATUS -->
+    <div class="info-box">
+      <h2>Apparatus</h2>
+      <ul>
+        <li>Frog board, dissection tools, pithing needle</li>
+        <li>
+          Perfusion apparatus: Syme’s cannula, rubber tubing,
+          Mariotte’s bottle, stand
+        </li>
+        <li>Kymograph (or digital recorder) with lever and thread</li>
+        <li>Syringe for drug injection</li>
+        <li>Aerator </li>
+      </ul>
+    </div>
+
+    <!-- 🔘 NAVIGATION BUTTONS -->
+    <div class="button-row">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- 🐸 ANIMAL -->
-  <div class="info-box">
-    <h2>Experimental Animal</h2>
-    <ul>
-      <li><strong>Healthy frog</strong></li>
-    </ul>
-  </div>
+  <!-- 🔧 SCRIPTS -->
+  <script>
 
-  <!-- 🔘 NAVIGATION BUTTONS -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
-      ⬅ Back
-    </button>
+  </script>
 
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- 🔧 SCRIPTS -->
-<script>
-
-</script>
-
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

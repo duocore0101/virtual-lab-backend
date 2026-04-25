@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study the Bioassay Assembly Setup</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -98,10 +107,6 @@
         of a substance by measuring its biological response in a living 
         system and comparing it with a standard preparation.
       </p>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Basic Principle</h2>
       <ul>
         <li>The biological response is proportional to the dose of the drug within a certain range.</li>
@@ -110,17 +115,13 @@
       </ul>
     </div>
 
-    <!-- Slide 3 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
       <h2>Relative Potency</h2>
       <p>
         The relative potency of the test sample is calculated by comparing 
         its response with that of the standard under controlled conditions.
       </p>
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="info-box slide">
       <h2>Types of Bioassay</h2>
       <ul>
         <li><strong>Graded type:</strong> Response increases gradually 
@@ -130,7 +131,7 @@
       </ul>
     </div>
 
-    <!-- Slide 5 -->
+    <!-- Slide 3 -->
     <div class="info-box slide">
       <h2>Common Graded Bioassay Methods</h2>
       <ul>
@@ -139,10 +140,6 @@
         <li>Interpolation method</li>
         <li>3-point and 4-point bioassays</li>
       </ul>
-    </div>
-
-    <!-- Slide 6 -->
-    <div class="info-box slide">
       <h2>Importance of Bioassay</h2>
       <p>
         Bioassay is essential when chemical methods cannot accurately 
@@ -154,7 +151,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 6
+    Slide <span id="currentSlide">1</span> / 3
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -218,6 +215,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

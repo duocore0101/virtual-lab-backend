@@ -1,16 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Ciliary Motility – Virtual Experiment</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
 
   <style>
-    .exp-container { padding: 30px; }
+    .exp-container {
+      padding: 30px;
+    }
 
     /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
@@ -30,7 +32,7 @@
       font-weight: 600;
       background: #ff2e2e;
       color: #fff;
-      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
       transition: 0.25s;
     }
 
@@ -45,14 +47,17 @@
       align-items: start;
     }
 
-   .video-box video {
-  width: 100%;
-  height: 340px;          /* control size */
-  object-fit: contain;   /* ✅ shows FULL video */
-  background: #000;      /* fills empty space nicely */
-  border-radius: 16px;
-  box-shadow: 0 0 28px rgba(0,0,0,0.6);
-}
+    .video-box video {
+      width: 100%;
+      height: 340px;
+      /* control size */
+      object-fit: contain;
+      /* ✅ shows FULL video */
+      background: #000;
+      /* fills empty space nicely */
+      border-radius: 16px;
+      box-shadow: 0 0 28px rgba(0, 0, 0, 0.6);
+    }
 
 
 
@@ -60,8 +65,8 @@
       background: #1e1e1e;
       border-radius: 18px;
       padding: 22px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04),
-                  0 0 22px rgba(0,0,0,0.6);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(0, 0, 0, 0.6);
     }
 
     .observation-box h2 {
@@ -86,7 +91,7 @@
 
     td {
       padding: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .right-controls {
@@ -104,7 +109,7 @@
       font-weight: 600;
       background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
       color: #fff;
-      box-shadow: 0 0 16px rgba(255,0,0,0.6);
+      box-shadow: 0 0 16px rgba(255, 0, 0, 0.6);
     }
 
     select {
@@ -136,166 +141,178 @@
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT -->
-<div class="top-actions">
-  <button onclick="openProcedure()">Procedure</button>
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
-
-<!-- 🔬 PROCEDURE MODAL -->
-<div id="procedureModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeProcedure()">✖</span>
-    <h2>Procedure (In Situ Preparation)</h2>
-    <ol class="instruction-list">
-      <li>Double-pith or decapitate the frog (humane euthanasia).</li>
-      <li>Pin frog supine on frog board.</li>
-      <li>Expose buccal cavity and oesophagus; keep moist with Ringer’s solution.</li>
-      <li>Mark a fixed distance on the oesophagus.</li>
-      <li>
-        Control: Apply saline, place poppy seeds, record transit time (3 readings).
-      </li>
-      <li>Wash with saline.</li>
-      <li>
-        Apply drugs sequentially:
-        <ul>
-          <li>Acetylcholine</li>
-          <li>Physostigmine</li>
-          <li>Atropine</li>
-        </ul>
-      </li>
-      <li>Record time after each drug application.</li>
-    </ol>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of drugs on ciliary motility in the frog oesophagus.</span>
   </div>
-</div>
 
-<div class="exp-container">
-  <h1>Ciliary Motility – Virtual Experiment</h1>
+  
 
-  <div class="main-layout">
+  
 
-    <!-- 🎥 VIDEO -->
-<div class="video-box">
-  <video id="expVideo" preload="metadata">
-    <source src="{% static 'experiments/ciliary-motility-frog/videos/video_a.mp4' %}" type="video/mp4">
-    <source src="{% static 'experiments/ciliary-motility-frog/videos/video_b.mp4' %}" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
 
-    <!-- 📊 OBSERVATION -->
-    <div class="observation-box">
-      <h2>Observation Table</h2>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Drug</th>
-            <th>Reading 1</th>
-            <th>Reading 2</th>
-            <th>Reading 3</th>
-            <th>Mean (s)</th>
-          </tr>
-        </thead>
-        <tbody id="obsBody">
-          <tr><td colspan="5">—</td></tr>
-        </tbody>
-      </table>
-
-      <div class="right-controls">
-        <button onclick="startExperiment()">▶ Start Experiment</button>
-        <button onclick="toggleDrug()">💉 Apply Drug</button>
-
-        <select id="drugSelect" style="display:none;" onchange="selectDrug()">
-          <option value="">Select Drug</option>
-          <option value="control">Control (Saline)</option>
-          <option value="ach">Acetylcholine</option>
-          <option value="phy">Physostigmine</option>
-          <option value="atr">Atropine</option>
-        </select>
-      </div>
+    <!-- 🔝 TOP RIGHT BUTTONS -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
     </div>
 
+  <!-- 🔬 PROCEDURE MODAL -->
+  <div id="procedureModal" class="modal">
+    <div class="modal-content" style="max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; padding-top: 50px;">
+      <span class="close-btn" onclick="closeProcedure()" style="position: absolute; top: 20px; right: 25px; font-size: 28px; background: rgba(255,0,0,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(255,0,0,0.3);">✖</span>
+      <h2 style="color: #ff2e2e; margin-bottom: 20px;">Procedure</h2>
+      <div style="text-align: justify; line-height: 1.6; font-size: 15px;">
+        <p><strong>1.</strong> Double-pith or decapitate the frog to destroy the brain and spinal cord (humane euthanasia).</p>
+        <p><strong>2.</strong> Pin the frog supine (on its back) on a frog board.</p>
+        <p><strong>3.</strong> Open the mouth, pin down the lower jaw, and expose the buccal cavity and oesophagus by cutting along the midline if needed. Keep the mucosa moist with frog Ringer's solution.</p>
+        <p><strong>4.</strong> Mark a fixed distance on the oesophagus (e.g., from upper to lower end visible).</p>
+        <p><strong>5. Control:</strong> Apply a few drops of Ringer's/normal saline. Place 5–10 poppy seeds at the upper end. Start stopwatch when seeds begin moving; note time for them to reach the stomach/lower end. Repeat 3 times and calculate mean transit time.</p>
+        <p><strong>6.</strong> Wash thoroughly with saline.</p>
+        <p><strong>7. Apply drug solutions (a few drops) and wait 5–10 minutes for effect:</strong>
+          <ul style="margin-left: 20px;">
+            <li>First: Acetylcholine → repeat transit time measurement.</li>
+            <li>Wash, then physostigmine → wait, measure.</li>
+            <li>Wash, then atropine → wait, measure.</li>
+          </ul>
+        </p>
+        <p><strong>8.</strong> For confirmation, repeat after 30 minutes if needed.</p>
+        <p><em>(Note: Order may vary; sometimes physostigmine first to show potentiation, atropine last as effect persists.)</em></p>
+      </div>
+
+      <div style="margin-top: 30px; text-align: center;">
+        <button class="lab-btn red" onclick="closeProcedure()" style="padding: 10px 30px; border-radius: 20px;">Close Procedure</button>
+      </div>
+    </div>
   </div>
 
-  <div class="nav-buttons">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">⬅ Back</button>
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">Next ▶</button>
+  <div class="exp-container">
+    <h1>Ciliary Motility – Virtual Experiment</h1>
+
+    <div class="main-layout">
+
+      <!-- 🎥 VIDEO -->
+      <div class="video-box">
+        <video id="expVideo" preload="auto">
+          <source src="{% static 'experiments/ciliary-motility-frog/videos/video_a.mp4' %}" type="video/mp4">
+          <source src="{% static 'experiments/ciliary-motility-frog/videos/video_b.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- 📊 OBSERVATION -->
+      <div class="observation-box">
+        <h2>Observation Table (Time in Seconds)</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Reading 1</th>
+              <th>Reading 2</th>
+              <th>Reading 3</th>
+              <th>Mean (s)</th>
+            </tr>
+          </thead>
+          <tbody id="obsBody">
+            <tr>
+              <td colspan="5">—</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="right-controls">
+          <button onclick="startExperiment()">▶ Start Experiment</button>
+          <button onclick="toggleDrug()">💉 Apply Drug</button>
+
+          <select id="drugSelect" style="display:none;" onchange="selectDrug()">
+            <option value="">Select Drug</option>
+            <option value="control">Control (Saline)</option>
+            <option value="ach">Acetylcholine</option>
+            <option value="phy">Physostigmine</option>
+            <option value="atr">Atropine</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nav-buttons">
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">⬅ Back</button>
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">Next ▶</button>
+    </div>
   </div>
-</div>
 
-<script>
-const video = document.getElementById("expVideo");
-const obsBody = document.getElementById("obsBody");
-const drugSelect = document.getElementById("drugSelect");
+  <script>
+    const video = document.getElementById("expVideo");
+    const obsBody = document.getElementById("obsBody");
+    const drugSelect = document.getElementById("drugSelect");
 
-const videoMap = {
-  control: "video_a.mp4",
-  ach: "video_b.mp4",
-  phy: "video_b.mp4",
-  atr: "video_a.mp4"
-};
+    const videoMap = {
+      control: "video_a.mp4",
+      ach: "video_b.mp4",
+      phy: "video_b.mp4",
+      atr: "video_a.mp4"
+    };
 
-const data = {
-  control: [33, 29, 34, 32],
-  ach: [17, 18, 22, 19],
-  phy: [14, 14, 14, 14],
-  atr: [51, 46, 43, 46]
-};
+    const data = {
+      control: [33, 29, 34, 32],
+      ach: [17, 18, 22, 19],
+      phy: [14, 14, 14, 14],
+      atr: [51, 46, 43, 46]
+    };
 
-let selectedDrug = null;
-let done = new Set();
+    let selectedDrug = null;
+    let done = new Set();
 
-function startExperiment() {
-  if (!selectedDrug) {
-    alert("Select a drug first");
-    return;
-  }
+    function startExperiment() {
+      if (!selectedDrug) {
+        alert("Select a drug first");
+        return;
+      }
 
-  video.src = `{% static 'experiments/ciliary-motility-frog/videos/' %}` + videoMap[selectedDrug];
-  video.play();
+      video.src = `{% static 'experiments/ciliary-motility-frog/videos/' %}` + videoMap[selectedDrug];
+      video.play();
 
-  video.onended = () => {
-    if (done.has(selectedDrug)) return;
+      video.onended = () => {
+        if (done.has(selectedDrug)) return;
 
-    const row = document.createElement("tr");
-    const d = data[selectedDrug];
-    row.innerHTML = `
+        const row = document.createElement("tr");
+        const d = data[selectedDrug];
+        row.innerHTML = `
       <td>${drugSelect.options[drugSelect.selectedIndex].text}</td>
       <td>${d[0]}</td>
       <td>${d[1]}</td>
       <td>${d[2]}</td>
       <td>${d[3]}</td>
     `;
-    obsBody.appendChild(row);
-    done.add(selectedDrug);
-  };
-}
+        obsBody.appendChild(row);
+        done.add(selectedDrug);
+      };
+    }
 
-function toggleDrug() {
-  drugSelect.style.display = "block";
-}
-function selectDrug() {
-  selectedDrug = drugSelect.value;
-}
+    function toggleDrug() {
+      drugSelect.style.display = "block";
+    }
+    function selectDrug() {
+      selectedDrug = drugSelect.value;
+    }
 
-function openProcedure() {
-  document.getElementById("procedureModal").style.display = "flex";
-}
-function closeProcedure() {
-  document.getElementById("procedureModal").style.display = "none";
-}
-
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
-}
-</script>
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  </script>
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

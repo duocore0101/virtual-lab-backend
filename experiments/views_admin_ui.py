@@ -79,6 +79,7 @@ def admin_dashboard(request):
             "total_teachers": teachers.count(),
             "total_students": students.count(),
             "total_attempts": attempts.count(),
+            "total_experiments": experiments.values('number').distinct().count(),
             "avg_attempts": avg_attempts,
 
             # 🔥 NEW CARD

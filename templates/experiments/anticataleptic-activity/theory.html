@@ -4,114 +4,221 @@
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
-  <title>Anti-Catatonic Activity – Theory</title>
+  <title>Anti-Catatonic Activity – Theory | Virtual Lab</title>
 
-  <!-- SAME THEME AS ROTAROD / ACTOPHOTOMETER -->
+  <!-- ✅ CSS (SAME PATTERN AS ROTAROD) -->
   <link rel="stylesheet"
-        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 280px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate anti-catatonic (anti-cataleptic) activity of drugs (e.g., scopolamine) against haloperidol-induced catalepsy in rats/mice.</span>
+  </div>
+
+  
+
+  
+
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
 
 <div class="page-container">
 
+  <!-- ============================= -->
+  <!-- 🧪 TITLE -->
+  <!-- ============================= -->
   <h1 class="title">
-    Theory – Anti-Catatonic (Anti-Cataleptic) Activity
+    Theory/Principle
   </h1>
 
-  <!-- PRINCIPLE -->
-  <div class="info-box">
-    <h2>Principle</h2>
-    <p>
-      Catalepsy is a behavioral condition characterized by
-      <strong>immobility, muscle rigidity, and maintenance of imposed posture</strong>.
-      In experimental pharmacology, catalepsy is commonly produced by
-      <strong>typical antipsychotic drugs</strong>.
-    </p>
-    <p>
-      Drugs such as <strong>haloperidol</strong> block
-      <strong>dopamine D<sub>2</sub> receptors</strong> in the
-      <strong>nigrostriatal pathway</strong>, resulting in
-      <strong>extrapyramidal side effects (EPS)</strong>.
-      This experimentally induced catalepsy closely resembles
-      Parkinsonism and catatonia observed in humans.
-    </p>
+  <!-- ============================= -->
+  <!-- 📘 SLIDES CONTENT -->
+  <!-- ============================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1: PRINCIPLE, BASIS & SIGNIFICANCE -->
+    <div class="info-box slide active">
+      <h2>Principle of Catalepsy</h2>
+      <p>
+        Catalepsy is a behavioral condition characterized by
+        <strong>immobility, muscle rigidity, and maintenance of imposed posture</strong>.
+        In experimental pharmacology, catalepsy is commonly produced by
+        <strong>typical antipsychotic drugs</strong>.
+      </p>
+      <p>
+        Drugs such as <strong>haloperidol</strong> block
+        <strong>dopamine D<sub>2</sub> receptors</strong> in the
+        <strong>nigrostriatal pathway</strong>, resulting in
+        <strong>extrapyramidal side effects (EPS)</strong>.
+      </p>
+      <h2>Pharmacological Basis</h2>
+      <ul>
+        <li>
+          <strong>Typical Antipsychotics:</strong>
+          Drugs like haloperidol and perphenazine induce catalepsy by
+          blocking dopamine receptors in the nigrostriatal pathway.
+        </li>
+        <li>
+          <strong>Anti-Catatonic Drugs:</strong>
+          Anticholinergic drugs (e.g., scopolamine, trihexyphenidyl)
+          and dopaminergic agents reduce catalepsy by restoring the
+          balance between dopamine and acetylcholine in the brain.
+        </li>
+        <li>
+          <strong>Atypical Antipsychotics:</strong>
+          These drugs produce minimal or no catalepsy, indicating
+          a lower liability for extrapyramidal side effects.
+        </li>
+      </ul>
+      <h2>Significance</h2>
+      <p>
+        The anti-catatonic activity model is widely used to evaluate
+        the <strong>extrapyramidal side-effect liability</strong> of
+        antipsychotic drugs and to screen
+        <strong>anti-parkinsonian agents</strong>.
+      </p>
+      <p>
+        A significant reduction in cataleptic score or duration by a
+        test drug indicates potential
+        <strong>anti-catatonic or anti-parkinsonian activity</strong>.
+      </p>
+    </div>
+
   </div>
 
-  <!-- PHARMACOLOGICAL BASIS -->
-  <div class="info-box">
-    <h2>Pharmacological Basis</h2>
-    <ul>
-      <li>
-        <strong>Typical Antipsychotics:</strong>
-        Drugs like haloperidol and perphenazine induce catalepsy by
-        blocking dopamine receptors in the nigrostriatal pathway.
-      </li>
-      <li>
-        <strong>Anti-Catatonic Drugs:</strong>
-        Anticholinergic drugs (e.g., scopolamine, trihexyphenidyl)
-        and dopaminergic agents reduce catalepsy by restoring the
-        balance between dopamine and acetylcholine in the brain.
-      </li>
-      <li>
-        <strong>Atypical Antipsychotics:</strong>
-        These drugs produce minimal or no catalepsy, indicating
-        a lower liability for extrapyramidal side effects.
-      </li>
-    </ul>
+  <!-- SLIDE COUNTER -->
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 1
   </div>
 
-  <!-- SIGNIFICANCE -->
-  <div class="info-box">
-    <h2>Significance</h2>
-    <p>
-      The anti-catatonic activity model is widely used to evaluate
-      the <strong>extrapyramidal side-effect liability</strong> of
-      antipsychotic drugs and to screen
-      <strong>anti-parkinsonian agents</strong>.
-    </p>
-    <p>
-      A significant reduction in cataleptic score or duration by a
-      test drug indicates potential
-      <strong>anti-catatonic or anti-parkinsonian activity</strong>
-      and suggests a safer pharmacological profile.
-    </p>
-  </div>
-
-  <!-- NAVIGATION BUTTONS -->
+  <!-- ============================= -->
+  <!-- 🔘 ACTION BUTTONS -->
+  <!-- ============================= -->
   <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/'">
-      ⬅ Previous
-    </button>
-
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
-      Next: Requirements ▶
-    </button>
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
   </div>
 
 </div>
 
-<!-- THEME TOGGLE (CONSISTENT ACROSS ALL PAGES) -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
+<!-- ================= SCRIPTS ================= -->
 <script>
- else {
-    localStorage.setItem("uiTheme", "dark");
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/experiment/";
   }
 }
 
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
   }
-};
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
 </script>
 
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

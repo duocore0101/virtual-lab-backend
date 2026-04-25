@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Experimental Instruments – Theory</title>
 
   <!-- 🔥 USE ROTAROD INTRO CSS FOR SLIDE FLOW (SAME AS PRACTICAL 3) -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=20003">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -31,6 +31,7 @@
         opacity: 0;
         transform: translateX(40px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0);
@@ -44,17 +45,18 @@
       font-size: 14px;
     }
 
-    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
       position: fixed;
       top: 20px;
       right: 25px;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 20px;
       z-index: 9999;
     }
 
-    .top-actions button {
+    .fullscreen-btn {
       padding: 10px 18px;
       border-radius: 22px;
       border: none;
@@ -64,163 +66,362 @@
       color: #fff;
       box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
       transition: transform 0.25s, box-shadow 0.25s;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .top-actions button:hover {
+    .fullscreen-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+
+    /* 🌗 MODERN THEME TOGGLE */
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-switch {
+      display: inline-block;
+      height: 38px;
+      position: relative;
+      width: 76px;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .slider-pill {
+      background-color: #222;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .slider-pill .ball {
+      background-color: #007bff;
+      bottom: 4px;
+      content: "";
+      height: 30px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 30px;
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider-pill .ball svg {
+        width: 18px;
+        height: 18px;
+        color: white;
+    }
+
+    input:checked + .slider-pill {
+      background-color: #e0e0e0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    input:checked + .slider-pill .ball {
+      transform: translateX(38px);
+    }
+
+    .slider-pill .icon-static {
+      z-index: 1;
+      width: 18px;
+      height: 18px;
+      transition: .3s;
+      color: #666;
+    }
+
+    input:checked + .slider-pill .sun-static {
+      color: #999;
+    }
+    
+    input:not(:checked) + .slider-pill .moon-static {
+      color: #999;
+    }
+    
+    /* Show icons inside the ball */
+    .ball .sun-icon, .ball .moon-icon {
+        display: none;
+    }
+    
+    input:not(:checked) + .slider-pill .ball .sun-icon {
+        display: block;
+    }
+    
+    input:checked + .slider-pill .ball .moon-icon {
+        display: block;
+    }
+
+    /* 🎯 TOP LEFT AIM HEADER */
+    .top-left-aim {
+      position: fixed;
+      top: 22px;
+      left: 25px;
+      z-index: 9998;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 8px 18px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+      max-width: calc(100% - 320px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .top-left-aim {
+      color: #111;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(200, 0, 0, 0.2);
+    }
+
+    .top-left-aim:hover {
+      max-width: calc(100% - 320px);
+      white-space: normal;
+      overflow: visible;
+    }
+
+    .top-left-aim b {
+      color: #ff2e2e;
+      margin-right: 6px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1024px) {
+      .top-left-aim {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the commonly used instruments in experimental pharmacology.</span>
+  </div>
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
 
-<div class="page-container">
 
-  <!-- MAIN TITLE -->
-  <h1 class="title">Theory</h1>
 
-  <!-- ================= SLIDES ================= -->
-  <div class="slide-container">
 
-    <!-- SLIDE 1 -->
-    <div class="info-box slide active">
-      <h2>Role of Experimental Instruments</h2>
-      <p>
-        Experimental pharmacology relies on a wide range of
-        <strong>laboratory instruments</strong> to study the effects of drugs
-        on biological systems under controlled conditions.
-        These instruments help generate objective, reproducible data
-        before clinical trials.
-      </p>
+
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <!-- Theme Toggle -->
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="themeCheckbox">
+        <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
+        <div class="slider-pill">
+          <svg class="icon-static sun-static" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="icon-static moon-static" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <div class="ball">
+              <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </div>
+        </div>
+      </label>
     </div>
 
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
-      <h2>In Vitro and In Vivo Applications</h2>
-      <p>
-        Instruments are used for both
-        <strong>in vitro</strong> studies (e.g., organ bath experiments on
-        isolated tissues) and
-        <strong>in vivo</strong> studies (e.g., behavioral tests in animals).
-        Each setup provides specific insights into drug action.
-      </p>
+    <!-- Fullscreen Toggle -->
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="fullscreenCheckbox">
+        <input type="checkbox" id="fullscreenCheckbox" onchange="toggleFullscreen()">
+        <div class="slider-pill">
+          <svg class="icon-static sun-static" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+          <svg class="icon-static moon-static" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+          <div class="ball">
+              <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="page-container">
+
+    <!-- MAIN TITLE -->
+    <h1 class="title">Theory/Principle</h1>
+
+    <!-- ================= SLIDES ================= -->
+    <div class="slide-container">
+
+      <!-- SLIDE 1 -->
+      <div class="info-box slide active">
+        <h2>Role of Experimental Instruments</h2>
+        <p>
+          Experimental pharmacology relies on a wide range of
+          <strong>laboratory instruments</strong> to study the effects of drugs
+          on biological systems under controlled conditions.
+          These instruments help generate objective, reproducible data
+          before clinical trials.
+        </p>
+        <h2>In Vitro and In Vivo Applications</h2>
+        <p>
+          Instruments are used for both
+          <strong>in vitro</strong> studies (e.g., organ bath experiments on
+          isolated tissues) and
+          <strong>in vivo</strong> studies (e.g., behavioral tests in animals).
+          Each setup provides specific insights into drug action.
+        </p>
+        <h2>Assessment of Drug Actions</h2>
+        <p>
+          Experimental instruments allow evaluation of various
+          pharmacological actions such as
+          <strong>analgesic activity</strong>,
+          <strong>anti-inflammatory effects</strong>,
+          <strong>motor coordination</strong>,
+          <strong>anxiety behavior</strong>, and
+          <strong>cardiovascular responses</strong>.
+        </p>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="info-box slide">
+        <h2>Standardization and Accuracy</h2>
+        <p>
+          Modern instruments are designed to provide
+          <strong>standardized experimental conditions</strong>,
+          precise measurements, and minimal human error.
+          Digital sensors and software-based recording have improved
+          accuracy and reproducibility.
+        </p>
+        <h2>Educational and Research Importance</h2>
+        <p>
+          In teaching laboratories, these instruments help students
+          understand pharmacological principles.
+          In research, they are essential for
+          <strong>drug screening</strong>,
+          <strong>mechanism studies</strong>, and
+          <strong>preclinical evaluation</strong>.
+        </p>
+      </div>
+
     </div>
 
-    <!-- SLIDE 3 -->
-    <div class="info-box slide">
-      <h2>Assessment of Drug Actions</h2>
-      <p>
-        Experimental instruments allow evaluation of various
-        pharmacological actions such as
-        <strong>analgesic activity</strong>,
-        <strong>anti-inflammatory effects</strong>,
-        <strong>motor coordination</strong>,
-        <strong>anxiety behavior</strong>, and
-        <strong>cardiovascular responses</strong>.
-      </p>
+    <!-- SLIDE COUNTER -->
+    <div class="slide-counter">
+      Slide <span id="currentSlide">1</span> / 2
     </div>
 
-    <!-- SLIDE 4 -->
-    <div class="info-box slide">
-      <h2>Standardization and Accuracy</h2>
-      <p>
-        Modern instruments are designed to provide
-        <strong>standardized experimental conditions</strong>,
-        precise measurements, and minimal human error.
-        Digital sensors and software-based recording have improved
-        accuracy and reproducibility.
-      </p>
-    </div>
-
-    <!-- SLIDE 5 -->
-    <div class="info-box slide">
-      <h2>Educational and Research Importance</h2>
-      <p>
-        In teaching laboratories, these instruments help students
-        understand pharmacological principles.
-        In research, they are essential for
-        <strong>drug screening</strong>,
-        <strong>mechanism studies</strong>, and
-        <strong>preclinical evaluation</strong>.
-      </p>
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
     </div>
 
   </div>
 
-  <!-- SLIDE COUNTER -->
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
-  </div>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove("active"));
+      slides[i].classList.add("active");
+      document.getElementById("currentSlide").innerText = i + 1;
+    }
 
-</div>
-
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
-
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
-
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    // AFTER LAST SLIDE → EXPERIMENT PAGE
-    location.href = "/experiment/{{ experiment.slug }}/experiment/";
-  }
-}
+    function nextSlide() {
+      if (index < slides.length - 1) {
+        index++;
+        showSlide(index);
+      } else {
+        // AFTER LAST SLIDE → EXPERIMENT PAGE
+        location.href = "/experiment/{{ experiment.slug }}/experiment/";
+      }
+    }
 
 
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    // BEFORE FIRST SLIDE → INTRO PAGE
-    location.href = "/experiment/{{ experiment.slug }}/";
-  }
-}
+    function prevSlide() {
+      if (index > 0) {
+        index--;
+        showSlide(index);
+      } else {
+        // BEFORE FIRST SLIDE → INTRO PAGE
+        location.href = "/experiment/{{ experiment.slug }}/";
+      }
+    }
 
-/* KEYBOARD SUPPORT */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
+    /* KEYBOARD SUPPORT */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") nextSlide();
+      if (e.key === "Escape") prevSlide();
     });
-  } else {
-    document.exitFullscreen();
+
+    /* THEME */
+  const themeCheckbox = document.getElementById('themeCheckbox');
+  if (localStorage.getItem('gmars-theme-preference') === 'light') {
+    themeCheckbox.checked = true;
   }
-}
-</script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      const checkbox = document.getElementById('fullscreenCheckbox');
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          if (checkbox) checkbox.checked = true;
+        }).catch(err => {
+          alert("Fullscreen not supported");
+          if (checkbox) checkbox.checked = false;
+        });
+      } else {
+        document.exitFullscreen().then(() => {
+          if (checkbox) checkbox.checked = false;
+        });
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const checkbox = document.getElementById('fullscreenCheckbox');
+      if (checkbox) checkbox.checked = !!document.fullscreenElement;
+    });
+  </script>
+
+
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const isLight = body.classList.toggle('light-mode');
+      localStorage.setItem('gmars-theme-preference', isLight ? 'light' : 'dark');
+    }
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

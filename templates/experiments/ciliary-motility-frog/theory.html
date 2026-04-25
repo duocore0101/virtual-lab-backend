@@ -73,12 +73,18 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of drugs on ciliary motility in the frog oesophagus.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+<div class="top-actions"></div>
 
 <div class="page-container">
 
@@ -99,10 +105,6 @@
         coordinated beating of cilia, which helps in the movement of
         particles along the mucosal surface.
       </p>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Role of Acetylcholine</h2>
       <p>
         Ciliary beating is stimulated by
@@ -110,10 +112,6 @@
         <strong>muscarinic receptors</strong> present on the ciliated cells.
         This increases the frequency and efficiency of ciliary movement.
       </p>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
       <h2>Effect of Physostigmine</h2>
       <p>
         <strong>Physostigmine (eserine)</strong> is a cholinesterase inhibitor
@@ -123,7 +121,7 @@
       </p>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
       <h2>Effect of Atropine</h2>
       <p>
@@ -131,10 +129,6 @@
         It blocks the action of acetylcholine on ciliated cells, resulting
         in <strong>decreased or complete paralysis</strong> of ciliary movement.
       </p>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="info-box slide">
       <h2>Assessment of Ciliary Motility</h2>
       <p>
         Ciliary motility is assessed indirectly by measuring the
@@ -147,7 +141,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -211,6 +205,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

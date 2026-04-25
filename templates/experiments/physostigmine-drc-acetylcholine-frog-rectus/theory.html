@@ -73,11 +73,18 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of Physostigmine on the dose-response curve (DRC) of Acetylcholine using isolated frog rectus abdominis muscle.</span>
+  </div>
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -99,10 +106,6 @@
         <strong>nicotinic acetylcholine receptors (nAChRs)</strong> that respond
         to cholinergic agonists.
       </p>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
       <h2>Action of Acetylcholine</h2>
       <p>
         Acetylcholine (ACh) acts on the nicotinic receptors present on the
@@ -112,7 +115,7 @@
       </p>
     </div>
 
-    <!-- SLIDE 3 -->
+    <!-- SLIDE 2 -->
     <div class="info-box slide">
       <h2>Role of Physostigmine</h2>
       <p>
@@ -121,10 +124,6 @@
         <strong>acetylcholinesterase (AChE)</strong>, which normally breaks down
         acetylcholine in the synaptic region.
       </p>
-    </div>
-
-    <!-- SLIDE 4 -->
-    <div class="info-box slide">
       <h2>Potentiation of Acetylcholine Response</h2>
       <p>
         By inhibiting acetylcholinesterase, physostigmine allows acetylcholine
@@ -138,7 +137,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 4
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -206,6 +205,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

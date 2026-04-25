@@ -1,25 +1,48 @@
-/* ===============================
-   BASE RESET
-================================ */
+/* =========================
+   LOCAL MONTSERRAT FONT
+========================= */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2'),
+       url('/static/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* ===============================
-   DARK THEME (DEFAULT)
+   THEME SUPPORT (DEFAULT DARK)
 ================================ */
-body.theme-dark {
+body {
   background: radial-gradient(circle at top, #1a0000, #000000);
   color: #ffffff;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ===============================
-   LIGHT THEME
-================================ */
-body.theme-light {
+body.light-mode {
   background: #f5f5f5;
   color: #111;
 }
@@ -79,9 +102,10 @@ body.theme-light {
   font-size: 18px;
   box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
   border: 1px solid rgba(255, 0, 0, 0.3);
+  text-align: justify;
 }
 
-body.theme-light .exp-card {
+body.light-mode .exp-card {
   background: #ffffff;
   color: #111;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -159,14 +183,17 @@ body.theme-light .exp-card {
 }
 
 /* LIGHT THEME SUPPORT */
-body.theme-light .animal-btn {
+body.light-mode .animal-btn {
   background: #ffffff;
   color: #111;
   border-color: #cc0000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-body.theme-light .animal-btn:hover {
+body.light-mode .animal-btn:hover {
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
   color: #ffffff;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
 }
 /* REMOVE LINK UNDERLINE */
 .animal-btn {
@@ -221,7 +248,7 @@ body.theme-light .animal-btn:hover {
   font-weight: 700;
 }
 
-body.theme-light .comparison-table th {
+body.light-mode .comparison-table th {
   background: #ffe5e5;
 }
 /* SPACE BETWEEN MULTIPLE CARDS */
@@ -234,6 +261,16 @@ body.theme-light .comparison-table th {
   color: #ff2b2b;
   margin-bottom: 12px;
   text-shadow: 0 0 10px rgba(255,0,0,0.4);
+  text-align: center;
+}
+
+.exp-card ul {
+  text-align: left;
+  padding-left: 25px;
+}
+
+.exp-card li {
+  margin-bottom: 8px;
 }
 /* ===============================
    SMALL VIDEO CARD
@@ -322,6 +359,17 @@ body.theme-light .comparison-table th {
   transform: translateY(-2px);
 }
 
+/* LIGHT MODE BACK BUTTON */
+body.light-mode .back-btn {
+  color: #cc0000 !important;
+  border-color: #cc0000;
+}
+
+body.light-mode .back-btn:hover {
+  background: rgba(204, 0, 0, 0.1);
+  color: #cc0000 !important;
+}
+
 /* FINISH PRACTICAL BUTTON */
 .finish-btn {
   background: linear-gradient(135deg, #ff0000, #ff4d4d);
@@ -390,4 +438,61 @@ body.theme-light .comparison-table th {
 /* OPTIONAL: remove red glow around model area */
 .top-flex-row {
   background: transparent !important;
+}
+
+/* ==========================================================
+   TOP LEFT AIM HEADER (STANDARD FOR ALL PAGES)
+========================================================== */
+.top-left-aim {
+  position: fixed;
+  top: 22px;
+  left: 25px;
+  z-index: 9998;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  max-width: calc(100% - 320px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+body.light-mode .top-left-aim {
+  color: #111;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(200, 0, 0, 0.2);
+}
+
+.top-left-aim:hover {
+  max-width: calc(100% - 320px);
+  white-space: normal;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+}
+
+body.light-mode .top-left-aim:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.top-left-aim b {
+  color: #ff2e2e;
+  margin-right: 6px;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+  .top-left-aim {
+    display: none;
+  }
 }

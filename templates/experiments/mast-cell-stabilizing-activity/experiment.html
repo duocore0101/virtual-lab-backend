@@ -56,6 +56,15 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate the mast cell stabilizing (anti-degranulation) activity of a given anti-allergic drug using an experimental animal model.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔥 INSTRUCTIONS POPUP -->
 <div id="instructionModal" class="modal">
@@ -175,18 +184,12 @@
   <div class="top-actions">
     <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
     <button class="dropdown-btn" onclick="openProcedure()">Formula/Calculation</button>
-    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    
   </div>
 
   <h1>Mast Cell Stabilizing Activity – Virtual Simulator</h1>
 
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
-  </div>
+  
 
   <!-- 🖼 BIG CENTRAL IMAGE -->
   <div class="image-container">
@@ -244,6 +247,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of various drugs on arterial blood pressure and heart rate in an anesthetized dog.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -102,20 +111,12 @@
         <br>
         Cardiac Output × Total Peripheral Resistance
       </p>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Autonomic Regulation of Cardiovascular System</h2>
       <p>
         The cardiovascular system is primarily regulated by the
         <strong>autonomic nervous system</strong>, which maintains blood
         pressure and heart rate according to physiological demands.
       </p>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
       <h2>Sympathetic Stimulation</h2>
       <p>
         Sympathetic neurotransmitters such as
@@ -127,7 +128,7 @@
       </p>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
       <h2>Parasympathetic Stimulation</h2>
       <p>
@@ -136,10 +137,6 @@
         <strong>muscarinic receptors</strong> decreases heart rate and
         cardiac output, leading to hypotension and bradycardia.
       </p>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="info-box slide">
       <h2>Baroreceptor Reflex</h2>
       <p>
         A sudden rise in blood pressure activates baroreceptors in the
@@ -153,7 +150,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -217,6 +214,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -6,95 +6,122 @@
   <meta charset="UTF-8">
   <title>Anti-Catatonic Activity – Requirements</title>
 
-  <!-- SAME THEME AS OTHER PAGES -->
+  <!-- Reuse same intro CSS -->
   <link rel="stylesheet"
-        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate anti-catatonic (anti-cataleptic) activity of drugs (e.g., scopolamine) against haloperidol-induced catalepsy in rats/mice.</span>
+  </div>
+
+  
+
+  
+
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
 
 <div class="page-container">
 
-  <h1 class="title">
-    Requirements – Anti-Catatonic (Anti-Cataleptic) Activity
-  </h1>
+  <h1 class="title">Requirements / Materials</h1>
 
-  <!-- ANIMALS USED -->
+  <!-- 🐁 Animals -->
   <div class="info-box">
     <h2>Animals Used</h2>
     <ul>
       <li>Albino Rats (150–250 g)</li>
       <li>OR Albino Mice (20–30 g)</li>
+      <li>Either sex</li>
+      <li>Animals are acclimatized before the experiment</li>
     </ul>
   </div>
 
-  <!-- DRUGS USED -->
+  <!-- 💊 Drugs -->
   <div class="info-box">
     <h2>Drugs Used</h2>
     <ul>
-      <li><strong>Haloperidol</strong> (1 mg/kg, i.p.) – to induce catalepsy</li>
-      <li><strong>Standard drug</strong> (Scopolamine / Trihexyphenidyl)</li>
-      <li><strong>Test drug</strong> (as per experiment)</li>
-      <li>Normal saline – Control</li>
+      <li><strong>Haloperidol:</strong> (1 mg/kg, i.p.) – used to induce catalepsy</li>
+      <li><strong>Standard Drug:</strong> Scopolamine or Trihexyphenidyl</li>
+      <li><strong>Test Drug:</strong> (As per the protocol)</li>
+      <li><strong>Control:</strong> Normal saline</li>
     </ul>
   </div>
 
-  <!-- APPARATUS -->
+  <!-- ⚙ Apparatus -->
   <div class="info-box">
     <h2>Apparatus</h2>
     <ul>
       <li>Wooden or metal horizontal bar</li>
       <li>Wooden blocks (3 cm and 9 cm height)</li>
-      <li>Stopwatch</li>
+      <li>Stop-watch</li>
       <li>Observation cage</li>
     </ul>
   </div>
 
-  <!-- EXPERIMENTAL DESIGN -->
-  <div class="info-box">
-    <h2>Experimental Design</h2>
-    <ul>
-      <li>Animals are divided into 3 groups (n = 6)</li>
-      <li>Group I: Control (Vehicle + Haloperidol)</li>
-      <li>Group II: Standard (Standard drug + Haloperidol)</li>
-      <li>Group III: Test drug + Haloperidol</li>
-    </ul>
-  </div>
-
-  <!-- NAVIGATION BUTTONS -->
+  <!-- 🔘 Navigation Buttons -->
   <div class="button-row">
     <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Previous
+      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+      ⬅ Back
     </button>
 
     <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
-      Next: Experiment ▶
+      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      Next ▶
     </button>
   </div>
 
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
+<!-- 🔧 SCRIPTS -->
 <script>
- else {
-    localStorage.setItem("uiTheme", "dark");
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
   }
 }
-
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
-  }
-};
 </script>
 
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

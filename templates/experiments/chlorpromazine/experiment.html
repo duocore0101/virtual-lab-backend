@@ -1,458 +1,411 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-<meta charset="UTF-8">
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
+  <meta charset="UTF-8">
+  <title>Chlorpromazine Effect – Experiment</title>
 
-<title>
-Taming and Hypnosis Potentiating Effect of Chlorpromazine
-</title>
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
 
-<link rel="stylesheet"
-href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <style>
+    /* ================= PAGE CONTAINER ================= */
+    .page-container {
+      max-width: 1400px !important;
+      width: 95%;
+      margin: 0 auto;
+    }
 
-<style>
+    /* ================= MAIN LAYOUT ================= */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 30px;
+      align-items: stretch;
+      margin-top: 15px;
+    }
 
-.video-frame{
-width:100%;
-height:480px;
-border-radius:14px;
-background:#000;
-margin-top:20px;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
+      width: 100%;
+      height: 450px;
+      background: #000;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+    }
 
-video{
-width:100%;
-height:100%;
-border-radius:14px;
-display:none;
-}
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      transition: opacity 0.4s ease;
+    }
 
-.start-btn{
-padding:14px 30px;
-font-size:18px;
-border-radius:30px;
-border:none;
-cursor:pointer;
-background:linear-gradient(135deg,#ee0a0a,#b91c1c);
-color:#fff;
-font-weight:600;
-}
+    .start-btn {
+      background: linear-gradient(135deg, #ff2e2e, #e60000);
+      color: white;
+      border: none;
+      padding: 18px 36px;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(255, 46, 46, 0.5);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.top-actions{
-position:absolute;
-top:18px;
-left:22px;
-z-index:20;
-}
+    .start-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 15px 35px rgba(255, 46, 46, 0.7);
+    }
 
-.dropdown-btn{
-background:linear-gradient(135deg,#1f2937,#111827);
-color:#fff;
-border:1px solid #374151;
-border-radius:10px;
-padding:8px 14px;
-font-size:14px;
-font-weight:500;
-cursor:pointer;
-}
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-.dropdown-btn:hover{
-background:linear-gradient(135deg,#ee0a0a,#e60909);
-}
+    /* ================= OBSERVATION BOX ================= */
+    .observation-box {
+      background: #1e1e1e;
+      border-radius: 18px;
+      padding: 22px;
+      height: 450px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
 
-.modal{
-display:none;
-position:fixed;
-z-index:9999;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-}
+    .observation-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff5252;
+      font-size: 24px;
+      letter-spacing: 0.4px;
+    }
 
-.modal-content{
-background:#111;
-padding:30px;
-border-radius:12px;
-width:95%;
-max-width:1100px;
-}
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      flex-grow: 1;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-color:white;
-font-size:14px;
-}
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 6px;
+      text-align: center;
+    }
 
-th,td{
-border:1px solid #444;
-padding:8px;
-text-align:center;
-}
+    .observation-table th {
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      font-weight: 600;
+    }
 
-th{
-background:#222;
-}
+    .observation-table td {
+      background: rgba(255, 255, 255, 0.02);
+    }
 
-.close-btn{
-float:right;
-cursor:pointer;
-color:red;
-font-weight:bold;
-}
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+    }
 
-.exp-toggle{
-text-align:center;
-margin-top:15px;
-}
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 22px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
 
-.toggle-btn{
-padding:8px 16px;
-border-radius:20px;
-border:none;
-cursor:pointer;
-margin:5px;
-background:#444;
-color:#fff;
-}
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
 
-.toggle-btn.active{
-background:#ee0a0a;
-}
-.modal-content{
-background:#111;
-padding:30px;
-border-radius:12px;
-width:95%;
-max-width:1100px;
-color:white;
-}
+    /* ================= MODAL SYSTEM ================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
 
-/* FIX FOR LIGHT MODE */
-.light-mode .modal-content{
-background:#ffffff;
-color:#000;
-}
+    .modal-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 850px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 0 40px rgba(255, 46, 46, 0.3);
+      position: relative;
+    }
 
-.light-mode table{
-color:#000;
-}
+    .modal-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 25px;
+    }
 
-.light-mode th{
-background:#e5e7eb;
-}
-</style>
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    /* ================= TOGGLE SYSTEM ================= */
+    .exp-toggle {
+      text-align: center;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .toggle-btn {
+      padding: 10px 24px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 46, 46, 0.3);
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .toggle-btn.active {
+      background: linear-gradient(135deg, #ff2e2e, #e60000);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgba(255, 46, 46, 0.4);
+    }
+
+    /* 🌗 LIGHT MODE */
+    body.light-mode .observation-box {
+      background: #ffffff;
+      color: #111;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-mode .observation-table td {
+      background: #f9f9f9;
+      border-color: #ddd;
+      color: #333;
+    }
+
+    body.light-mode .toggle-btn {
+      color: #333;
+      border-color: #ddd;
+    }
+
+    body.light-mode .toggle-btn.active {
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="page-container">
-
-<h1 class="title">
-Taming and Hypnosis Potentiating Effect of Chlorpromazine
-</h1>
-
-<!-- FULL SCREEN -->
-<div class="top-actions">
-
-<button class="dropdown-btn"
-onclick="openProcedure()">
-Procedure
-</button>
-
-<button class="dropdown-btn"
-onclick="toggleFullscreen()">
-⛶ Full Screen
-</button>
-
-</div>
-
-
-<!-- EXPERIMENT SWITCH -->
-<div class="exp-toggle">
-
-<button class="toggle-btn active">
-Pole Climbing (Taming Effect)
-</button>
-
-<button class="toggle-btn"
-onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
-Hypnosis Potentiation
-</button>
-
-</div>
-
-
-<!-- VIDEO FRAME -->
-<div class="video-frame">
-
-<button class="start-btn"
-id="startBtn"
-onclick="startExperiment()">
-▶ Start Practical
-</button>
-
-<video id="experimentVideo" controls>
-
-<source
-src="{% static 'experiments/chlorpromazine/videos/pole_climbing.mp4' %}"
-type="video/mp4">
-
-</video>
-
-</div>
-
-
-<!-- NAVIGATION -->
-<div class="button-row"
-style="justify-content:center;margin-top:25px;">
-
-<button class="back-btn"
-onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-⬅ Back
-</button>
-
-<button class="exp-btn"
-onclick="openModal()">
-View Observations 📊
-</button>
-
-<button class="exp-btn"
-onclick="goToConclusion()">
-Next ▶
-</button>
-
-</div>
-
-</div>
-
-
-
-<!-- ================= PROCEDURE MODAL ================= -->
-
-<div class="modal"
-id="procedureModal">
-
-<div class="modal-content">
-
-<span class="close-btn"
-onclick="closeProcedure()">✖</span>
-
-<h2>
-Procedure
-</h2>
-
-<ol>
-
-<li>Select healthy mice.</li>
-
-<li>Place the mice individually inside Cooke’s pole climbing apparatus.</li>
-
-<li>
-The apparatus contains a floor grid carrying electric current
-and a pole suspended from the top of the chamber.
-</li>
-
-<li>
-Train mice to escape electric shock by climbing the pole
-(non-conditioned response).
-</li>
-
-<li>
-Train mice to climb the pole when danger signal
-(buzzer/light) occurs before shock
-(conditioned avoidance response).
-</li>
-
-<li>
-Keep mice no.1 as control.
-</li>
-
-<li>
-Inject chlorpromazine (4 mg/kg i.p.) to mice no.2.
-</li>
-
-<li>
-Observe conditioned and unconditioned responses.
-</li>
-
-<li>
-Chlorpromazine blocks conditioned avoidance response
-but does not block escape response to electric shock.
-</li>
-
-</ol>
-
-</div>
-</div>
-
-
-
-<!-- ================= OBSERVATION MODAL ================= -->
-
-<div class="modal"
-id="obsModal">
-
-<div class="modal-content">
-
-<span class="close-btn"
-onclick="closeModal()">✖</span>
-
-<h2 style="text-align:center;">
-Observation Table – Pole Climbing Method
-</h2>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Sr No</th>
-<th>Mice No.</th>
-<th>Drug/Dose</th>
-<th colspan="2">Response</th>
-</tr>
-
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th>Conditioned Stimulus</th>
-<th>Unconditioned Stimulus</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td>1</td>
-
-<td>Mice 1</td>
-
-<td>Saline – intraperitoneally</td>
-
-<td>
-After buzzer,
-animal climbs on pole
-</td>
-
-<td>
-Animal climbs on pole
-in response to shock only
-</td>
-
-</tr>
-
-<tr>
-
-<td>2</td>
-
-<td>Mice 2</td>
-
-<td>Chlorpromazine (4 mg/kg) intraperitoneally</td>
-
-<td>
-Animal shows no response to buzzer,
-does not climb on pole
-</td>
-
-<td>
-After shock,
-animal climbs on pole
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-
-<button class="theme-toggle"
-onclick="toggleTheme()">
-🌗 Toggle Theme
-</button>
-
-
-
-<script>
-
-function startExperiment(){
-
-document.getElementById("startBtn").style.display="none";
-
-let video=document.getElementById("experimentVideo");
-
-video.style.display="block";
-
-video.play();
-
-}
-
-
-
-function openModal(){
-document.getElementById("obsModal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("obsModal").style.display="none";
-}
-
-
-
-function openProcedure(){
-document.getElementById("procedureModal").style.display="flex";
-}
-
-function closeProcedure(){
-document.getElementById("procedureModal").style.display="none";
-}
-
-
-
-function goToConclusion(){
-location.href="/experiment/{{ experiment.slug }}/conclusion/";
-}
-
-
-
-function toggleTheme(){
-document.body.classList.toggle("light-mode");
-}
-
-
-
-function toggleFullscreen(){
-
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen();
-}else{
-document.exitFullscreen();
-}
-
-}
-
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study the Taming and Hypnosis Potentiating Effect of Chlorpromazine in Mice</span>
+  </div>
+
+  <div class="page-container">
+
+    <!-- TITLE -->
+    <h1 class="title">
+      Experiment
+    </h1>
+
+    <!-- TOP ACTION BUTTONS -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openModal('procedureModal')">🧪 Procedure</button>
+    </div>
+
+    <!-- EXPERIMENT SWITCH -->
+    <div class="exp-toggle">
+      <button class="toggle-btn active">Pole Climbing (Taming Effect)</button>
+      <button class="toggle-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+        Hypnosis Potentiation
+      </button>
+    </div>
+
+    <div class="main-layout">
+      <!-- ================= VIDEO ================= -->
+      <div class="video-frame">
+        <!-- Overlay Button -->
+        <div class="video-overlay" id="videoOverlay">
+          <button class="start-btn" onclick="startExperiment()">
+            <span>🚀</span> Start Experiment
+          </button>
+        </div>
+
+        <video id="expVideo" controls>
+          <source src="{% static 'experiments/chlorpromazine/videos/pole_climbing.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- ================= OBSERVATION ================= -->
+      <div class="observation-box">
+        <h2>Observation Table</h2>
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th rowspan="2">Sr No</th>
+              <th rowspan="2">Mice No.</th>
+              <th rowspan="2">Drug/Dose</th>
+              <th colspan="2">Response</th>
+            </tr>
+            <tr>
+              <th>Conditioned</th>
+              <th>Unconditioned</th>
+            </tr>
+          </thead>
+          <tbody id="obsBody">
+            <tr>
+              <td>1</td>
+              <td>Mice 1</td>
+              <td style="color: #ff5a5a; font-weight: 600;">Saline – i.p.</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Mice 2</td>
+              <td style="color: #ff5a5a; font-weight: 600;">CPZ (4 mg/kg) i.p.</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 15px; font-size: 13px; text-align: center; font-style: italic; opacity: 0.8;">
+          Note: Conditioned = Buzzer | Unconditioned = Shock
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row" style="justify-content:center; margin-top:20px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+        Next ▶
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ================= PROCEDURE MODAL ================= -->
+  <div class="modal-overlay" id="procedureModal">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeModal('procedureModal')">✖</span>
+      <h2 class="modal-title">Procedure</h2>
+      <ol style="padding-left: 20px; font-size: 16px; line-height: 1.8;">
+        <li>Place the trained mice individually inside Cooke’s pole climbing apparatus.</li>
+        <li>Training involves escape from shock (unconditioned) and escape from buzzer (conditioned).</li>
+        <li>Inject saline to Mice 1 (Control) and Chlorpromazine (4 mg/kg) to Mice 2.</li>
+        <li>Observe if the animal climbs the pole in response to the buzzer or only after the shock.</li>
+        <li>Chlorpromazine typically blocks the conditioned avoidance response.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const video = document.getElementById("expVideo");
+    const tableValues = [
+      ["Climbs pole after buzzer", "Climbs pole after shock"],
+      ["No response to buzzer", "Climbs pole after shock"]
+    ];
+
+    function startExperiment() {
+      const overlay = document.getElementById("videoOverlay");
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+        overlay.style.display = "none";
+        video.play();
+      }, 400);
+    }
+
+    video.onended = function () {
+      const cells = document.querySelectorAll(".obs-cell");
+      let cellIdx = 0;
+
+      tableValues.forEach(row => {
+        row.forEach(val => {
+          cells[cellIdx++].innerText = val;
+        });
+      });
+
+      document.querySelector(".observation-box").style.boxShadow = "0 0 30px rgba(255, 82, 82, 0.4)";
+    };
+
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

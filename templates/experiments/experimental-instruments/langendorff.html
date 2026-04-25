@@ -74,15 +74,66 @@
       border-radius: 25px;
       transition: width 0.3s;
     }
-</style>
+
+    /* 🎯 TOP LEFT AIM HEADER */
+    .top-left-aim {
+      position: fixed;
+      top: 22px;
+      left: 25px;
+      z-index: 9998;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 8px 18px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+      max-width: calc(100% - 320px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .top-left-aim {
+      color: #111;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(200, 0, 0, 0.2);
+    }
+
+    .top-left-aim:hover {
+      max-width: calc(100% - 320px);
+      white-space: normal;
+      overflow: visible;
+    }
+
+    .top-left-aim b {
+      color: #ff2e2e;
+      margin-right: 6px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1024px) {
+      .top-left-aim { display: none; }
+    }
+
+  </style>
 </head>
 
-<body class="theme-dark">
+<body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the commonly used instruments in experimental pharmacology.</span>
+  </div>
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="exp-container">
@@ -254,6 +305,15 @@ function toggleFullscreen() {
   });
 </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+
+<script>
+  function toggleTheme() {
+    const body = document.body;
+    const isLight = body.classList.toggle('light-mode');
+    localStorage.setItem('gmars-theme-preference', isLight ? 'light' : 'dark');
+  }
+</script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -1,347 +1,367 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Actophotometer Experiment – CNS Stimulant</title>
 
   <!-- SAME CSS AS ROTAROD -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20005">
 
   <style>
-    /* 🔝 TOP RIGHT ACTIONS */
+    /* ================= TOP ACTION BUTTONS ================= */
     .top-actions {
-      position: absolute;
+      position: fixed;
       top: 20px;
-      right: 30px;
+      right: 25px;
+      z-index: 9999;
       display: flex;
       gap: 12px;
-      z-index: 50;
     }
 
     .dropdown-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 22px;
+      padding: 10px 18px;
+      font-size: 14px;
       font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255,0,0,0.6);
-      transition: 0.3s;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
 
     .dropdown-btn:hover {
-      transform: scale(1.05);
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 0 40px rgba(255, 46, 46, 0.3);
+      position: relative;
+    }
+
+    .modal-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 25px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+      z-index: 100;
     }
   </style>
 </head>
 
 <body>
-
-<!-- 🔥 INSTRUCTIONS -->
-<div id="instructionModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-    <h2>Instructions</h2>
-    <ol class="instruction-list">
-      <li>Observe empty actophotometer</li>
-      <li>Record basal locomotor activity</li>
-      <li>Inject CNS stimulant drug</li>
-      <li>Record increased locomotor activity</li>
-    </ol>
-  </div>
-</div>
-
-<!-- 🔬 PROCEDURE -->
-<div id="procedureModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeProcedure()">✖</span>
-    <h2>Procedure</h2>
-    <ol class="instruction-list">
-      <li>Select healthy mice (20–30 g).</li>
-      <li>Record basal locomotor activity.</li>
-      <li>Inject CNS stimulant (Caffeine 20 mg/kg i.p.).</li>
-      <li>Record activity after 30 minutes.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- 📊 OBSERVATION TABLE -->
-<div id="observationModal" class="modal">
-  <div class="modal-content" style="max-width:900px;">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
-
-    <h2>Locomotor Activity – CNS Stimulant</h2>
-
-    <table class="observation-table">
-      <thead>
-        <tr>
-          <th>Sr</th>
-          <th>Body wt (g)</th>
-          <th>Dose (mg)</th>
-          <th>Basal (A)</th>
-          <th>Post-Drug (B)</th>
-          <th>% Increase</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in "123456" %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td><input value="25" oninput="updateDose(this)"></td>
-          <td><input value="0.50" oninput="updateWeight(this)"></td>
-          <td id="A{{ forloop.counter }}">—</td>
-          <td id="B{{ forloop.counter }}">—</td>
-          <td id="P{{ forloop.counter }}">—</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="exp-container">
-
-  <!-- 🔽 TOP ACTION BUTTONS -->
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
-    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of CNS depressant and CNS stimulant drugs on locomotor activity in mice using an actophotometer.</span>
   </div>
 
-  <h1>
-    Actophotometer Experiment – Virtual Simulator<br>
-    <small>CNS Stimulant</small>
-  </h1>
+  <div class="exp-container">
 
-  <!-- CNS TOGGLE -->
-  <div class="exp-toggle">
-    <button class="toggle-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
-      CNS Depressant
-    </button>
-    <button class="toggle-btn active">CNS Stimulant</button>
-  </div>
-
-  <!-- 🌗 THEME -->
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
-  </div>
-
-  <!-- 🎥 VIDEO GRID -->
-  <div class="video-grid">
-
-    <div class="side-video">
-      <h4>Vehicle Tested</h4>
-      <video id="leftVideo" muted loop autoplay>
-        <source src="{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}">
-      </video>
+    <!-- 🔽 TOP RIGHT BUTTONS -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
     </div>
 
-    <div class="main-video">
-      <video id="expVideo" controls preload="metadata">
-        <source src="{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}">
-      </video>
+    <h1>Actophotometer Experiment – Virtual Simulator<br><small style="color: #ff5252;">CNS Stimulant</small></h1>
+
+    <!-- CNS TOGGLE -->
+    <div class="exp-toggle" style="margin-bottom: 20px; text-align: center;">
+      <button class="toggle-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'" style="padding: 10px 24px; border-radius: 25px; border: 1px solid #ddd; background: transparent; cursor: pointer; margin-right: 15px;">CNS Depressant</button>
+      <button class="toggle-btn active" style="padding: 10px 24px; border-radius: 25px; border: none; background: #ff2e2e; color: #fff; font-weight: 600;">CNS Stimulant</button>
     </div>
 
-    <div class="side-video">
-      <h4>Drug Tested</h4>
-      <video id="rightVideo" muted loop autoplay>
-        <source src="{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}">
-      </video>
+    <!-- 🎥 VIDEO GRID (ROTAROD STYLE) -->
+    <div class="video-grid">
+
+      <div class="side-video">
+        <h4>Vehicle Tested</h4>
+        <video id="leftVideo" muted loop autoplay>
+          <source src="{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}">
+        </video>
+      </div>
+
+      <div class="main-video">
+        <video id="expVideo" controls preload="auto">
+          <source src="{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}">
+        </video>
+      </div>
+
+      <div class="side-video">
+        <h4>Drug Tested</h4>
+        <video id="rightVideo" muted loop autoplay>
+          <source src="{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}">
+        </video>
+      </div>
+
+    </div>
+
+    <!-- 🎛 CONTROLS -->
+    <div class="control-panel">
+      <button onclick="startActophotometer()">Start Actophotometer</button>
+      <button onclick="runBeforeDrug()">Before Drug</button>
+      <button onclick="injectDrug()">Inject Drug</button>
+      <button onclick="runAfterDrug()">After Drug</button>
+    </div>
+
+    <!-- 📊 OBSERVATION TABLE (INLINE - ROTAROD STYLE) -->
+    <div class="observation-section">
+      <h2 style="font-size: 18px; margin-bottom: 12px;">Observation Table – Dose of Caffeine: 20 mg/kg</h2>
+      <table class="observation-table">
+        <thead>
+          <tr>
+            <th>Sr</th>
+            <th>Body wt (g)</th>
+            <th>Dose (mg)</th>
+            <th>Basal (A)</th>
+            <th>Post-Drug (B)</th>
+            <th>% Increase</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in "123456" %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><input value="25" oninput="updateDose(this)"></td>
+            <td><input value="0.50" oninput="updateWeight(this)"></td>
+            <td id="A{{ forloop.counter }}">—</td>
+            <td id="B{{ forloop.counter }}">—</td>
+            <td id="P{{ forloop.counter }}">—</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="button-row" style="margin-top: 30px;">
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
+
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+        Next ▶
+      </button>
     </div>
 
   </div>
 
-  <!-- 🎛 CONTROLS -->
-  <div class="control-panel">
-    <button onclick="startActophotometer()">Start Actophotometer</button>
-    <button onclick="runBeforeDrug()">Before Drug</button>
-    <button onclick="injectDrug()">Inject Drug</button>
-    <button onclick="runAfterDrug()">After Drug</button>
+  <!-- ================= PROCEDURE MODAL ================= -->
+  <div class="modal-overlay" id="procedureModal">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeProcedure()">✖</span>
+      <h2 class="modal-title">Procedure (Step-by-Step)</h2>
+      <div style="font-size: 15px; line-height: 1.6;">
+        <p><strong>1. Animal Selection and Grouping:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Select healthy mice (20-30 g).</li>
+          <li>Divide into 3 groups (n=4-6 each): Control (saline), Standard (known depressant/stimulant), Test (drug under evaluation).</li>
+        </ul>
+        <p><strong>2. Instrument Setup:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Switch on the actophotometer. Ensure no obstacles block beams.</li>
+          <li>Reset counter to zero before each reading.</li>
+        </ul>
+        <p><strong>3. Acclimatization:</strong></p>
+        <p style="padding-left: 20px;">Allow mice to habituate to lab environment (quiet, dim light) for 30-60 min.</p>
+        <p><strong>4. Pre-Drug (Basal) Activity Recording:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Weigh and mark each mouse. Place individually in the actophotometer cage.</li>
+          <li>Record basal locomotor scores (beam interruptions) for 5-10 minutes.</li>
+        </ul>
+        <p><strong>5. Drug Administration:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Inject i.p. (volume ~0.1-0.3 mL): Control (Saline), Depressant (Chlorpromazine), Stimulant (Caffeine/amphetamine).</li>
+        </ul>
+        <p><strong>6. Post-Drug Activity Recording:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Wait for peak effect (~30 min). Place each mouse back in the cage.</li>
+          <li>Record post-drug scores for 5-10 minutes.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <!-- NAVIGATION -->
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">⬅ Back</button>
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">Next ▶</button>
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    const mainVideo = document.getElementById("expVideo");
+    const leftVideo = document.getElementById("leftVideo");
+    const rightVideo = document.getElementById("rightVideo");
 
-</div>
+    const DOSE_PER_KG = 20; 
+    let currentMouse = 0;
+    let counterInterval = null;
 
-<!-- ================= SCRIPT ================= -->
-<script>
-const mainVideo = document.getElementById("expVideo");
-const leftVideo = document.getElementById("leftVideo");
-const rightVideo = document.getElementById("rightVideo");
+    const beforeVideos = [
+      "{% static 'experiments/actophotometer_stimulant/videos/before_mouse1.mp4' %}",
+      "{% static 'experiments/actophotometer_stimulant/videos/before_mouse2.mp4' %}",
+      "{% static 'experiments/actophotometer_stimulant/videos/before_mouse3.mp4' %}"
+    ];
 
-const DOSE_PER_KG = 20; // CNS stimulant (Caffeine)
-let currentMouse = 0;
-let counterInterval = null;
+    const afterVideos = [
+      "{% static 'experiments/actophotometer_stimulant/videos/after_mouse1.mp4' %}",
+      "{% static 'experiments/actophotometer_stimulant/videos/after_mouse2.mp4' %}",
+      "{% static 'experiments/actophotometer_stimulant/videos/after_mouse3.mp4' %}"
+    ];
 
-const beforeVideos = [
-  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse1.mp4' %}",
-  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse2.mp4' %}",
-  "{% static 'experiments/actophotometer_stimulant/videos/before_mouse3.mp4' %}"
-];
+    window.onload = () => {
+      leftVideo.playbackRate = 0.6;
+      rightVideo.playbackRate = 0.6;
+    };
 
-const afterVideos = [
-  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse1.mp4' %}",
-  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse2.mp4' %}",
-  "{% static 'experiments/actophotometer_stimulant/videos/after_mouse3.mp4' %}"
-];
+    function startActophotometer() {
+      mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}";
+      mainVideo.loop = true;
+      mainVideo.play();
+    }
 
-window.onload = () => {
-  document.getElementById("instructionModal").style.display = "flex";
-  leftVideo.playbackRate = 0.6;
-  rightVideo.playbackRate = 0.6;
-};
+    function runBeforeDrug() {
+      currentMouse = 0;
+      leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
+      rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}";
+      playBefore();
+    }
 
-function closeModal() {
-  document.getElementById("instructionModal").style.display = "none";
-}
+    function playBefore() {
+      if (currentMouse >= 3) return;
+      mainVideo.src = beforeVideos[currentMouse];
+      mainVideo.play();
+      startCounter(`A${currentMouse+1}`);
+      mainVideo.onended = () => {
+        clearInterval(counterInterval);
+        currentMouse++;
+        playBefore();
+      };
+    }
 
-/* START */
-function startActophotometer() {
-  mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_actophotometer.mp4' %}";
-  mainVideo.loop = true;
-  mainVideo.play();
-}
+    function injectDrug() {
+      mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/inject_drug.mp4' %}";
+      mainVideo.loop = false;
+      mainVideo.play();
+    }
 
-/* BEFORE DRUG */
-function runBeforeDrug() {
-  currentMouse = 0;
-  leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
-  rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container2.mp4' %}";
-  playBefore();
-}
+    function runAfterDrug() {
+      currentMouse = 0;
+      leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}";
+      rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
+      playAfter();
+    }
 
-function playBefore() {
-  if (currentMouse >= 3) return;
-  mainVideo.src = beforeVideos[currentMouse];
-  mainVideo.play();
-  startCounter(`A${currentMouse+1}`);
-  mainVideo.onended = () => {
-    stopCounter();
-    currentMouse++;
-    playBefore();
-  };
-}
+    function playAfter() {
+      if (currentMouse >= 3) {
+        autoFillExtraMice();
+        return;
+      }
+      mainVideo.src = afterVideos[currentMouse];
+      mainVideo.play();
+      startCounter(`B${currentMouse+1}`, () => calculateIncrease(currentMouse+1));
+      mainVideo.onended = () => {
+        clearInterval(counterInterval);
+        currentMouse++;
+        playAfter();
+      };
+    }
 
-/* INJECT */
-function injectDrug() {
-  mainVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/inject_drug.mp4' %}";
-  mainVideo.play();
-}
+    function startCounter(cellId, cb) {
+      const cell = document.getElementById(cellId);
+      cell.innerText = "0";
+      counterInterval = setInterval(() => {
+        cell.innerText = Math.floor(mainVideo.currentTime * 25 + Math.random() * 10);
+      }, 500);
+      mainVideo.addEventListener("ended", () => {
+        clearInterval(counterInterval);
+        if (cb) cb();
+      }, { once:true });
+    }
 
-/* AFTER DRUG */
-function runAfterDrug() {
-  currentMouse = 0;
-  leftVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/container1.mp4' %}";
-  rightVideo.src = "{% static 'experiments/actophotometer_stimulant/videos/empty_container.mp4' %}";
-  playAfter();
-}
+    function calculateIncrease(i) {
+      const A = Number(document.getElementById(`A${i}`).innerText);
+      const B = Number(document.getElementById(`B${i}`).innerText);
+      if (A > 0) {
+        document.getElementById(`P${i}`).innerText =
+          (((B - A) / A) * 100).toFixed(1) + " %";
+      }
+    }
 
-function playAfter() {
-  if (currentMouse >= 3) {
-    autoFillExtraMice();
-    return;
-  }
-  mainVideo.src = afterVideos[currentMouse];
-  mainVideo.play();
-  startCounter(`B${currentMouse+1}`, () => calculateIncrease(currentMouse+1));
-  mainVideo.onended = () => {
-    stopCounter();
-    currentMouse++;
-    playAfter();
-  };
-}
+    function autoFillExtraMice() {
+      for (let i = 4; i <= 6; i++) {
+        const A = Math.floor(180 + Math.random() * 50);
+        const B = Math.floor(A * (1.5 + Math.random() * 0.3));
+        document.getElementById(`A${i}`).innerText = A;
+        document.getElementById(`B${i}`).innerText = B;
+        document.getElementById(`P${i}`).innerText =
+          (((B - A) / A) * 100).toFixed(1) + " %";
+      }
+    }
 
-/* COUNTER */
-function startCounter(cellId, cb) {
-  const cell = document.getElementById(cellId);
-  cell.innerText = "0";
-  counterInterval = setInterval(() => {
-    cell.innerText = Math.floor(mainVideo.currentTime);
-  }, 1000);
-  mainVideo.addEventListener("ended", () => {
-    clearInterval(counterInterval);
-    if (cb) cb();
-  }, { once:true });
-}
+    function updateDose(input) {
+      const row = input.closest("tr");
+      const doseInput = row.cells[2].querySelector("input");
+      const wt = parseFloat(input.value);
+      if (!isNaN(wt)) doseInput.value = ((wt * DOSE_PER_KG) / 1000).toFixed(3);
+    }
 
-function stopCounter() {
-  clearInterval(counterInterval);
-}
+    function updateWeight(input) {
+      const row = input.closest("tr");
+      const wtInput = row.cells[1].querySelector("input");
+      const dose = parseFloat(input.value);
+      if (!isNaN(dose)) wtInput.value = ((dose * 1000) / DOSE_PER_KG).toFixed(1);
+    }
 
-/* % INCREASE */
-function calculateIncrease(i) {
-  const A = Number(document.getElementById(`A${i}`).innerText);
-  const B = Number(document.getElementById(`B${i}`).innerText);
-  if (A > 0) {
-    document.getElementById(`P${i}`).innerText =
-      (((B - A) / A) * 100).toFixed(1) + " %";
-  }
-}
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
-/* AUTO FILL MICE 4–6 */
-function autoFillExtraMice() {
-  for (let i = 4; i <= 6; i++) {
-    const A = (180 + Math.random()*50).toFixed(1);
-    const B = (A * (1.4 + Math.random()*0.4)).toFixed(1);
-    document.getElementById(`A${i}`).innerText = A;
-    document.getElementById(`B${i}`).innerText = B;
-    document.getElementById(`P${i}`).innerText =
-      (((B - A) / A) * 100).toFixed(1) + " %";
-  }
-}
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
-/* DOSE ↔ WEIGHT */
-function updateDose(input) {
-  const row = input.closest("tr");
-  row.cells[2].querySelector("input").value =
-    ((parseFloat(input.value) * DOSE_PER_KG) / 1000).toFixed(3);
-}
-
-function updateWeight(input) {
-  const row = input.closest("tr");
-  row.cells[1].querySelector("input").value =
-    ((parseFloat(input.value) * 1000) / DOSE_PER_KG).toFixed(1);
-}
-
-/* MODALS */
-function openObservation(){observationModal.style.display="flex";}
-function closeObservation(){observationModal.style.display="none";}
-function openProcedure(){procedureModal.style.display="flex";}
-function closeProcedure(){procedureModal.style.display="none";}
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
-}
-</script>
-
-<!-- 🌗 THEME -->
-<script>
-const toggle = document.getElementById("themeToggle");
-if (localStorage.getItem("expTheme")==="light"){
-  document.body.classList.add("light-mode");
-  toggle.checked=true;
-}
-toggle.addEventListener("change",()=>{
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem("expTheme",
-    document.body.classList.contains("light-mode")?"light":"dark");
-});
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

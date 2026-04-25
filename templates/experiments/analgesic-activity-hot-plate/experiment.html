@@ -7,33 +7,58 @@
   <title>Hot Plate Experiment</title>
 
   <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20002">
 
- <style>
-  .top-actions {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    display: flex;
-    gap: 12px;
-    z-index: 50;
-  }
+  <style>
+    /* 🔝 TOP ACTIONS (FIXED TO RIGHT) */
+    .top-actions {
+      position: fixed;
+      top: 22px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
 
-  .dropdown-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    background: #ff2e2e;
-    color: #fff;
-    box-shadow: 0 0 14px rgba(255,0,0,0.6);
-    transition: 0.3s;
-  }
+    .dropdown-btn {
+      padding: 9px 20px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
 
-  .dropdown-btn:hover {
-    transform: scale(1.05);
-  }
+    .dropdown-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+    }
+
+    /* 🎯 AIM HEADER LIGHT MODE FIX */
+    body.light-mode .top-left-aim {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: #222 !important;
+      border: 1px solid rgba(255, 0, 0, 0.3) !important;
+    }
+    
+    body.light-mode .top-left-aim span {
+      color: #222 !important;
+    }
+
+    /* 🌗 THEME TOGGLE POSITION */
+    .theme-toggle-container {
+      position: fixed;
+      top: 80px;
+      right: 35px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
   /* 🔥 CENTER & ENLARGE MAIN VIDEO */
   .video-grid {
@@ -59,6 +84,15 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study and Evaluate Analgesic Activity by Hot Plate Method</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔥 Instructions Popup -->
 <div id="instructionModal" class="modal">
@@ -168,28 +202,29 @@
   </div>
 </div>
 
-<div class="exp-container">
-
+  <!-- 🔝 TOP RIGHT ACTIONS -->
   <div class="top-actions">
     <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
     <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    
   </div>
 
-  <h1>Hot Plate Experiment – Virtual Simulator</h1>
-
-  <div class="theme-toggle">
+  <div class="theme-toggle-container">
     <label class="toggle-switch">
       <input type="checkbox" id="themeToggle">
       <span class="slider"></span>
     </label>
-    <span class="toggle-label">Light Mode</span>
+    <span class="toggle-label" style="font-weight: 600; color: #ff4d4d;">Light Mode</span>
   </div>
+
+<div class="exp-container">
+
+  <h1>Hot Plate Experiment – Virtual Simulator</h1>
 
   <!-- 🎥 MAIN VIDEO -->
   <div class="video-grid">
     <div class="main-video">
-      <video id="expVideo" controls preload="metadata">
+      <video id="expVideo" controls preload="auto">
         <source src="{% static 'experiments/analgesic-activity-hot-plate/videos/empty_rotarod.mp4' %}">
       </video>
     </div>
@@ -293,8 +328,11 @@ function closeProcedure() {
 }
 
 const toggle = document.getElementById("themeToggle");
+if (localStorage.getItem("gmars-theme-preference") === "light") {
+  toggle.checked = true;
+}
 toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
+  toggleTheme();
 });
 
 function toggleFullscreen() {
@@ -307,6 +345,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

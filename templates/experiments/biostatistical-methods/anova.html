@@ -98,10 +98,15 @@ background:#2b2b2b;
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span title="{{ experiment.aim }}"><b>Aim:</b> {{ experiment.aim }}</span>
+  </div>
+
 
 <div class="top-actions">
-<button onclick="toggleTheme()">🌗 Theme</button>
-<button onclick="toggleFullscreen()">⛶ Full Screen</button>
+
+
 </div>
 
 <div class="page-container">
@@ -489,6 +494,6 @@ document.exitFullscreen();
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

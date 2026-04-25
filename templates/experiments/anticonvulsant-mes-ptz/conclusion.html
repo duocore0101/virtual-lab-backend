@@ -154,18 +154,35 @@
       color: #333;
     }
   </style>
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+</style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method.</span>
+  </div>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
+
+
+  
+
+  
+
 
 <!-- 🌗 THEME TOGGLE -->
-<div class="theme-toggle">
-  <label class="toggle-switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
-  <span class="toggle-label">Light Mode</span>
-</div>
+
 
 <div class="conclusion-card">
 
@@ -200,6 +217,9 @@
   </p>
 
   <div class="nav-btn">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'" style="margin-right: 15px; border-color: #666; color: #aaa;">
+      ⬅ Back
+    </button>
     <button onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); margin-right: 15px;">
       Download Practical PDF 📄
     </button>
@@ -268,6 +288,6 @@ toggle.addEventListener("change", () => {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

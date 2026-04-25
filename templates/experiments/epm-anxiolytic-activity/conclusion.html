@@ -4,9 +4,9 @@
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
-  <title>Result & Conclusion | Virtual Lab</title>
+  <title>EPM Experiment – Conclusion</title>
 
-  <!-- Reuse existing CSS -->
+  <!-- Reuse same intro CSS -->
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
@@ -41,65 +41,78 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate the anxiolytic activity of drugs using the Elevated Plus Maze (EPM) method in mice or rats.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
 
-  <h1 class="title">Result & Conclusion</h1>
+  <h1 class="title">Conclusion</h1>
 
-  <!-- 🧪 RESULT (General) -->
+  <!-- RESULT -->
   <div class="info-box">
+    <h2>Result</h2>
     <p>
-      The experiment was conducted successfully following the standard protocols. 
-      Observations were recorded and analyzed to determine the pharmacological outcome.
+      The anxiolytic activity of the test drug was evaluated using the Elevated Plus Maze.
+      Animals treated with anxiolytic agents (e.g., Diazepam) showed a significant
+      increase in the <strong>number of entries</strong> and <strong>time spent</strong>
+      in the open arms compared to the control group.
     </p>
   </div>
 
-  <!-- 🧠 CONCLUSION -->
+  <!-- INTERPRETATION -->
   <div class="info-box">
-    <h2>Conclusion</h2>
+    <h2>Interpretation</h2>
     <p>
-      The elevated plus maze is a reliable behavioral model for assessing anxiolytic activity. Drugs that increase the time spent in open arms relative to closed arms are considered to have potential anti-anxiety properties.
+      An increase in open arm exploration reflects a reduction in natural aversion and
+      anxiety-related behavior. This confirms the anxiolytic properties of the drug,
+      likely mediated via GABA<sub>A</sub> receptor modulation.
     </p>
   </div>
 
-  <!-- 🔘 NAVIGATION -->
+  <!-- FINAL SUMMARY -->
+  <div class="info-box">
+    <h2>Summary</h2>
+    <p>
+      The test drug exhibited significant anxiolytic activity in the Elevated Plus Maze
+      model. It effectively reduced avoidance behavior and enhanced exploratory
+      tendencies in mice/rats, suggesting its potential for therapeutic use in
+      managing anxiety disorders.
+    </p>
+  </div>
+
+  <!-- NAVIGATION BUTTONS -->
   <div class="button-row">
-
     <button class="back-btn" 
       onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
       ⬅ Back
     </button>
 
-    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
-      Download Practical PDF 📄
+    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+      Download PDF 📄
     </button>
 
-    <button class="exp-btn" onclick="finishPractical()">
-      Finish Practical ✔
+    <button class="exp-btn"
+      onclick="location.href='{{ dashboard_url }}'">
+      Finish ✔
     </button>
-
   </div>
 
 </div>
 
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
+<!-- 🔧 SCRIPTS -->
 <script>
 function downloadPDF() {
   const slug = "{{ experiment.slug }}";
@@ -138,30 +151,17 @@ function downloadPDF() {
   });
 }
 
-function finishPractical() {
-  fetch("/experiment/finish/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      experiment_slug: "{{ experiment.slug }}",
-      observations: {
-        status: "Completed"
-      }
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    window.location.href = data.redirect;
-  })
-  .catch(err => {
-    alert("Failed to submit practical");
-    console.error(err);
-  });
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
 }
 </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

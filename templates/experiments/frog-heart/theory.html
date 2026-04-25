@@ -87,11 +87,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study Isolation and Perfusion of Frog Heart in Experimental Pharmacology</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -117,30 +126,20 @@
         Frog’s heart is sturdier than the mammalian heart and hence is widely
         used for experimental purposes.
       </p>
-    </div>
-<!-- SLIDE 2 -->
-<div class="info-box slide">
-  <h2>Structure of Frog’s Heart</h2>
-  <p>
-    Frog’s heart consists of three chambers: two atria and one ventricle.
-    The sinus venosus of the frog’s heart acts as the
-    <strong>pacemaker</strong>.
-  </p>
-  <p>
-    Impulses generated from the sinus venosus spread over both atria and
-    ventricle, producing coordinated contractions.
-  </p>
-
-  <!-- 🖼 Image -->
-  <div class="slide-image">
-    <img src="{% static 'experiments/frog-heart/images/frog_heart_structure.png' %}"
-         alt="Structure of Frog Heart">
-  </div>
-</div>
-
-
-    <!-- SLIDE 3 -->
-    <div class="info-box slide">
+      <h2>Structure of Frog’s Heart</h2>
+      <p>
+        Frog’s heart consists of three chambers: two atria and one ventricle.
+        The sinus venosus of the frog’s heart acts as the
+        <strong>pacemaker</strong>.
+      </p>
+      <p>
+        Impulses generated from the sinus venosus spread over both atria and
+        ventricle, producing coordinated contractions.
+      </p>
+      <div class="slide-image">
+        <img src="{% static 'experiments/frog-heart/images/frog_heart_structure.png' %}"
+             alt="Structure of Frog Heart">
+      </div>
       <h2>Recording of Cardiac Activity</h2>
       <p>
         With the help of Starling’s heart lever as a recording device, one can
@@ -153,27 +152,21 @@
       </p>
     </div>
 
-   <!-- SLIDE 4 -->
-<div class="info-box slide">
-  <h2>Normal Activity of Frog’s Heart</h2>
-  <p>
-    The normal activity of frog’s heart is represented by rhythmic
-    contractions with a constant heart rate and force of contraction.
-  </p>
-  <p>
-    The height of the wave indicates the force of contraction, while the
-    frequency of waves represents heart rate (beats per minute).
-  </p>
-
-  <!-- 🖼 Image -->
-  <div class="slide-image">
-    <img src="{% static 'experiments/frog-heart/images/normal_frog_heart_trace.png' %}"
-         alt="Normal Activity of Frog Heart">
-  </div>
-</div>
-
-    <!-- SLIDE 5 -->
+    <!-- SLIDE 2 -->
     <div class="info-box slide">
+      <h2>Normal Activity of Frog’s Heart</h2>
+      <p>
+        The normal activity of frog’s heart is represented by rhythmic
+        contractions with a constant heart rate and force of contraction.
+      </p>
+      <p>
+        The height of the wave indicates the force of contraction, while the
+        frequency of waves represents heart rate (beats per minute).
+      </p>
+      <div class="slide-image">
+        <img src="{% static 'experiments/frog-heart/images/normal_frog_heart_trace.png' %}"
+             alt="Normal Activity of Frog Heart">
+      </div>
       <h2>Effect of Drugs on Frog’s Heart</h2>
       <p>
         Drugs may increase or decrease heart rate and force of contraction.
@@ -196,7 +189,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -260,6 +253,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

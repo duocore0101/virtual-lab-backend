@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the insulin-induced hypoglycaemic effect in a normal fasted rabbit by measuring blood glucose levels at different time intervals after administration.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -96,10 +105,6 @@
         <strong>β-cells of the pancreas</strong>. It plays a vital role 
         in maintaining normal blood glucose levels in the body.
       </p>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Mechanism of Action</h2>
       <p>
         Insulin lowers blood glucose by:
@@ -110,10 +115,6 @@
         <li>Inhibiting glycogenolysis</li>
         <li>Inhibiting gluconeogenesis in the liver</li>
       </ul>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
       <h2>Effect in Fasted Rabbit</h2>
       <p>
         In a healthy fasted rabbit, subcutaneous injection of insulin 
@@ -125,7 +126,7 @@
       </p>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
       <h2>Basis of Measurement</h2>
       <p>
@@ -141,26 +142,19 @@
       <p>
         A progressive fall followed by gradual recovery is observed.
       </p>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="info-box slide">
       <h2>Calculations and Interpretation</h2>
       <p><strong>1. Percentage Fall:</strong></p>
       <p>
         % Fall = (Baseline − Glucose at time t) × 100 / Baseline
       </p>
-
       <p><strong>2. Area Under Curve (AUC):</strong></p>
       <p>
         Calculated using trapezoidal rule on glucose-time graph.
       </p>
-
       <p><strong>3. Maximum Hypoglycaemic Response:</strong></p>
       <p>
         Lowest glucose value and time to reach it.
       </p>
-
       <p><strong>4. Duration of Action:</strong></p>
       <p>
         Time taken for glucose to return within 10–20% of baseline.
@@ -170,7 +164,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -234,6 +228,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

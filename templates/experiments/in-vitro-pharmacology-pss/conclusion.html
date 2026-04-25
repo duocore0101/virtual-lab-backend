@@ -11,42 +11,32 @@
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
-    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
       position: fixed;
       top: 20px;
       right: 25px;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 20px;
       z-index: 9999;
-    }
-
-    .top-actions button {
-      padding: 10px 18px;
-      border-radius: 22px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .top-actions button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the principles of in-vitro pharmacology and understand the composition, preparation, and importance of physiological salt solutions used in isolated tissue experiments.</span>
+  </div>
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+  
+
+  
+
+
+<!-- 🔝 TOP RIGHT ACTIONS -->
+<div class="top-actions"></div>
 
 <div class="page-container">
 
@@ -72,7 +62,7 @@
   <div class="button-row">
 
     <button class="back-btn" 
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
       ⬅ Back
     </button>
 
@@ -162,6 +152,6 @@ function finishPractical() {
 }
 </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

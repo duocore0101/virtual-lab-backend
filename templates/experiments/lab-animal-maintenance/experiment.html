@@ -5,7 +5,7 @@
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
-  <title>Laboratory Animal Maintenance – Experiment</title>
+  <title>Maintenance of Laboratory Animals as per CPCSEA (CCSEA) Guidelines – Experiment</title>
 
   <!-- SAME CSS USED IN OTHER PRACTICALS -->
   <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
@@ -29,64 +29,33 @@
       border-radius: 14px;
     }
 
-    /* ================= FULL SCREEN BUTTON ================= */
+    /* Standard Top Actions container for JS injection */
     .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
-
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      right: 25px;
       display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-      border-color: #fa0707;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
-    }
-
-    .dropdown-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Fullscreen adjustment */
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
+      gap: 12px;
+      z-index: 9999;
     }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the maintenance of laboratory animals according to CPCSEA (CCSEA) guidelines, including housing, feeding, sanitation, handling, and ethical care.</span>
+  </div>
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
   <div class="page-container">
 
     <!-- TITLE -->
     <h1 class="title">
-      Laboratory Animal Maintenance as per CPCSEA Guidelines
+      Maintenance of laboratory animals as per CPCSEA (CCSEA) guidelines (handling & restraining).
     </h1>
 
-    <!-- FULL SCREEN BUTTON -->
-    <div class="top-actions">
-      <button class="dropdown-btn" onclick="toggleFullscreen()">
-        ⛶ Full Screen
-      </button>
-    </div>
 
     <!-- ================= VIDEO FRAME ================= -->
     <div class="video-frame">
@@ -121,8 +90,6 @@
 
   </div>
 
-  <!-- THEME TOGGLE -->
-  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
 
   <script>
     function finishPractical() {
@@ -215,7 +182,7 @@ function downloadPDF() {
 
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 
 </html>

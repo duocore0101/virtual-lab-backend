@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Common Laboratory Animals – Theory</title>
 
   <!-- 🔥 USE ROTAROD INTRO CSS FOR SLIDE FLOW -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -31,6 +31,7 @@
         opacity: 0;
         transform: translateX(40px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0);
@@ -74,133 +75,134 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the commonly used laboratory animals in experimental pharmacology.</span>
+  </div>
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
 
-<div class="page-container">
 
-  <!-- MAIN TITLE -->
-  <h1 class="title">Theory</h1>
 
-  <!-- ================= SLIDES ================= -->
-  <div class="slide-container">
 
-    <div class="info-box slide active">
-      <h2>Role of Laboratory Animals</h2>
-      <p>
-        Laboratory animals are essential in experimental pharmacology for
-        evaluating drug efficacy, safety, toxicity, and mechanisms of action
-        before clinical use in humans.
-      </p>
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    
+    
+  </div>
+
+  <div class="page-container">
+
+    <!-- MAIN TITLE -->
+    <h1 class="title">Theory/Principle</h1>
+
+    <!-- ================= SLIDES ================= -->
+    <div class="slide-container">
+
+      <div class="info-box slide active">
+        <h2>Role of Laboratory Animals</h2>
+        <p>
+          Laboratory animals are essential in experimental pharmacology for
+          evaluating drug efficacy, safety, toxicity, and mechanisms of action
+          before clinical use in humans.
+        </p>
+        <h2>Commonly Used Species</h2>
+        <p>
+          Frequently used laboratory animals include mice, rats, guinea pigs,
+          hamsters, frogs, dogs, and cats. Each species is selected based on
+          experimental objectives and physiological relevance.
+        </p>
+        <h2>Basis for Animal Selection</h2>
+        <p>
+          Selection depends on factors such as similarity to human physiology,
+          ease of handling, reproductive rate, availability, cost, and existing
+          background research data.
+        </p>
+      </div>
+
+      <div class="info-box slide">
+        <h2>Ethical Principles – 3Rs</h2>
+        <p>
+          The use of laboratory animals follows the 3Rs principle:
+          <strong>Replacement</strong>, <strong>Reduction</strong>, and
+          <strong>Refinement</strong>, ensuring humane and responsible research.
+        </p>
+        <h2>Regulatory Guidelines</h2>
+        <p>
+          Animal experimentation is regulated by bodies such as
+          <strong>CPCSEA</strong> (India) and <strong>IACUC</strong>
+          (International), which enforce ethical standards and animal welfare.
+        </p>
+      </div>
+
     </div>
 
-    <div class="info-box slide">
-      <h2>Commonly Used Species</h2>
-      <p>
-        Frequently used laboratory animals include mice, rats, guinea pigs,
-        hamsters, frogs, dogs, and cats. Each species is selected based on
-        experimental objectives and physiological relevance.
-      </p>
+    <div class="slide-counter">
+      Slide <span id="currentSlide">1</span> / 2
     </div>
 
-    <div class="info-box slide">
-      <h2>Basis for Animal Selection</h2>
-      <p>
-        Selection depends on factors such as similarity to human physiology,
-        ease of handling, reproductive rate, availability, cost, and existing
-        background research data.
-      </p>
-    </div>
-
-    <div class="info-box slide">
-      <h2>Ethical Principles – 3Rs</h2>
-      <p>
-        The use of laboratory animals follows the 3Rs principle:
-        <strong>Replacement</strong>, <strong>Reduction</strong>, and
-        <strong>Refinement</strong>, ensuring humane and responsible research.
-      </p>
-    </div>
-
-    <div class="info-box slide">
-      <h2>Regulatory Guidelines</h2>
-      <p>
-        Animal experimentation is regulated by bodies such as
-        <strong>CPCSEA</strong> (India) and <strong>IACUC</strong>
-        (International), which enforce ethical standards and animal welfare.
-      </p>
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
     </div>
 
   </div>
 
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
-  </div>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove("active"));
+      slides[i].classList.add("active");
+      document.getElementById("currentSlide").innerText = i + 1;
+    }
 
-</div>
+    function nextSlide() {
+      if (index < slides.length - 1) {
+        index++;
+        showSlide(index);
+      } else {
+        // AFTER LAST SLIDE → EXPERIMENT PAGE
+        location.href = "/experiment/{{ experiment.slug }}/run/";
+      }
+    }
 
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
+    function prevSlide() {
+      if (index > 0) {
+        index--;
+        showSlide(index);
+      } else {
+        // BEFORE FIRST SLIDE → INTRO PAGE
+        location.href = "/experiment/{{ experiment.slug }}/";
+      }
+    }
 
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
-
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    // AFTER LAST SLIDE → EXPERIMENT PAGE
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
-}
-
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    // BEFORE FIRST SLIDE → INTRO PAGE
-    location.href = "/experiment/{{ experiment.slug }}/";
-  }
-}
-
-/* KEYBOARD SUPPORT */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
+    /* KEYBOARD SUPPORT */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") nextSlide();
+      if (e.key === "Escape") prevSlide();
     });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+
+    /* THEME */
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

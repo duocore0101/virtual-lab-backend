@@ -241,6 +241,15 @@ input:checked + .slider:before{
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and determine the acute eye irritation and/or corrosion potential of a given test substance in albino rabbits as per OECD Test Guideline 405.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔬 PROCEDURE POPUP -->
 <div id="procedureModal" class="modal">
@@ -305,16 +314,10 @@ input:checked + .slider:before{
 <!-- TOP BUTTONS -->
 <div class="top-actions">
 <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-<button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+
 </div>
 <!-- 🌗 THEME TOGGLE -->
-<div class="theme-toggle">
-  <label class="toggle-switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
-  <span class="toggle-label">Light Mode</span>
-</div>
+
 
 <h1>Acute Eye Irritation / Corrosion (OECD 405)</h1>
 
@@ -531,6 +534,6 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

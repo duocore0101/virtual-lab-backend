@@ -4,124 +4,110 @@
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
-  <title>Elevated Plus Maze Experiment – 3D Virtual Model</title>
+  <title>Elevated Plus Maze Experiment – Aim</title>
 
-  <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
-  </script>
-
-  <!-- Reuse SAME CSS as Actophotometer / Rabbit Eye -->
+  <!-- CSS (EXACT SAME AS ROTAROD) -->
   <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
   {% if cached_model_path %}
   <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
   <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
+  {% endif %}
+
+  {% if cached_video_paths %}
+  <!-- 🚀 PRELOAD VIDEOS TO PREVENT BUFFERING DURING EXPERIMENT -->
+  {% for video_path in cached_video_paths %}
+  <link rel="preload" href="{% static video_path %}" as="video" type="video/mp4">
+  {% endfor %}
   {% endif %}
 </head>
 
 <body>
 
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
+
 <div class="page-container">
 
-  <!-- TITLE -->
-  <h1 class="title">
-    To Study Anxiolytic Activity of Drugs Using Elevated Plus Maze (EPM)
-    Method in Mice / Rats
-  </h1>
+  <!-- =========================
+       TITLE (AIM ONLY)
+  ========================== -->
+  <h1 class="title">Aim</h1>
 
-  <!-- 3D MODEL -->
-  <model-viewer
-      loading="eager"
-      reveal="auto"
-    src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/epm-anxiolytic-activity/models/elevated-plus-maze.glb' %}{% endif %}"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    exposure="1.1"
-    style="width:100%; height:450px; border-radius:12px;">
-        <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
-
-  <!-- INFO BOX -->
+  <!-- =========================
+       AIM TEXT
+  ========================== -->
   <div class="info-box">
-    <h2>Introduction</h2>
-
-    <p>
-      Anxiety is a behavioral response exhibited by animals when exposed
-      to unfamiliar or stressful environments. In experimental
-      pharmacology, animal models are widely used to evaluate drugs
-      that modify anxiety-related behavior.
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
+      To study and evaluate the anxiolytic activity of drugs using the
+      Elevated Plus Maze (EPM) method in mice or rats.
     </p>
-
-    <p>
-      The Elevated Plus Maze (EPM) is a validated behavioral model used
-      to study anxiety in rodents such as mice and rats. It is based on
-      the natural aversion of rodents to open and elevated spaces.
-      Anxiolytic drugs reduce this fear and increase exploratory behavior.
-    </p>
-
-    <ul>
-      <li>Open arms indicate reduced anxiety</li>
-      <li>Closed arms indicate anxiety-related behavior</li>
-      <li>Anxiolytic drugs increase open arm exploration</li>
-    </ul>
   </div>
 
-  <!-- NAV BUTTONS -->
-  <div class="button-row">
+  <!-- =========================
+       NAVIGATION BUTTONS
+  ========================== -->
+  <div class="button-row" style="justify-content:center;">
     <button class="back-btn"
       onclick="location.href='{{ dashboard_url }}'">
       ⬅ Back
     </button>
 
     <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next: Theory ▶
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next ▶
     </button>
   </div>
 
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
+<!-- =========================
+     🔧 SCRIPTS
+========================== -->
 <script>
- else {
-    localStorage.setItem("uiTheme", "dark");
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
   }
 }
-
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
-  }
-};
 </script>
 
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
-      });
-    }
-  });
-</script>
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

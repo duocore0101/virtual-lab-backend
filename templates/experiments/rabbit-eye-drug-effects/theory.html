@@ -73,12 +73,16 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of drugs on Rabbit Eye.</span>
+  </div>
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+<div class="top-actions"></div>
 
 <div class="page-container">
 
@@ -100,10 +104,6 @@
         of drug used, its mechanism of action, and the receptors involved.
         These changes can be easily observed and measured in the rabbit eye.
       </p>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Mydriatics (Pupil Dilators)</h2>
       <p>
         Mydriatic drugs produce dilation of the pupil either by stimulating
@@ -123,10 +123,6 @@
           the light reflex.
         </li>
       </ul>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
       <h2>Miotics (Pupil Constrictors)</h2>
       <p>
         Miotic drugs cause constriction of the pupil (miosis) by
@@ -148,7 +144,7 @@
       </ul>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
       <h2>Mechanism of Receptor Interaction</h2>
       <p>
@@ -162,10 +158,6 @@
         Depending on whether parasympathetic activity is blocked or stimulated,
         the pupil undergoes dilation (mydriasis) or constriction (miosis).
       </p>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="info-box slide">
       <h2>Significance</h2>
       <p>
         The rabbit eye serves as a reliable experimental model for studying
@@ -183,7 +175,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -245,6 +237,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

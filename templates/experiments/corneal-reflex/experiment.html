@@ -71,6 +71,15 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study surface anaesthetic activity by loss of corneal reflex in rabbit</span>
+  </div>
+
+  
+
+  
+
 
 <div class="exp-container">
 
@@ -80,19 +89,13 @@
   </h1>
 
   <!-- THEME -->
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
-  </div>
+  
 
   <div class="lab-window">
 
     <!-- VIDEO -->
     <div class="video-panel">
-      <video id="expVideo" controls preload="metadata">
+      <video id="expVideo" controls preload="auto">
         <source src="{% static 'experiments/corneal-reflex/videos/idle.mp4' %}">
       </video>
     </div>
@@ -230,6 +233,6 @@ toggle.addEventListener("change", () => {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

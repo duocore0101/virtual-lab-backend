@@ -136,12 +136,21 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of drugs on gastrointestinal motility in mice/rats.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT -->
 <div class="top-actions">
   <button onclick="openProcedure()">Procedure</button>
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <!-- 🔬 PROCEDURE MODAL -->
@@ -170,7 +179,7 @@
 
     <!-- 🎥 VIDEO -->
 <div class="video-box">
-  <video id="expVideo" preload="metadata">
+  <video id="expVideo" preload="auto">
     <source src="{% static 'experiments/ciliary-motility-frog/videos/video_b.mp4' %}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -281,6 +290,6 @@ function toggleTheme() {
 }
 </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

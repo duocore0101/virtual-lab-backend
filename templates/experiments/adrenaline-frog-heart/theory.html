@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Effect of Adrenaline on Frog’s Heart – Theory</title>
 
   <!-- Reuse Rotarod CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -31,6 +31,7 @@
         opacity: 0;
         transform: translateX(40px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0);
@@ -87,175 +88,182 @@
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
-
-<div class="page-container">
-
-  <!-- MAIN TITLE -->
-  <h1 class="title">
-    To study the effect of adrenaline on frog’s heart
-  </h1>
-
-  <!-- ================= SLIDE 1 ================= -->
-  <div class="info-box slide active">
-    <h2>Principle</h2>
-    <p>
-      <strong>Adrenaline</strong> binds primarily to
-      <strong>β<sub>1</sub>-adrenergic receptors</strong> on cardiac myocytes
-      in the frog heart, producing:
-    </p>
-    <ul>
-      <li>
-        <strong>Positive chronotropic effect</strong> – Increase in heart rate
-        (tachycardia)
-      </li>
-      <li>
-        <strong>Positive inotropic effect</strong> – Increase in force of
-        contraction (increased amplitude)
-      </li>
-    </ul>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> TO Study the Effect of Adrenaline (Epinephrine) on Isolated Frog Heart Experiment</span>
   </div>
 
-  <!-- ================= SLIDE 2 ================= -->
-  <div class="info-box slide">
-    <h2>Mechanism of Action</h2>
-    <ol>
-      <li>
-        Activation of <strong>β<sub>1</sub> receptors</strong> →
-        Coupling to <strong>Gs proteins</strong> →
-        Stimulation of <strong>adenylyl cyclase</strong> →
-        Increased <strong>cAMP</strong> →
-        Activation of <strong>protein kinase A</strong>
-      </li>
-      <li>
-        Phosphorylation of calcium channels →
-        Increased <strong>Ca²⁺ influx</strong> →
-        Enhanced contractility
-      </li>
-      <li>
-        Acceleration of pacemaker activity in the
-        <strong>sinus venosus</strong> →
-        Increased heart rate
-      </li>
-    </ol>
-    <p>
-      The effect is <strong>dose-dependent</strong>, reversible on washing with
-      Ringer’s solution, and blocked by
-      <strong>β-blockers (e.g., propranolol)</strong>.
-    </p>
+
+
+
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
+
   </div>
 
-  <!-- ================= SLIDE 3 ================= -->
-  <div class="info-box slide">
-    <h2>Adrenergic Action on Heart</h2>
-    <p>
-      <strong>Adrenaline</strong> and <strong>nor-adrenaline</strong> act as
-      neurotransmitters at sympathetic sites and in some areas of the brain.
-    </p>
-    <p>
-      Adrenaline, like <strong>sympathomimetics</strong>, increases heart rate
-      by activating the <strong>SA node (pacemaker)</strong>.
-    </p>
+  <div class="page-container">
 
-    <div class="slide-image">
-      <img src="{% static 'experiments/adrenaline-frog-heart/images/adrenergic_action.png' %}"
-           alt="Adrenergic action on frog heart">
+    <!-- MAIN TITLE -->
+    <h1 class="title">
+      Theory/Principle
+    </h1>
+
+    <!-- ================= SLIDE 1 ================= -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+      <p>
+        <strong>Adrenaline</strong> binds primarily to
+        <strong>β<sub>1</sub>-adrenergic receptors</strong> on cardiac myocytes
+        in the frog heart, producing:
+      </p>
+      <ul>
+        <li>
+          <strong>Positive chronotropic effect</strong> – Increase in heart rate
+          (tachycardia)
+        </li>
+        <li>
+          <strong>Positive inotropic effect</strong> – Increase in force of
+          contraction (increased amplitude)
+        </li>
+      </ul>
+
+      <h2>Mechanism of Action</h2>
+      <ol>
+        <li>
+          Activation of <strong>β<sub>1</sub> receptors</strong> →
+          Coupling to <strong>Gs proteins</strong> →
+          Stimulation of <strong>adenylyl cyclase</strong> →
+          Increased <strong>cAMP</strong> →
+          Activation of <strong>protein kinase A</strong>
+        </li>
+        <li>
+          Phosphorylation of calcium channels →
+          Increased <strong>Ca²⁺ influx</strong> →
+          Enhanced contractility
+        </li>
+        <li>
+          Acceleration of pacemaker activity in the
+          <strong>sinus venosus</strong> →
+          Increased heart rate
+        </li>
+      </ol>
+      <p>
+        The effect is <strong>dose-dependent</strong>, reversible on washing with
+        Ringer’s solution, and blocked by
+        <strong>β-blockers (e.g., propranolol)</strong>.
+      </p>
     </div>
-  </div>
 
-  <!-- ================= SLIDE 4 ================= -->
-  <div class="info-box slide">
-    <h2>Effect on Pacemakers and Contractility</h2>
-    <p>
-      Both adrenaline and nor-adrenaline activate latent pacemakers such as
-      <strong>AV node</strong> and <strong>Purkinje’s fibers</strong>.
-    </p>
-    <p>
-      Adrenaline increases the
-      <strong>force of cardiac contraction</strong> by acting on
-      <strong>β<sub>1</sub> adrenoceptors</strong>.
-    </p>
-    <p>
-      Increased permeability to <strong>Ca²⁺</strong> and <strong>Na⁺</strong>
-      produces an excitatory effect resulting in increased
-      <strong>heart rate and force of contraction</strong>.
-    </p>
+    <!-- ================= SLIDE 2 ================= -->
+    <div class="info-box slide">
+      <h2>Adrenergic Action on Heart</h2>
+      <p>
+        <strong>Adrenaline</strong> and <strong>nor-adrenaline</strong> act as
+        neurotransmitters at sympathetic sites and in some areas of the brain.
+      </p>
+      <p>
+        Adrenaline, like <strong>sympathomimetics</strong>, increases heart rate
+        by activating the <strong>SA node (pacemaker)</strong>.
+      </p>
 
-    <div class="slide-image">
-      <img src="{% static 'experiments/adrenaline-frog-heart/images/contractility_effect.png' %}"
-           alt="Effect of adrenaline on cardiac contractility">
+      <div class="slide-image">
+        <img src="{% static 'experiments/adrenaline-frog-heart/images/adrenergic_action.png' %}"
+          alt="Adrenergic action on frog heart">
+      </div>
     </div>
+
+    <!-- ================= SLIDE 3 ================= -->
+    <div class="info-box slide">
+      <h2>Effect on Pacemakers and Contractility</h2>
+      <p>
+        Both adrenaline and nor-adrenaline activate latent pacemakers such as
+        <strong>AV node</strong> and <strong>Purkinje’s fibers</strong>.
+      </p>
+      <p>
+        Adrenaline increases the
+        <strong>force of cardiac contraction</strong> by acting on
+        <strong>β<sub>1</sub> adrenoceptors</strong>.
+      </p>
+      <p>
+        Increased permeability to <strong>Ca²⁺</strong> and <strong>Na⁺</strong>
+        produces an excitatory effect resulting in increased
+        <strong>heart rate and force of contraction</strong>.
+      </p>
+
+      <div class="slide-image">
+        <img src="{% static 'experiments/adrenaline-frog-heart/images/contractility_effect.png' %}"
+          alt="Effect of adrenaline on cardiac contractility">
+      </div>
+    </div>
+
+    <!-- ================= COUNTER ================= -->
+    <div class="slide-counter">
+      Slide <span id="currentSlide">1</span> / 3
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    </div>
+
   </div>
 
-  <!-- ================= COUNTER ================= -->
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 4
-  </div>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove("active"));
+      slides[i].classList.add("active");
+      document.getElementById("currentSlide").innerText = i + 1;
+    }
 
-</div>
+    function nextSlide() {
+      if (index < slides.length - 1) {
+        index++;
+        showSlide(index);
+      } else {
+        location.href = "/experiment/{{ experiment.slug }}/run/";
+      }
+    }
 
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
+    function prevSlide() {
+      if (index > 0) {
+        index--;
+        showSlide(index);
+      } else {
+        location.href = "/experiment/{{ experiment.slug }}/requirements/";
+      }
+    }
 
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
-
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
-}
-
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    location.href = "/experiment/{{ experiment.slug }}/requirements/";
-  }
-}
-
-/* KEYBOARD CONTROLS */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
+    /* KEYBOARD CONTROLS */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") nextSlide();
+      if (e.key === "Escape") prevSlide();
     });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+
+    /* THEME */
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

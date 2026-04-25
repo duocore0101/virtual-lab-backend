@@ -144,52 +144,78 @@
       color: #333;
     }
 
-    /* ===== NEXT BUTTON ===== */
-    .next-btn {
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    .next-btn button {
-      margin-top: 25px;
-      padding: 10px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 30px;
-      border: 2px solid #ff2a2a;
-      background: transparent;
-      color: #ff2a2a;
+    /* ================= NAVIGATION BUTTONS THEME ================= */
+    .back-btn-new {
+      padding: 12px 40px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.35s ease;
-      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      background: #fff;
+      color: #ff2e2e;
+      border: 2px solid #ff2e2e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .next-btn button:hover {
-      background: linear-gradient(135deg, #ff2a2a, #8b0000);
-      color: #ffffff;
-      box-shadow:
-        0 0 8px rgba(255, 42, 42, 0.7),
-        0 0 18px rgba(255, 0, 0, 0.5);
-      transform: translateY(-2px) scale(1.03);
+    .back-btn-new:hover {
+      background: #fff5f5;
+      transform: translateY(-2px);
     }
 
-    .next-btn button:active {
-      transform: scale(0.97);
+    .next-btn-new {
+      padding: 12px 40px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #ff4d4d;
+      color: #fff;
+      border: none;
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .next-btn-new:hover {
+      background: #ff2e2e;
+      box-shadow: 0 0 30px rgba(255, 46, 46, 0.7);
+      transform: translateY(-2px);
     }
   </style>
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+</style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method.</span>
+  </div>
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
+
+
+  
+
+  
+
 
 <!-- 🌗 THEME TOGGLE -->
-<div class="theme-toggle">
-  <label class="toggle-switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
-  <span class="toggle-label">Light Mode</span>
-</div>
+
 
 <div class="graph-card">
 
@@ -205,33 +231,19 @@
     <span>PTZ Method</span>
   </div>
 
-  <div class="next-btn">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
-      Next ▶
+  <div class="button-row" style="display: flex; justify-content: center; margin-top: 30px; gap: 30px;">
+    <button class="back-btn-new" onclick="location.href='/experiment/{{ experiment.slug }}/experiment2/'">
+      <span style="font-size: 22px;">⬅</span> Back
+    </button>
+
+    <button class="next-btn-new" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+      Next <span style="font-size: 22px;">▶</span>
     </button>
   </div>
 
 </div>
 
 <script>
-/* =========================
-   THEME TOGGLE LOGIC
-========================== */
-const toggle = document.getElementById("themeToggle");
-
-if (localStorage.getItem("uiTheme") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
-
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "uiTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
-
 /* =========================
    GRAPH DATA (PRACTICAL 9)
 ========================== */
@@ -316,6 +328,6 @@ new Chart(ctx, {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

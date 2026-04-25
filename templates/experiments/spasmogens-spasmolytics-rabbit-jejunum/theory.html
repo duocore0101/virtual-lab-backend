@@ -1,19 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Effects of Spasmogens and Spasmolytics – Theory</title>
 
   <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
+  <script type="module" src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse Rotarod CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -27,8 +26,15 @@
     }
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateX(40px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .slide-counter {
@@ -77,9 +83,9 @@
       height: 400px;
       background: #111;
       border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
     }
-  
+
     /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
     model-viewer {
       --progress-bar-color: #ff2e2e;
@@ -87,6 +93,7 @@
       background-color: #f8f9fa;
       position: relative;
     }
+
     .progress-bar {
       display: block;
       width: 33%;
@@ -97,14 +104,16 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 25px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.9);
       background-color: rgba(0, 0, 0, 0.5);
     }
+
     .progress-bar.hide {
       visibility: hidden;
       transition: visibility 0.3s;
     }
+
     .update-bar {
       background-color: var(--progress-bar-color);
       width: 0%;
@@ -112,205 +121,180 @@
       border-radius: 25px;
       transition: width 0.3s;
     }
-</style>
+  </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of spasmogens and spasmolytics on isolated rabbit jejunum.</span>
+  </div>
 
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+  
 
-<div class="page-container">
 
-  <h1 class="title">
-    Theory/Principle
-  </h1>
+  <div class="top-actions">
+    
+    
+  </div>
 
-  <!-- ================= SLIDE 1 ================= -->
-  <div class="info-box slide active">
+  <div class="page-container">
 
-    <h2>Principle</h2>
+    <h1 class="title">
+      Theory/Principle
+    </h1>
 
-    <p>
-      The isolated <strong>rabbit jejunum</strong> shows spontaneous rhythmic 
-      contractions due to intrinsic activity of intestinal smooth muscle.
-    </p>
+    <!-- ================= SINGLE SLIDE ================= -->
+    <div class="info-box slide active">
 
-    <p>
-      These contractions can be modified by drugs that either increase or decrease 
-      smooth muscle activity.
-    </p>
+      <h2>Principle</h2>
 
-    <ul>
-      <li>
-        <strong>Spasmogens</strong> increase intestinal smooth muscle contraction.
-      </li>
+      <p>
+        The isolated <strong>rabbit jejunum</strong> shows spontaneous rhythmic
+        contractions due to intrinsic activity of intestinal smooth muscle.
+      </p>
 
-      <li>
-        <strong>Acetylcholine (ACh)</strong> acts on 
-        <strong>muscarinic (M3) receptors</strong> producing 
-        cholinergic stimulation and contraction.
-      </li>
+      <p>
+        These contractions can be modified by drugs that either increase or decrease
+        smooth muscle activity.
+      </p>
 
-      <li>
-        <strong>Barium chloride (BaCl₂)</strong> acts directly on 
-        smooth muscle causing <strong>membrane depolarization</strong> 
-        and contraction.
-      </li>
-    </ul>
+      <ul>
+        <li>
+          <strong>Spasmogens</strong> increase intestinal smooth muscle contraction.
+        </li>
 
-    <!-- 🔬 MODEL PLACEHOLDER -->
-    <div class="model-container">
+        <li>
+          <strong>Acetylcholine (ACh)</strong> acts on
+          <strong>muscarinic (M3) receptors</strong> producing
+          cholinergic stimulation and contraction.
+        </li>
 
-      <model-viewer
-      loading="eager"
-      reveal="auto"
-        src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/spasmogens-spasmolytics-rabbit-jejunum/models/rabbit-jejunum.glb' %}{% endif %}"
-        alt="Rabbit Jejunum Organ Bath Setup 3D Model"
-        auto-rotate
-        camera-controls
-        exposure="1"
-        shadow-intensity="1"
-        ar>
-            <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
+        <li>
+          <strong>Barium chloride (BaCl₂)</strong> acts directly on
+          smooth muscle causing <strong>membrane depolarization</strong>
+          and contraction.
+        </li>
+      </ul>
 
-      <p style="margin-top:10px; font-size:14px; color:#aaa;">
-        Rabbit Jejunum Organ Bath Experimental Setup (3D Model Placeholder)
+      <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 25px 0;">
+
+      <h2>Action of Spasmolytics</h2>
+
+      <p>
+        <strong>Spasmolytics</strong> reduce intestinal contractions
+        by relaxing smooth muscle or blocking stimulatory pathways.
+      </p>
+
+      <ul>
+
+        <li>
+          <strong>Atropine</strong> – competitive muscarinic antagonist
+          that blocks the action of acetylcholine.
+        </li>
+
+        <li>
+          <strong>Adrenaline</strong> – acts on
+          <strong>β₂ adrenergic receptors</strong> producing
+          relaxation of intestinal smooth muscle and inhibition of motility.
+        </li>
+
+
+
+      </ul>
+
+      <p>
+        The responses of the tissue are recorded as changes in
+        spontaneous contractions using a
+        <strong>kymograph or student physiograph</strong>.
       </p>
 
     </div>
 
-  </div>
+    <!-- SLIDE COUNTER -->
+    <div class="slide-counter">
+      Slide <span id="slideNumber">1</span> / 1
+    </div>
 
-
-  <!-- ================= SLIDE 2 ================= -->
-  <div class="info-box slide">
-
-    <h2>Action of Spasmolytics</h2>
-
-    <p>
-      <strong>Spasmolytics</strong> reduce intestinal contractions 
-      by relaxing smooth muscle or blocking stimulatory pathways.
-    </p>
-
-    <ul>
-
-      <li>
-        <strong>Atropine</strong> – competitive muscarinic antagonist 
-        that blocks the action of acetylcholine.
-      </li>
-
-      <li>
-        <strong>Adrenaline</strong> – acts on 
-        <strong>β₂ adrenergic receptors</strong> producing 
-        relaxation of intestinal smooth muscle and inhibition of motility.
-      </li>
-
-      <li>
-        <strong>Papaverine</strong> – a non-specific smooth muscle relaxant 
-        that inhibits phosphodiesterase and blocks calcium entry, 
-        resulting in muscle relaxation.
-      </li>
-
-    </ul>
-
-    <p>
-      The responses of the tissue are recorded as changes in 
-      spontaneous contractions using a 
-      <strong>kymograph or student physiograph</strong>.
-    </p>
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    </div>
 
   </div>
 
+  <script>
 
-  <!-- SLIDE COUNTER -->
-  <div class="slide-counter">
-    Slide <span id="slideNumber">1</span> / 2
-  </div>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide");
 
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
-
-</div>
-
-<script>
-
-let currentSlide = 0;
-const slides = document.querySelectorAll(".slide");
-
-function showSlide(index) {
-  slides.forEach((s,i)=> {
-    s.classList.remove("active");
-    if(i===index) s.classList.add("active");
-  });
-
-  document.getElementById("slideNumber").textContent = index + 1;
-}
-
-function nextSlide() {
-
-  if(currentSlide < slides.length - 1){
-    currentSlide++;
-    showSlide(currentSlide);
-  }
-  else{
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
-
-}
-
-function prevSlide() {
-
-  if(currentSlide > 0){
-    currentSlide--;
-    showSlide(currentSlide);
-  }
-  else{
-    location.href = "/experiment/{{ experiment.slug }}/requirements/";
-  }
-
-}
-
-
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-</script>
-
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
+    function showSlide(index) {
+      slides.forEach((s, i) => {
+        s.classList.remove("active");
+        if (i === index) s.classList.add("active");
       });
-    }
-  });
-</script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+      document.getElementById("slideNumber").textContent = index + 1;
+    }
+
+    function nextSlide() {
+
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+      else {
+        location.href = "/experiment/{{ experiment.slug }}/run/";
+      }
+
+    }
+
+    function prevSlide() {
+
+      if (currentSlide > 0) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+      else {
+        location.href = "/experiment/{{ experiment.slug }}/requirements/";
+      }
+
+    }
+
+
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+  </script>
+
+
+  <script>
+    /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+    document.addEventListener('DOMContentLoaded', () => {
+      const mv = document.querySelector('model-viewer');
+      if (mv) {
+        const pBar = mv.querySelector('.progress-bar');
+        const uBar = mv.querySelector('.update-bar');
+        mv.addEventListener('progress', (e) => {
+          const prg = e.detail.totalProgress;
+          if (uBar) uBar.style.width = `${prg * 100}%`;
+          if (prg === 1) {
+            setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+          }
+        });
+      }
+    });
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

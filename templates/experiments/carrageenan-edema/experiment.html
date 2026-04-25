@@ -64,6 +64,15 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study Anti-inflammatory activity of drugs using carrageenan-induced paw edema model.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔥 Instructions Popup -->
 <div id="instructionModal" class="modal">
@@ -135,23 +144,17 @@
   <div class="top-actions">
     <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
     <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    
   </div>
 
   <h1>Carrageenan Paw Edema – Virtual Simulator</h1>
 
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
-  </div>
+  
 
   <!-- 🎥 MAIN VIDEO -->
   <div class="video-grid">
     <div class="main-video">
-      <video id="expVideo" controls preload="metadata">
+      <video id="expVideo" controls preload="auto">
         <source src="{% static 'experiments/carrageenan-edema/videos/setup.mp4' %}">
       </video>
     </div>
@@ -341,6 +344,6 @@ function toggleFullscreen() {
 
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

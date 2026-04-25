@@ -11,7 +11,7 @@
         href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
-    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    /* Standard Top Actions container for JS injection */
     .top-actions {
       position: fixed;
       top: 20px;
@@ -20,33 +20,22 @@
       gap: 12px;
       z-index: 9999;
     }
-
-    .top-actions button {
-      padding: 10px 18px;
-      border-radius: 22px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .top-actions button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
-    }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the maintenance of laboratory animals according to CPCSEA (CCSEA) guidelines, including housing, feeding, sanitation, handling, and ethical care.</span>
+  </div>
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+  
+
+  
+
+
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
 <div class="page-container">
 
@@ -64,7 +53,7 @@
   <div class="info-box">
     <h2>Conclusion</h2>
     <p>
-      Strict adherence to CPCSEA guidelines ensures the ethical treatment and optimal health of laboratory animals. Standardized maintenance conditions minimize external variables, leading to more consistent and scientifically valid experimental outcomes.
+      Strict adherence to CPCSEA (CCSEA) guidelines ensures the ethical treatment and optimal health of laboratory animals. Standardized maintenance conditions minimize external variables, leading to more consistent and scientifically valid experimental outcomes.
     </p>
   </div>
 
@@ -162,6 +151,6 @@ function finishPractical() {
 }
 </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

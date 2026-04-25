@@ -233,6 +233,15 @@ body {
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using albino rabbits as per OECD Test Guideline 404.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔥 INSTRUCTIONS POPUP -->
 <div id="instructionModal" class="modal">
@@ -316,19 +325,13 @@ body {
   <div class="top-actions">
     <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
     <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    <button class="dropdown-btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+    
   </div>
 
   <h1>Acute Skin Irritation / Corrosion Test – Virtual Simulator</h1>
 
   <!-- 🌗 THEME TOGGLE (UNCHANGED FLOW) -->
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
-  </div>
+  
 
   <!-- 🧪 EXPERIMENT INFORMATION -->
   <div class="sim-section">
@@ -488,6 +491,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

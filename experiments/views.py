@@ -188,10 +188,24 @@ def experiment_page(request, slug, page):
     cached_model_path = None
     models_dir = os.path.join(settings.BASE_DIR, 'static', 'experiments', slug, 'models')
     if os.path.exists(models_dir):
-        # Look for the first .glb file
-        glb_files = [f for f in os.listdir(models_dir) if f.endswith('.glb')]
-        if glb_files:
-            cached_model_path = f"experiments/{slug}/models/{glb_files[0]}"
+        # 1. Priority: Try to find a model matching the current page name (e.g., rotarod.glb)
+        page_model = f"{page}.glb"
+        if os.path.exists(os.path.join(models_dir, page_model)):
+            cached_model_path = f"experiments/{slug}/models/{page_model}"
+        else:
+            # 2. Fallback: Look for the first .glb file (legacy behavior)
+            glb_files = [f for f in os.listdir(models_dir) if f.endswith('.glb')]
+            if glb_files:
+                cached_model_path = f"experiments/{slug}/models/{glb_files[0]}"
+
+    # 🔥 SAFE ADDITION: Discover all videos for preloading
+    cached_video_paths = []
+    videos_dir = os.path.join(settings.BASE_DIR, 'static', 'experiments', slug, 'videos')
+    if os.path.exists(videos_dir):
+        # Look for all .mp4 files
+        video_files = [f for f in os.listdir(videos_dir) if f.endswith('.mp4')]
+        for vf in video_files:
+            cached_video_paths.append(f"experiments/{slug}/videos/{vf}")
 
     return render(
         request,
@@ -201,6 +215,7 @@ def experiment_page(request, slug, page):
             "student": request.session.get("name"),
             "demo_mode": role in ["admin", "superadmin"],  # 🔥 SAFE ADDITION
             "cached_model_path": cached_model_path,         # 🔥 Preloading support
+            "cached_video_paths": cached_video_paths,       # 🔥 New: Video preloading support
         }
     )
 

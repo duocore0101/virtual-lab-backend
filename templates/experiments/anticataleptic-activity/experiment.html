@@ -1,162 +1,389 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Anti-Catatonic Activity – Experiment</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
 
   <style>
-    .video-box {
-      margin-top: 30px;
-      text-align: center;
+    /* ================= PAGE CONTAINER ================= */
+    .page-container {
+      max-width: 1400px !important;
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    /* ================= MAIN LAYOUT ================= */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 30px;
+      align-items: stretch;
+      margin-top: 15px;
+    }
+
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
+      width: 100%;
+      height: 450px;
+      background: #000;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
     }
 
     video {
       width: 100%;
-      max-width: 700px;
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(255,0,0,0.5);
-      display: none;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    table {
-      width: 100%;
-      margin-top: 30px;
-      border-collapse: collapse;
-      background: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
+    /* ================= SIDEBAR BOX ================= */
+    .sidebar-box {
+      background: #1e1e1e;
+      border-radius: 18px;
+      padding: 22px;
+      height: 450px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
     }
 
-    th, td {
-      padding: 14px;
+    .sidebar-box h2 {
       text-align: center;
-      border-bottom: 1px solid var(--border-accent);
+      margin-bottom: 15px;
+      color: #ff5252;
+      font-size: 22px;
+      letter-spacing: 0.4px;
     }
 
-    th {
-      background: rgba(255,0,0,0.2);
-      color: var(--accent);
+    /* ================= CONTROLS ================= */
+    .exp-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .control-btn:hover {
+      background: #ff2e2e;
+      border-color: #ff2e2e;
+      transform: translateY(-1px);
+    }
+
+    .control-btn.active {
+      background: #ff2e2e;
+      border-color: #ff2e2e;
+    }
+
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      flex-grow: 1;
+    }
+
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 8px;
+      text-align: center;
+    }
+
+    .observation-table th {
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .observation-table td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 22px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 0 40px rgba(255, 46, 46, 0.3);
+      position: relative;
+    }
+
+    .modal-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 25px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+      z-index: 100;
+    }
+
+    /* 🌗 LIGHT MODE */
+    body.light-mode .sidebar-box {
+      background: #ffffff;
+      color: #111;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-mode .observation-table td {
+      background: #f9f9f9;
+      border-color: #ddd;
+      color: #333;
+    }
+
+    body.light-mode .control-btn {
+      color: #333;
+      border-color: #ddd;
     }
   </style>
 </head>
 
 <body>
-
-<div class="page-container">
-
-  <h1 class="title">
-    Experiment – Anti-Catatonic Activity
-  </h1>
-
-  <!-- ACTION BUTTONS -->
-  <div class="button-row">
-    <button class="action-btn" onclick="showInjectVideo()">
-      Inject Drug
-    </button>
-
-    <button class="action-btn" onclick="showAfterVideo()">
-      After Drug
-    </button>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate anti-catatonic (anti-cataleptic) activity of drugs (e.g., scopolamine) against haloperidol-induced catalepsy in rats/mice.</span>
   </div>
 
-  <!-- VIDEO AREA -->
-  <div class="video-box">
-    <video id="experimentVideo" controls></video>
+  <div class="page-container">
+
+    <!-- TITLE -->
+    <h1 class="title">
+      Experiment – Anti-Catatonic Activity
+    </h1>
+
+    <!-- TOP ACTION BUTTONS -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+    </div>
+
+    <div class="main-layout">
+      <!-- ================= VIDEO ================= -->
+      <div class="video-frame">
+        <video id="experimentVideo" controls preload="auto">
+          <source src="{% static 'experiments/anticataleptic-activity/videos/inject.mp4' %}" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- ================= SIDEBAR ================= -->
+      <div class="sidebar-box">
+        <h2>Observations</h2>
+        
+        <!-- 🎛 CONTROLS -->
+        <div class="exp-controls">
+          <button class="control-btn" id="btnInject" onclick="runInject()">💉 Inject Drug</button>
+          <button class="control-btn" id="btnAfter" onclick="runAfter()">▶ After Drug</button>
+        </div>
+
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th>Condition</th>
+              <th>Cataleptic Time (sec)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Before Drug</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>After Drug</td>
+              <td id="afterTimeCell">—</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: auto; font-size: 13px; text-align: center; opacity: 0.8; font-style: italic;">
+          Haloperidol induces catalepsy (sustained abnormal posture).
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row" style="justify-content:center; margin-top:20px; gap: 30px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+        ⬅ Previous
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+        Next: Conclusion ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- OBSERVATION TABLE -->
-  <div class="info-box">
-    <h2>Observation Table</h2>
-
-    <table>
-      <tr>
-        <th>Condition</th>
-        <th>Cataleptic Time (seconds)</th>
-      </tr>
-      <tr>
-        <td>Before Drug</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td>After Drug</td>
-        <td id="afterTime">---</td>
-      </tr>
-    </table>
+  <!-- ================= PROCEDURE MODAL ================= -->
+  <div class="modal-overlay" id="procedureModal">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeProcedure()">✖</span>
+      <h2 class="modal-title">Step-by-Step Procedure</h2>
+      <div style="font-size: 15px; line-height: 1.6;">
+        <p><strong>• Animals:</strong> Albino rats (150–250 g) preferred (clearer response than mice).</p>
+        <p><strong>• Groups (n=6):</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Group I: Control (vehicle + inducer).</li>
+          <li>Group II: Standard (scopolamine 1–2 mg/kg i.p. + inducer).</li>
+          <li>Group III: Test drug + inducer.</li>
+        </ul>
+        <p><strong>• Equipment:</strong> Bar test (Horizontal bar 9–10 cm above table), Block test (Wooden blocks 3 cm and 9 cm height).</p>
+        <p><strong>• Steps:</strong></p>
+        <ol style="padding-left: 20px;">
+          <li>Acclimatize animals to laboratory conditions.</li>
+          <li>Administer test/standard drug 30 min before inducer.</li>
+          <li>Inject inducer (haloperidol 1 mg/kg i.p. or perphenazine 5 mg/kg i.p.).</li>
+          <li>Test for catalepsy at intervals (15, 30, 60, 90, 120, 150 min post-inducer).</li>
+          <li>Perform tests sequentially (stage-wise).</li>
+        </ol>
+        <p><strong>Block Test Stages:</strong></p>
+        <ul style="padding-left: 20px; list-style: disc;">
+          <li>Stage 0: Place on table; note if rat moves normally.</li>
+          <li>Stage 1: Gently push; note if fails to move.</li>
+          <li>Stage 2: Place both forepaws on 3 cm block; note time to correct posture.</li>
+          <li>Stage 3: Place both forepaws on 9 cm block; note time to descend.</li>
+        </ul>
+        <p><strong>Bar Test (alternative/common):</strong></p>
+        <p style="padding-left: 20px;">Place both forepaws on horizontal bar; record time paws remain on bar (cutoff 180–300 sec).</p>
+      </div>
+    </div>
   </div>
 
-  <!-- NAVIGATION -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
-      ⬅ Previous
-    </button>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const video = document.getElementById("experimentVideo");
+    const afterTimeCell = document.getElementById("afterTimeCell");
+    
+    const videoData = {
+      inject: "{% static 'experiments/anticataleptic-activity/videos/inject.mp4' %}",
+      after: "{% static 'experiments/anticataleptic-activity/videos/after.mp4' %}"
+    };
 
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
-      Next: Conclusion ▶
-    </button>
-  </div>
+    function setActive(id) {
+      document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
 
-</div>
+    function runInject() {
+      setActive('btnInject');
+      video.src = videoData.inject;
+      video.play();
+      afterTimeCell.innerText = "—";
+    }
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
+    function runAfter() {
+      setActive('btnAfter');
+      video.src = videoData.after;
+      video.play();
+      
+      video.onended = function() {
+        // Example cataleptic time for a protected animal
+        afterTimeCell.innerText = "12 sec";
+        afterTimeCell.style.color = "#ff5252";
+        afterTimeCell.style.fontWeight = "700";
+        document.querySelector(".sidebar-box").style.boxShadow = "0 0 30px rgba(255, 82, 82, 0.4)";
+      };
+    }
 
-<script>
-const video = document.getElementById("experimentVideo");
-const afterTimeCell = document.getElementById("afterTime");
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
-// Video sources
-const videoData = {
-  inject: "{% static 'experiments/anticataleptic-activity/videos/inject.mp4' %}",
-  after: "{% static 'experiments/anticataleptic-activity/videos/after.mp4' %}"
-};
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
-function showInjectVideo() {
-  video.src = videoData.inject;
-  video.style.display = "block";
-  video.load();
-  video.play();
-
-  // Reset observation
-  afterTimeCell.innerText = "---";
-}
-
-function showAfterVideo() {
-  video.src = videoData.after;
-  video.style.display = "block";
-  video.load();
-  video.play();
-
-  // When video metadata is loaded, get actual duration
-  video.onloadedmetadata = () => {
-    const durationSeconds = Math.round(video.duration);
-    afterTimeCell.innerText = durationSeconds + " sec";
-  };
-}
-
-// Theme toggle
- else {
-    localStorage.setItem("uiTheme", "dark");
-  }
-}
-
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
-  }
-};
-</script>
-
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

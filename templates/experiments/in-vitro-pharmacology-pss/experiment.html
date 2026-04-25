@@ -29,48 +29,29 @@
     }
 
     /* ================= FULL SCREEN BUTTON ================= */
+    /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
-
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      right: 25px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-      border-color: #fa0707;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
-    }
-
-    .dropdown-btn:active {
-      transform: scale(0.96);
-    }
-
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
+      gap: 20px;
+      z-index: 9999;
     }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the principles of in-vitro pharmacology and understand the composition, preparation, and importance of physiological salt solutions used in isolated tissue experiments.</span>
+  </div>
+
+  
+
+  
+
 
 <div class="page-container">
 
@@ -79,12 +60,8 @@
     Introduction to In-Vitro Pharmacology and Physiological Salt Solutions
   </h1>
 
-  <!-- FULL SCREEN BUTTON -->
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="toggleFullscreen()">
-      ⛶ Full Screen
-    </button>
-  </div>
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
   <!-- ================= VIDEO FRAME ================= -->
   <div class="video-frame">
@@ -121,8 +98,6 @@
 
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
 
 <script>
 function finishPractical() {
@@ -238,6 +213,6 @@ function downloadPDF() {
 
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

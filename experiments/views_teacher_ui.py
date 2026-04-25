@@ -75,7 +75,7 @@ def teacher_dashboard(request):
         {
             "name": teacher.first_name,
             "total_students": students.count(),
-            "total_experiments": experiments.count(),
+            "total_experiments": experiments.values('number').distinct().count(),
             "total_attempts": attempts.count(),
         }
     )

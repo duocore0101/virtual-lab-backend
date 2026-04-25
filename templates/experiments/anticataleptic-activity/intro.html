@@ -3,78 +3,112 @@
 <html lang="en">
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-    <meta charset="UTF-8">
-    <title>{{ experiment.name }} | Virtual Lab</title>
+  <meta charset="UTF-8">
+  <title>Anti-Catatonic Activity Experiment – Aim</title>
 
-    <link rel="stylesheet"
-      href="{% static 'experiments/anticataleptic-activity/css/experiment.css' %}">
+  <!-- CSS (EXACT SAME AS ROTAROD) -->
+  <link rel="stylesheet"
+        href="{% static 'experiments/rotarod/css/intro.css' %}">
+
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
   {% if cached_model_path %}
   <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
   <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
   {% endif %}
+
+  {% if cached_video_paths %}
+  <!-- 🚀 PRELOAD VIDEOS TO PREVENT BUFFERING DURING EXPERIMENT -->
+  {% for video_path in cached_video_paths %}
+  <link rel="preload" href="{% static video_path %}" as="video" type="video/mp4">
+  {% endfor %}
+  {% endif %}
 </head>
+
 <body>
 
-<div class="experiment-container">
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
 
-    <!-- HEADER -->
-    <div class="experiment-header">
-        <h1>{{ experiment.name }}</h1>
-    </div>
+<div class="page-container">
 
-    <!-- INTRODUCTION -->
-    <section class="experiment-section">
-        <h2>Introduction</h2>
+  <!-- =========================
+       TITLE (AIM ONLY)
+  ========================== -->
+  <h1 class="title">Aim</h1>
 
-        <p>
-            Catalepsy is a state of immobility characterized by
-            maintenance of imposed posture and muscular rigidity.
-            In experimental pharmacology, catalepsy is commonly used
-            as a behavioral model to evaluate the motor side effects
-            produced by antipsychotic drugs.
-        </p>
+  <!-- =========================
+       AIM TEXT
+  ========================== -->
+  <div class="info-box">
+    <p style="font-size:18px; text-align:justify; font-weight:500;">
+      To study and evaluate anti-catatonic (anti-cataleptic) activity of drugs
+      (e.g., scopolamine) against haloperidol-induced catalepsy in rats/mice.
+    </p>
+  </div>
 
-        <p>
-            The anti-catatonic (anti-cataleptic) activity test is used
-            to assess the ability of drugs to reduce or reverse
-            drug-induced catalepsy in laboratory animals such as
-            rats or mice.
-        </p>
+  <!-- =========================
+       NAVIGATION BUTTONS
+  ========================== -->
+  <div class="button-row" style="justify-content:center;">
+    <button class="back-btn"
+      onclick="location.href='{{ dashboard_url }}'">
+      ⬅ Back
+    </button>
 
-        <p>
-            This virtual experiment introduces the concept of
-            haloperidol-induced catalepsy and provides an overview
-            of how anti-catatonic activity is evaluated using
-            standard experimental methods.
-        </p>
-    </section>
-
-    <!-- LEARNING OBJECTIVES -->
-    <section class="experiment-section">
-        <h2>Learning Objectives</h2>
-        <ul>
-            <li>Understand the concept of catalepsy in experimental pharmacology</li>
-            <li>Learn the purpose of anti-catatonic activity studies</li>
-            <li>Become familiar with haloperidol-induced catalepsy models</li>
-            <li>Prepare for experimental evaluation using bar and block tests</li>
-        </ul>
-    </section>
-
-    <!-- NAVIGATION BUTTONS -->
-    <div class="experiment-navigation">
-        <a href="{{ dashboard_url }}" class="btn btn-secondary">
-            ← Back to Dashboard
-        </a>
-
-        <a href="/experiment/anticataleptic-activity/theory/"
-           class="btn btn-primary">
-            Start Practical →
-        </a>
-    </div>
+    <button class="exp-btn"
+      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+      Next ▶
+    </button>
+  </div>
 
 </div>
 
+<!-- =========================
+     🔧 SCRIPTS
+========================== -->
+<script>
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+</script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -1,148 +1,402 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>PTZ Experiment – Anticonvulsant Activity</title>
 
-  <!-- SAME CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+  <!-- SAME CSS USED IN OTHER PRACTICALS -->
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10006">
 
-  <!-- 🔹 UI ONLY: Bigger image card -->
   <style>
-    .video-grid {
-      grid-template-columns: 1fr !important;
-      margin-top: 30px;
-    }
-
-    .main-video {
-      max-width: 1000px;
+    /* ================= PAGE CONTAINER ================= */
+    .page-container {
+      max-width: 1400px !important;
+      width: 95%;
       margin: 0 auto;
     }
 
-    .main-video img {
+    /* ================= MAIN LAYOUT ================= */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 30px;
+      align-items: stretch;
+      margin-top: 15px;
+    }
+
+    /* ================= VIDEO FRAME ================= */
+    .video-frame {
       width: 100%;
-      height: 520px;
-      object-fit: contain;
-      border-radius: 14px;
+      height: 500px;
       background: #000;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ================= SIDEBAR BOX ================= */
+    .sidebar-box {
+      background: #1e1e1e;
+      border-radius: 18px;
+      padding: 22px;
+      height: 500px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-box h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #ff5252;
+      font-size: 22px;
+      letter-spacing: 0.4px;
+    }
+
+    /* ================= CONTROLS ================= */
+    .ptz-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .control-btn:hover {
+      background: #ff2e2e;
+      border-color: #ff2e2e;
+      transform: translateY(-1px);
+    }
+
+    .control-btn.active {
+      background: #ff2e2e;
+      border-color: #ff2e2e;
+    }
+
+    /* ================= OBSERVATION TABLE ================= */
+    .observation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      flex-grow: 1;
+    }
+
+    .observation-table th,
+    .observation-table td {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 4px;
+      text-align: center;
+    }
+
+    .observation-table th {
+      background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .observation-table td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* ================= TOP ACTION BUTTONS ================= */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 22px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #ee0a0a, #e60909);
+      border-color: #fa0707;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+    }
+
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      color: #111827;
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 0 40px rgba(255, 46, 46, 0.3);
+      position: relative;
+    }
+
+    .modal-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ff2e2e;
+      margin-bottom: 25px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff2e2e;
+      font-weight: bold;
+    }
+
+    /* 🌗 LIGHT MODE */
+    body.light-mode .sidebar-box {
+      background: #ffffff;
+      color: #111;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-mode .observation-table td {
+      background: #f9f9f9;
+      border-color: #ddd;
+      color: #333;
+    }
+
+    body.light-mode .control-btn {
+      color: #333;
+      border-color: #ddd;
     }
   </style>
 </head>
 
 <body>
-
-<div class="exp-container">
-
-  <h1>
-    Anticonvulsant Activity – Virtual Simulator<br>
-    <small>Pentylenetetrazol (PTZ) Method</small>
-  </h1>
-
-  <!-- 🔁 METHOD TOGGLE (UNCHANGED) -->
-  <div class="exp-toggle">
-    <button class="toggle-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
-      MES Method
-    </button>
-    <button class="toggle-btn active">PTZ Method</button>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method.</span>
   </div>
 
-  <!-- 🌗 THEME TOGGLE (RESTORED) -->
-  <div class="theme-toggle">
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-    <span class="toggle-label">Light Mode</span>
+  <div class="page-container">
+
+    <!-- TITLE -->
+    <h1 class="title">
+      Experiment (PTZ Method)
+    </h1>
+
+    <!-- TOP ACTION BUTTONS -->
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openProcedure()">🧪 Procedure</button>
+    </div>
+
+    <!-- METHOD TOGGLE -->
+    <div class="exp-toggle" style="text-align: center; margin-top: 10px;">
+      <button class="toggle-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'" style="padding: 10px 24px; border-radius: 25px; border: 1px solid #ddd; background: transparent; cursor: pointer; margin-right: 15px;">MES Method</button>
+      <button class="toggle-btn active" style="padding: 10px 24px; border-radius: 25px; border: none; background: #ff2e2e; color: #fff; font-weight: 600;">PTZ Method</button>
+    </div>
+
+    <div class="main-layout">
+      <!-- ================= VIDEO ================= -->
+      <div class="video-frame">
+        <video id="expVideo" controls preload="auto">
+          <source src="{% static 'experiments/anticonvulsant-mes-ptz/videos/ptz.mp4' %}" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- ================= SIDEBAR ================= -->
+      <div class="sidebar-box">
+        <h2>Observations</h2>
+
+        <!-- 🎛 CONTROLS -->
+        <div class="ptz-controls">
+          <button class="control-btn" id="btnBefore" onclick="runBefore()">▶ Before Drug</button>
+          <button class="control-btn" id="btnInject" onclick="runInject()">💉 Inject Drug</button>
+          <button class="control-btn" id="btnAfter" onclick="runAfter()">▶ After Drug</button>
+        </div>
+
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th>Group</th>
+              <th>Latency (sec)</th>
+              <th>Duration (sec)</th>
+              <th>% Protection</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Control (PTZ 85 mg/kg)</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+            </tr>
+            <tr>
+              <td>Standard (Diazepam)</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+            </tr>
+            <tr>
+              <td>Test Drug (200 mg/kg)</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+              <td class="obs-cell">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top:auto; font-size:12px; font-style: italic; opacity: 0.8; text-align: center;">
+          Note: Significant protection observed with Diazepam and Test drug.
+        </p>
+      </div>
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row" style="justify-content:center; margin-top:20px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- 🖼️ SINGLE LARGE IMAGE -->
-  <div class="video-grid">
-    <div class="main-video">
-      <img
-        src="{% static 'experiments/anticonvulsant-mes-ptz/images/ptz_induced_seizure.png' %}"
-        alt="PTZ Induced Seizure in Mouse">
+  <!-- ================= PROCEDURE MODAL ================= -->
+  <div class="modal-overlay" id="procedureModal">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeProcedure()">✖</span>
+      <h2 class="modal-title">Step-by-Step Procedure</h2>
+      <ol style="padding-left: 20px; font-size: 15px; line-height: 1.6;">
+        <li><strong>Animal Selection and Acclimatization:</strong> Select healthy mice. Acclimatize in observation cages for 30–60 minutes.</li>
+        <li><strong>Grouping:</strong> Divide into groups (n=6): Control (vehicle + PTZ), Standard (diazepam + PTZ), and Test drugs + PTZ.</li>
+        <li><strong>Drug Administration:</strong> Administer test/standard drug i.p. 30 minutes before PTZ.</li>
+        <li><strong>PTZ Administration:</strong> Inject 80–90 mg/kg subcutaneously in the scruff (volume ~0.1–0.2 mL).</li>
+        <li><strong>Observation:</strong> Observe continuously for 30 minutes for myoclonic jerks, onset of generalized clonic seizures, and duration.</li>
+        <li><strong>Seizure Scoring:</strong> Use Modified Racine Scale (Stage 0: No response to Stage 6: Tonic extension/death).</li>
+        <li><strong>Post-Procedure:</strong> Monitor survivors and provide necessary care.</li>
+        <li><strong>Data Recording:</strong> Note latency (sec), % protection from clonus/death, and mortality.</li>
+      </ol>
     </div>
   </div>
 
-  <!-- 📊 OBSERVATION TABLE -->
-<div class="observation-section">
-  <h2>PTZ Induced Seizure Observation Table</h2>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const video = document.getElementById("expVideo");
+    const videoSrcMain = "{% static 'experiments/anticonvulsant-mes-ptz/videos/ptz.mp4' %}";
+    const videoSrcInject = "{% static 'experiments/anticonvulsant-mes-ptz/videos/inject_drug.mp4' %}";
 
-  <table class="observation-table">
-    <thead>
-      <tr>
-        <th>Group</th>
-        <th>Latency to Clonus (sec)<br><small>(Mean ± SEM)</small></th>
-        <th>Duration of Clonus (sec)</th>
-        <th>No. Protected<br>(No Death)</th>
-        <th>% Protection</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Control (PTZ 85 mg/kg)</td>
-        <td>120 ± 15</td>
-        <td>45 ± 8</td>
-        <td>0</td>
-        <td>0%</td>
-      </tr>
-      <tr>
-        <td>Standard (Diazepam 5 mg/kg)</td>
-        <td>900 ± 120<strong>**</strong></td>
-        <td>10 ± 5<strong>**</strong></td>
-        <td>6</td>
-        <td>100%</td>
-      </tr>
-      <tr>
-        <td>Test Drug (200 mg/kg)</td>
-        <td>600 ± 90<strong>*</strong></td>
-        <td>20 ± 6<strong>*</strong></td>
-        <td>4</td>
-        <td>66.7%</td>
-      </tr>
-    </tbody>
-  </table>
+    const tableData = [
+      ["120 ± 15", "45 ± 8", "0%"],
+      ["900 ± 120", "10 ± 5", "100%"],
+      ["600 ± 90", "20 ± 6", "66.7%"]
+    ];
 
-  <p style="margin-top:12px;font-size:14px;color:#ccc;">
-    <strong>*</strong> p&lt;0.05, <strong>**</strong> p&lt;0.01 vs. control
-    (ANOVA / Dunnett’s test)
-  </p>
-</div>
+    function setActive(id) {
+      document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
 
+    function runBefore() {
+      setActive('btnBefore');
+      video.src = videoSrcMain;
+      video.play();
+      video.onended = function() {
+        const cells = document.querySelectorAll(".obs-cell");
+        cells[0].innerText = tableData[0][0];
+        cells[1].innerText = tableData[0][1];
+        cells[2].innerText = tableData[0][2];
+      };
+    }
 
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
-    ⬅ Back
-  </button>
+    function runInject() {
+      setActive('btnInject');
+      video.src = videoSrcInject;
+      video.play();
+      video.onended = null;
+    }
 
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-    Next ▶
-  </button>
+    function runAfter() {
+      setActive('btnAfter');
+      video.src = videoSrcMain;
+      video.play();
+      video.onended = function() {
+        const cells = document.querySelectorAll(".obs-cell");
+        // Standard
+        cells[3].innerText = tableData[1][0];
+        cells[4].innerText = tableData[1][1];
+        cells[5].innerText = tableData[1][2];
+        // Test
+        cells[6].innerText = tableData[2][0];
+        cells[7].innerText = tableData[2][1];
+        cells[8].innerText = tableData[2][2];
+      };
+    }
 
-</div>
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
-<!-- 🌗 THEME TOGGLE SCRIPT (UNCHANGED) -->
-<script>
-const toggle = document.getElementById("themeToggle");
-if (localStorage.getItem("expTheme") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "expTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

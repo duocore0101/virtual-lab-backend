@@ -7,7 +7,7 @@
   <title>Result Graph – Hot Plate Method</title>
 
   <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20002">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -139,13 +139,14 @@
       box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
     }
 
-    .next-btn {
+    .button-row {
       display: flex;
       justify-content: center;
+      gap: 20px;
       margin-top: 30px;
     }
 
-    .next-btn button {
+    .button-row button {
       padding: 10px 28px;
       font-size: 15px;
       font-weight: 600;
@@ -157,25 +158,37 @@
       transition: all 0.35s ease;
     }
 
-    .next-btn button:hover {
+    .button-row button:hover {
       background: linear-gradient(135deg, #ff2a2a, #8b0000);
       color: #ffffff;
       box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
+    
+    /* 🎯 AIM HEADER LIGHT MODE FIX */
+    body.light-mode .top-left-aim {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: #222 !important;
+      border: 1px solid rgba(255, 0, 0, 0.3) !important;
+    }
+    
+    body.light-mode .top-left-aim span {
+      color: #222 !important;
     }
   </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study and Evaluate Analgesic Activity by Hot Plate Method</span>
+  </div>
 
-<div class="theme-toggle">
-  <label class="toggle-switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
-  <span class="toggle-label">Light Mode</span>
+  
 
-  <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
-</div>
+  
+
+
+
 
 <div class="graph-card">
 
@@ -184,7 +197,10 @@
 
   <canvas id="resultChart" height="120"></canvas>
 
-  <div class="next-btn">
+  <div class="button-row">
+    <button onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
     <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
       Next ▶
     </button>
@@ -196,17 +212,13 @@
 /* THEME */
 const toggle = document.getElementById("themeToggle");
 
-if (localStorage.getItem("uiTheme") === "light") {
+if (localStorage.getItem("gmars-theme-preference") === "light") {
   document.body.classList.add("light-mode");
   toggle.checked = true;
 }
 
 toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "uiTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
+  toggleTheme();
 });
 
 /* FULLSCREEN */
@@ -290,6 +302,6 @@ new Chart(ctx, {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -41,15 +41,18 @@
   <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
   <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
   {% endif %}
+
+  {% if cached_video_paths %}
+  <!-- 🚀 PRELOAD VIDEOS TO PREVENT BUFFERING DURING EXPERIMENT -->
+  {% for video_path in cached_video_paths %}
+  <link rel="preload" href="{% static video_path %}" as="video" type="video/mp4">
+  {% endfor %}
+  {% endif %}
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
 <div class="page-container">
 
@@ -94,6 +97,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

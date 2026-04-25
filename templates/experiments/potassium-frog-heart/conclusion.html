@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Effect of Potassium Ions on Frog’s Heart – Result & Conclusion</title>
 
   <!-- Reuse existing CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -41,231 +41,212 @@
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Result & Conclusion</h1>
-
-  <!-- 🧪 RESULT & DISCUSSION -->
-  <div class="info-box">
-    <h2>Result & Discussion</h2>
-
-    <p><strong>A. Diastolic Arrest (Excess Potassium)</strong></p>
-    <p>
-      When extracellular potassium concentration increases, the potassium
-      concentration gradient across the cardiac cell membrane decreases.
-    </p>
-    <ul>
-      <li>
-        <strong>Depolarization:</strong>
-        The resting membrane potential becomes less negative
-        (partial depolarization).
-      </li>
-      <li>
-        <strong>Inactivation:</strong>
-        Sustained partial depolarization inactivates voltage-gated
-        sodium (Na⁺) channels. Without functional Na⁺ channels, the heart
-        cannot generate a new action potential.
-      </li>
-      <li>
-        <strong>Result:</strong>
-        The heart loses excitability and fails to contract, stopping in a
-        relaxed, dilated state known as
-        <strong>diastolic arrest</strong>.
-      </li>
-    </ul>
-
-    <p><strong>B. Systolic Arrest (Lack of Potassium)</strong></p>
-    <p>
-      When extracellular potassium is removed using potassium-free
-      Ringer’s solution, the Na⁺/K⁺-ATPase pump is inhibited because it
-      requires extracellular potassium for normal function.
-    </p>
-    <ul>
-      <li>
-        <strong>Sodium Accumulation:</strong>
-        Intracellular sodium accumulates as it is not pumped out of the cell.
-      </li>
-      <li>
-        <strong>Calcium Overload:</strong>
-        Elevated intracellular sodium inhibits the Na⁺/Ca²⁺ exchanger (NCX),
-        preventing calcium extrusion and causing intracellular calcium to rise.
-      </li>
-      <li>
-        <strong>Result:</strong>
-        Excess intracellular calcium produces sustained contraction (rigor),
-        similar to the effect of digitalis or excess calcium, leading to
-        <strong>systolic arrest</strong>.
-      </li>
-    </ul>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To Study Effect of Potassium Ions on Isolated Frog Heart</span>
   </div>
 
-  <!-- 🧠 CONCLUSION -->
-  <div class="info-box">
-    <h2>Conclusion</h2>
-    <ul>
-      <li>
-        <strong>Excess potassium</strong> acts as a cardiac depressant,
-        causing the heart to stop in
-        <strong>diastole (relaxation)</strong>.
-      </li>
-      <li>
-        <strong>Lack of potassium</strong> paradoxically increases muscle tone
-        due to inhibition of membrane pumps and calcium accumulation, eventually
-        causing the heart to stop in
-        <strong>systole (contraction)</strong>.
-      </li>
-    </ul>
-  </div>
-
-  <!-- 🔘 NAVIGATION -->
-  <div class="button-row">
-
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
-      ⬅ Back
-    </button>
-
-    <!-- ✅ FINISH PRACTICAL -->
-    
-    
-    
-    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
-      Download Practical PDF 📄
-    </button>
 
 
 
-    <button class="exp-btn" onclick="finishPractical()">
-      Finish Practical ✔
-    </button>
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
 
   </div>
 
-</div>
+  <div class="page-container">
 
-<!-- ================= SCRIPTS ================= -->
+    <h1 class="title">Result & Conclusion</h1>
 
-<script>
-/* THEME */
+    <!-- 🧪 RESULT & DISCUSSION -->
+    <div class="info-box">
+      <h2>Result</h2>
+
+      <p><strong>A. Diastolic Arrest (Excess Potassium)</strong></p>
+      <p>
+        When extracellular potassium concentration increases, the potassium
+        concentration gradient across the cardiac cell membrane decreases.
+      </p>
+      <ul>
+        <li>
+          <strong>Depolarization:</strong>
+          The resting membrane potential becomes less negative
+          (partial depolarization).
+        </li>
+        <li>
+          <strong>Inactivation:</strong>
+          Sustained partial depolarization inactivates voltage-gated
+          sodium (Na⁺) channels. Without functional Na⁺ channels, the heart
+          cannot generate a new action potential.
+        </li>
+        <li>
+          <strong>Result:</strong>
+          The heart loses excitability and fails to contract, stopping in a
+          relaxed, dilated state known as
+          <strong>diastolic arrest</strong>.
+        </li>
+      </ul>
 
 
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+    </div>
 
-<script>
-function finishPractical() {
+    <!-- 🧠 CONCLUSION -->
+    <div class="info-box">
+      <h2>Conclusion</h2>
+      <ul>
+        <li>
+          <strong>Excess potassium</strong> acts as a cardiac depressant,
+          causing the heart to stop in
+          <strong>diastole (relaxation)</strong>.
+        </li>
 
-  fetch("/experiment/finish/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      experiment_slug: "{{ experiment.slug }}",
-      observations: {
-        status: "completed"
+      </ul>
+    </div>
+
+    <!-- 🔘 NAVIGATION -->
+    <div class="button-row">
+
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+        ⬅ Back
+      </button>
+
+      <!-- ✅ FINISH PRACTICAL -->
+
+
+
+      <button class="exp-btn" onclick="downloadPDF()"
+        style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+        Download Practical PDF 📄
+      </button>
+
+
+
+      <button class="exp-btn" onclick="finishPractical()">
+        Finish Practical ✔
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+
+  <script>
+    /* THEME */
+
+
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
       }
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    // 🔥 BACKEND DECIDES REDIRECT (dashboard / exam)
-    window.location.href = data.redirect;
-  })
-  .catch(err => {
-    alert("Failed to submit practical");
-    console.error(err);
-  });
-}
-</script>
-
-
-
-
-
-<script>
-function downloadPDF() {
-  const slug = "{{ experiment.slug }}";
-  
-  // 1. TRY TO SCRAPE TABLE DATA FROM DOM
-  let tableData = [];
-  const table = document.querySelector('table'); 
-  if (table) {
-    const rows = table.querySelectorAll('tr');
-    rows.forEach(row => {
-      let rowData = [];
-      const cells = row.querySelectorAll('th, td');
-      cells.forEach(cell => {
-        rowData.push(cell.innerText.trim());
-      });
-      if (rowData.length > 0) rowData.push(""); // filler
-      if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
-    });
-    
-    // Save to localStorage for use on conclusion/other pages
-    if (tableData.length > 0) {
-        localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
     }
-  } 
-  
-  // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
-  if (tableData.length === 0) {
-    const saved = localStorage.getItem('exp_data_' + slug);
-    if (saved) {
-        tableData = JSON.parse(saved);
+  </script>
+
+  <script>
+    function finishPractical() {
+
+      fetch("/experiment/finish/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          experiment_slug: "{{ experiment.slug }}",
+          observations: {
+            status: "completed"
+          }
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          // 🔥 BACKEND DECIDES REDIRECT (dashboard / exam)
+          window.location.href = data.redirect;
+        })
+        .catch(err => {
+          alert("Failed to submit practical");
+          console.error(err);
+        });
     }
-  }
-
-  fetch(`/experiment/${slug}/download-pdf/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": "{{ csrf_token }}"
-    },
-    body: JSON.stringify({
-      table_data: tableData
-    })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("PDF generation failed");
-    return res.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Practical_Report_${slug}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  })
-  .catch(err => {
-    alert("Failed to generate PDF");
-    console.error(err);
-  });
-}
-</script>
+  </script>
 
 
 
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script>
+    function downloadPDF() {
+      const slug = "{{ experiment.slug }}";
+
+      // 1. TRY TO SCRAPE TABLE DATA FROM DOM
+      let tableData = [];
+      const table = document.querySelector('table');
+      if (table) {
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          let rowData = [];
+          const cells = row.querySelectorAll('th, td');
+          cells.forEach(cell => {
+            rowData.push(cell.innerText.trim());
+          });
+          if (rowData.length > 0) rowData.push(""); // filler
+          if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
+        });
+
+        // Save to localStorage for use on conclusion/other pages
+        if (tableData.length > 0) {
+          localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+        }
+      }
+
+      // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
+      if (tableData.length === 0) {
+        const saved = localStorage.getItem('exp_data_' + slug);
+        if (saved) {
+          tableData = JSON.parse(saved);
+        }
+      }
+
+      fetch(`/experiment/${slug}/download-pdf/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+          table_data: tableData
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("PDF generation failed");
+          return res.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Practical_Report_${slug}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        })
+        .catch(err => {
+          alert("Failed to generate PDF");
+          console.error(err);
+        });
+    }
+  </script>
+
+
+
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

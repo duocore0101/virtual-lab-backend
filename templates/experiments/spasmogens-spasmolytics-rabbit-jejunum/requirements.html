@@ -1,19 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Effects of Spasmogens and Spasmolytics – Requirements</title>
 
   <!-- MODEL VIEWER (KEPT FOR CONSISTENCY) -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
+  <script type="module" src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse existing intro CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -53,118 +52,121 @@
 </head>
 
 <body>
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Requirements / Materials</h1>
-
-  <!-- 🐇 EXPERIMENTAL ANIMAL -->
-  <div class="info-box">
-    <h2>Experimental Animal</h2>
-    <ul>
-      <li><strong>Healthy Adult Rabbit</strong> (1–2 kg)</li>
-      <li>Preferably fasted overnight before experiment</li>
-      <li>Healthy and properly acclimatized</li>
-    </ul>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effects of spasmogens and spasmolytics on isolated rabbit jejunum.</span>
   </div>
 
-  <!-- 💊 DRUG SOLUTIONS -->
-  <div class="info-box">
-    <h2>Drug Solutions</h2>
-    <ul>
-      <li>
-        <strong>Spasmogens:</strong>
-        <ul>
-          <li>Acetylcholine (10⁻⁴ M)</li>
-          <li>Barium Chloride (10⁻² M)</li>
-        </ul>
-      </li>
+  
 
-      <li>
-        <strong>Spasmolytics:</strong>
-        <ul>
-          <li>Atropine (10⁻⁶ M)</li>
-          <li>Adrenaline (10⁻⁵ M)</li>
-          <li>Papaverine (10⁻⁴ M)</li>
-        </ul>
-      </li>
-    </ul>
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    
+    
   </div>
 
-  <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
-  <div class="info-box">
-    <h2>Physiological Solution</h2>
-    <ul>
-      <li><strong>Tyrode's Solution</strong></li>
-      <li>
-        Composition (per 1 L distilled water):
-        <br>
-        NaCl 8.0 g, KCl 0.2 g, CaCl₂ 0.2 g, MgCl₂ 0.1 g,
-        NaHCO₃ 1.0 g, NaH₂PO₄ 0.05 g, Glucose 1.0 g
-      </li>
-      <li>Aerated continuously with 95% O₂ + 5% CO₂</li>
-      <li>Maintained at approximately 37°C</li>
-    </ul>
+  <div class="page-container">
+
+    <h1 class="title">Requirements / Materials</h1>
+
+    <!-- 🐇 EXPERIMENTAL ANIMAL -->
+    <div class="info-box">
+      <h2>Experimental Animal</h2>
+      <ul>
+        <li><strong>Healthy Adult Rabbit</strong> (1–2 kg)</li>
+        <li>Preferably fasted overnight before experiment</li>
+        <li>Healthy and properly acclimatized</li>
+      </ul>
+    </div>
+
+    <!-- 💊 DRUG SOLUTIONS -->
+    <div class="info-box">
+      <h2>Drug Solutions</h2>
+      <ul>
+        <li>
+          <strong>Spasmogens:</strong>
+          <ul>
+            <li>Acetylcholine (10⁻⁴ M)</li>
+            <li>Barium Chloride (10⁻² M)</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Spasmolytics:</strong>
+          <ul>
+            <li>Atropine (10⁻⁶ M)</li>
+            <li>Adrenaline (10⁻⁵ M)</li>
+
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 🧪 PHYSIOLOGICAL SOLUTION -->
+    <div class="info-box">
+      <h2>Physiological Solution</h2>
+      <ul>
+        <li><strong>Tyrode's Solution</strong></li>
+        <li>
+          Composition (per 1 L distilled water):
+          <br>
+          NaCl 8.0 g, KCl 0.2 g, CaCl₂ 0.2 g, MgCl₂ 0.1 g,
+          NaHCO₃ 1.0 g, NaH₂PO₄ 0.05 g, Glucose 1.0 g
+        </li>
+        <li>Aerated continuously with 95% O₂ + 5% CO₂</li>
+        <li>Maintained at approximately 37°C</li>
+      </ul>
+    </div>
+
+    <!-- ⚙ EQUIPMENT -->
+    <div class="info-box">
+      <h2>Equipment / Apparatus</h2>
+      <ul>
+        <li>Organ bath (20–50 mL capacity)</li>
+        <li>Aerator with oxygen supply</li>
+        <li>Isometric or isotonic lever</li>
+        <li>Kymograph / Student physiograph</li>
+        <li>Dissecting instruments</li>
+        <li>Thread and hooks for mounting tissue</li>
+      </ul>
+
+      <img src="{% static 'experiments/spasmogens-spasmolytics-rabbit-jejunum/images/organ-bath.png' %}"
+        alt="Organ Bath Apparatus" style="width:100%; max-width:450px; display:block; margin:auto; border-radius:10px;">
+    </div>
+
+    <!-- 🔘 NAVIGATION BUTTONS -->
+    <div class="button-row">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- ⚙ EQUIPMENT -->
-  <div class="info-box">
-    <h2>Equipment / Apparatus</h2>
-    <ul>
-      <li>Organ bath (20–50 mL capacity)</li>
-      <li>Aerator with oxygen supply</li>
-      <li>Isometric or isotonic lever</li>
-      <li>Kymograph / Student physiograph</li>
-      <li>Dissecting instruments</li>
-      <li>Thread and hooks for mounting tissue</li>
-    </ul>
+  <!-- 🔧 SCRIPTS -->
+  <script>
 
-    <img
-  src="{% static 'experiments/spasmogens-spasmolytics-rabbit-jejunum/images/organ-bath.png' %}"
-  alt="Organ Bath Apparatus"
-  style="width:100%; max-width:450px; display:block; margin:auto; border-radius:10px;"
->
-  </div>
+  </script>
 
-  <!-- 🔘 NAVIGATION BUTTONS -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
-      ⬅ Back
-    </button>
-
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- 🔧 SCRIPTS -->
-<script>
-
-</script>
-
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

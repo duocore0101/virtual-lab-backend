@@ -74,11 +74,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of CNS depressant and CNS stimulant drugs on locomotor activity in mice using an actophotometer.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -98,18 +107,12 @@
         laboratory animals. The activity is directly proportional to
         the level of central nervous system (CNS) excitation.
       </p>
-    </div>
-
-    <div class="info-box slide">
       <h2>Working Mechanism</h2>
       <p>
         The apparatus consists of an activity cage with photocell beams.
         Each movement of the animal interrupts the light beam, and these
         interruptions are recorded as digital counts.
       </p>
-    </div>
-
-    <div class="info-box slide">
       <h2>Effect of CNS Depressants</h2>
       <p>
         CNS depressant drugs such as chlorpromazine and diazepam reduce
@@ -125,9 +128,6 @@
         neuronal firing, resulting in enhanced locomotor activity and
         higher activity counts.
       </p>
-    </div>
-
-    <div class="info-box slide">
       <h2>Interpretation</h2>
       <p>
         A decrease in locomotor counts indicates CNS depressant activity,
@@ -139,7 +139,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -203,6 +203,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and determine the acute oral toxicity and estimate the LD₅₀ value of a given test substance in experimental animals as per OECD Test Guideline 423 (Acute Toxic Class Method).</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -98,10 +107,6 @@
         <li>Only healthy, fasted animals are selected for dosing.</li>
         <li>Unsuitable animals are excluded from the study.</li>
       </ul>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
       <h2>Dose Selection & Administration</h2>
       <ul>
         <li>OECD 423 follows a stepwise dose progression method.</li>
@@ -109,10 +114,6 @@
         <li>Test substance administered orally using gavage needle.</li>
         <li>Animals are fasted overnight prior to dosing.</li>
       </ul>
-    </div>
-
-    <!-- SLIDE 3 -->
-    <div class="info-box slide">
       <h2>Sequential Testing Procedure</h2>
       <ul>
         <li>Initial test: 3 female rats at selected dose.</li>
@@ -123,7 +124,7 @@
       </ul>
     </div>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 2 -->
     <div class="info-box slide">
       <h2>Observation Period (14 Days)</h2>
       <ul>
@@ -133,10 +134,6 @@
         <li>Monitor body weight and food intake.</li>
         <li>Record mortality, if any.</li>
       </ul>
-    </div>
-
-    <!-- SLIDE 5 -->
-    <div class="info-box slide">
       <h2>Data Analysis & Classification</h2>
       <ul>
         <li>Calculate percentage mortality at each dose.</li>
@@ -149,7 +146,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -211,6 +208,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

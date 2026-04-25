@@ -25,7 +25,7 @@ def superadmin_dashboard(request):
         "total_admins": User.objects.filter(role="admin", is_active=True).count(),
         "total_teachers": User.objects.filter(role="teacher", is_active=True).count(),
         "total_students": User.objects.filter(role="student", is_active=True).count(),
-        "total_experiments": Experiment.objects.count(),
+        "total_experiments": Experiment.objects.values('number').distinct().count(),
         "total_attempts": ExperimentAttempt.objects.filter(
             completed_at__isnull=False
         ).count(),

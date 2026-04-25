@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of agonists and antagonists on isolated guinea pig ileum by recording dose-response curves (DRC).</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -99,10 +108,6 @@
         the isolated ileum contracts in response to agonist drugs acting on specific
         receptors present on the smooth muscle.
       </p>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
       <h2>Action of Agonists</h2>
       <p>
         Agonists such as <strong>Acetylcholine (ACh)</strong> bind to 
@@ -110,10 +115,6 @@
         Activation of these receptors leads to contraction of the longitudinal
         smooth muscle fibers in a concentration-dependent graded manner.
       </p>
-    </div>
-
-    <!-- SLIDE 3 -->
-    <div class="info-box slide">
       <h2>Action of Antagonists</h2>
       <p>
         Antagonists such as <strong>Atropine</strong> competitively block
@@ -123,7 +124,7 @@
       </p>
     </div>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 2 -->
     <div class="info-box slide">
       <h2>Competitive (Surmountable) Antagonism</h2>
       <p>
@@ -132,10 +133,6 @@
         Therefore, the maximum response remains unchanged while the EC₅₀
         increases, producing a parallel rightward shift of the dose-response curve.
       </p>
-    </div>
-
-    <!-- SLIDE 5 -->
-    <div class="info-box slide">
       <h2>Recording the Response</h2>
       <p>
         The contraction of the ileum is recorded using a 
@@ -149,7 +146,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -217,6 +214,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

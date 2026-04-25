@@ -4,123 +4,212 @@
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
-  <title>Elevated Plus Maze – Theory</title>
+  <title>Elevated Plus Maze – Theory | Virtual Lab</title>
 
-  <!-- Reuse SAME CSS -->
+  <!-- ✅ CSS (SAME PATTERN AS ROTAROD) -->
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/intro.css' %}?v=10001">
+
+  <style>
+    /* ================= SLIDE SYSTEM ================= */
+    .slide-container {
+      position: relative;
+      min-height: 280px;
+    }
+
+    .slide {
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-counter {
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* 🔝 TOP RIGHT ACTION BUTTONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-actions button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .top-actions button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
+    }
+  </style>
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study and evaluate the anxiolytic activity of drugs using the Elevated Plus Maze (EPM) method in mice or rats.</span>
+  </div>
+
+  
+
+  
+
+
+<!-- 🔝 TOP RIGHT BUTTONS -->
+<div class="top-actions">
+  
+  
+</div>
 
 <div class="page-container">
 
-  <!-- TITLE -->
-  <h1 class="title">Theory – Elevated Plus Maze (EPM) Method</h1>
+  <!-- ============================= -->
+  <!-- 🧪 TITLE -->
+  <!-- ============================= -->
+  <h1 class="title">
+    Theory/Principle
+  </h1>
 
-  <!-- PRINCIPLE -->
-  <div class="info-box">
-    <h2>Principle</h2>
-    <p>
-      The Elevated Plus Maze (EPM) is a behavioral model used to evaluate
-      anxiety and the anxiolytic activity of drugs in laboratory animals
-      such as mice and rats.
-    </p>
-    <p>
-      The method is based on the natural conflict between the tendency of
-      rodents to explore a new environment and their fear of open and
-      elevated spaces. Anxiolytic drugs reduce this fear and increase
-      exploratory behavior in open arms.
-    </p>
+  <!-- ============================= -->
+  <!-- 📘 SLIDES CONTENT -->
+  <!-- ============================= -->
+  <div class="slide-container">
+
+    <!-- SLIDE 1: PRINCIPLE, PARAMETERS & SIGNIFICANCE -->
+    <div class="info-box slide active">
+      <h2>Principle of EPM</h2>
+      <p>
+        The Elevated Plus Maze (EPM) is a validated behavioral model based on the
+        natural conflict between the tendency of rodents to explore new
+        environments and their innate fear of open and elevated spaces.
+      </p>
+      <p>
+        Anxiolytic drugs reduce this fear and increase the time spent exploring
+        the open arms of the maze.
+      </p>
+      <h2>Behavioral Parameters</h2>
+      <ul>
+        <li>
+          <strong>Open Arm Exploration:</strong>
+          Increased entries and time spent in open arms indicate anxiolytic (anti-anxiety) activity.
+        </li>
+        <li>
+          <strong>Closed Arm Preference:</strong>
+          Anxious rodents prefer closed arms, which provide shelter and safety.
+        </li>
+        <li>
+          <strong>Total Activity:</strong>
+          Measured by total arm entries, reflecting general locomotor activity.
+        </li>
+      </ul>
+      <h2>Significance</h2>
+      <p>
+        The EPM method is a simple and reliable screening method for evaluating
+        new anxiolytic agents. It is sensitive to GABA<sub>A</sub> receptor
+        modulators like benzodiazepines (e.g., Diazepam).
+      </p>
+      <p>
+        Drugs that increase open arm behavior are considered potential candidates
+        for the treatment of generalized anxiety disorders in humans.
+      </p>
+    </div>
+
   </div>
 
-  <!-- OPEN ARMS -->
-  <div class="info-box">
-    <h2>Open Arms</h2>
-    <p>
-      The open arms of the Elevated Plus Maze are unprotected and elevated,
-      making them aversive to rodents under normal conditions.
-    </p>
-    <ul>
-      <li>
-        <strong>Increased open arm entries:</strong>
-        Indicates reduced anxiety and anxiolytic activity of the drug.
-      </li>
-      <li>
-        <strong>Increased time spent in open arms:</strong>
-        Suggests enhanced exploratory behavior due to anxiolytic action.
-      </li>
-    </ul>
+  <!-- SLIDE COUNTER -->
+  <div class="slide-counter">
+    Slide <span id="currentSlide">1</span> / 1
   </div>
 
-  <!-- CLOSED ARMS -->
-  <div class="info-box">
-    <h2>Closed Arms</h2>
-    <p>
-      Closed arms are enclosed by high walls and provide a sense of safety
-      to the animal, making them the preferred area for anxious rodents.
-    </p>
-    <ul>
-      <li>
-        <strong>Increased closed arm entries:</strong>
-        Indicates anxiety or lack of anxiolytic effect.
-      </li>
-      <li>
-        <strong>Prolonged time in closed arms:</strong>
-        Reflects fear and anxiety-related behavior.
-      </li>
-    </ul>
-  </div>
-
-  <!-- SIGNIFICANCE -->
-  <div class="info-box">
-    <h2>Significance</h2>
-    <p>
-      The Elevated Plus Maze is a simple, reliable, and widely accepted
-      experimental model for screening anxiolytic drugs.
-    </p>
-    <p>
-      It helps in understanding the effects of drugs acting on the central
-      nervous system and has significant relevance in the development and
-      evaluation of anti-anxiety medications.
-    </p>
-  </div>
-
-  <!-- NAVIGATION -->
+  <!-- ============================= -->
+  <!-- 🔘 ACTION BUTTONS -->
+  <!-- ============================= -->
   <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/'">
-      ⬅ Previous
-    </button>
-
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
-      Next: Requirements ▶
-    </button>
+    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
   </div>
 
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
+<!-- ================= SCRIPTS ================= -->
 <script>
- else {
-    localStorage.setItem("uiTheme", "dark");
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[i].classList.add("active");
+  document.getElementById("currentSlide").innerText = i + 1;
+}
+
+function nextSlide() {
+  if (index < slides.length - 1) {
+    index++;
+    showSlide(index);
+  } else {
+    // AFTER LAST SLIDE → EXPERIMENT PAGE
+    location.href = "/experiment/{{ experiment.slug }}/experiment/";
   }
 }
 
-/* Load saved theme */
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
+function prevSlide() {
+  if (index > 0) {
+    index--;
+    showSlide(index);
+  } else {
+    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
   }
-};
+}
+
+/* KEYBOARD CONTROLS */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") nextSlide();
+  if (e.key === "Escape") prevSlide();
+});
+
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      alert("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
 </script>
 
-
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

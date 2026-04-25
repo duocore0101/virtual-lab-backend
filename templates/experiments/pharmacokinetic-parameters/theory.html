@@ -73,11 +73,18 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To calculate key pharmacokinetic (PK) parameters such as Cmax, Tmax, Half-life (t1/2), AUC, Clearance and Volume of Distribution from given plasma concentration–time data.</span>
+  </div>
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -98,10 +105,6 @@
         <li>Understand clinical significance of each parameter.</li>
         <li>Compare manual graphical method vs Excel calculation.</li>
       </ul>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
       <h2>Basic Theory of Pharmacokinetics</h2>
       <p>
         Pharmacokinetics studies ADME — Absorption, Distribution, 
@@ -112,36 +115,24 @@
         as a single compartment with instantaneous distribution 
         and first-order elimination.
       </p>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
       <h2>Mathematical Model</h2>
       <p><strong>Equation:</strong></p>
       <p style="text-align:justify; font-size:18px;">
         Cₚ = C₀ × e<sup>(–Kₑₗ × t)</sup>
       </p>
-
       <p><strong>Log Form (Semi-log plot):</strong></p>
       <p style="text-align:justify; font-size:18px;">
         log Cₚ = log C₀ – (Kₑₗ × t) / 2.303
       </p>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 2 -->
     <div class="info-box slide">
-      <h2>Key Parameters & Significance (Part 1)</h2>
+      <h2>Key Parameters & Significance</h2>
       <ul>
         <li><strong>C₀:</strong> Initial concentration (extrapolated at t=0).</li>
         <li><strong>Kₑₗ (h⁻¹):</strong> Elimination rate constant from slope × –2.303.</li>
         <li><strong>t₁/₂:</strong> 0.693 / Kₑₗ (time for 50% elimination).</li>
-      </ul>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="info-box slide">
-      <h2>Key Parameters & Significance (Part 2)</h2>
-      <ul>
         <li><strong>Vd (L):</strong> Dose / C₀ — distribution extent.</li>
         <li><strong>AUC₀–∞:</strong> Total drug exposure (C₀ / Kₑₗ or trapezoidal rule).</li>
         <li><strong>Cl (L/h):</strong> Kₑₗ × Vd = Dose / AUC.</li>
@@ -151,7 +142,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -213,6 +204,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

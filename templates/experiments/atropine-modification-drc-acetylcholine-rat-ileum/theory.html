@@ -73,11 +73,20 @@
 </head>
 
 <body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> To study the effect of atropine on the dose response curve (DRC) of acetylcholine using isolated rat ileum.</span>
+  </div>
+
+  
+
+  
+
 
 <!-- 🔝 TOP RIGHT BUTTONS -->
 <div class="top-actions">
-  <button onclick="toggleTheme()">🌗 Theme</button>
-  <button onclick="toggleFullscreen()">⛶ Full Screen</button>
+  
+  
 </div>
 
 <div class="page-container">
@@ -100,10 +109,6 @@
         the tissue contracts in response to pharmacological agents acting
         on these receptors.
       </p>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
       <h2>Action of Acetylcholine</h2>
       <p>
         <strong>Acetylcholine (ACh)</strong> acts as an agonist on muscarinic
@@ -112,10 +117,6 @@
         <strong>intracellular calcium (Ca²⁺)</strong>, which produces contraction
         of the smooth muscle in a concentration-dependent graded manner.
       </p>
-    </div>
-
-    <!-- SLIDE 3 -->
-    <div class="info-box slide">
       <h2>Role of Atropine</h2>
       <p>
         <strong>Atropine</strong> is a competitive antagonist of muscarinic
@@ -124,7 +125,7 @@
       </p>
     </div>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 2 -->
     <div class="info-box slide">
       <h2>Competitive Antagonism</h2>
       <p>
@@ -132,10 +133,6 @@
         higher concentrations of acetylcholine are required to produce
         the same response when atropine is present.
       </p>
-    </div>
-
-    <!-- SLIDE 5 -->
-    <div class="info-box slide">
       <h2>Effect on Dose Response Curve</h2>
       <p>
         In the presence of atropine, the dose-response curve of acetylcholine
@@ -150,7 +147,7 @@
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 5
+    Slide <span id="currentSlide">1</span> / 2
   </div>
 
   <!-- ================= NAVIGATION ================= -->
@@ -216,6 +213,6 @@ function toggleFullscreen() {
 </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

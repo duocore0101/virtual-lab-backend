@@ -1,138 +1,81 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>
     Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
   </title>
 
-  <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
-  </script>
-
   <!-- Reuse Rotarod / Actophotometer Intro CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
-  {% if cached_model_path %}
-  <!-- 🚀 PRELOAD 3D MODEL FOR INSTANT REQUIREMENTS PAGE -->
-  <link rel="preload" href="{% static cached_model_path %}" as="fetch" crossorigin="anonymous">
-  {% endif %}
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}??v=10001">
+  <style>
+    /* 🔝 TOP RIGHT ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+</style>
 </head>
 
 <body>
+  
+<!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
-<div class="page-container">
 
-  <h1 class="title">
-    Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method
-  </h1>
+  <div class="page-container">
 
-  <!-- 3D MODEL (PLACEHOLDER – CAN BE REPLACED LATER) -->
-  <model-viewer
-      loading="eager"
-      reveal="auto"
-    src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/anticonvulsant-mes-ptz/models/mes-ptz-apparatus.glb' %}{% endif %}"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    exposure="1.1"
-    style="width:100%; height:450px; border-radius:12px;">
-        <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
+    <h1 class="title">
+      Aim
+    </h1>
 
-  <!-- INFO BOX -->
-  <div class="info-box">
-    <h2>Introduction</h2>
+    <!-- =========================
+       AIM CONTENT
+  ========================== -->
+    <div class="info-box">
 
-    <p>
-      Epilepsy is a chronic neurological disorder characterized by recurrent
-      seizures due to abnormal electrical activity in the brain.
-      Experimental animal models are widely used to evaluate the
-      anticonvulsant potential of drugs.
-    </p>
+      <p style="font-size:18px; text-align:justify; font-weight:500;">
+        To study the Anticonvulsant Activity by Maximal Electroshock Seizure (MES) or PTZ Method.
+      </p>
+    </div>
 
-    <p>
-      The Maximal Electroshock Seizure (MES) method and the
-      Pentylenetetrazol (PTZ) induced seizure method are
-      standard screening models used in pharmacology to assess
-      anticonvulsant activity.
-    </p>
+    <!-- BUTTONS -->
+    <div class="button-row">
+      <button class="back-btn" onclick="location.href='{{ dashboard_url }}'">
+        ⬅ Back
+      </button>
 
-    <ul>
-      <li>
-        MES method is used to identify drugs effective
-        against generalized tonic–clonic (grand mal) seizures by observing
-        abolition of hind limb tonic extension.
-      </li>
-      <li>
-        PTZ method is used to evaluate drugs effective
-        against clonic, myoclonic, and absence (petit mal) seizures by
-        measuring delay or prevention of convulsions.
-      </li>
-      <li>
-        Together, these models help in determining the spectrum of
-        anticonvulsant activity of a test drug.
-      </li>
-    </ul>
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">
+        Next: Requirements ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- BUTTONS -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='{{ dashboard_url }}'">
-      ⬅ Back
-    </button>
+  <!-- THEME TOGGLE -->
+  
 
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next: Theory ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  🌗 Toggle Theme
-</button>
-
-<script>
- else {
-    localStorage.setItem("uiTheme", "dark");
-  }
-}
-
-window.onload = () => {
-  if (localStorage.getItem("uiTheme") === "light") {
-    document.body.classList.add("light-mode");
-  }
-};
-</script>
-
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
-      });
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
     }
-  });
-</script>
+  </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=20"></script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

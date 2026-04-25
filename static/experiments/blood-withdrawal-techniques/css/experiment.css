@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Montserrat';
-  src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2');
+  src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2'),
+       url('/static/fonts/Montserrat-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -8,7 +9,7 @@
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('/static/fonts/Montserrat-SemiBold.woff2') format('woff2');
+  src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -27,15 +28,16 @@
 /* ===============================
    DARK THEME (DEFAULT)
 ================================ */
-body.theme-dark {
+body {
   background: radial-gradient(circle at top, #1a0000, #000000);
   color: #ffffff;
-}
+
+  transition: background 0.3s ease, color 0.3s ease;}
 
 /* ===============================
    LIGHT THEME
 ================================ */
-body.theme-light {
+body.light-mode {
   background: #f5f5f5;
   color: #111;
 }
@@ -73,9 +75,20 @@ body.theme-light {
   box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
   border: 1px solid rgba(255, 0, 0, 0.3);
   margin-bottom: 30px;
+  text-align: justify; /* Justify text for premium layout */
 }
 
-body.theme-light .exp-card {
+.exp-card h2 {
+  text-align: center; /* Keep headings centered */
+  margin-bottom: 15px;
+}
+
+.exp-card ul {
+  text-align: justify;
+  padding-left: 20px;
+}
+
+body.light-mode .exp-card {
   background: #ffffff;
   color: #111;
 }
@@ -121,7 +134,7 @@ body.theme-light .exp-card {
 .top-flex-row {
   display: flex;
   gap: 60px;
-  align-items: flex-start;
+  align-items: center; /* Vertically center cards for matching height appearance */
   margin-bottom: 50px;
 }
 
@@ -166,4 +179,115 @@ body.theme-light .exp-card {
   .video-container video {
     max-height: none;
   }
+}
+/* ==========================================================
+   TOP LEFT AIM HEADER (STANDARD FOR ALL PAGES)
+========================================================== */
+.top-left-aim {
+  position: fixed;
+  top: 22px;
+  left: 25px;
+  z-index: 9998;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  max-width: calc(100% - 320px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+body.light-mode .top-left-aim {
+  color: #111;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(200, 0, 0, 0.2);
+}
+
+.top-left-aim:hover {
+  max-width: calc(100% - 320px);
+  white-space: normal;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+}
+
+body.light-mode .top-left-aim:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.top-left-aim b {
+  color: #ff2e2e;
+  margin-right: 6px;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+  .top-left-aim {
+    display: none;
+  }
+}
+/* ==========================================================
+   TABLE SYSTEM (COMPARISON)
+========================================================== */
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 16px;
+}
+
+body.light-mode .comparison-table {
+  background: #fafafa;
+  color: #111;
+}
+
+.comparison-table th, 
+.comparison-table td {
+  padding: 15px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+body.light-mode .comparison-table th, 
+body.light-mode .comparison-table td {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.comparison-table thead th {
+  background: rgba(255, 46, 46, 0.15);
+  color: #ff2e2e;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.comparison-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.light-mode .comparison-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.comparison-table strong {
+  color: #ff4d4d;
 }
