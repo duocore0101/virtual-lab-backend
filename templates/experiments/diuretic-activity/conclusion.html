@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Diuretic Activity Experiment – Result & Conclusion</title>
 
   <!-- Reuse existing CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -43,211 +43,190 @@
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats / mice.</span>
+    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats /
+      mice.</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Result & Conclusion</h1>
-
-  <!-- 🧪 RESULT -->
-  <div class="info-box">
-    <h2>Result</h2>
-    <p>
-      The test drug produced a <strong>dose-dependent increase in urine output</strong>
-      in rats when compared with the control group. The high dose of the test drug
-      showed significant diuresis with a total urine output of approximately
-      <strong>14.3 ml</strong>, whereas the control group showed about
-      <strong>5.8 ml</strong> of urine output.
-    </p>
-    <p>
-      The calculated diuretic activity was found to be
-      <strong>greater than 2</strong>, indicating a <strong>potent diuretic effect</strong>
-      comparable to the standard diuretic drug, furosemide.
-    </p>
-  </div>
-
-  <!-- 🧠 CONCLUSION -->
-  <div class="info-box">
-    <h2>Conclusion</h2>
-    <p>
-      The present study confirms that the given test drug possesses
-      <strong>significant diuretic activity</strong>.
-      The observed dose-dependent increase in urine output suggests a true
-      pharmacological action rather than a nonspecific effect.
-    </p>
-    <p>
-      Further evaluation of electrolyte excretion, particularly the
-      <strong>Na<sup>+</sup>/K<sup>+</sup> ratio</strong>, can help classify the
-      mechanism of action (e.g., loop diuretic–like activity).
-      Based on the findings, the test drug may be useful in the management
-      of conditions such as <strong>hypertension and edema</strong>.
-    </p>
-  </div>
-
-  <!-- ⚠ PRECAUTIONS -->
-  <div class="info-box">
-    <h2>Precautions</h2>
-    <ul>
-      <li>Ensure uniform hydration and accurate dosing of animals.</li>
-      <li>Prevent evaporation or loss of urine during collection.</li>
-      <li>Follow CPCSEA / IAEC ethical guidelines for animal experimentation.</li>
-      <li>Apply appropriate statistical analysis (e.g., ANOVA) to assess significance.</li>
-    </ul>
-  </div>
-
-  <!-- 🔘 NAVIGATION -->
-  <div class="button-row">
-
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-      ⬅ Back
-    </button>
-
-    
-    
-    
-    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
-      Download Practical PDF 📄
-    </button>
 
 
 
-    <button class="exp-btn" onclick="finishPractical()">
-      Finish Practical ✔
-    </button>
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
 
   </div>
 
-</div>
+  <div class="page-container">
 
-<!-- ================= SCRIPTS ================= -->
+    <h1 class="title">Result & Conclusion</h1>
 
-<script>
-/* THEME */
+    <!-- 🧪 RESULT -->
+    <div class="info-box">
+      <h2>Result</h2>
+      <p style="text-align:justify; line-height:1.6;">
+        The average urine output in the vehicle-treated control group was 2.77 ml/rat/5 h. The Furosemide-treated group
+        (drug in vehicle) showed 8.83 ml/rat/5 h – a 3.19-fold increase. Diuretic index = 3.19 (>1.0), confirming
+        significant diuretic activity.
+      </p>
+    </div>
+
+    <!-- 🧠 CONCLUSION -->
+    <div class="info-box">
+      <h2>Conclusion</h2>
+      <p style="text-align:justify; line-height:1.6;">
+        Furosemide (standard loop diuretic) produced a marked increase in urine volume compared to the vehicle-treated
+        control group, demonstrating potent diuretic activity. It acts by inhibiting the Na⁺-K⁺-2Cl⁻ co-transporter in
+        the thick ascending limb of the loop of Henle, leading to increased excretion of water, Na⁺, K⁺ and Cl⁻. The
+        vehicle (2% CMC in saline) itself did not influence urine output, validating its use as control.
+      </p>
+    </div>
 
 
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
 
-<script>
-function finishPractical() {
+    <!-- 🔘 NAVIGATION -->
+    <div class="button-row">
 
-  fetch("/experiment/finish/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      experiment_slug: "{{ experiment.slug }}",
-      observations: {
-        result: "Diuretic activity evaluated successfully"
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+        ⬅ Back
+      </button>
+
+
+
+
+      <button class="exp-btn" onclick="downloadPDF()"
+        style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+        Download Practical PDF 📄
+      </button>
+
+
+
+      <button class="exp-btn" onclick="finishPractical()">
+        Finish Practical ✔
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+
+  <script>
+    /* THEME */
+
+
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
       }
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    // 🔥 BACKEND DECIDES REDIRECT
-    window.location.href = data.redirect;
-  })
-  .catch(err => {
-    alert("Failed to submit practical");
-    console.error(err);
-  });
-}
-</script>
-
-
-
-
-
-<script>
-function downloadPDF() {
-  const slug = "{{ experiment.slug }}";
-  
-  // 1. TRY TO SCRAPE TABLE DATA FROM DOM
-  let tableData = [];
-  const table = document.querySelector('table'); 
-  if (table) {
-    const rows = table.querySelectorAll('tr');
-    rows.forEach(row => {
-      let rowData = [];
-      const cells = row.querySelectorAll('th, td');
-      cells.forEach(cell => {
-        rowData.push(cell.innerText.trim());
-      });
-      if (rowData.length > 0) rowData.push(""); // filler
-      if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
-    });
-    
-    // Save to localStorage for use on conclusion/other pages
-    if (tableData.length > 0) {
-        localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
     }
-  } 
-  
-  // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
-  if (tableData.length === 0) {
-    const saved = localStorage.getItem('exp_data_' + slug);
-    if (saved) {
-        tableData = JSON.parse(saved);
+  </script>
+
+  <script>
+    function finishPractical() {
+
+      fetch("/experiment/finish/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          experiment_slug: "{{ experiment.slug }}",
+          observations: {
+            result: "Diuretic activity evaluated successfully"
+          }
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          // 🔥 BACKEND DECIDES REDIRECT
+          window.location.href = data.redirect;
+        })
+        .catch(err => {
+          alert("Failed to submit practical");
+          console.error(err);
+        });
     }
-  }
-
-  fetch(`/experiment/${slug}/download-pdf/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": "{{ csrf_token }}"
-    },
-    body: JSON.stringify({
-      table_data: tableData
-    })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("PDF generation failed");
-    return res.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Practical_Report_${slug}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  })
-  .catch(err => {
-    alert("Failed to generate PDF");
-    console.error(err);
-  });
-}
-</script>
+  </script>
 
 
 
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+  <script>
+    function downloadPDF() {
+      const slug = "{{ experiment.slug }}";
+
+      // 1. TRY TO SCRAPE TABLE DATA FROM DOM
+      let tableData = [];
+      const table = document.querySelector('table');
+      if (table) {
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          let rowData = [];
+          const cells = row.querySelectorAll('th, td');
+          cells.forEach(cell => {
+            rowData.push(cell.innerText.trim());
+          });
+          if (rowData.length > 0) rowData.push(""); // filler
+          if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
+        });
+
+        // Save to localStorage for use on conclusion/other pages
+        if (tableData.length > 0) {
+          localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+        }
+      }
+
+      // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
+      if (tableData.length === 0) {
+        const saved = localStorage.getItem('exp_data_' + slug);
+        if (saved) {
+          tableData = JSON.parse(saved);
+        }
+      }
+
+      fetch(`/experiment/${slug}/download-pdf/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+          table_data: tableData
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("PDF generation failed");
+          return res.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Practical_Report_${slug}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        })
+        .catch(err => {
+          alert("Failed to generate PDF");
+          console.error(err);
+        });
+    }
+  </script>
+
+
+
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

@@ -15,11 +15,11 @@
       height: 480px;
       border-radius: 14px;
       background: #000;
-      margin-top: 20px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     video {
@@ -38,14 +38,21 @@
       background: linear-gradient(135deg, #ee0a0a, #b91c1c);
       color: #fff;
       font-weight: 600;
+      transition: transform 0.2s;
     }
 
-    /* ================= FULL SCREEN BUTTON ================= */
+    .start-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* ================= TOP ACTIONS ================= */
     .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
     }
 
     .dropdown-btn {
@@ -62,41 +69,62 @@
     }
 
     .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-      border-color: #fa0707;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
     }
 
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
+    /* ================= LAYOUT ================= */
+    .experiment-layout {
+      display: flex;
+      gap: 30px;
+      margin-top: 30px;
+      align-items: stretch;
     }
 
-    /* ================= POPUP MODAL ================= */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
+    .left-side {
+      flex: 0 0 55%;
     }
 
-    .modal-content {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      width: 85%;
-      max-width: 900px;
+    .right-side {
+      flex: 0 0 calc(45% - 30px);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 25px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.light-mode .right-side {
+      background: #fdfdfd;
+      border-color: #eee;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .right-side h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      text-align: center;
+      color: #ff4d4d;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
-      color: white;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #ddd;
+      font-size: 13px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    body.light-mode table {
+      color: #333;
+      border-color: #ddd;
     }
 
     th, td {
@@ -105,15 +133,39 @@
       text-align: center;
     }
 
-    th {
-      background: #222;
+    body.light-mode th, body.light-mode td {
+      border-color: #eee;
     }
 
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
+    th {
+      background: #222;
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    body.light-mode th {
+      background: #f5f5f5;
+      color: #444;
+    }
+
+    td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    body.light-mode td {
+      background: #fff;
+    }
+
+    @media (max-width: 1024px) {
+      .experiment-layout {
+        flex-direction: column;
+      }
+      .left-side, .right-side {
+        flex: 0 0 100%;
+      }
     }
   </style>
 </head>
@@ -124,139 +176,118 @@
     <span><b>Aim:</b> To record the Dose Response Curve (DRC) / Concentration Response Curve (CRC) of Acetylcholine (ACh) on isolated frog rectus abdominis muscle of a frog.</span>
   </div>
 
-  
-
-  
-
-
-<div class="page-container">
-
-  <h1 class="title">
-    Dose Response Curve of Acetylcholine on Frog Rectus Abdominis
-  </h1>
-
-  <!-- FULL SCREEN BUTTON -->
   <div class="top-actions">
-    
   </div>
 
-  <div class="video-frame">
-    <button class="start-btn" id="startBtn" onclick="startExperiment()">
-      ▶ Start Practical
-    </button>
+  <div class="page-container" style="max-width: 1400px; padding: 40px 60px;">
 
-    <video id="experimentVideo" controls>
-      <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_experiment.mp4' %}" type="video/mp4">
-    </video>
+    <h1 class="title" style="margin-bottom: 40px;">
+      Experiment-Virtual Simulator
+    </h1>
+
+    <div class="experiment-layout">
+      <!-- LEFT SIDE: VIDEO -->
+      <div class="left-side">
+        <div class="video-frame">
+          <button class="start-btn" id="startBtn" onclick="startExperiment()">
+            ▶ Start Practical
+          </button>
+          <video id="experimentVideo" controls>
+            <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_experiment.mp4' %}" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: OBSERVATION TABLE -->
+      <div class="right-side">
+        <h2>Observation Table</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Dose (mL)</th>
+              <th>Dose (μg)</th>
+              <th>Final (μg/mL)</th>
+              <th>Height (mm)</th>
+              <th>% Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0.001</td><td>0.1</td><td>0.01</td>
+              <td id="r1">--</td><td id="p1">--</td>
+            </tr>
+            <tr>
+              <td>0.002</td><td>0.2</td><td>0.02</td>
+              <td id="r2">--</td><td id="p2">--</td>
+            </tr>
+            <tr>
+              <td>0.004</td><td>0.4</td><td>0.04</td>
+              <td id="r3">--</td><td id="p3">--</td>
+            </tr>
+            <tr>
+              <td>0.008</td><td>0.8</td><td>0.08</td>
+              <td id="r4">--</td><td id="p4">--</td>
+            </tr>
+            <tr>
+              <td>0.016</td><td>1.6</td><td>0.16</td>
+              <td id="r5">--</td><td id="p5">--</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 20px; font-size: 12px; color: #888; text-align: center; font-style: italic;">
+          * Observations will appear dynamically during the experiment.
+        </p>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="button-row" style="justify-content:center; margin-top:50px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
+      <button class="exp-btn" onclick="goToGraph()">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <div class="button-row" style="justify-content:center; margin-top:25px;">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Back
-    </button>
+  <script>
+    function startExperiment() {
+      document.getElementById("startBtn").style.display = "none";
+      let video = document.getElementById("experimentVideo");
+      video.style.display = "block";
+      video.play();
 
-    <button class="exp-btn" onclick="openModal()">
-      View Observations 📊
-    </button>
+      // Timing based on original script
+      setTimeout(() => fillRow(1, 2, 2.2), 31000);
+      setTimeout(() => fillRow(2, 10, 11), 45000);
+      setTimeout(() => fillRow(3, 20, 22), 59000);
+      setTimeout(() => fillRow(4, 45, 49.5), 74000);
+      setTimeout(() => fillRow(5, 76, 83.5), 91000);
+    }
 
-    <button class="exp-btn"
-      onclick="goToGraph()">
-      Next ▶
-    </button>
-  </div>
+    function fillRow(row, response, percent) {
+      const rCell = document.getElementById("r" + row);
+      const pCell = document.getElementById("p" + row);
+      
+      if (rCell) rCell.innerText = response;
+      if (pCell) pCell.innerText = percent;
+      
+      if (rCell) {
+          rCell.style.color = "#ff4d4d";
+          rCell.style.fontWeight = "600";
+      }
+      if (pCell) {
+          pCell.style.color = "#00ff9d";
+          pCell.style.fontWeight = "600";
+      }
+    }
 
-</div>
-
-<!-- ================= OBSERVATION MODAL ================= -->
-<div class="modal" id="obsModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-    <h2>Observation Table</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Dose added (mL)</th>
-          <th>Dose (μg)</th>
-          <th>Final conc. (μg/mL)</th>
-          <th>Response height (mm)</th>
-          <th>% of Max response</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>0.001</td><td>0.1</td><td>0.01</td>
-          <td id="r1"></td><td id="p1"></td>
-        </tr>
-        <tr>
-          <td>0.002</td><td>0.2</td><td>0.02</td>
-          <td id="r2"></td><td id="p2"></td>
-        </tr>
-        <tr>
-          <td>0.004</td><td>0.4</td><td>0.04</td>
-          <td id="r3"></td><td id="p3"></td>
-        </tr>
-        <tr>
-          <td>0.008</td><td>0.8</td><td>0.08</td>
-          <td id="r4"></td><td id="p4"></td>
-        </tr>
-        <tr>
-          <td>0.016</td><td>1.6</td><td>0.16</td>
-          <td id="r5"></td><td id="p5"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- THEME BUTTON -->
-
-
-<script>
-function startExperiment() {
-  document.getElementById("startBtn").style.display = "none";
-  let video = document.getElementById("experimentVideo");
-  video.style.display = "block";
-  video.play();
-
-  setTimeout(() => fillRow(1, 2, 2.2), 31000);
-  setTimeout(() => fillRow(2, 10, 11), 45000);
-  setTimeout(() => fillRow(3, 20, 22), 59000);
-  setTimeout(() => fillRow(4, 45, 49.5), 74000);
-  setTimeout(() => fillRow(5, 76, 83.5), 91000);
-}
-
-function fillRow(row, response, percent) {
-  document.getElementById("r"+row).innerText = response;
-  document.getElementById("p"+row).innerText = percent;
-}
-
-function openModal() {
-  document.getElementById("obsModal").style.display = "flex";
-}
-
-function closeModal() {
-  document.getElementById("obsModal").style.display = "none";
-}
-
-function goToGraph() {
-  location.href = "/experiment/{{ experiment.slug }}/graph/";
-}
-
-
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(err => {
-      alert(`Error enabling fullscreen: ${err.message}`);
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
+    function goToGraph() {
+      location.href = "/experiment/{{ experiment.slug }}/graph/";
+    }
+  </script>
 
 <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>

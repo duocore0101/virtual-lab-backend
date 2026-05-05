@@ -104,8 +104,8 @@
     Theory/Principle
   </h1>
 
-  <!-- ================= SLIDE 1 ================= -->
-  <div class="info-box slide active">
+  <!-- ================= SLIDE 1: Principle ================= -->
+  <div class="info-box slide active" id="slide1">
     <h2>Principle</h2>
 
     <p>
@@ -133,34 +133,64 @@
       <strong>Observation:</strong> Withdrawal reflex
     </p>
 
-    <!-- 🔬 MODEL PLACEHOLDER (OPTIONAL FOR FUTURE) -->
-    <div class="model-container">
-      <!-- You can add a frog nerve 3D model later if needed -->
-      <p style="margin-top:10px; font-size:14px; color:#aaa;">
-        (3D Model of Frog Sciatic Nerve can be added here)
-      </p>
-    </div>
-
   </div>
 
-  <div class="slide-counter">
-    Slide 1 / 1
+  <!-- ================= SLIDE 2: Procedure ================= -->
+  <div class="info-box slide" id="slide2">
+    <h2>Procedure</h2>
+    <p>1. Take pithed/decerebrated frog (destroy brain/upper spinal cord ethically).</p>
+    <p>2. Expose sciatic nerve plexus (near thigh root) via small skin incision.</p>
+    <p>3. Check baseline: Dip one foot in dilute acid (0.1–0.2% HCl) → brisk withdrawal reflex (time <5 sec).</p>
+    <p>4. Inject 0.2–0.5 mL test drug (e.g., 1% procaine) around sciatic plexus (perineural).</p>
+    <p>5. Inject saline on other leg (control).</p>
+    <p>6. Test every 2–5 min: Dip foot in acid; record time to withdrawal.</p>
+    <p>7. Measure onset (no/reflex delayed >10 sec) and duration (until reflex returns).</p>
+    <p>8. Alternative: Isolate sciatic-gastrocnemius preparation; stimulate nerve electrically and record muscle twitch abolition.</p>
+  </div>
+
+  <div class="slide-counter" id="slideCounter">
+    Slide 1 / 2
   </div>
 
   <div class="button-row">
     <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    <button class="exp-btn" id="nextBtn" onclick="nextSlide()">Next ▶</button>
   </div>
 
 </div>
 
 <script>
+let currentSlide = 1;
+const totalSlides = 2;
+
+function showSlide(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.getElementById('slide' + n).classList.add('active');
+  document.getElementById('slideCounter').innerText = `Slide ${n} / ${totalSlides}`;
+  
+  if (n === totalSlides) {
+    document.getElementById('nextBtn').innerText = "Start Experiment ▶";
+  } else {
+    document.getElementById('nextBtn').innerText = "Next ▶";
+  }
+}
+
 function nextSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/run/";
+  if (currentSlide < totalSlides) {
+    currentSlide++;
+    showSlide(currentSlide);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/run/";
+  }
 }
 
 function prevSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  if (currentSlide > 1) {
+    currentSlide--;
+    showSlide(currentSlide);
+  } else {
+    location.href = "/experiment/{{ experiment.slug }}/requirements/";
+  }
 }
 
 

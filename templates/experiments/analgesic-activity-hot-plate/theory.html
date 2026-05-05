@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Analgesic Activity by Hot Plate Method – Theory</title>
 
   <!-- Reuse Rotarod CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -31,6 +31,7 @@
         opacity: 0;
         transform: translateX(40px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0);
@@ -80,7 +81,7 @@
     .theory-image img {
       max-width: 80%;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -91,105 +92,96 @@
     <span><b>Aim:</b> To Study and Evaluate Analgesic Activity by Hot Plate Method</span>
   </div>
 
-  
-
-  
 
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
 
-<div class="page-container">
 
-  <!-- MAIN TITLE -->
-  <h1 class="title">
-    To Study and Evaluate Analgesic Activity by Hot Plate Method
-  </h1>
 
-  <!-- ================= SLIDE 1 ================= -->
-  <div class="info-box slide active">
-    <h2>Principle</h2>
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
 
-    <p>
-      Heat serves as a <strong>thermal nociceptive stimulus</strong>. 
-      The animal (mouse or rat) is placed on a heated surface 
-      (usually <strong>55 ± 0.5°C</strong>), and the latency (time) to show 
-      pain responses such as <strong>paw licking, paw withdrawal, shaking, or jumping</strong> 
-      is measured.
-    </p>
 
-    <p>
-      Centrally acting analgesics delay these responses by acting on 
-      <strong>higher brain centers or spinal pathways</strong>.
-    </p>
+  </div>
 
-    <!-- 🔬 IMAGE BELOW TEXT -->
-    <div class="theory-image">
-      <img src="{% static 'experiments/hotplate/images/hotplate-apparatus.png' %}"
-           alt="Hot Plate Analgesiometer">
-      <p style="margin-top:10px; font-size:14px; color:#aaa;">
-        Hot-Plate Analgesiometer for evaluation of analgesic activity
+  <div class="page-container">
+
+    <!-- MAIN TITLE -->
+    <h1 class="title">
+      Theory/Principle
+    </h1>
+
+    <!-- ================= SLIDE 1 ================= -->
+    <div class="info-box slide active">
+      <h2>Principle</h2>
+
+      <p style="text-align:justify; line-height:1.6;">
+        The hot plate method (Eddy & Leimbach, 1953) is used to screen centrally acting analgesics (mainly opioids). A thermal stimulus (55 ± 1°C) induces pain, and the animal shows responses such as hind-paw licking, shaking, or jumping. Analgesics increase the latency period (reaction time) by acting on the central nervous system (raising pain threshold). The vehicle itself produces no change in latency, validating it as control. Cut-off time prevents tissue damage.
       </p>
+
+      <!-- 🔬 IMAGE BELOW TEXT -->
+      <div class="theory-image">
+        <img src="{% static 'experiments/hotplate/images/hotplate-apparatus.png' %}" alt="Hot Plate Analgesiometer">
+        <p style="margin-top:10px; font-size:14px; color:#aaa;">
+          Hot-Plate Analgesiometer for evaluation of analgesic activity
+        </p>
+      </div>
     </div>
+
+    <!-- ================= COUNTER ================= -->
+    <div class="slide-counter">
+      Slide <span id="currentSlide">1</span> / 1
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    </div>
+
   </div>
 
-  <!-- ================= COUNTER ================= -->
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 1
-  </div>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove("active"));
+      slides[i].classList.add("active");
+      document.getElementById("currentSlide").innerText = i + 1;
+    }
 
-</div>
+    function nextSlide() {
+      location.href = "/experiment/{{ experiment.slug }}/run/";
+    }
 
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
+    function prevSlide() {
+      location.href = "/experiment/{{ experiment.slug }}/requirements/";
+    }
 
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
-
-function nextSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/run/";
-}
-
-function prevSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/requirements/";
-}
-
-/* KEYBOARD CONTROLS */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
+    /* KEYBOARD CONTROLS */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") nextSlide();
+      if (e.key === "Escape") prevSlide();
     });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+
+    /* THEME */
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

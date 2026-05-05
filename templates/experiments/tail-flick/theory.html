@@ -78,14 +78,16 @@
       background: #111;
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
-  
-    /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
-    model-viewer {
+      margin: 0 auto;
       --progress-bar-color: #ff2e2e;
       --progress-bar-height: 4px;
-      background-color: #f8f9fa;
       position: relative;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    body.light-mode model-viewer {
+      background: #ffffff;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     }
     .progress-bar {
       display: block;
@@ -140,20 +142,7 @@
     <h2>Principle</h2>
 
     <p>
-      A <strong>focused radiant heat stimulus</strong> is applied to the tail,
-      and the <strong>latency to tail withdrawal (tail flick)</strong> is measured.
-    </p>
-
-    <p>
-      This is primarily a <strong>spinal reflex</strong> and is sensitive to
-      centrally acting analgesics (especially opioids) which increase pain threshold.
-    </p>
-
-    <p>
-      <strong>Animal:</strong> Albino rats/mice <br>
-      <strong>Heat Source:</strong> Radiant heat <br>
-      <strong>Cut-off Time:</strong> 10 seconds <br>
-      <strong>Reaction:</strong> Tail withdrawal
+      The tail flick method (D’Amour & Smith, 1941) is used to screen centrally acting analgesics. A radiant heat stimulus (focused light beam from analgesiometer) is applied to the distal part of the tail. The animal responds by flicking/withdrawing the tail (spinal reflex modulated by supraspinal centres). Analgesics increase the latency period by raising the pain threshold via central mechanisms. The vehicle itself produces no change in latency, validating it as control. Cut-off time prevents tissue damage.
     </p>
 
     <!-- 🔬 3D MODEL BELOW TEXT -->

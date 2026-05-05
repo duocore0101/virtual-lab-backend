@@ -3,273 +3,409 @@
 <html lang="en">
 
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>Cumulative Dose Response Curve of Histamine – Experiment</title>
+    <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
+    <meta charset="UTF-8">
+    <title>Determination of pD₂ Value – Experiment</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+            /* Space for fixed headers */
+        }
 
-  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  <style>
-    .video-frame {
-      width: 100%;
-      height: 480px;
-      border-radius: 14px;
-      background: #000;
-      margin-top: 20px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .video-section {
+            flex: 0 0 62%;
+            max-width: 62%;
+        }
 
-    video {
-      width: 100%;
-      height: 100%;
-      border-radius: 14px;
-      display: none;
-    }
+        .observation-section {
+            flex: 0 0 36%;
+            max-width: 36%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-    .start-btn {
-      padding: 14px 30px;
-      font-size: 18px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
-      color: #fff;
-      font-weight: 600;
-    }
+        .video-frame {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
+        .start-btn {
+            padding: 16px 35px;
+            font-size: 18px;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
 
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-      border-color: #fa0707;
-    }
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6);
+        }
 
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
-    }
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 6px 12px;
+            border-radius: 35px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-    }
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-    .modal-content {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      width: 85%;
-      max-width: 900px;
-    }
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 55%;
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--text-main, #fff);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: white;
-    }
+        .top-left-aim span {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    th,
-    td {
-      border: 1px solid #444;
-      padding: 10px;
-      text-align: center;
-    }
+        /* 🏷️ TITLE SPACING */
+        .page-container .title {
+            margin-top: 10px !important;
+            margin-bottom: 20px !important;
+            font-size: 2.2rem !important;
+        }
 
-    th {
-      background: #222;
-    }
+        /* 📊 TABLE STYLING */
+        .observation-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main, #fff);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            color: var(--text-main, #eee);
+            font-size: 11px;
+        }
+
+        th,
+        td {
+            padding: 10px 5px;
+            border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+            text-align: center;
+        }
+
+        th {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            color: var(--text-main, white);
+            position: relative;
+            border: 1px solid var(--border-color, #333);
+            overflow-y: auto;
+        }
+
+        body.light-mode .modal-content {
+            color: #333 !important;
+            background: #fff !important;
+        }
+
+        .close-btn {
+            position: sticky;
+            top: -20px;
+            float: right;
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 28px;
+            z-index: 101;
+        }
+
+        @media (max-width: 1200px) {
+            .experiment-layout {
+                flex-direction: column;
+            }
+
+            .video-section,
+            .observation-section {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To record the cumulative dose-response curve (DRC) of histamine on isolated guinea pig ileum and to determine its pD₂ value.</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To record the cumulative dose-response curve (DRC) of histamine on isolated guinea pig ileum
+            and to determine its pD₂ value.</span>
+    </div>
 
-  
-
-  
-
-
-  <div class="page-container">
-
-    <h1 class="title">
-      Cumulative Dose Response Curve of Histamine on Guinea Pig Ileum
-    </h1>
-
+    <!-- 🔝 TOP ACTIONS -->
     <div class="top-actions">
-      
+        <button class="action-btn" onclick="openProcedure()">
+            📋 Procedure
+        </button>
+        <div id="theme-toggle-container"></div>
     </div>
 
-    <div class="video-frame">
-      <button class="start-btn" id="startBtn" onclick="startExperiment()">
-        ▶ Start Practical
-      </button>
+    <div class="page-container">
+        <h1 class="title" style="color: #ef4444; margin-bottom: 10px;">Experiment-Virtual Simulator</h1>
 
-      <!-- 🔥 SAME VIDEO PATH (UNCHANGED) -->
-      <video id="experimentVideo" controls>
-        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_50.mp4' %}" type="video/mp4">
-      </video>
+        <div class="experiment-layout">
+            <!-- LEFT: VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-frame">
+                    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+                        ▶ Start Practical
+                    </button>
+                    <video id="experimentVideo" controls>
+                        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc-pd2.mp4' %}"
+                            type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="button-row" style="margin-top: 20px; justify-content: flex-start;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+                        ⬅ Back
+                    </button>
+                    <button class="exp-btn" onclick="goToGraph()"
+                        style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                        Next ▶
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Observation Table</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Conc. (µg/mL)</th>
+                                <th>Log Conc.</th>
+                                <th>Height (mm)</th>
+                                <th>% Max</th>
+                            </tr>
+                        </thead>
+                        <tbody id="observationBody">
+                            <tr>
+                                <td>1</td>
+                                <td>0.01</td>
+                                <td>-8.0</td>
+                                <td id="r1">—</td>
+                                <td id="p1">—</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>0.03</td>
+                                <td>-7.52</td>
+                                <td id="r2">—</td>
+                                <td id="p2">—</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>0.1</td>
+                                <td>-7.0</td>
+                                <td id="r3">—</td>
+                                <td id="p3">—</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>0.3</td>
+                                <td>-6.52</td>
+                                <td id="r4">—</td>
+                                <td id="p4">—</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>1.0</td>
+                                <td>-6.0</td>
+                                <td id="r5">—</td>
+                                <td id="p5">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="button-row" style="justify-content:center; margin-top:25px;">
-      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-        ⬅ Back
-      </button>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 20px;">📋 Procedure Step-by-Step</h2>
 
-      <button class="exp-btn" onclick="openModal()">
-        View Observations 📊
-      </button>
+            <div class="procedure-content">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step
+                    1: Mounting & Equilibration:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Mount the ileum in 20–25 mL organ bath containing aerated Tyrode’s at 37 °C.</li>
+                    <li>Apply resting tension 0.5–1.0 g.</li>
+                    <li>Allow equilibration for 30–45 min with frequent washing (every 10 min).</li>
+                </ul>
 
-      <button class="exp-btn" onclick="goToGraph()">
-        Next ▶
-      </button>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step
+                    2: Cumulative Dose-Response Curve (DRC) of Histamine:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Add geometrically increasing concentrations of histamine (e.g., 10⁻⁹ M to 10⁻⁵ M final bath
+                        concentration or 0.01–10 µg/mL).</li>
+                    <li>Allow each dose to produce peak contraction (plateau) before adding next higher dose (cumulative
+                        method).</li>
+                    <li>Record height of contraction (mm or g tension).</li>
+                    <li>After maximal response, wash thoroughly 3–4 times.</li>
+                    <li>Repeat DRC at least once to confirm reproducibility.</li>
+                </ul>
+
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step
+                    3: Data Analysis:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Measure response height for each dose.</li>
+                    <li>Calculate % maximal response = (response height / maximal height) × 100.</li>
+                    <li>Prepare table: Dose (µg/mL or M) | Log dose | Response (mm) | % max response.</li>
+                    <li>Plot semi-log graph: Log concentration (X-axis) vs % maximal response (Y-axis).</li>
+                    <li>From the graph, read the concentration corresponding to 50 % maximal response → this is EC₅₀.
+                    </li>
+                    <li>pD₂ = –log₁₀ (EC₅₀ in molar).</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <script>
+        function startExperiment() {
+            document.getElementById("startBtn").style.display = "none";
+            let video = document.getElementById("experimentVideo");
+            video.style.display = "block";
+            video.play();
 
-  <!-- ================= OBSERVATION MODAL ================= -->
-  <div class="modal" id="obsModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">✖</span>
-      <h2>Observation Table</h2>
+            setTimeout(() => fillRow(1, 5, 8), 31000);
+            setTimeout(() => fillRow(2, 12, 19), 45000);
+            setTimeout(() => fillRow(3, 25, 40), 59000);
+            setTimeout(() => fillRow(4, 38, 60), 74000);
+            setTimeout(() => fillRow(5, 48, 77), 91000);
+        }
 
-      <table>
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Conc. (µg/mL)</th>
-            <th>Log Conc.</th>
-            <th>Response Height (mm)</th>
-            <th>% Max Response</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>0.01</td>
-            <td>-8.0</td>
-            <td id="r1"></td>
-            <td id="p1"></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>0.03</td>
-            <td>-7.52</td>
-            <td id="r2"></td>
-            <td id="p2"></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>0.1</td>
-            <td>-7.0</td>
-            <td id="r3"></td>
-            <td id="p3"></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>0.3</td>
-            <td>-6.52</td>
-            <td id="r4"></td>
-            <td id="p4"></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>1.0</td>
-            <td>-6.0</td>
-            <td id="r5"></td>
-            <td id="p5"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+        function fillRow(row, response, percent) {
+            document.getElementById("r" + row).innerText = response;
+            document.getElementById("p" + row).innerText = percent;
+        }
 
-  
-
-  <script>
-    function startExperiment() {
-      document.getElementById("startBtn").style.display = "none";
-      let video = document.getElementById("experimentVideo");
-      video.style.display = "block";
-      video.play();
-
-      /* 🔥 Updated Observation Values Based On Image */
-
-      setTimeout(() => fillRow(1, 5, 8), 31000);
-      setTimeout(() => fillRow(2, 12, 19), 45000);
-      setTimeout(() => fillRow(3, 25, 40), 59000);
-      setTimeout(() => fillRow(4, 38, 60), 74000);
-      setTimeout(() => fillRow(5, 48, 77), 91000);
-    }
-
-    function fillRow(row, response, percent) {
-      document.getElementById("r" + row).innerText = response;
-      document.getElementById("p" + row).innerText = percent;
-    }
-
-    function openModal() {
-      document.getElementById("obsModal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("obsModal").style.display = "none";
-    }
-
-    function goToGraph() {
-      location.href = "/experiment/{{ experiment.slug }}/graph/";
-    }
-
-    
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  </script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        function goToGraph() { location.href = "/experiment/{{ experiment.slug }}/graph/"; }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 
 </html>

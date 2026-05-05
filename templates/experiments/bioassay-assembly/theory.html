@@ -13,7 +13,7 @@
     /* ================= SLIDE SYSTEM ================= */
     .slide-container {
       position: relative;
-      min-height: 260px;
+      min-height: 350px;
     }
 
     .slide {
@@ -26,14 +26,8 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
     }
 
     .slide-counter {
@@ -78,141 +72,117 @@
     <span><b>Aim:</b> To Study the Bioassay Assembly Setup</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
-
-<div class="page-container">
-
-  <!-- MAIN TITLE -->
-  <h1 class="title">
-    Theory / Principle
-  </h1>
-
-  <!-- ================= SLIDES ================= -->
-  <div class="slide-container">
-
-    <!-- Slide 1 -->
-    <div class="info-box slide active">
-      <h2>Definition of Bioassay</h2>
-      <p>
-        Bioassay is a method of estimating the potency or concentration 
-        of a substance by measuring its biological response in a living 
-        system and comparing it with a standard preparation.
-      </p>
-      <h2>Basic Principle</h2>
-      <ul>
-        <li>The biological response is proportional to the dose of the drug within a certain range.</li>
-        <li>The test substance and standard must act through the same mechanism and produce similar pharmacological effects.</li>
-        <li>Their dose-response curves should be parallel.</li>
-      </ul>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="info-box slide">
-      <h2>Relative Potency</h2>
-      <p>
-        The relative potency of the test sample is calculated by comparing 
-        its response with that of the standard under controlled conditions.
-      </p>
-      <h2>Types of Bioassay</h2>
-      <ul>
-        <li><strong>Graded type:</strong> Response increases gradually 
-            (e.g., muscle contraction, blood pressure).</li>
-        <li><strong>Quantal type:</strong> All-or-none response 
-            (e.g., death, convulsion).</li>
-      </ul>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="info-box slide">
-      <h2>Common Graded Bioassay Methods</h2>
-      <ul>
-        <li>Matching method</li>
-        <li>Bracketing method</li>
-        <li>Interpolation method</li>
-        <li>3-point and 4-point bioassays</li>
-      </ul>
-      <h2>Importance of Bioassay</h2>
-      <p>
-        Bioassay is essential when chemical methods cannot accurately 
-        measure biological activity, especially for hormones, vaccines, 
-        antibiotics, and toxins.
-      </p>
-    </div>
-
+  <div class="top-actions">
   </div>
 
-  <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 3
+  <div class="page-container">
+    <h1 class="title">Theory / Principle</h1>
+
+    <!-- ================= SLIDES ================= -->
+    <div class="slide-container">
+      
+      <!-- Slide 1: Fundamentals -->
+      <div class="info-box slide active">
+        <h2>Definition of Bioassay</h2>
+        <p>
+          Bioassay is a method of estimating the potency or concentration 
+          of a substance by measuring its biological response in a living 
+          system and comparing it with a standard preparation.
+        </p>
+        <h2>Basic Principle</h2>
+        <ul>
+          <li>The biological response is proportional to the dose of the drug within a certain range.</li>
+          <li>The test substance and standard must act through the same mechanism and produce similar pharmacological effects.</li>
+          <li>Their dose-response curves should be parallel.</li>
+        </ul>
+        <h2>Relative Potency</h2>
+        <p>
+          The relative potency of the test sample is calculated by comparing 
+          its response with that of the standard under controlled conditions.
+        </p>
+      </div>
+
+      <!-- Slide 2: Types & Methods -->
+      <div class="info-box slide">
+        <h2>Types of Bioassay</h2>
+        <ul>
+          <li><strong>Graded type:</strong> Response increases gradually 
+              (e.g., muscle contraction, blood pressure).</li>
+          <li><strong>Quantal type:</strong> All-or-none response 
+              (e.g., death, convulsion).</li>
+        </ul>
+        <h2>Common Graded Bioassay Methods</h2>
+        <ul>
+          <li>Matching method</li>
+          <li>Bracketing method</li>
+          <li>Interpolation method</li>
+          <li>3-point and 4-point bioassays</li>
+        </ul>
+        <h2>Importance of Bioassay</h2>
+        <p>
+          Bioassay is essential when chemical methods cannot accurately 
+          measure biological activity, especially for hormones, vaccines, 
+          antibiotics, and toxins.
+        </p>
+      </div>
+    </div>
+
+    <div class="slide-counter">
+      Slide <span id="currentSlide">1</span> / 2
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <div class="button-row">
+      <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
+      <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    </div>
   </div>
 
-  <!-- ================= NAVIGATION ================= -->
-  <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
-  </div>
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
 
-</div>
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove("active"));
+      slides[i].classList.add("active");
+      document.getElementById("currentSlide").innerText = i + 1;
+    }
 
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
+    function nextSlide() {
+      if (index < slides.length - 1) {
+        index++;
+        showSlide(index);
+      } else {
+        location.href = "/experiment/{{ experiment.slug }}/run/";
+      }
+    }
 
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
+    function prevSlide() {
+      if (index > 0) {
+        index--;
+        showSlide(index);
+      } else {
+        location.href = "/experiment/{{ experiment.slug }}/requirements/";
+      }
+    }
 
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    // AFTER LAST SLIDE → EXPERIMENT PAGE
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
-}
+    /* THEME & FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
 
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
-    location.href = "/experiment/{{ experiment.slug }}/requirements/";
-  }
-}
-
-/* KEYBOARD CONTROLS */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") nextSlide();
+      if (e.key === "Escape") prevSlide();
     });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+  </script>
 
 
 <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>

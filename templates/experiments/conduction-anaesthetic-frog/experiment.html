@@ -10,12 +10,61 @@
         href="{% static 'experiments/rotarod/css/intro.css' %}?v=10005">
 
   <style>
+    .page-container {
+      max-width: 100% !important;
+      width: 98% !important;
+      margin: 0 auto;
+      padding: 20px;
+      padding-top: 80px; /* Clear fixed headers */
+    }
+
+    .title {
+      margin-top: 20px !important;
+      margin-bottom: 30px !important;
+    }
+
+    .experiment-grid {
+      display: flex;
+      gap: 20px;
+      margin-top: 25px;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .video-section {
+      flex: 0 0 calc(50% - 10px);
+    }
+
+    .observation-section {
+      flex: 0 0 calc(50% - 10px);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      overflow-x: auto; /* Prevent overflow */
+    }
+
+    /* 🌑 DARK MODE (Default) */
+    .observation-section h2 { color: #fff; }
+    table { color: #fff; border-color: #444; }
+    th { background: #222; }
+
+    /* ☀️ LIGHT MODE FIXES */
+    .light-mode .observation-section {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    .light-mode .observation-section h2 { color: #000; }
+    .light-mode table { color: #000; border-color: #ccc; }
+    .light-mode th { background: #f3f4f6; color: #000; }
+    .light-mode td { color: #333; border-color: #ccc; }
+
     .video-frame {
       width: 100%;
       height: 480px;
       border-radius: 14px;
       background: #000;
-      margin-top: 20px;
       position: relative;
       display: flex;
       align-items: center;
@@ -84,7 +133,7 @@
       padding: 25px;
       border-radius: 12px;
       width: 90%;
-      max-width: 1100px;
+      max-width: 800px;
       color: white;
       max-height: 85vh;
       overflow-y: auto;
@@ -93,19 +142,14 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      color: white;
       margin-top: 10px;
     }
 
     th, td {
       border: 1px solid #444;
-      padding: 8px;
+      padding: 6px 4px;
       text-align: center;
-      font-size: 14px;
-    }
-
-    th {
-      background: #222;
+      font-size: 11.5px;
     }
 
     .close-btn {
@@ -114,6 +158,26 @@
       color: red;
       font-weight: bold;
       font-size: 18px;
+    }
+
+    /* DYNAMIC DATA */
+    .result-value {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+    .result-value.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .experiment-grid {
+        flex-direction: column;
+      }
+      .video-section, .observation-section {
+        flex: 0 0 100%;
+      }
     }
   </style>
 </head>
@@ -124,11 +188,6 @@
     <span><b>Aim:</b> To study conduction anaesthetic activity by loss of reflex withdrawal in frog.</span>
   </div>
 
-  
-
-  
-
-
 <div class="page-container">
 
   <h1 class="title">
@@ -136,19 +195,82 @@
   </h1>
 
   <div class="top-actions">
-  <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-  <button class="dropdown-btn" onclick="openObservation()">Observations</button>
-  
-  
-</div>
-  <div class="video-frame">
-    <button class="start-btn" id="startBtn" onclick="startExperiment()">
-      ▶ Start Practical
-    </button>
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+  </div>
 
-    <video id="experimentVideo" controls>
-      <source src="{% static 'experiments/conduction-anaesthetic-frog/videos/frog_conduction.mp4' %}" type="video/mp4">
-    </video>
+  <div class="experiment-grid">
+    <!-- LEFT SIDE: VIDEO (60%) -->
+    <div class="video-section">
+      <div class="video-frame">
+        <button class="start-btn" id="startBtn" onclick="startExperiment()">
+          ▶ Start Practical
+        </button>
+        <video id="experimentVideo" controls>
+          <source src="{% static 'experiments/conduction-anaesthetic-frog/videos/frog_conduction.mp4' %}" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: OBSERVATION TABLE (40%) -->
+    <div class="observation-section">
+      <h2 style="margin-bottom: 10px; font-size: 1.2rem;">Observation Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Animal No.</th>
+            <th>Site</th>
+            <th>Drug</th>
+            <th>Conc/Vol</th>
+            <th>Onset (min)</th>
+            <th>Duration (min)</th>
+            <th>Pinprick Response</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Left dorsal</td>
+            <td><span class="result-value">Lignocaine HCl 1%</span></td>
+            <td><span class="result-value">0.3 mL</span></td>
+            <td><span class="result-value">2</span></td>
+            <td><span class="result-value">45</span></td>
+            <td><span class="result-value">0 (No response)</span></td>
+            <td><span class="result-value">Clear wheel</span></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Right dorsal</td>
+            <td><span class="result-value">Normal saline</span></td>
+            <td><span class="result-value">0.3 mL</span></td>
+            <td><span class="result-value">—</span></td>
+            <td><span class="result-value">—</span></td>
+            <td><span class="result-value">++</span></td>
+            <td><span class="result-value">Normal</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Left dorsal</td>
+            <td><span class="result-value">Procaine HCl 1%</span></td>
+            <td><span class="result-value">0.3 mL</span></td>
+            <td><span class="result-value">3</span></td>
+            <td><span class="result-value">28</span></td>
+            <td><span class="result-value">0</span></td>
+            <td><span class="result-value">Slight blanching</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Right dorsal</td>
+            <td><span class="result-value">Normal saline</span></td>
+            <td><span class="result-value">0.3 mL</span></td>
+            <td><span class="result-value">—</span></td>
+            <td><span class="result-value">—</span></td>
+            <td><span class="result-value">++</span></td>
+            <td><span class="result-value">Normal</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="button-row" style="justify-content:center; margin-top:25px;">
@@ -170,82 +292,14 @@
   <div class="modal-content">
     <span class="close-btn" onclick="closeProcedure()">✖</span>
     <h2>Procedure</h2>
-    <ol>
-      <li>Take pithed/decerebrated frog ethically.</li>
-      <li>Expose sciatic nerve plexus near thigh root.</li>
-      <li>Check baseline withdrawal using dilute HCl (0.1–0.2%).</li>
-      <li>Inject 0.2–0.5 mL test drug around sciatic plexus.</li>
-      <li>Inject saline in other leg (control).</li>
-      <li>Test every 2–5 min and record withdrawal time.</li>
-      <li>Measure onset and duration of anaesthesia.</li>
-      <li>Alternative: Sciatic-gastrocnemius electrical stimulation.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- ================= OBSERVATION MODAL ================= -->
-<div class="modal" id="observationModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
-    <h2>Observation Table</h2>
-
-    <!-- Based on your uploaded image -->
-    <table>
-      <thead>
-        <tr>
-          <th>Animal No.</th>
-          <th>Site</th>
-          <th>Drug</th>
-          <th>Conc/Vol</th>
-          <th>Onset (min)</th>
-          <th>Duration (min)</th>
-          <th>Pinprick Response</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Left dorsal</td>
-          <td>Lignocaine HCl 1%</td>
-          <td>0.3 mL</td>
-          <td>2</td>
-          <td>45</td>
-          <td>0 (No response)</td>
-          <td>Clear wheel</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Right dorsal</td>
-          <td>Normal saline</td>
-          <td>0.3 mL</td>
-          <td>—</td>
-          <td>—</td>
-          <td>++</td>
-          <td>Normal</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Left dorsal</td>
-          <td>Procaine HCl 1%</td>
-          <td>0.3 mL</td>
-          <td>3</td>
-          <td>28</td>
-          <td>0</td>
-          <td>Slight blanching</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Right dorsal</td>
-          <td>Normal saline</td>
-          <td>0.3 mL</td>
-          <td>—</td>
-          <td>—</td>
-          <td>++</td>
-          <td>Normal</td>
-        </tr>
-      </tbody>
-    </table>
+    <p>1. Take pithed/decerebrated frog (destroy brain/upper spinal cord ethically).</p>
+    <p>2. Expose sciatic nerve plexus (near thigh root) via small skin incision.</p>
+    <p>3. Check baseline: Dip one foot in dilute acid (0.1–0.2% HCl) → brisk withdrawal reflex (time <5 sec).</p>
+    <p>4. Inject 0.2–0.5 mL test drug (e.g., 1% procaine) around sciatic plexus (perineural).</p>
+    <p>5. Inject saline on other leg (control).</p>
+    <p>6. Test every 2–5 min: Dip foot in acid; record time to withdrawal.</p>
+    <p>7. Measure onset (no/reflex delayed >10 sec) and duration (until reflex returns).</p>
+    <p>8. Alternative: Isolate sciatic-gastrocnemius preparation; stimulate nerve electrically and record muscle twitch abolition.</p>
   </div>
 </div>
 
@@ -255,14 +309,13 @@ function startExperiment() {
   let video = document.getElementById("experimentVideo");
   video.style.display = "block";
   video.play();
-}
 
-function openObservation() {
-  document.getElementById("observationModal").style.display = "flex";
-}
-
-function closeObservation() {
-  document.getElementById("observationModal").style.display = "none";
+  // Show data after video ends
+  video.onended = function() {
+    document.querySelectorAll('.result-value').forEach(el => {
+      el.classList.add('show');
+    });
+  };
 }
 
 function openProcedure() {

@@ -5,71 +5,42 @@
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
   <meta charset="UTF-8">
   <title>Histamine DRC Experiment – Theory</title>
-
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
-
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
   <style>
     /* ================= SLIDE SYSTEM ================= */
-    .slide-container {
-      position: relative;
-      min-height: 260px;
-    }
-
     .slide {
       display: none;
       animation: slideIn 0.5s ease;
     }
-
     .slide.active {
       display: block;
     }
-
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
     }
-
     .slide-counter {
       text-align: center;
       margin-top: 15px;
       color: #aaa;
       font-size: 14px;
     }
-
     /* 🔝 TOP RIGHT ACTION BUTTONS */
     .top-actions {
       position: fixed;
-      top: 20px;
-      right: 25px;
+      top: 15px;
+      right: 15px;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
       z-index: 9999;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    .top-actions button {
-      padding: 10px 18px;
-      border-radius: 22px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .top-actions button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
-    }
-  </style>
+</style>
 </head>
 
 <body>
@@ -78,134 +49,52 @@
     <span><b>Aim:</b> To record the cumulative dose-response curve (DRC) of histamine on isolated guinea pig ileum and to determine its pD₂ value.</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
+  <!-- 🔝 TOP ACTIONS -->
+  <div class="top-actions">
+    <div id="theme-toggle-container"></div>
+  </div>
 
 <div class="page-container">
 
-  <!-- TITLE -->
-  <h1 class="title">Theory / Principle</h1>
+  <h1 class="title">Theory/Principle</h1>
 
-  <!-- ================= SLIDES ================= -->
-  <div class="slide-container">
+  <div class="info-box slide active">
+    <h2>Principle</h2>
+    <p>
+      <strong>pD₂ value</strong> is defined as the negative logarithm (base 10) 
+      of the molar concentration of an agonist that produces 50% of the maximal response.
+    </p>
+    <p>
+      <strong>pD₂ = –log EC₅₀</strong>
+    </p>
+    <p>
+      It is a measure of the <strong>potency</strong> of the agonist. Higher pD₂ indicates a more potent drug.
+    </p>
 
-    <!-- SLIDE 1 -->
-    <div class="info-box slide active">
-      <h2>pD₂ Value & Potency</h2>
-      <p>
-        <strong>pD₂ value</strong> is defined as the negative logarithm (base 10)
-        of the molar concentration of an agonist that produces 50% of the
-        maximal response.
-      </p>
-
-      <p>
-        pD₂ = –log EC₅₀
-      </p>
-
-      <p>
-        It is a measure of the <strong>potency</strong> of the agonist.
-        Higher pD₂ indicates a more potent drug.
-      </p>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="info-box slide">
-      <h2>Dose Response Curve (DRC)</h2>
-      <p>
-        Guinea pig ileum contains abundant <strong>H₁ receptors</strong>
-        which respond to histamine by producing graded isotonic contractions.
-      </p>
-
-      <p>
-        When plotted as:
-      </p>
-
-      <p>
-        <strong>Y-axis:</strong> % maximal response  
-        <br>
-        <strong>X-axis:</strong> Log concentration
-      </p>
-
-      <p>
-        The dose-response curve becomes <strong>sigmoidal</strong>.
-        The pD₂ value is obtained at 50% response level from the graph.
-      </p>
-    </div>
-
+    <h2 style="margin-top: 30px;">Dose Response Curve (DRC)</h2>
+    <p>
+      Guinea pig ileum contains abundant <strong>H₁ receptors</strong> which respond to histamine by producing graded isotonic contractions.
+    </p>
+    <p>
+      When plotted as <strong>Y-axis: % maximal response</strong> and <strong>X-axis: Log concentration</strong>, the curve becomes <strong>sigmoidal</strong>. The pD₂ value is obtained at the 50% response level from the graph.
+    </p>
+    <p>
+      <strong>Tissue:</strong> Isolated Guinea Pig Ileum <br>
+      <strong>Receptor:</strong> Histamine (H₁) <br>
+      <strong>Response:</strong> Smooth muscle contraction
+    </p>
   </div>
 
   <div class="slide-counter">
-    Slide <span id="currentSlide">1</span> / 2
+    Slide 1 / 1
   </div>
 
-  <!-- ================= NAVIGATION ================= -->
   <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">⬅ Back</button>
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">Next ▶</button>
   </div>
 
 </div>
-
-<!-- ================= SCRIPTS ================= -->
-<script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
-
-function showSlide(i) {
-  slides.forEach(s => s.classList.remove("active"));
-  slides[i].classList.add("active");
-  document.getElementById("currentSlide").innerText = i + 1;
-}
-
-function nextSlide() {
-  if (index < slides.length - 1) {
-    index++;
-    showSlide(index);
-  } else {
-    // AFTER LAST SLIDE → EXPERIMENT PAGE
-    location.href = "/experiment/{{ experiment.slug }}/run/";
-  }
-}
-
-function prevSlide() {
-  if (index > 0) {
-    index--;
-    showSlide(index);
-  } else {
-    // BEFORE FIRST SLIDE → REQUIREMENTS PAGE
-    location.href = "/experiment/{{ experiment.slug }}/requirements/";
-  }
-}
-
-/* KEYBOARD CONTROLS */
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") nextSlide();
-  if (e.key === "Escape") prevSlide();
-});
-
-/* THEME */
-
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
 
 <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>

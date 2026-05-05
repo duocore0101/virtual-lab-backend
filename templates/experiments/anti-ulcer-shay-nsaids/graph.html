@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <meta charset="UTF-8">
+  <title>Anti-ulcer Activity – Graph</title>
+
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 15px;
+      right: 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 10001;
+    }
+
+    .top-left-aim {
+      top: 15px !important;
+      left: 20px !important;
+      max-width: 40% !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 10000;
+    }
+
+    .title {
+      margin-top: 110px !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    .graph-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .graph-card {
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .graph-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .graph-card h3 {
+      text-align: center;
+      color: #ff4d4d;
+      margin-bottom: 20px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    body.light-mode .graph-card {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #eee;
+    }
+
+    body.light-mode .graph-card h3 {
+      color: #ff2e2e;
+    }
+
+    .full-width-graph {
+      grid-column: 1 / -1;
+    }
+
+    canvas {
+      max-height: 350px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🎯 EXPERIMENT AIM HEADER -->
+  <div class="top-left-aim">
+    <span><b>Aim:</b> Study of anti-ulcer activity using pylorus-ligated (SHAY) rat model and NSAIDs-induced ulcer model.</span>
+  </div>
+
+  <div class="top-actions"></div>
+
+  <div class="page-container" style="max-width: 95%;">
+
+    <h1 class="title">Graphical Representation</h1>
+
+    <!-- 🏷️ PYLORUS LIGATION SECTION -->
+    <div class="info-box" style="margin-top: 40px;">
+      <h2 style="color: #ff4d4d; text-align: center; border-bottom: 2px solid rgba(255,46,46,0.2); padding-bottom: 10px;">
+        Part I: Pylorus Ligation (SHAY) Model
+      </h2>
+      
+      <div class="graph-grid">
+        <div class="graph-card">
+          <h3>Ulcer Index</h3>
+          <canvas id="shayUlcerChart"></canvas>
+        </div>
+        <div class="graph-card">
+          <h3>% Protection</h3>
+          <canvas id="shayProtectionChart"></canvas>
+        </div>
+        <div class="graph-card">
+          <h3>Gastric Volume (ml)</h3>
+          <canvas id="shayVolumeChart"></canvas>
+        </div>
+        <div class="graph-card">
+          <h3>Acidity (mEq/L/100g)</h3>
+          <canvas id="shayAcidityChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🏷️ NSAID MODEL SECTION -->
+    <div class="info-box" style="margin-top: 50px;">
+      <h2 style="color: #ff4d4d; text-align: center; border-bottom: 2px solid rgba(255,46,46,0.2); padding-bottom: 10px;">
+        Part II: NSAID-Induced Ulcer Model
+      </h2>
+      
+      <div class="graph-grid">
+        <div class="graph-card full-width-graph">
+          <h3>Effect on Gastric Ulcer Index (% Protection labels)</h3>
+          <canvas id="nsaidChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row" style="margin-top: 50px; justify-content: center;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">⬅ Back</button>
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">Next ▶</button>
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const shayLabels = ["Control (Vehicle)", "Standard (Ranitidine)", "Test drug (200 mg/kg)"];
+    
+    // SHAY ULCER INDEX
+    new Chart(document.getElementById("shayUlcerChart"), {
+      type: "bar",
+      data: {
+        labels: shayLabels,
+        datasets: [{
+          label: "Ulcer Index",
+          data: [18.5, 4.2, 6.8],
+          backgroundColor: ["#ff2e2e", "#228b22", "#0000ff"],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Ulcer Index' } } }
+      }
+    });
+
+    // SHAY % PROTECTION
+    new Chart(document.getElementById("shayProtectionChart"), {
+      type: "bar",
+      data: {
+        labels: shayLabels,
+        datasets: [{
+          label: "% Protection",
+          data: [0, 77.3, 63.2],
+          backgroundColor: ["#888", "#228b22", "#0000ff"],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '% Protection' } } }
+      }
+    });
+
+    // SHAY GASTRIC VOLUME
+    new Chart(document.getElementById("shayVolumeChart"), {
+      type: "bar",
+      data: {
+        labels: shayLabels,
+        datasets: [{
+          label: "Volume (ml)",
+          data: [2.8, 1.2, 1.5],
+          backgroundColor: ["#ff2e2e", "#228b22", "#0000ff"],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Volume (ml)' } } }
+      }
+    });
+
+    // SHAY ACIDITY
+    new Chart(document.getElementById("shayAcidityChart"), {
+      type: "bar",
+      data: {
+        labels: shayLabels,
+        datasets: [
+          {
+            label: "Free Acidity",
+            data: [45, 18, 22],
+            backgroundColor: "#ffa500",
+            borderRadius: 5
+          },
+          {
+            label: "Total Acidity",
+            data: [85, 35, 42],
+            backgroundColor: "#800080",
+            borderRadius: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Acidity (mEq/L/100g)' } } }
+      }
+    });
+
+    // NSAID CHART
+    const nsaidLabels = ["Control (NSAID only)", "Standard (Omeprazole)", "Test drug (200 mg/kg)"];
+    const nsaidData = [22.4, 3.5, 7.2];
+    const nsaidProt = ["0%", "84.4%", "67.9%"];
+
+    new Chart(document.getElementById("nsaidChart"), {
+      type: "bar",
+      data: {
+        labels: nsaidLabels,
+        datasets: [{
+          label: "Ulcer Index",
+          data: nsaidData,
+          backgroundColor: ["#b22222", "#228b22", "#4682b4"],
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              afterLabel: function(context) {
+                return "% Protection: " + nsaidProt[context.dataIndex];
+              }
+            }
+          }
+        },
+        scales: { 
+          y: { 
+            beginAtZero: true, 
+            max: 30,
+            title: { display: true, text: 'Ulcer Index' } 
+          } 
+        }
+      }
+    });
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+</body>
+</html>

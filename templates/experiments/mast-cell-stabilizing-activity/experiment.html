@@ -8,15 +8,31 @@
 
   <link rel="stylesheet"
         href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
-
 <style>
+  /* 🏁 OVERLAP & LAYOUT FIXES */
+  .top-left-aim {
+    max-width: 55% !important;
+    white-space: normal !important;
+    z-index: 100 !important;
+  }
+
   .top-actions {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    display: flex;
-    gap: 12px;
-    z-index: 50;
+    position: fixed !important; /* Keep fixed at top right */
+    top: 20px !important;
+    right: 25px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    z-index: 1000 !important;
+    width: auto !important;
+    justify-content: flex-end !important;
+  }
+
+  .exp-container {
+    padding-top: 100px !important; 
+    max-width: 98% !important;
+    width: 98% !important;
+    margin: 0 auto;
   }
 
   .dropdown-btn {
@@ -29,28 +45,201 @@
     color: #fff;
     box-shadow: 0 0 14px rgba(255,0,0,0.6);
     transition: 0.3s;
+    white-space: nowrap;
   }
 
   .dropdown-btn:hover {
     transform: scale(1.05);
   }
 
-  .image-container {
+  /* SIDE BY SIDE LAYOUT */
+  .experiment-grid {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: space-between; /* Push items to edges */
+  }
+
+  .image-section {
+    flex: 0 1 auto; /* Allow shrink, but don't grow beyond content */
+    text-align: left;
+  }
+
+  .image-section img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 480px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    cursor: pointer; /* Suggest clickability */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .image-section img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 35px rgba(255, 46, 46, 0.3);
+  }
+
+  /* 🖼 IMAGE POPUP MODAL ENHANCEMENTS */
+  #imageModal {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    z-index: 2000;
+  }
+
+  #imageModal .modal-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    max-width: 90vw;
+    width: auto;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    position: relative;
+    animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .main-image {
-    width: 45%;
-    max-width: 1000px;
+  @keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 
-  .main-image img {
+  #imageModal img {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 14px;
+    box-shadow: 0 0 60px rgba(0,0,0,1);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  #imageModal .close-btn {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    color: white;
+    font-size: 22px;
+    background: #ff2e2e;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(255, 46, 46, 0.4);
+    z-index: 2001;
+  }
+
+  #imageModal .close-btn:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: #ff4f4f;
+    box-shadow: 0 0 30px rgba(255, 46, 46, 0.7);
+  }
+
+  .observation-section {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  /* LIGHT MODE TABLE FIX */
+  .light-mode .observation-section {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .light-mode h2 { color: #000; }
+  .light-mode table { color: #000 !important; border-color: #ccc !important; }
+  .light-mode th { background: #f3f4f6 !important; color: #000 !important; }
+  .light-mode td { color: #333 !important; border-color: #ccc !important; }
+
+  .observation-table {
     width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    border-collapse: collapse;
+    color: #fff;
+    margin-top: 10px;
+  }
+
+  .observation-table th, .observation-table td {
+    border: 1px solid #444;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 13.5px;
+  }
+
+  .observation-table th {
+    background: #222;
+  }
+
+  .modal-content {
+    background: #111;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 700px;
+  }
+
+  .procedure-list li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .sub-list {
+    margin-left: 20px;
+    margin-top: 5px;
+    list-style-type: circle;
+  }
+
+  /* 🔘 NAVIGATION BUTTONS */
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 45px;
+    margin-bottom: 30px;
+  }
+
+  .back-btn, .exp-btn {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .back-btn {
+    background: #4b5563;
+    color: white;
+  }
+
+  .exp-btn {
+    background: linear-gradient(135deg, #ff2e2e, #e60000);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 46, 46, 0.4);
+  }
+
+  .back-btn:hover, .exp-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .exp-btn:hover {
+    box-shadow: 0 6px 22px rgba(255, 46, 46, 0.6);
   }
 </style>
 </head>
@@ -61,10 +250,11 @@
     <span><b>Aim:</b> To study and evaluate the mast cell stabilizing (anti-degranulation) activity of a given anti-allergic drug using an experimental animal model.</span>
   </div>
 
-  
-
-  
-
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+    <button class="dropdown-btn" onclick="openCalculation()">Calculations</button>
+  </div>
 
 <!-- 🔥 INSTRUCTIONS POPUP -->
 <div id="instructionModal" class="modal">
@@ -85,128 +275,141 @@
 <div id="procedureModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeProcedure()">✖</span>
-
-    <h2>Procedure / Calculation</h2>
-
-    <p><strong>Formula:</strong></p>
-
-    <p>
-      % Protection =
-      (Degranulated cells in control − Degranulated cells in treated) × 100
-      <br>
-      --------------------------------------------------------------
-      <br>
-      Degranulated cells in control
-    </p>
-
-    <p><strong>Example:</strong></p>
-
-    <p>
-      For Standard Drug:
-      <br>
-      (60 − 18) × 100 / 60 = 70%
-    </p>
-
+    <h2>Procedure</h2>
+    <ol class="procedure-list">
+      <li>Animals are divided into 5 groups (n = 6 each).</li>
+      <li>Treatment is given as:
+        <ul class="sub-list">
+          <li>Group I: Normal saline</li>
+          <li>Group II: Degranulating agent only</li>
+          <li>Group III: Standard drug</li>
+          <li>Group IV & V: Test drug (low and high doses)</li>
+        </ul>
+      </li>
+      <li>After drug treatment (usually for 5–7 days), animals are sacrificed.</li>
+      <li>Mesentery is carefully isolated and kept in Ringer’s solution.</li>
+      <li>Tissue is exposed to degranulating agent (e.g., Compound 48/80).</li>
+      <li>The mesentery is stained with toluidine blue.</li>
+      <li>Slides are prepared and observed under microscope.</li>
+      <li>Mast cells are counted as:
+        <ul class="sub-list">
+          <li>Intact mast cells</li>
+          <li>Degranulated mast cells</li>
+        </ul>
+      </li>
+      <li>Total 100 mast cells are counted per slide.</li>
+    </ol>
   </div>
 </div>
 
-<!-- 📊 OBSERVATION POPUP -->
-<div id="observationModal" class="modal">
-  <div class="modal-content" style="max-width:1000px;">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
+<!-- 🔬 CALCULATION POPUP -->
+<div id="calculationModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeCalculation()">✖</span>
+    <h2>Formula & Calculation</h2>
+    <p><strong>Formula:</strong></p>
+    <p style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; font-family: monospace;">
+      % Protection = [(Degranulated cells in control − Degranulated cells in treated) / Degranulated cells in control] × 100
+    </p>
+    <p><strong>Example (Standard Drug):</strong></p>
+    <p>
+      If Control has 60 degranulated cells and Standard has 18:
+      <br>
+      (60 − 18) / 60 × 100 = <b>70% Protection</b>
+    </p>
+  </div>
+</div>
 
-    <h2>Observation Table</h2>
-
-    <table class="observation-table">
-      <thead>
-        <tr>
-          <th>Group</th>
-          <th>Treatment</th>
-          <th>Total Mast Cells</th>
-          <th>Intact Cells</th>
-          <th>Degranulated Cells</th>
-          <th>% Protection</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>I</td>
-          <td>Normal Control</td>
-          <td>100</td>
-          <td>94</td>
-          <td>6</td>
-          <td>—</td>
-        </tr>
-
-        <tr>
-          <td>II</td>
-          <td>Disease Control</td>
-          <td>100</td>
-          <td>40</td>
-          <td>60</td>
-          <td>—</td>
-        </tr>
-
-        <tr>
-          <td>III</td>
-          <td>Standard Drug</td>
-          <td>100</td>
-          <td>82</td>
-          <td>18</td>
-          <td>70.0 %</td>
-        </tr>
-
-        <tr>
-          <td>IV</td>
-          <td>Test Drug Low Dose</td>
-          <td>100</td>
-          <td>58</td>
-          <td>42</td>
-          <td>30.0 %</td>
-        </tr>
-
-        <tr>
-          <td>V</td>
-          <td>Test Drug High Dose</td>
-          <td>100</td>
-          <td>75</td>
-          <td>25</td>
-          <td>58.3 %</td>
-        </tr>
-      </tbody>
-    </table>
-
+<!-- 🖼 IMAGE MODAL -->
+<div id="imageModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeImageModal()">✖</span>
+    <img src="{% static 'experiments/mast-cell-stabilizing-activity/images/mast_cell_setup.png' %}"
+         alt="Mast Cell Degranulation Setup Full">
   </div>
 </div>
 
 <div class="exp-container">
 
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
-    <button class="dropdown-btn" onclick="openProcedure()">Formula/Calculation</button>
-    
-  </div>
+  <h1 class="title">Mast Cell Stabilizing Activity – Virtual Simulator</h1>
 
-  <h1>Mast Cell Stabilizing Activity – Virtual Simulator</h1>
-
-  
-
-  <!-- 🖼 BIG CENTRAL IMAGE -->
-  <div class="image-container">
-    <div class="main-image">
+  <div class="experiment-grid">
+    <!-- LEFT SIDE: IMAGE -->
+    <div class="image-section">
       <img src="{% static 'experiments/mast-cell-stabilizing-activity/images/mast_cell_setup.png' %}"
-           alt="Mast Cell Degranulation Setup">
+           alt="Mast Cell Degranulation Setup"
+           onclick="openImageModal()">
+    </div>
+
+    <!-- RIGHT SIDE: OBSERVATION TABLE -->
+    <div class="observation-section">
+      <h2>Observation Table</h2>
+      <table class="observation-table">
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Treatment</th>
+            <th>Total Mast Cells</th>
+            <th>Intact Cells</th>
+            <th>Degranulated Cells</th>
+            <th>% Protection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>I</td>
+            <td>Normal Control</td>
+            <td>100</td>
+            <td>94</td>
+            <td>6</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>II</td>
+            <td>Disease Control</td>
+            <td>100</td>
+            <td>40</td>
+            <td>60</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>III</td>
+            <td>Standard Drug</td>
+            <td>100</td>
+            <td>82</td>
+            <td>18</td>
+            <td>70.0 %</td>
+          </tr>
+          <tr>
+            <td>IV</td>
+            <td>Test Drug Low Dose</td>
+            <td>100</td>
+            <td>58</td>
+            <td>42</td>
+            <td>30.0 %</td>
+          </tr>
+          <tr>
+            <td>V</td>
+            <td>Test Drug High Dose</td>
+            <td>100</td>
+            <td>75</td>
+            <td>25</td>
+            <td>58.3 %</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <!-- 🔘 NAVIGATION -->
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-    ⬅ Back
-  </button>
-
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-    Next ▶
-  </button>
+  <div class="button-row">
+    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+      ⬅ Back
+    </button>
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+      Next ▶
+    </button>
+  </div>
 
 </div>
 
@@ -219,12 +422,6 @@ function closeModal() {
   document.getElementById("instructionModal").style.display = "none";
 }
 
-function openObservation() {
-  document.getElementById("observationModal").style.display = "flex";
-}
-function closeObservation() {
-  document.getElementById("observationModal").style.display = "none";
-}
 function openProcedure() {
   document.getElementById("procedureModal").style.display = "flex";
 }
@@ -232,10 +429,19 @@ function closeProcedure() {
   document.getElementById("procedureModal").style.display = "none";
 }
 
-const toggle = document.getElementById("themeToggle");
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-});
+function openCalculation() {
+  document.getElementById("calculationModal").style.display = "flex";
+}
+function closeCalculation() {
+  document.getElementById("calculationModal").style.display = "none";
+}
+
+function openImageModal() {
+  document.getElementById("imageModal").style.display = "flex";
+}
+function closeImageModal() {
+  document.getElementById("imageModal").style.display = "none";
+}
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -245,7 +451,6 @@ function toggleFullscreen() {
   }
 }
 </script>
-
 
 <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>

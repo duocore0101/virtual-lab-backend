@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Acute Eye Irritation (OECD 405) – Result & Conclusion</title>
 
   <!-- Reuse existing CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -43,199 +43,192 @@
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To study and determine the acute eye irritation and/or corrosion potential of a given test substance in albino rabbits as per OECD Test Guideline 405.</span>
+    <span><b>Aim:</b> To study and determine the acute eye irritation and/or corrosion potential of a given test
+      substance in albino rabbits as per OECD Test Guideline 405.</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Result & Conclusion</h1>
-
-  <!-- 🧪 RESULT -->
-  <div class="info-box">
-    <h2>Result</h2>
-    <p>
-      The acute eye irritation and/or corrosion potential of the given test substance 
-      was evaluated in albino rabbits according to <strong>OECD Test Guideline 405</strong>.
-    </p>
-    <p>
-      Ocular lesions were scored using the <strong>Draize scoring system</strong> 
-      at 24, 48 and 72 hours, and observations were continued up to 21 days 
-      to assess reversibility.
-    </p>
-    <p>
-      Based on the calculated <strong>Mean Draize Score (24–72 h)</strong> 
-      and observed clinical signs, the substance was classified under 
-      <strong>GHS Category ______</strong>.
-    </p>
-  </div>
-
-  <!-- 🧾 CONCLUSION -->
-  <div class="info-box">
-    <h2>Conclusion</h2>
-    <p>
-      The present study demonstrates the ocular irritation potential of the 
-      test substance following conjunctival instillation in rabbits.
-    </p>
-    <p>
-      Based on the severity of corneal opacity, iris involvement, 
-      conjunctival redness, chemosis, discharge and reversibility of effects, 
-      the substance is classified as <strong>Category ______</strong> 
-      according to the Globally Harmonized System (GHS).
-    </p>
-    <p>
-      This study is essential for hazard identification, regulatory classification, 
-      labeling requirements and ensuring safe handling of the test substance.
-    </p>
-  </div>
-
-  <!-- 🔘 NAVIGATION -->
-  <div class="button-row">
-
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-      ⬅ Back
-    </button>
-
-    
-    
-    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
-      Download Practical PDF 📄
-    </button>
 
 
 
-    <!-- ✅ FINISH PRACTICAL -->
-    <button class="exp-btn" onclick="finishPractical()">
-      Finish Practical ✔
-    </button>
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
 
   </div>
 
-</div>
+  <div class="page-container">
 
-<!-- ================= SCRIPTS ================= -->
+    <h1 class="title">Result & Conclusion</h1>
 
-<script>
-/* THEME */
+    <!-- 🧪 RESULT -->
+    <div class="info-box">
+      <h2>Result</h2>
+      <p>
+        The acute eye irritation and/or corrosion potential of the given test substance
+        was evaluated in albino rabbits according to <strong>OECD Test Guideline 405</strong>.
+      </p>
+      <p>
+        Ocular lesions were scored using the <strong>Draize scoring system</strong>
+        at 24, 48 and 72 hours, and observations were continued up to 21 days
+        to assess reversibility.
+      </p>
+
+    </div>
+
+    <!-- 🧾 CONCLUSION -->
+    <div class="info-box">
+      <h2>Conclusion</h2>
+      <p>
+        The present study demonstrates the ocular irritation potential of the
+        test substance following conjunctival instillation in rabbits.
+      </p>
+
+      <p>
+        This study is essential for hazard identification, regulatory classification,
+        labeling requirements and ensuring safe handling of the test substance.
+      </p>
+    </div>
+
+    <!-- 🔘 NAVIGATION -->
+    <div class="button-row">
+
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+        ⬅ Back
+      </button>
 
 
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+
+      <button class="exp-btn" onclick="downloadPDF()"
+        style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+        Download Practical PDF 📄
+      </button>
 
 
 
+      <!-- ✅ FINISH PRACTICAL -->
+      <button class="exp-btn" onclick="finishPractical()">
+        Finish Practical ✔
+      </button>
 
-<script>
-function downloadPDF() {
-  const slug = "{{ experiment.slug }}";
-  
-  // 1. TRY TO SCRAPE TABLE DATA FROM DOM
-  let tableData = [];
-  const table = document.querySelector('table'); 
-  if (table) {
-    const rows = table.querySelectorAll('tr');
-    rows.forEach(row => {
-      let rowData = [];
-      const cells = row.querySelectorAll('th, td');
-      cells.forEach(cell => {
-        rowData.push(cell.innerText.trim());
-      });
-      if (rowData.length > 0) rowData.push(""); // filler
-      if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
-    });
-    
-    // Save to localStorage for use on conclusion/other pages
-    if (tableData.length > 0) {
-        localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+
+  <script>
+    /* THEME */
+
+
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
     }
-  } 
-  
-  // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
-  if (tableData.length === 0) {
-    const saved = localStorage.getItem('exp_data_' + slug);
-    if (saved) {
-        tableData = JSON.parse(saved);
+  </script>
+
+
+
+
+  <script>
+    function downloadPDF() {
+      const slug = "{{ experiment.slug }}";
+
+      // 1. TRY TO SCRAPE TABLE DATA FROM DOM
+      let tableData = [];
+      const table = document.querySelector('table');
+      if (table) {
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          let rowData = [];
+          const cells = row.querySelectorAll('th, td');
+          cells.forEach(cell => {
+            rowData.push(cell.innerText.trim());
+          });
+          if (rowData.length > 0) rowData.push(""); // filler
+          if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
+        });
+
+        // Save to localStorage for use on conclusion/other pages
+        if (tableData.length > 0) {
+          localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+        }
+      }
+
+      // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
+      if (tableData.length === 0) {
+        const saved = localStorage.getItem('exp_data_' + slug);
+        if (saved) {
+          tableData = JSON.parse(saved);
+        }
+      }
+
+      fetch(`/experiment/${slug}/download-pdf/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+          table_data: tableData
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("PDF generation failed");
+          return res.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Practical_Report_${slug}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        })
+        .catch(err => {
+          alert("Failed to generate PDF");
+          console.error(err);
+        });
     }
-  }
-
-  fetch(`/experiment/${slug}/download-pdf/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": "{{ csrf_token }}"
-    },
-    body: JSON.stringify({
-      table_data: tableData
-    })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("PDF generation failed");
-    return res.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Practical_Report_${slug}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  })
-  .catch(err => {
-    alert("Failed to generate PDF");
-    console.error(err);
-  });
-}
-</script>
+  </script>
 
 
 
 
-<script>
-function finishPractical() {
+  <script>
+    function finishPractical() {
 
-  fetch("/experiment/finish/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      experiment_slug: "{{ experiment.slug }}",
-      observations: {}
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    window.location.href = data.redirect;
-  })
-  .catch(err => {
-    alert("Failed to submit practical");
-    console.error(err);
-  });
-}
-</script>
+      fetch("/experiment/finish/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          experiment_slug: "{{ experiment.slug }}",
+          observations: {}
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          window.location.href = data.redirect;
+        })
+        .catch(err => {
+          alert("Failed to submit practical");
+          console.error(err);
+        });
+    }
+  </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

@@ -1,16 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Diuretic Activity Experiment</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=22">
 
   <style>
-    .exp-container { padding: 30px; }
+    .exp-container {
+      padding: 30px;
+    }
 
     /* 🔝 TOP RIGHT ACTIONS */
     .top-actions {
@@ -30,7 +32,7 @@
       font-weight: 600;
       background: #ff2e2e;
       color: #fff;
-      box-shadow: 0 0 14px rgba(255,0,0,0.6);
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
       transition: 0.25s;
     }
 
@@ -49,7 +51,7 @@
     .video-box video {
       width: 100%;
       border-radius: 16px;
-      box-shadow: 0 0 28px rgba(0,0,0,0.6);
+      box-shadow: 0 0 28px rgba(0, 0, 0, 0.6);
     }
 
     /* 📊 OBSERVATION PANEL */
@@ -57,8 +59,8 @@
       background: #1e1e1e;
       border-radius: 18px;
       padding: 22px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04),
-                  0 0 22px rgba(0,0,0,0.6);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(0, 0, 0, 0.6);
     }
 
     .observation-box h2 {
@@ -84,12 +86,12 @@
 
     td {
       padding: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       transition: background 0.25s, transform 0.2s;
     }
 
     tbody tr:hover {
-      background: rgba(255,46,46,0.12);
+      background: rgba(255, 46, 46, 0.12);
       transform: scale(1.01);
     }
 
@@ -109,13 +111,13 @@
       font-weight: 600;
       background: linear-gradient(135deg, #ff2e2e, #ff5a5a);
       color: #fff;
-      box-shadow: 0 0 16px rgba(255,0,0,0.6);
+      box-shadow: 0 0 16px rgba(255, 0, 0, 0.6);
       transition: 0.25s;
     }
 
     .right-controls button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 24px rgba(255,0,0,0.9);
+      box-shadow: 0 0 24px rgba(255, 0, 0, 0.9);
     }
 
     /* 🎯 DROPDOWN */
@@ -127,15 +129,15 @@
       font-size: 14px;
       background: #2a2a2a;
       color: #fff;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08),
-                  0 0 10px rgba(0,0,0,0.6);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 0 10px rgba(0, 0, 0, 0.6);
       transition: box-shadow 0.25s;
     }
 
     select:hover,
     select:focus {
       outline: none;
-      box-shadow: 0 0 14px rgba(255,46,46,0.9);
+      box-shadow: 0 0 14px rgba(255, 46, 46, 0.9);
     }
 
     /* ⬅ ▶ NAVIGATION */
@@ -154,7 +156,7 @@
       font-weight: 600;
       background: #ff2e2e;
       color: #fff;
-      box-shadow: 0 0 18px rgba(255,0,0,0.7);
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.7);
       transition: 0.25s;
     }
 
@@ -167,6 +169,7 @@
       background: #f4f4f4;
       color: #111;
     }
+
     body.light-mode .observation-box {
       background: #ffffff;
     }
@@ -176,164 +179,184 @@
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats / mice.</span>
+    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats /
+      mice.</span>
   </div>
 
-  
-
-  
 
 
-<!-- 🔝 TOP RIGHT -->
-<div class="top-actions">
-  <button onclick="openProcedure()">Procedure</button>
-  
-  
-</div>
 
-<!-- 🔬 PROCEDURE MODAL -->
-<div id="procedureModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeProcedure()">✖</span>
-    <h2>Procedure</h2>
-    <ol class="instruction-list">
-      <li>Fast rats for 18 hours, water ad libitum.</li>
-      <li>Administer saline load orally.</li>
-      <li>Give test/standard drug orally.</li>
-      <li>Place rats in metabolic cages.</li>
-      <li>Measure urine output after 5 & 24 hours.</li>
-    </ol>
+
+
+  <!-- 🔝 TOP RIGHT -->
+  <div class="top-actions">
+    <button onclick="openProcedure()">Procedure</button>
+
+
   </div>
-</div>
 
-<div class="exp-container">
-
-  <h1>Diuretic Activity – Virtual Experiment</h1>
-
-  <div class="main-layout">
-
-    <!-- 🎥 VIDEO -->
-    <div class="video-box">
-      <video id="expVideo" preload="auto">
-        <source src="{% static 'experiments/diuretic-activity/videos/diuretic_common.mp4' %}">
-      </video>
+  <!-- 🔬 PROCEDURE MODAL -->
+  <div id="procedureModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeProcedure()">✖</span>
+      <h2>Procedure</h2>
+      <ol class="instruction-list">
+        <li>Weigh and mark the rats. Fast them overnight (12–16 h) but allow water.</li>
+        <li>On the day of experiment, administer the respective treatment (vehicle or drug) orally using gavage.</li>
+        <li>Immediately after dosing, hydrate all rats with 0.9% NaCl (15 ml/kg p.o.).</li>
+        <li>Place rats individually or in pairs in metabolic cages. Maintain room temperature at 21 ± 0.5°C. Do not provide food or water during the experiment.</li>
+        <li>Collect urine for 5 hours (record volume hourly or as total at 5 h). Take care to avoid mixing with feces.</li>
+        <li>Measure the total urine volume using a graduated cylinder.</li>
+        <li>(Optional advanced parameters): Measure urine pH, Na⁺, K⁺, Cl⁻ concentration if required by your lab.</li>
+      </ol>
     </div>
+  </div>
 
-    <!-- 📊 OBSERVATION -->
-    <div class="observation-box">
-      <h2>Observation Table</h2>
+  <div class="exp-container">
 
-      <table>
-        <thead>
-          <tr>
-            <th>Group</th>
-            <th>5 h (ml)</th>
-            <th>24 h (ml)</th>
-          </tr>
-        </thead>
-        <tbody id="obsBody">
-          <tr><td colspan="3">—</td></tr>
-        </tbody>
-      </table>
+    <h1>Diuretic Activity – Virtual Experiment</h1>
 
-      <div class="right-controls">
-        <button onclick="startVideo()">▶ Start Experiment</button>
-        <button onclick="toggleDrug()">💉 Inject Drug</button>
+    <div class="main-layout">
 
-        <select id="drugSelect" style="display:none;" onchange="selectDrug()">
-          <option value="">Select Drug</option>
-          <option value="control">Control</option>
-          <option value="furosemide">Furosemide 10 mg/kg</option>
-          <option value="cse125">CSE 125 mg/kg</option>
-          <option value="cse250">CSE 250 mg/kg</option>
-          <option value="cse500">CSE 500 mg/kg</option>
-          <option value="csd125">CSD 125 mg/kg</option>
-          <option value="csd250">CSD 250 mg/kg</option>
-          <option value="csd500">CSD 500 mg/kg</option>
-        </select>
+      <!-- 🎥 VIDEO -->
+      <div class="video-box">
+        <video id="expVideo" preload="auto">
+          <source src="{% static 'experiments/diuretic-activity/videos/diuretic_common.mp4' %}">
+        </video>
       </div>
+
+      <!-- 📊 OBSERVATION -->
+      <div class="observation-box">
+        <h2>Observation Table</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Group</th>
+              <th>5 h (ml)</th>
+              <th>24 h (ml)</th>
+            </tr>
+          </thead>
+          <tbody id="obsBody">
+            <tr>
+              <td colspan="3">—</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="right-controls">
+          <select id="drugSelect" onchange="selectDrug()">
+            <option value="">Select Drug</option>
+            <option value="control">Control</option>
+            <option value="furosemide">Furosemide 10 mg/kg</option>
+            <option value="cse125">CSE 125 mg/kg</option>
+            <option value="cse250">CSE 250 mg/kg</option>
+            <option value="cse500">CSE 500 mg/kg</option>
+            <option value="csd125">CSD 125 mg/kg</option>
+            <option value="csd250">CSD 250 mg/kg</option>
+            <option value="csd500">CSD 500 mg/kg</option>
+          </select>
+          <button onclick="injectDrug()">💉 Inject Drug</button>
+          <button onclick="startVideo()">▶ Start Experiment</button>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background: rgba(255,46,46,0.1); border-left: 4px solid #ff2e2e; border-radius: 8px;">
+          <strong>Diuretic index calculation:</strong> Average urine volume (test) / Average urine volume (control) = 8.83 / 2.77 ≈ 3.19 (indicates potent diuretic activity).
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ⬅ ▶ NAV -->
+    <div class="nav-buttons">
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        ⬅ Back
+      </button>
+      <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
+        Next ▶
+      </button>
     </div>
 
   </div>
 
-  <!-- ⬅ ▶ NAV -->
-  <div class="nav-buttons">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      ⬅ Back
-    </button>
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-      Next ▶
-    </button>
-  </div>
+  <script>
+    const video = document.getElementById("expVideo");
+    const obsBody = document.getElementById("obsBody");
+    const drugSelect = document.getElementById("drugSelect");
 
-</div>
+    const data = {
+      control: ["3.0 ± 0.3", "4.2 ± 0.3"],
+      furosemide: ["7.4 ± 0.4*", "7.9 ± 0.3*"],
+      cse125: ["3.4 ± 0.3", "4.5 ± 0.3"],
+      cse250: ["3.6 ± 0.4*", "5.5 ± 0.4*"],
+      cse500: ["3.9 ± 0.2*", "6.0 ± 0.3*"],
+      csd125: ["3.8 ± 0.5", "5.2 ± 0.5"],
+      csd250: ["4.1 ± 0.3*", "6.1 ± 0.3*"],
+      csd500: ["4.4 ± 0.4*", "6.5 ± 0.4*"]
+    };
 
-<script>
-const video = document.getElementById("expVideo");
-const obsBody = document.getElementById("obsBody");
-const drugSelect = document.getElementById("drugSelect");
+    let selectedDrug = null;
+    let completedDrugs = new Set();
 
-const data = {
-  control: ["3.0 ± 0.3", "4.2 ± 0.3"],
-  furosemide: ["7.4 ± 0.4*", "7.9 ± 0.3*"],
-  cse125: ["3.4 ± 0.3", "4.5 ± 0.3"],
-  cse250: ["3.6 ± 0.4*", "5.5 ± 0.4*"],
-  cse500: ["3.9 ± 0.2*", "6.0 ± 0.3*"],
-  csd125: ["3.8 ± 0.5", "5.2 ± 0.5"],
-  csd250: ["4.1 ± 0.3*", "6.1 ± 0.3*"],
-  csd500: ["4.4 ± 0.4*", "6.5 ± 0.4*"]
-};
+    function startVideo() {
+      if (!selectedDrug) {
+        alert("Please select a drug first");
+        return;
+      }
+      video.src = "{% static 'experiments/diuretic-activity/videos/diuretic_common.mp4' %}";
+      video.currentTime = 0;
+      video.play();
 
-let selectedDrug = null;
-let completedDrugs = new Set();
-
-function startVideo() {
-  if (!selectedDrug) {
-    alert("Please select a drug first");
-    return;
-  }
-  video.currentTime = 0;
-  video.play();
-
-  video.onended = () => {
-    if (completedDrugs.has(selectedDrug)) return;
-    const row = document.createElement("tr");
-    row.innerHTML = `
+      video.onended = () => {
+        if (completedDrugs.has(selectedDrug)) return;
+        const row = document.createElement("tr");
+        row.innerHTML = `
       <td>${selectedDrug.toUpperCase()}</td>
       <td>${data[selectedDrug][0]}</td>
       <td>${data[selectedDrug][1]}</td>
     `;
-    obsBody.appendChild(row);
-    completedDrugs.add(selectedDrug);
-  };
-}
+        obsBody.appendChild(row);
+        completedDrugs.add(selectedDrug);
+      };
+    }
 
-function toggleDrug() {
-  drugSelect.style.display = "block";
-}
-function selectDrug() {
-  selectedDrug = drugSelect.value;
-}
+    function injectDrug() {
+      if (!selectedDrug) {
+        alert("Please select a drug first");
+        return;
+      }
+      video.src = "{% static 'experiments/diuretic-activity/videos/inject_drug.mp4' %}";
+      video.play();
 
-function openProcedure() {
-  document.getElementById("procedureModal").style.display = "flex";
-}
-function closeProcedure() {
-  document.getElementById("procedureModal").style.display = "none";
-}
+      video.onended = () => {
+        video.src = "{% static 'experiments/diuretic-activity/videos/diuretic_common.mp4' %}";
+        video.onended = null;
+      };
+    }
+    function selectDrug() {
+      selectedDrug = drugSelect.value;
+    }
+
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
 
 
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

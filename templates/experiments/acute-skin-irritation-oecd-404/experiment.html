@@ -2,495 +2,459 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>Acute Skin Irritation / Corrosion Test – Virtual Simulator</title>
+    <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+    <meta charset="UTF-8">
+    <title>Acute Skin Irritation / Corrosion Test – Virtual Simulator</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20001">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; /* Space for fixed headers */
+        }
 
-  <!-- ✅ SAME CSS THEME AS ROTAROD -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20001">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  <style>
-    /* 🔝 TOP RIGHT ACTIONS (EXACT FLOW) */
-    .top-actions {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      display: flex;
-      gap: 12px;
-      z-index: 50;
-    }
+        .calculation-section {
+            flex: 0 0 58%;
+            max-width: 58%;
+        }
 
-    .dropdown-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255,0,0,0.6);
-      transition: 0.3s;
-    }
+        .observation-section {
+            flex: 0 0 40%;
+            max-width: 40%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-    .dropdown-btn:hover {
-      transform: scale(1.05);
-    }
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 6px 12px;
+            border-radius: 35px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .sim-section {
-      margin: 25px 0;
-    }
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-    .sim-section input,
-    .sim-section select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-    }
+        .top-actions .formula-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
 
-    .result-box {
-      background: #e8f1ff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 40%;
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--text-main, #fff);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    .warning { color: red; font-weight: 600; }
-    .success { color: green; font-weight: 600; }
-  </style>
-  <style>
-/* ===============================
-   PREMIUM MAIN PAGE UI ENHANCEMENT
-================================ */
+        .top-left-aim span {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-/* Background Enhancement */
-body {
-  background: linear-gradient(135deg, #eef4ff, #f8fbff);
-  font-family: "Segoe UI", Tahoma, sans-serif;
-}
+        /* 🏷️ TITLE SPACING */
+        .page-container .title {
+            margin-top: 10px !important;
+            margin-bottom: 20px !important;
+            font-size: 2.2rem !important;
+            color: #ef4444 !important;
+        }
 
-/* Container */
-.exp-container {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 18px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(8px);
-}
+        /* CARDS */
+        .sim-card {
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            color: var(--text-main, #eee);
+        }
 
-/* Title */
-.exp-container h1 {
-  text-align: center;
-  font-size: 30px;
-  margin-bottom: 25px;
-  color: #1f4e79;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
+        .sim-card:hover { transform: translateY(-5px); }
+        .sim-card h3 { color: #ef4444; margin-bottom: 15px; border-left: 4px solid #ef4444; padding-left: 12px; }
 
-/* Section Card Style */
-.sim-section {
-  margin: 30px 0;
-  padding: 25px 30px;
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(31, 78, 121, 0.08);
-  transition: 0.3s ease;
-}
+        input, select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main, #eee);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 5px;
+            width: 100%;
+        }
 
-.sim-section:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(31, 78, 121, 0.15);
-}
+        /* Specific fix for table inputs */
+        .observation-section input {
+            width: 60px !important;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-/* Section Heading */
-.sim-section h3 {
-  margin-bottom: 18px;
-  font-size: 20px;
-  color: #1f4e79;
-  border-left: 4px solid #1f4e79;
-  padding-left: 12px;
-}
+        /* 🌗 THEME FIXES */
+        body.light-mode {
+            background: #f4f6f9 !important;
+            color: #111 !important;
+        }
+        body.light-mode .sim-card,
+        body.light-mode .observation-section,
+        body.light-mode .top-left-aim,
+        body.light-mode .top-actions {
+            background: #fff !important;
+            border-color: #ddd !important;
+            color: #333 !important;
+        }
+        body.light-mode input,
+        body.light-mode select {
+            background: #f9f9f9 !important;
+            border-color: #ccc !important;
+            color: #333 !important;
+        }
 
-/* Labels */
-.sim-section label {
-  font-weight: 600;
-  display: block;
-  margin-top: 10px;
-  color: #333;
-}
+        /* OBSERVATION TABLE */
+        .observation-section h2 { margin-top: 0; font-size: 1.3rem; color: #ef4444; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; color: inherit; font-size: 12px; }
+        th, td { padding: 10px 5px; border-bottom: 1px solid rgba(128, 128, 128, 0.1); text-align: center; }
+        th { background: rgba(239, 68, 68, 0.1); color: #ef4444; font-weight: 700; text-transform: uppercase; }
 
-/* Inputs & Dropdown */
-.sim-section input,
-.sim-section select {
-  width: 250px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccd6e0;
-  font-size: 14px;
-  transition: 0.3s ease;
-  background: #f9fbff;
-}
+        .result-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            color: #10b981;
+            margin-top: 15px;
+            font-weight: 600;
+        }
 
-.sim-section input:focus,
-.sim-section select:focus {
-  outline: none;
-  border-color: #1f4e79;
-  box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.15);
-}
+        .calc-btn {
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
 
-/* Substance Confirmation Text */
-#substanceMsg {
-  margin-top: 10px;
-  font-weight: 600;
-  color: #1f4e79;
-}
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px; border-radius: 24px;
+            width: 90%; max-width: 650px; max-height: 85vh;
+            position: relative; border: 1px solid #333; overflow-y: auto;
+        }
+        body.light-mode .modal-content { background: #fff !important; color: #333 !important; }
+        .close-btn { position: sticky; top: -20px; float: right; cursor: pointer; color: #ef4444; font-size: 28px; z-index: 101; }
 
-/* Validation Messages */
-.warning {
-  color: #c62828;
-  font-weight: 600;
-  margin-top: 8px;
-}
+        .formula-box {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: #10b981;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-.success {
-  color: #2e7d32;
-  font-weight: 600;
-  margin-top: 8px;
-}
-
-/* Navigation Buttons */
-.exp-container > button {
-  margin-top: 25px;
-  padding: 12px 24px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(45deg, #1f4e79, #2a6fb0);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 6px 15px rgba(31, 78, 121, 0.3);
-}
-
-.exp-container > button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(31, 78, 121, 0.45);
-}
-
-/* Top Action Buttons Enhancement */
-.top-actions {
-  position: absolute;
-  top: 25px;
-  right: 30px;
-  display: flex;
-  gap: 14px;
-  z-index: 50;
-}
-
-.dropdown-btn {
-  padding: 10px 18px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  background: linear-gradient(45deg, #ff2e2e, #ff6a6a);
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(255, 0, 0, 0.35);
-  transition: 0.3s ease;
-}
-
-.dropdown-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
-}
-
-/* Light Theme Support */
-.light-mode {
-  background: linear-gradient(135deg, #ffffff, #f4f8ff);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .exp-container {
-    padding: 25px;
-  }
-
-  .sim-section input,
-  .sim-section select {
-    width: 100%;
-  }
-
-  .top-actions {
-    flex-direction: column;
-    right: 15px;
-  }
-}
-</style>
+        @media (max-width: 1200px) {
+            .experiment-layout { flex-direction: column; }
+            .calculation-section, .observation-section { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using albino rabbits as per OECD Test Guideline 404.</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using albino rabbits as per OECD Test Guideline 404.</span>
+    </div>
 
-  
+    <!-- 🔝 TOP ACTIONS -->
+    <div class="top-actions">
+        <button class="action-btn formula-btn" onclick="openFormulas()">📐 Formulas</button>
+        <button class="action-btn" onclick="openProcedure()">📋 Procedure</button>
+        <div id="theme-toggle-container"></div>
+    </div>
 
-  
+    <div class="page-container">
+        <h1 class="title">Experiment-Virtual Simulator</h1>
 
+        <div class="experiment-layout">
+            <!-- LEFT: CALCULATION SECTION -->
+            <div class="calculation-section">
+                <div class="sim-card">
+                    <h3>Experiment Information</h3>
+                    <p><b>Animal ID:</b> Rabbit 1</p>
+                    <p><b>Animal Weight:</b> 2.5 kg</p>
+                    <p><b>Exposure Duration:</b> 4 hours</p>
+                    <label>Application Area (cm²):</label>
+                    <input type="number" id="areaInput" placeholder="Enter area...">
+                    <div id="areaMsg" style="margin-top: 5px; font-size: 12px;"></div>
+                </div>
 
-<!-- 🔥 INSTRUCTIONS POPUP -->
-<div id="instructionModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-    <h2>Instructions</h2>
-    <ol class="instruction-list">
-      <li>Enter correct application area (6 cm²).</li>
-      <li>Select substance type and apply standard quantity.</li>
-      <li>Enter Draize scores for 24, 48 and 72 hours.</li>
-      <li>Calculate PDII and determine classification.</li>
-    </ol>
-  </div>
-</div>
+                <div class="sim-card">
+                    <h3>Substance Application</h3>
+                    <select id="substanceType">
+                        <option value="">Select Substance Type</option>
+                        <option value="solid">Solid</option>
+                        <option value="liquid">Liquid</option>
+                    </select>
+                    <div id="substanceMsg" style="margin-top: 10px; font-weight: 600; color: #3b82f6;"></div>
+                    <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">Test substance applied under semi-occlusive patch for 4 hours.</p>
+                </div>
 
-<!-- 🔬 PROCEDURE POPUP -->
-<div id="procedureModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeProcedure()">✖</span>
-    <h2>Procedure (OECD 404)</h2>
-    <ol class="instruction-list">
-      <li>Shave dorsal area of rabbit (~6 cm²).</li>
-      <li>Apply 0.5 g (solid) or 0.5 mL (liquid).</li>
-      <li>Cover with semi-occlusive patch for 4 hours.</li>
-      <li>Score erythema & oedema at 24, 48, 72 hours.</li>
-      <li>Observe up to 14 days for reversibility.</li>
-    </ol>
-  </div>
-</div>
+                <div id="calculationArea" class="sim-card" style="display:none;">
+                    <h3>Calculation Breakdown (PDII)</h3>
+                    <div id="calculationBreakdown" style="font-size: 14px; line-height: 1.6;"></div>
+                    <div id="finalResult" class="result-box"></div>
+                </div>
 
-<!-- 📊 OBSERVATION POPUP -->
-<div id="observationModal" class="modal">
-  <div class="modal-content" style="max-width:900px;">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
-    <h2>Draize Scoring Table</h2>
+                <div class="button-row" style="justify-content: flex-start; gap: 15px;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'" style="padding: 10px 25px; border-radius: 30px; border: 2px solid #ef4444; color: #ef4444; background: transparent; font-weight: 700; cursor: pointer;">⬅ Back</button>
+                    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'" style="padding: 10px 25px; border-radius: 30px; border: none; background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; font-weight: 700; cursor: pointer;">Next ▶</button>
+                </div>
+            </div>
 
-    <table class="observation-table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Erythema (0–4)</th>
-          <th>Oedema (0–4)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>24 h</td>
-          <td><input type="number" min="0" max="4" class="ery"></td>
-          <td><input type="number" min="0" max="4" class="oed"></td>
-        </tr>
-        <tr>
-          <td>48 h</td>
-          <td><input type="number" min="0" max="4" class="ery"></td>
-          <td><input type="number" min="0" max="4" class="oed"></td>
-        </tr>
-        <tr>
-          <td>72 h</td>
-          <td><input type="number" min="0" max="4" class="ery"></td>
-          <td><input type="number" min="0" max="4" class="oed"></td>
-        </tr>
-      </tbody>
-    </table>
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Observation Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Erythema (0–4)</th>
+                            <th>Oedema (0–4)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>24 h</td>
+                            <td><input type="number" min="0" max="4" class="ery" value="0"></td>
+                            <td><input type="number" min="0" max="4" class="oed" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>48 h</td>
+                            <td><input type="number" min="0" max="4" class="ery" value="0"></td>
+                            <td><input type="number" min="0" max="4" class="oed" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>72 h</td>
+                            <td><input type="number" min="0" max="4" class="ery" value="0"></td>
+                            <td><input type="number" min="0" max="4" class="oed" value="0"></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <br>
-    <label>
-      <input type="checkbox" id="necrosis">
-      Necrosis / Ulceration Observed
-    </label>
+                <div style="margin-top: 20px;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="necrosis" style="width: 18px; height: 18px;">
+                        <span>Necrosis / Ulceration observed</span>
+                    </label>
+                </div>
 
-    <br><br>
-    <button onclick="calculatePDII()">Calculate PDII</button>
+                <button class="calc-btn" onclick="calculatePDII()">Calculate PDII</button>
+            </div>
+        </div>
+    </div>
 
-    <div id="calculationBreakdown" class="result-box" style="display:none;"></div>
-    <div id="finalResult" class="result-box" style="display:none;"></div>
-  </div>
-</div>
+    <!-- FORMULAS MODAL -->
+    <div class="modal" id="formulaModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeFormulas()">✖</span>
+            <h2 style="color: #10b981; margin-top: 0;">📐 Calculation & Interpretation</h2>
+            
+            <h3 style="color: #10b981; font-size: 1rem; margin-top: 20px;">Primary Dermal Irritation Index (PDII)</h3>
+            <div class="formula-box">
+                PDII = (Σ Erythema scores + Σ Oedema scores) / (Number of observations × Number of animals)
+            </div>
+            <p style="font-size: 13px; opacity: 0.8; margin-top: -10px;">* Usually averaged over 24, 48, and 72 h readings.</p>
 
-<div class="exp-container">
+            <h3 style="color: #10b981; font-size: 1rem; margin-top: 30px;">Interpretation / Classification (GHS)</h3>
+            <ul style="line-height: 1.8; font-size: 14px; color: inherit;">
+                <li><b style="color: #ef4444;">Corrosive (Category 1):</b> Irreversible damage (necrosis, ulcers) within 14 days. Sub-categorized as 1A/1B/1C based on exposure time.</li>
+                <li><b style="color: #f59e0b;">Irritant (Category 2):</b> Mean score ≥2.3 – ≤4.0 (erythema or oedema) in ≥2/3 animals, fully reversible within 14 days.</li>
+                <li><b style="color: #3b82f6;">Mild Irritant (Category 3):</b> Mean score ≥1.5 – <2.3 (optional).</li>
+                <li><b style="color: #10b981;">Non-Irritant:</b> Mean score <1.5 or no response.</li>
+            </ul>
+        </div>
+    </div>
 
-  <!-- 🔽 TOP RIGHT BUTTONS -->
-  <div class="top-actions">
-    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
-    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    
-  </div>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 20px;">📋 Procedure (Step-by-Step as per OECD 404)</h2>
+            
+            <div class="procedure-content" style="color: inherit; line-height: 1.6;">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">1. Animal Preparation (24 h before test):</h3>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li>Clip the fur from the dorsal/flank region (avoid abrading skin).</li>
+                    <li>Select only animals with healthy, intact skin (no dense hair patches).</li>
+                    <li>Acclimatize animals to laboratory conditions.</li>
+                </ul>
 
-  <h1>Acute Skin Irritation / Corrosion Test – Virtual Simulator</h1>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">2. Application of Test Substance:</h3>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li>Apply 0.5 g or 0.5 mL to a small area (~6 cm²).</li>
+                    <li>Cover with gauze patch + semi-occlusive dressing (prevent ingestion/inhalation).</li>
+                    <li>Secure with non-irritating adhesive tape.</li>
+                </ul>
 
-  <!-- 🌗 THEME TOGGLE (UNCHANGED FLOW) -->
-  
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">3. Exposure and Initial Test (1 animal):</h3>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li><b>Stepwise (if corrosion suspected):</b>
+                        <ul style="list-style-type: circle; margin-left: 20px; margin-top: 5px;">
+                            <li>Patch 1: Remove after 3 minutes.</li>
+                            <li>If no corrosion → Patch 2: Remove after 1 hour.</li>
+                            <li>If no corrosion → Patch 3: Remove after 4 hours.</li>
+                        </ul>
+                    </li>
+                    <li>If corrosion is seen at any stage, terminate the test immediately.</li>
+                    <li><b>If no corrosion expected:</b> Single 4-hour patch on one animal.</li>
+                </ul>
 
-  <!-- 🧪 EXPERIMENT INFORMATION -->
-  <div class="sim-section">
-    <h3>Experiment Information</h3>
-    <p><b>Animal ID:</b> Rabbit 1</p>
-    <p><b>Animal Weight:</b> 2.5 kg</p>
-    <p><b>Exposure Duration:</b> 4 hours</p>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">4. Patch Removal and Cleaning:</h3>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li>After exposure (normally 4 h), remove the patch and gently wash residual substance with water or a suitable solvent (do not alter skin response).</li>
+                </ul>
 
-    <label>Application Area (cm²):</label><br>
-    <input type="number" id="areaInput">
-    <div id="areaMsg"></div>
-  </div>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">5. Confirmatory Test:</h3>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li>If no corrosion in initial animal → Test up to 2 additional animals (each with one 4-hour patch).</li>
+                    <li>If responses are equivocal → Use a third animal to confirm results.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-  <!-- 🧴 SUBSTANCE SECTION -->
-  <div class="sim-section">
-    <h3>Substance Application</h3>
+    <script>
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        
+        function openFormulas() { document.getElementById("formulaModal").style.display = "flex"; }
+        function closeFormulas() { document.getElementById("formulaModal").style.display = "none"; }
 
-    <select id="substanceType">
-      <option value="">Select Substance Type</option>
-      <option value="solid">Solid</option>
-      <option value="liquid">Liquid</option>
-    </select>
+        document.getElementById("areaInput").addEventListener("input", function(){
+            let msg = document.getElementById("areaMsg");
+            if(this.value == 6){
+                msg.innerHTML="<span style='color: #10b981;'>Correct as per OECD 404.</span>";
+            } else {
+                msg.innerHTML="<span style='color: #ef4444;'>OECD 404 area should be 6 cm².</span>";
+            }
+        });
 
-    <div id="substanceMsg"></div>
-    <p>Test substance applied under semi-occlusive patch for 4 hours.</p>
-  </div>
+        document.getElementById("substanceType").addEventListener("change", function(){
+            let msg = document.getElementById("substanceMsg");
+            if(this.value=="solid") msg.innerHTML="Quantity: 0.5 g applied";
+            else if(this.value=="liquid") msg.innerHTML="Quantity: 0.5 mL applied";
+            else msg.innerHTML="";
+        });
 
-  <!-- NAVIGATION -->
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-    ⬅ Back
-  </button>
+        function calculatePDII(){
+            let ery=document.querySelectorAll(".ery");
+            let oed=document.querySelectorAll(".oed");
+            let sumE=0, sumO=0;
 
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
-    Next ▶
-  </button>
+            for(let i=0; i<3; i++){
+                sumE += parseInt(ery[i].value || 0);
+                sumO += parseInt(oed[i].value || 0);
+            }
 
-</div>
+            let total = sumE + sumO;
+            let pdii = (total / 3).toFixed(2);
+            let classification = "";
 
-<!-- ================= CORE LOGIC ================= -->
+            if(document.getElementById("necrosis").checked){
+                classification = "Corrosive (Category 1)";
+            } else {
+                if(pdii < 1.5) classification = "Non-Irritant";
+                else if(pdii < 2.3) classification = "Mild Irritant";
+                else classification = "Irritant (Category 2)";
+            }
 
-<script>
-window.onload = () => {
-  document.getElementById("instructionModal").style.display = "flex";
-};
-
-function closeModal() {
-  document.getElementById("instructionModal").style.display = "none";
-}
-
-document.getElementById("areaInput").addEventListener("input", function(){
-  let msg = document.getElementById("areaMsg");
-  if(this.value == 6){
-    msg.innerHTML="<span class='success'>Correct as per OECD 404.</span>";
-  } else {
-    msg.innerHTML="<span class='warning'>As per OECD 404, application area should be approximately 6 cm².</span>";
-  }
-});
-
-document.getElementById("substanceType").addEventListener("change", function(){
-  let msg=document.getElementById("substanceMsg");
-  if(this.value=="solid"){
-    msg.innerHTML="Standard quantity applied: 0.5 g";
-  } else if(this.value=="liquid"){
-    msg.innerHTML="Standard quantity applied: 0.5 mL";
-  } else {
-    msg.innerHTML="";
-  }
-});
-
-function calculatePDII(){
-  let ery=document.querySelectorAll(".ery");
-  let oed=document.querySelectorAll(".oed");
-
-  let sumE=0,sumO=0;
-
-  for(let i=0;i<3;i++){
-    if(ery[i].value==""||oed[i].value==""){
-      alert("Please fill all scoring fields.");
-      return;
-    }
-
-    let e=parseInt(ery[i].value);
-    let o=parseInt(oed[i].value);
-
-    if(e<0||e>4||o<0||o>4){
-      alert("Scores must be between 0 and 4.");
-      return;
-    }
-
-    sumE+=e;
-    sumO+=o;
-  }
-
-  let total=sumE+sumO;
-  let pdii=(total/3).toFixed(2);
-
-  let classification="";
-  if(document.getElementById("necrosis").checked){
-    classification="Corrosive (Category 1)";
-  } else {
-    if(pdii<1.5) classification="Non-Irritant";
-    else if(pdii<2.3) classification="Mild Irritant";
-    else classification="Irritant (Category 2)";
-  }
-
-  document.getElementById("calculationBreakdown").style.display="block";
-  document.getElementById("finalResult").style.display="block";
-
-  document.getElementById("calculationBreakdown").innerHTML=
-    "Sum of Erythema = "+sumE+"<br>"+
-    "Sum of Oedema = "+sumO+"<br>"+
-    "Total = "+total+"<br>"+
-    "PDII = "+total+" / 3<br>"+
-    "PDII = "+pdii;
-
-  document.getElementById("finalResult").innerHTML=
-    "The test substance produced reaction.<br>"+
-    "PDII = "+pdii+".<br>"+
-    "Classification: "+classification+".";
-}
-
-function openObservation() {
-  document.getElementById("observationModal").style.display = "flex";
-}
-function closeObservation() {
-  document.getElementById("observationModal").style.display = "none";
-}
-function openProcedure() {
-  document.getElementById("procedureModal").style.display = "flex";
-}
-function closeProcedure() {
-  document.getElementById("procedureModal").style.display = "none";
-}
-
-const toggle = document.getElementById("themeToggle");
-if (localStorage.getItem("expTheme") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "expTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(err => {
-      alert(`Error enabling fullscreen: ${err.message}`);
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+            document.getElementById("calculationArea").style.display = "block";
+            document.getElementById("calculationBreakdown").innerHTML = 
+                "Sum of Erythema (24, 48, 72h) = <b>" + sumE + "</b><br>" +
+                "Sum of Oedema (24, 48, 72h) = <b>" + sumO + "</b><br>" +
+                "Total Score = <b>" + total + "</b><br>" +
+                "PDII Formula = Total / 3";
+            
+            document.getElementById("finalResult").innerHTML = 
+                "Calculated PDII: <b>" + pdii + "</b><br>" +
+                "Classification: <b>" + classification + "</b>";
+            
+            document.getElementById("calculationArea").scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

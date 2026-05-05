@@ -1,19 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Diuretic Activity Experiment – Requirements</title>
 
   <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
+  <script type="module" src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse existing Rotarod intro CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -42,7 +41,7 @@
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
-  
+
     /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
     model-viewer {
       --progress-bar-color: #ff2e2e;
@@ -50,6 +49,7 @@
       background-color: #f8f9fa;
       position: relative;
     }
+
     .progress-bar {
       display: block;
       width: 33%;
@@ -60,14 +60,16 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 25px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.9);
       background-color: rgba(0, 0, 0, 0.5);
     }
+
     .progress-bar.hide {
       visibility: hidden;
       transition: visibility 0.3s;
     }
+
     .update-bar {
       background-color: var(--progress-bar-color);
       width: 0%;
@@ -75,143 +77,123 @@
       border-radius: 25px;
       transition: width 0.3s;
     }
-</style>
+  </style>
 </head>
 
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats / mice.</span>
+    <span><b>Aim:</b> To evaluate the diuretic activity of a given test drug by measuring urine output in rats /
+      mice.</span>
   </div>
 
-  
-
-  
 
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
 
-<div class="page-container">
 
-  <h1 class="title">Requirements / Materials</h1>
 
-  <!-- 🐀 Animals -->
-  <div class="info-box">
-    <h2>Experimental Animals</h2>
-    <ul>
-      <li>Healthy adult <strong>Wistar albino rats</strong></li>
-      <li>Body weight: 150–250 g</li>
-      <li>Either sex (usually males preferred)</li>
-      <li>Number of animals: 5–6 rats per group</li>
-      <li>Fasted for 18 hours prior to experiment (water ad libitum)</li>
-    </ul>
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
 
-    <h3>Experimental Groups</h3>
-    <ul>
-      <li><strong>Group I:</strong> Control (Normal saline)</li>
-      <li><strong>Group II:</strong> Standard (Furosemide 10–20 mg/kg or Hydrochlorothiazide 25 mg/kg)</li>
-      <li><strong>Group III–V:</strong> Test drug (Low, Medium, High doses – e.g. 100, 200, 400 mg/kg)</li>
-    </ul>
+
   </div>
 
-  <!-- 💊 Drugs -->
-  <div class="info-box">
-    <h2>Drugs and Solutions</h2>
-    <ul>
-      <li><strong>Normal saline (0.9% NaCl):</strong> For hydration and as vehicle</li>
-      <li><strong>Standard diuretic:</strong> Furosemide / Hydrochlorothiazide</li>
-      <li><strong>Test drug:</strong> Dissolved or suspended in saline or 1% CMC</li>
-    </ul>
+  <div class="page-container">
+
+    <h1 class="title">Requirements / Materials</h1>
+
+    <!-- 📋 Requirements -->
+    <div class="info-box">
+      <ul>
+        <li><strong>Animals:</strong> Healthy adult male/female Albino Wistar rats (140–200 g body weight), 3–6 per
+          group (fasted overnight with free access to water).</li>
+        <li><strong>Metabolic cages </strong>(to separate urine and feces).</li>
+        <li><strong>Graduated measuring cylinder.</strong></li>
+        <li><strong>Drugs/Solutions:</strong>
+          <ul>
+            <li>Vehicle: 2% CMC in normal saline (10 ml/kg p.o.).</li>
+            <li>Standard drug: Furosemide (10 mg/kg p.o., suspended in vehicle).</li>
+            <li>Saline load: 0.9% NaCl (15 ml/kg p.o. for hydration).</li>
+          </ul>
+        </li>
+        <li><strong>Other:</strong> Oral gavage needle, weighing balance, room temperature maintained at 21 ± 0.5°C.
+        </li>
+      </ul>
+    </div>
+
+    <!-- 🐁 Groups -->
+    <div class="info-box">
+      <h3>Groups (n = 3 rats/group – standard for B.Pharm practical)</h3>
+      <ol>
+        <li><strong>Control / Vehicle-treated group:</strong> Receives vehicle (2% CMC in normal saline, 10 ml/kg p.o.).</li>
+        <li><strong>Standard / Drug-treated group:</strong> Receives Furosemide (10 mg/kg p.o. in the same vehicle) + saline load.</li>
+      </ol>
+    </div>
+
+    <!-- 🧊 3D MODEL -->
+    <div class="info-box" style="text-align:justify;">
+      <h3>Metabolic Cage – 3D View</h3>
+
+      <model-viewer loading="eager" reveal="auto"
+        src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/diuretic-activity/models/metabolic_cage.glb' %}{% endif %}"
+        camera-controls auto-rotate rotation-per-second="15deg" shadow-intensity="1" exposure="1.1"
+        style="width:100%; height:420px; border-radius:12px;">
+        <div class="progress-bar" slot="progress-bar">
+          <div class="update-bar"></div>
+        </div>
+      </model-viewer>
+    </div>
+
+    <!-- 🔘 Navigation Buttons -->
+    <div class="button-row">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- ⚙ Apparatus -->
-  <div class="info-box">
-    <h2>Apparatus and Instruments</h2>
-    <ul>
-      <li>Metabolic cages (individual type with funnel system)</li>
-      <li>Urine and feces separation arrangement</li>
-      <li>Oral feeding needle / gavage cannula</li>
-      <li>Measuring cylinders</li>
-      <li>pH strips</li>
-      <li>Flame photometer (for Na⁺ and K⁺ estimation)</li>
-    </ul>
-  </div>
+  <!-- 🔧 SCRIPTS -->
+  <script>
 
-  <!-- 🧊 3D MODEL -->
-  <div class="info-box" style="text-align:justify;">
-    <h2>Metabolic Cage – 3D View</h2>
+  </script>
 
-    <model-viewer
-      loading="eager"
-      reveal="auto"
-      src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/diuretic-activity/models/metabolic_cage.glb' %}{% endif %}"
-      camera-controls
-      auto-rotate
-      rotation-per-second="15deg"
-      shadow-intensity="1"
-      exposure="1.1"
-      style="width:100%; height:420px; border-radius:12px;">
-          <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
-  </div>
-
-  <!-- 🔘 Navigation Buttons -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
-      ⬅ Back
-    </button>
-
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- 🔧 SCRIPTS -->
-<script>
-
-</script>
-
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
-      });
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
     }
-  });
-</script>
+  </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+
+  <script>
+    /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+    document.addEventListener('DOMContentLoaded', () => {
+      const mv = document.querySelector('model-viewer');
+      if (mv) {
+        const pBar = mv.querySelector('.progress-bar');
+        const uBar = mv.querySelector('.update-bar');
+        mv.addEventListener('progress', (e) => {
+          const prg = e.detail.totalProgress;
+          if (uBar) uBar.style.width = `${prg * 100}%`;
+          if (prg === 1) {
+            setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+          }
+        });
+      }
+    });
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

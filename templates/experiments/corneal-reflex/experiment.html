@@ -81,6 +81,8 @@
   
 
 
+<div class="top-actions"></div>
+
 <div class="exp-container">
 
   <h1>
@@ -153,7 +155,7 @@
 
         <button class="lab-btn gray"
           onclick="playStep('cotton_test')">
-          Cotton Touch Test
+          Corneal Reflex Test
         </button>
 
       </div>
@@ -217,19 +219,7 @@ function playStep(step) {
   };
 }
 
-/* THEME */
-const toggle = document.getElementById("themeToggle");
-if (localStorage.getItem("expTheme") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "expTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
+
 </script>
 
 

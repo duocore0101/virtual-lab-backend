@@ -1,66 +1,236 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Carrageenan Paw Edema – Virtual Simulator</title>
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <style>
+    /* 📱 MAIN LAYOUT STRUCTURE */
+    .page-container {
+      max-width: 98% !important;
+      width: 98% !important;
+      margin: 0 auto;
+      padding: 20px;
+      padding-top: 80px;
+      /* Space for fixed headers */
+    }
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+    .experiment-layout {
+      display: flex;
+      flex-direction: row;
+      gap: 25px;
+      margin-top: 20px;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+    }
 
-<style>
-  .top-actions {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    display: flex;
-    gap: 12px;
-    z-index: 50;
-  }
+    .video-section {
+      flex: 0 0 62%;
+      max-width: 62%;
+    }
 
-  .dropdown-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    background: #ff2e2e;
-    color: #fff;
-    box-shadow: 0 0 14px rgba(255,0,0,0.6);
-    transition: 0.3s;
-  }
+    .observation-section {
+      flex: 0 0 36%;
+      max-width: 36%;
+      background: var(--bg-card, rgba(255, 255, 255, 0.05));
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      height: fit-content;
+    }
 
-  .dropdown-btn:hover {
-    transform: scale(1.05);
-  }
+    /* 🔝 TOP RIGHT FIXED ACTIONS */
+    .top-actions {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999;
+      background: var(--bg-card, rgba(0, 0, 0, 0.4));
+      padding: 6px 12px;
+      border-radius: 35px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
 
-  .video-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-  }
+    .top-actions .action-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      color: #fff;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+      white-space: nowrap;
+    }
 
-  .main-video {
-    width: 75%;
-    max-width: 1100px;
-  }
+    /* 🎯 AIM HEADER ADJUSTMENT */
+    .top-left-aim {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      max-width: 55%;
+      z-index: 9998;
+      background: var(--bg-card, rgba(0, 0, 0, 0.4));
+      padding: 8px 15px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--text-main, #fff);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 
-  .main-video video {
-    width: 80%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
-  }
+    /* 🏷️ TITLE SPACING */
+    .page-container .title {
+      margin-top: 10px !important;
+      margin-bottom: 20px !important;
+      font-size: 2.2rem !important;
+      color: #ef4444 !important;
+    }
 
-  .observation-img {
-    width: 100%;
-    max-width: 800px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  }
-</style>
+    /* VIDEO STYLING */
+    .video-card {
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* CONTROLS */
+    .control-panel {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .control-panel button {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+      background: var(--bg-card, rgba(255, 255, 255, 0.05));
+      color: var(--text-main, #eee);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 13px;
+    }
+
+    .control-panel button:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    /* OBSERVATION TABLE */
+    .observation-section h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: #ef4444;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: inherit;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 10px 5px;
+      border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+      text-align: center;
+    }
+
+    th {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* MODALS */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--bg-card, #111);
+      padding: 40px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      position: relative;
+      border: 1px solid #333;
+      overflow-y: auto;
+    }
+
+    body.light-mode .modal-content {
+      background: #fff !important;
+      color: #333 !important;
+    }
+
+    .close-btn {
+      position: sticky;
+      top: -20px;
+      float: right;
+      cursor: pointer;
+      color: #ef4444;
+      font-size: 28px;
+      z-index: 101;
+    }
+
+    @media (max-width: 1200px) {
+      .experiment-layout {
+        flex-direction: column;
+      }
+
+      .video-section,
+      .observation-section {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -69,281 +239,171 @@
     <span><b>Aim:</b> To Study Anti-inflammatory activity of drugs using carrageenan-induced paw edema model.</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔥 Instructions Popup -->
-<div id="instructionModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">✖</span>
-    <h2>Instructions</h2>
-    <ol class="instruction-list">
-      <li>Observe the plethysmometer setup carefully.</li>
-      <li>Measure baseline paw volume.</li>
-      <li>Administer standard/test drug.</li>
-      <li>Inject carrageenan subplantarly.</li>
-      <li>Record paw volume at specified intervals.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- 🔬 PROCEDURE POPUP -->
-<div id="procedureModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeProcedure()">✖</span>
-
-    <h2>Procedure</h2>
-
-    <ol class="instruction-list">
-      <li>Acclimate rats and mark the ankle joint for consistent measurement.</li>
-      <li>Measure baseline paw volume (V₀) using plethysmometer.</li>
-      <li>Divide into groups: Control, Standard, Test drug.</li>
-      <li>Administer drugs orally or i.p. (1 hour before carrageenan).</li>
-      <li>Inject 0.1 mL of 1% carrageenan subplantar into right hind paw.</li>
-      <li>Measure paw volume (Vₜ) at 1, 2, 3, and 4 hours.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- 📊 OBSERVATION POPUP -->
-<!-- 📊 OBSERVATION POPUP -->
-<div id="observationModal" class="modal">
-  <div class="modal-content" style="max-width:950px;">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
-
-    <h2>Observation Table</h2>
-
-    <table class="observation-table">
-      <thead>
-        <tr>
-          <th>Time (hr)</th>
-          <th>Control</th>
-          <th>Standard</th>
-          <th>Test Drug</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>0</td><td id="c0">—</td><td id="s0">—</td><td id="t0">—</td></tr>
-        <tr><td>1</td><td id="c1">—</td><td id="s1">—</td><td id="t1">—</td></tr>
-        <tr><td>2</td><td id="c2">—</td><td id="s2">—</td><td id="t2">—</td></tr>
-        <tr><td>3</td><td id="c3">—</td><td id="s3">—</td><td id="t3">—</td></tr>
-        <tr><td>4</td><td id="c4">—</td><td id="s4">—</td><td id="t4">—</td></tr>
-      </tbody>
-    </table>
-
-    <p><strong>Parameter:</strong> Paw Volume (ml)</p>
-
-  </div>
-</div>
-
-
-<div class="exp-container">
-
+  <!-- 🔝 TOP ACTIONS -->
   <div class="top-actions">
-    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
-    <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    
+    <button class="action-btn" onclick="openProcedure()">📋 Procedure</button>
+    <div id="theme-toggle-container"></div>
   </div>
 
-  <h1>Carrageenan Paw Edema – Virtual Simulator</h1>
+  <div class="page-container">
+    <h1 class="title">Experiment-Virtual Simulator</h1>
 
-  
+    <div class="experiment-layout">
+      <!-- LEFT: VIDEO SECTION -->
+      <div class="video-section">
+        <div class="video-card">
+          <video id="expVideo" preload="auto">
+            <source src="{% static 'experiments/carrageenan-edema/videos/setup.mp4' %}" type="video/mp4">
+          </video>
+        </div>
 
-  <!-- 🎥 MAIN VIDEO -->
-  <div class="video-grid">
-    <div class="main-video">
-      <video id="expVideo" controls preload="auto">
-        <source src="{% static 'experiments/carrageenan-edema/videos/setup.mp4' %}">
-      </video>
+        <div class="control-panel">
+          <button onclick="runControl()">🔍 Control Group</button>
+          <button onclick="injectStandard()">💉 Inject Standard (Diclofenac)</button>
+          <button onclick="afterStandard()">📈 Record After Standard</button>
+          <button onclick="injectTest()">💊 Inject Test Drug</button>
+          <button onclick="afterTest()" style="grid-column: span 2;">📊 Record After Test Drug</button>
+        </div>
+
+        <div class="button-row" style="justify-content: flex-start; gap: 15px;">
+          <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'"
+            style="padding: 10px 25px; border-radius: 30px; border: 2px solid #ef4444; color: #ef4444; background: transparent; font-weight: 700; cursor: pointer;">⬅
+            Back</button>
+          <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/graph/'"
+            style="padding: 10px 25px; border-radius: 30px; border: none; background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; font-weight: 700; cursor: pointer;">Next
+            ▶</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: OBSERVATION SECTION -->
+      <div class="observation-section">
+        <h2>📊 Observation Table</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Time (hr)</th>
+              <th>Control</th>
+              <th>Standard</th>
+              <th>Test Drug</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td id="c0">—</td>
+              <td id="s0">—</td>
+              <td id="t0">—</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td id="c1">—</td>
+              <td id="s1">—</td>
+              <td id="t1">—</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td id="c2">—</td>
+              <td id="s2">—</td>
+              <td id="t2">—</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td id="c3">—</td>
+              <td id="s3">—</td>
+              <td id="t3">—</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td id="c4">—</td>
+              <td id="s4">—</td>
+              <td id="t4">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11px; margin-top: 15px; opacity: 0.8; text-align: center;">Parameter: Paw Volume (mL)</p>
+      </div>
     </div>
   </div>
 
-  <!-- 🎛 CONTROLS -->
-  <!-- 🎛 CONTROLS -->
-<div class="control-panel">
-  <button onclick="runControl()">Control</button>
-  <button onclick="injectStandard()">Inject Standard (Diclofenac)</button>
-  <button onclick="afterStandard()">After Standard</button>
-  <button onclick="injectTest()">Inject Test Drug</button>
-  <button onclick="afterTest()">After Test Drug</button>
-</div>
+  <!-- INSTRUCTIONS MODAL -->
+  <div id="instructionModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">✖</span>
+      <h2 style="color: #ef4444;">Welcome to the Simulator</h2>
+      <ol style="line-height: 1.8; color: inherit;">
+        <li>Observe the plethysmometer setup carefully.</li>
+        <li>Measure baseline paw volume.</li>
+        <li>Administer standard/test drug.</li>
+        <li>Inject carrageenan subplantarly.</li>
+        <li>Record paw volume at specified intervals.</li>
+      </ol>
+      <button class="exp-btn" onclick="closeModal()" style="width: 100%; margin-top: 20px;">Start Experiment</button>
+    </div>
+  </div>
 
+  <!-- PROCEDURE MODAL -->
+  <div id="procedureModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeProcedure()">✖</span>
+      <h2 style="color: #ef4444;">📋 Procedure (Step-by-Step)</h2>
+      <div class="procedure-content" style="line-height: 1.6; font-size: 14px;">
+        <ol>
+          <li>Weigh the rats, number them, and acclimatize.</li>
+          <li>Mark both hind paws (right and left) just beyond the tibio-tarsal junction (for consistent dipping in plethysmometer).</li>
+          <li>Record initial paw volume (0 min) of both paws using plethysmometer (mercury displacement or digital).</li>
+          <li>Divide into groups (n=6).</li>
+          <li>Administer vehicle/standard/test drug (s.c. or p.o.) 30–60 min before carrageenan.</li>
+          <li>Inject 0.1 ml of 1% carrageenan subplantarly into the left hind paw (inflamed paw). Right paw remains non-inflamed (reference).</li>
+          <li>Measure paw volume of both paws at 0, 15, 30, 60, and 120 min (or up to 1, 2, 3, 4, 5 h in extended protocols).</li>
+          <li>Observe animals for signs of inflammation (redness, swelling, limping).</li>
+          <li>At the end, euthanize humanely as per CPCSEA guidelines.</li>
+        </ol>
+        <p style="margin-top: 15px; font-size: 13px; font-style: italic; opacity: 0.8;"><b>Note:</b> All measurements should be done by the same person for consistency. Animals fasted overnight (water ad libitum).</p>
+      </div>
+    </div>
+  </div>
 
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-    ⬅ Back
-  </button>
+  <script>
+    const mainVideo = document.getElementById("expVideo");
+    let currentStep = null;
 
-  <button onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-    Next ▶
-  </button>
+    const controlData = [1.20, 1.45, 1.70, 1.90, 2.05];
+    const standardData = [1.22, 1.30, 1.38, 1.42, 1.45];
+    const testData = [1.21, 1.35, 1.50, 1.60, 1.68];
 
-</div>
-
-<script>
-
-/* ===============================
-   🎥 VIDEO CONTROL
-================================= */
-
-const mainVideo = document.getElementById("expVideo");
-let currentStep = null;   // track which step is active
-
-/* ===============================
-   📊 OBSERVATION DATA
-================================= */
-
-const controlData  = [1.20, 1.45, 1.70, 1.90, 2.05];
-const standardData = [1.22, 1.30, 1.38, 1.42, 1.45];
-const testData     = [1.21, 1.35, 1.50, 1.60, 1.68];
-
-/* ===============================
-   📊 TABLE FILL FUNCTION
-================================= */
-
-function fillColumn(prefix, data) {
-  openObservation();
-
-  for (let i = 0; i < data.length; i++) {
-    setTimeout(() => {
-      const cell = document.getElementById(prefix + i);
-      if (cell) {
-        cell.innerText = data[i];
-        cell.style.color = "#00ff88";
-        cell.style.fontWeight = "bold";
+    function fillColumn(prefix, data) {
+      for (let i = 0; i < data.length; i++) {
+        setTimeout(() => {
+          const cell = document.getElementById(prefix + i);
+          if (cell) {
+            cell.innerText = data[i];
+            cell.style.color = "#ef4444";
+            cell.style.fontWeight = "bold";
+            cell.style.transform = "scale(1.1)";
+            setTimeout(() => cell.style.transform = "scale(1)", 200);
+          }
+        }, i * 500);
       }
-    }, i * 700);
-  }
-}
+    }
 
-/* ===============================
-   🎬 VIDEO END EVENT
-================================= */
+    mainVideo.addEventListener("ended", function () {
+      if (currentStep === "control") fillColumn("c", controlData);
+      if (currentStep === "afterStandard") fillColumn("s", standardData);
+      if (currentStep === "afterTest") fillColumn("t", testData);
+    });
 
-mainVideo.addEventListener("ended", function() {
+    function runControl() { currentStep = "control"; mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/control.mp4' %}"; mainVideo.play(); }
+    function injectStandard() { currentStep = null; mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_standard.mp4' %}"; mainVideo.play(); }
+    function afterStandard() { currentStep = "afterStandard"; mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_standardd.mp4' %}"; mainVideo.play(); }
+    function injectTest() { currentStep = null; mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_test.mp4' %}"; mainVideo.play(); }
+    function afterTest() { currentStep = "afterTest"; mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_test.mp4' %}"; mainVideo.play(); }
 
-  if (currentStep === "control") {
-    fillColumn("c", controlData);
-  }
-
-  if (currentStep === "afterStandard") {
-    fillColumn("s", standardData);
-  }
-
-  if (currentStep === "afterTest") {
-    fillColumn("t", testData);
-  }
-
-});
-
-/* ===============================
-   🔬 STEP 1 – CONTROL
-================================= */
-
-function runControl() {
-  currentStep = "control";
-  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/control.mp4' %}";
-  mainVideo.play();
-}
-
-/* ===============================
-   💉 STEP 2 – INJECT STANDARD
-================================= */
-
-function injectStandard() {
-  currentStep = null; // no table fill here
-  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_standard.mp4' %}";
-  mainVideo.play();
-}
-
-/* ===============================
-   📈 STEP 3 – AFTER STANDARD
-================================= */
-
-function afterStandard() {
-  currentStep = "afterStandard";
-  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_standard.mp4' %}";
-  mainVideo.play();
-}
-
-/* ===============================
-   💊 STEP 4 – INJECT TEST DRUG
-================================= */
-
-function injectTest() {
-  currentStep = null; // no table fill
-  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/inject_test.mp4' %}";
-  mainVideo.play();
-}
-
-/* ===============================
-   📊 STEP 5 – AFTER TEST DRUG
-================================= */
-
-function afterTest() {
-  currentStep = "afterTest";
-  mainVideo.src = "{% static 'experiments/carrageenan-edema/videos/after_test.mp4' %}";
-  mainVideo.play();
-}
-
-/* ===============================
-   🔥 AUTO SHOW INSTRUCTIONS
-================================= */
-
-window.onload = () => {
-  document.getElementById("instructionModal").style.display = "flex";
-};
-
-/* ===============================
-   📦 MODAL CONTROLS
-================================= */
-
-function closeModal() {
-  document.getElementById("instructionModal").style.display = "none";
-}
-
-function openObservation() {
-  document.getElementById("observationModal").style.display = "flex";
-}
-function closeObservation() {
-  document.getElementById("observationModal").style.display = "none";
-}
-
-function openProcedure() {
-  document.getElementById("procedureModal").style.display = "flex";
-}
-function closeProcedure() {
-  document.getElementById("procedureModal").style.display = "none";
-}
-
-/* ===============================
-   🌗 THEME TOGGLE
-================================= */
-
-const toggle = document.getElementById("themeToggle");
-if (toggle) {
-  toggle.addEventListener("change", () => {
-    document.body.classList.toggle("light-mode");
-  });
-}
-
-/* ===============================
-   ⛶ FULLSCREEN
-================================= */
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-</script>
-
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+    window.onload = () => { document.getElementById("instructionModal").style.display = "flex"; };
+    function closeModal() { document.getElementById("instructionModal").style.display = "none"; }
+    function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+    function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+  </script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

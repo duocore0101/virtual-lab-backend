@@ -659,10 +659,47 @@
     </div>
     <div class="experiment-grid">
       {% for exp in experiments %}
-        {% if exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" or exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
-          <div class="exp-card" data-exp-number="{{ exp.number }}">
+        {% if exp.slug == "physostigmine-drc-acetylcholine-frog-rectus" %}
+          <!-- MERGED EXPERIMENT #39 -->
+          <div class="exp-card group-card" data-exp-number="39">
             <div class="exp-info">
-              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <span class="exp-number">Experiment #39</span>
+              <h3 class="exp-name">Effect of physostigmine and atropine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum respectively.</h3>
+              
+              <div class="sub-experiments-group">
+                <div class="sub-item">
+                  <div class="sub-header">
+                    <span class="sub-label">A.</span>
+                    <span class="sub-title">Effect of physostigmine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum.</span>
+                  </div>
+                  <div class="sub-actions">
+                    <span class="status-tag">ACTIVE</span>
+                    <a href="/experiment/physostigmine-drc-acetylcholine-frog-rectus/" class="premium-run-btn mini">
+                      <span>Run</span> ⚡
+                    </a>
+                  </div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-header">
+                    <span class="sub-label">B.</span>
+                    <span class="sub-title">Effect of atropine on DRC of acetylcholine using frog rectus abdominis muscle & rat ileum.</span>
+                  </div>
+                  <div class="sub-actions">
+                    <span class="status-tag">ACTIVE</span>
+                    <a href="/experiment/atropine-modification-drc-acetylcholine-rat-ileum/" class="premium-run-btn mini">
+                      <span>Run</span> ⚡
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% elif exp.slug == "atropine-modification-drc-acetylcholine-rat-ileum" %}
+          <!-- Skip as it is merged into #39 -->
+        {% elif exp.slug == "bioassay-assembly" or exp.slug == "acetylcholine-drc-frog-rectus" or exp.slug == "bioassay-histamine" or exp.slug == "oxytocin-interpolation" or exp.slug == "serotonin-bioassay" or exp.slug == "bioassay-acetylcholine-rat-ileum" or exp.slug == "pA2-prazosin-schild" or exp.slug == "histamine-drc-ileum" %}
+          <div class="exp-card" data-exp-number="{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}">
+            <div class="exp-info">
+              <span class="exp-number">Experiment #{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}</span>
               <h3 class="exp-name">{{ exp.name }}</h3>
             </div>
             <div class="exp-actions">
@@ -686,9 +723,9 @@
     <div class="experiment-grid">
       {% for exp in experiments %}
         {% if exp.slug == "acute-oral-toxicity" or exp.slug == "acute-skin-irritation-oecd-404" or exp.slug == "eye-irritation-oecd405" %}
-          <div class="exp-card" data-exp-number="{{ exp.number }}">
+          <div class="exp-card" data-exp-number="{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}">
             <div class="exp-info">
-              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <span class="exp-number">Experiment #{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}</span>
               <h3 class="exp-name">{{ exp.name }}</h3>
             </div>
             <div class="exp-actions">
@@ -712,9 +749,9 @@
     <div class="experiment-grid">
       {% for exp in experiments %}
         {% if exp.slug == "serum-biochemical-parameters" or exp.slug == "pharmacokinetic-parameters" or exp.slug == "biostatistical-methods" %}
-          <div class="exp-card" data-exp-number="{{ exp.number }}">
+          <div class="exp-card" data-exp-number="{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}">
             <div class="exp-info">
-              <span class="exp-number">Experiment #{{ exp.number }}</span>
+              <span class="exp-number">Experiment #{% if exp.number > 39 %}{{ exp.number|add:'-1' }}{% else %}{{ exp.number }}{% endif %}</span>
               <h3 class="exp-name">{{ exp.name }}</h3>
             </div>
             <div class="exp-actions">

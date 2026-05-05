@@ -35,23 +35,89 @@
     transform: scale(1.05);
   }
 
-  .video-grid {
+  .exp-container {
+    max-width: 96% !important;
+  }
+
+  .video-table-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 25px;
+    margin-top: 20px;
+    padding: 0 20px;
   }
 
   .main-video {
-    width: 75%;
-    max-width: 1100px;
+    width: 35%;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .main-video video {
-    width: 80%;
-    height: auto;
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  }
+
+  .observation-container {
+    width: 63%;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: visible;
+  }
+
+  .observation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .observation-table th, .observation-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .observation-table th {
+    background-color: #ff2a2a;
+    color: white;
+    font-weight: 600;
+  }
+  
+  .observation-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  body.light-mode .observation-container {
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    color: #111;
+  }
+  
+  body.light-mode .observation-table th {
+    background-color: #d32f2f;
+  }
+  
+  body.light-mode .observation-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  body.light-mode .observation-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  body.light-mode .obs-footnote {
+    color: #666 !important;
   }
 </style>
 </head>
@@ -87,114 +153,80 @@
     <h2>Procedure</h2>
 
     <ol class="instruction-list">
-      <li>Focus radiant heat on marked tail spot (2–5 cm from tip).</li>
-      <li>Adjust intensity to obtain baseline 3–5 seconds.</li>
-      <li>Record baseline latency (Cut-off time: 10–15 sec).</li>
-      <li>Group animals and administer drugs.</li>
-      <li>Record latency at 30, 60, 90, and 120 minutes post-drug.</li>
+      <li>Weigh and mark the mice. Fast them overnight (12 h) with water access. Acclimatize to lab conditions.</li>
+      <li>Place the mouse gently (hand-held or in loose towel) so that the distal 1–2 cm of the tail is positioned over the radiant heat source of the analgesiometer.</li>
+      <li>Record the basal reaction time (0 min) – time from start of heat to tail flick/withdrawal. Select only mice with basal latency of 3–5 seconds.</li>
+      <li>Administer the respective treatment (vehicle or morphine) subcutaneously.</li>
+      <li>Repeat the tail flick test and record reaction time at 15, 30, 60, 90, and 120 minutes post-administration.</li>
+      <li>Cut-off time = 10–12 seconds (remove tail immediately if no response to prevent injury).</li>
+      <li>Clean the apparatus between animals. Take 2–3 readings per time point if needed and average.</li>
     </ol>
   </div>
 </div>
 
 <!-- 📊 OBSERVATION POPUP -->
-<div id="observationModal" class="modal">
-  <div class="modal-content" style="max-width:900px;">
-    <span class="close-btn" onclick="closeObservation()">✖</span>
-
-    <h2>Observation Table</h2>
-
-    <table class="observation-table">
-      <thead>
-        <tr>
-          <th>Group</th>
-          <th>Treatment</th>
-          <th>Dose (mg/kg)</th>
-          <th>Before</th>
-          <th>30 min</th>
-          <th>60 min</th>
-          <th>90 min</th>
-          <th>120 min</th>
-        </tr>
-      </thead>
-      <tbody>
-  <tr>
-    <td>I</td>
-    <td>Control</td>
-    <td>—</td>
-    <td>3.1</td>
-    <td>3.2</td>
-    <td>3.1</td>
-    <td>3.0</td>
-    <td>3.1</td>
-  </tr>
-
-  <tr>
-    <td>II</td>
-    <td>Standard (Tramadol)</td>
-    <td>20</td>
-    <td>3.2</td>
-    <td>6.5</td>
-    <td>8.2</td>
-    <td>7.6</td>
-    <td>6.8</td>
-  </tr>
-
-  <tr>
-    <td>III</td>
-    <td>Test Low Dose</td>
-    <td>100</td>
-    <td>3.0</td>
-    <td>5.1</td>
-    <td>6.4</td>
-    <td>6.0</td>
-    <td>5.2</td>
-  </tr>
-
-  <tr>
-    <td>IV</td>
-    <td>Test High Dose</td>
-    <td>200</td>
-    <td>3.1</td>
-    <td>6.0</td>
-    <td>7.5</td>
-    <td>7.0</td>
-    <td>6.1</td>
-  </tr>
-</tbody>
-
-    </table>
-
-    <p><strong>Parameter:</strong> Tail withdrawal latency (seconds)</p>
-
-  </div>
-</div>
-
 <div class="exp-container">
 
+  <!-- TOP ACTIONS -->
   <div class="top-actions">
-    <button class="dropdown-btn" onclick="openObservation()">Observation Table</button>
     <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
-    
   </div>
 
   <h1>Tail Flick Method – Virtual Simulator</h1>
 
-  
-
-  <!-- 🎥 MAIN VIDEO -->
-  <div class="video-grid">
+  <!-- 🎥 VIDEO AND OBSERVATION TABLE GRID -->
+  <div class="video-table-container">
+    
+    <!-- Video Section (Left) -->
     <div class="main-video">
-      <video id="expVideo" controls preload="auto">
+      <video id="expVideo" controls preload="auto" style="width:100%; object-fit:contain; border-radius:8px; margin-bottom:15px;">
         <source src="{% static 'experiments/tail-flick/videos/setup.mp4' %}">
       </video>
+      <div class="control-panel" style="width: 100%; display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+        <button onclick="runBeforeDrug()">Before Drug</button>
+        <button onclick="injectDrug()">Inject Drug</button>
+        <button onclick="runAfterDrug()">After Drug</button>
+      </div>
     </div>
-  </div>
 
-  <!-- 🎛 CONTROLS -->
-  <div class="control-panel">
-    <button onclick="runBeforeDrug()">Before Drug</button>
-    <button onclick="injectDrug()">Inject Drug</button>
-    <button onclick="runAfterDrug()">After Drug</button>
+    <!-- Observation Table Section (Right) -->
+    <div class="observation-container">
+      <h2>Observation Table</h2>
+      <table class="observation-table">
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Animal No.</th>
+            <th>Basal (0 min)</th>
+            <th>15 min</th>
+            <th>30 min</th>
+            <th>60 min</th>
+            <th>90 min</th>
+            <th>120 min</th>
+            <th>Mean Reaction Time (sec)</th>
+            <th>% Increase in Latency at Peak (60 min)</th>
+          </tr>
+        </thead>
+        <tbody id="controlBody">
+          <tr><td rowspan="6" style="vertical-align: middle;">Control (Vehicle-treated)</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td rowspan="6" style="vertical-align: middle;">—</td><td rowspan="6" style="vertical-align: middle;">—</td></tr>
+          <tr><td>2</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>3</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>4</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>5</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>6</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+        <tbody id="standardBody">
+          <tr><td rowspan="6" style="vertical-align: middle;">Standard (Morphine 5 mg/kg)</td><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td rowspan="6" style="vertical-align: middle;">—</td><td rowspan="6" style="vertical-align: middle;">—</td></tr>
+          <tr><td>2</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>3</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>4</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>5</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>6</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="obs-footnote" style="margin-top:15px; font-size:13px; color:#aaa;">*Note: If latency reaches cut-off (12 sec), record as 12 sec. % Increase in latency = [(Post-drug latency – Basal latency) / Basal latency] × 100 (at peak time, usually 60 min).</div>
+    </div>
+
   </div>
 
   <button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
@@ -226,6 +258,32 @@ function runAfterDrug() {
   mainVideo.play();
 }
 
+const controlDataHTML = `
+  <tr><td rowspan="6" style="vertical-align: middle;">Control (Vehicle-treated)</td><td>1</td><td>4.2</td><td>4.5</td><td>4.3</td><td>4.6</td><td>4.1</td><td>4.0</td><td rowspan="6" style="vertical-align: middle; font-weight: bold;">4.3</td><td rowspan="6" style="vertical-align: middle;">—</td></tr>
+  <tr><td>2</td><td>3.8</td><td>4.0</td><td>4.1</td><td>4.2</td><td>3.9</td><td>3.7</td></tr>
+  <tr><td>3</td><td>4.5</td><td>4.6</td><td>4.4</td><td>4.7</td><td>4.3</td><td>4.2</td></tr>
+  <tr><td>4</td><td>3.9</td><td>4.1</td><td>4.0</td><td>4.3</td><td>3.8</td><td>3.6</td></tr>
+  <tr><td>5</td><td>4.1</td><td>4.2</td><td>4.3</td><td>4.4</td><td>4.0</td><td>3.9</td></tr>
+  <tr><td>6</td><td>4.3</td><td>4.4</td><td>4.5</td><td>4.6</td><td>4.2</td><td>4.1</td></tr>
+`;
+
+const standardDataHTML = `
+  <tr><td rowspan="6" style="vertical-align: middle;">Standard (Morphine 5 mg/kg)</td><td>1</td><td>4.0</td><td>8.5</td><td>11.2</td><td>11.8</td><td>9.5</td><td>7.2</td><td rowspan="6" style="vertical-align: middle; font-weight: bold;">9.8</td><td rowspan="6" style="vertical-align: middle; font-weight: bold;">195%</td></tr>
+  <tr><td>2</td><td>3.7</td><td>8.2</td><td>10.8</td><td>11.5</td><td>9.2</td><td>6.8</td></tr>
+  <tr><td>3</td><td>4.4</td><td>9.0</td><td>11.5</td><td style="color:red; font-weight:bold;">12.0</td><td>9.8</td><td>7.5</td></tr>
+  <tr><td>4</td><td>4.1</td><td>8.7</td><td>11.0</td><td>11.6</td><td>9.3</td><td>7.0</td></tr>
+  <tr><td>5</td><td>3.9</td><td>8.3</td><td>10.9</td><td>11.4</td><td>9.1</td><td>6.9</td></tr>
+  <tr><td>6</td><td>4.2</td><td>8.8</td><td>11.3</td><td>11.7</td><td>9.6</td><td>7.3</td></tr>
+`;
+
+mainVideo.addEventListener("ended", () => {
+  if (mainVideo.src.includes("before.mp4")) {
+    document.getElementById("controlBody").innerHTML = controlDataHTML;
+  } else if (mainVideo.src.includes("after.mp4")) {
+    document.getElementById("standardBody").innerHTML = standardDataHTML;
+  }
+});
+
 window.onload = () => {
   document.getElementById("instructionModal").style.display = "flex";
 };
@@ -234,24 +292,12 @@ function closeModal() {
   document.getElementById("instructionModal").style.display = "none";
 }
 
-function openObservation() {
-  document.getElementById("observationModal").style.display = "flex";
-}
-function closeObservation() {
-  document.getElementById("observationModal").style.display = "none";
-}
 function openProcedure() {
   document.getElementById("procedureModal").style.display = "flex";
 }
 function closeProcedure() {
   document.getElementById("procedureModal").style.display = "none";
 }
-
-const toggle = document.getElementById("themeToggle");
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-});
-
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();

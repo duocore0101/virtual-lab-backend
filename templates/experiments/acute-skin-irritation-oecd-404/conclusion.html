@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Acute Skin Irritation Test – Result & Conclusion</title>
 
   <!-- Reuse existing CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -43,193 +43,195 @@
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using albino rabbits as per OECD Test Guideline 404.</span>
+    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using
+      albino rabbits as per OECD Test Guideline 404.</span>
   </div>
 
-  
-
-  
-
-
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
-
-<div class="page-container">
-
-  <h1 class="title">Result & Conclusion</h1>
-
-  <!-- 🧪 RESULT -->
-  <div class="info-box">
-    <h2>Result</h2>
-    <p>
-      The given test substance was evaluated for 
-      <strong>acute dermal irritation</strong> according to 
-      <strong>OECD Test Guideline 404</strong>.
-    </p>
-    <p>
-      Based on Draize scoring of erythema and oedema at 
-      24, 48, and 72 hours, along with the calculated 
-      <strong>Primary Dermal Irritation Index (PDII)</strong>, 
-      the substance did not produce significant skin reactions.
-    </p>
-  </div>
-
-  <!-- 🧠 CONCLUSION -->
-  <div class="info-box">
-    <h2>Conclusion</h2>
-    <p>
-      Under the conditions of this study, the test substance
-      was found to be a <strong>non-irritant</strong>.
-    </p>
-    <p>
-      No evidence of irreversible dermal damage or corrosive
-      reactions was observed, and the calculated PDII value
-      falls within the non-irritant classification range.
-    </p>
-  </div>
-
-  <!-- 🔘 NAVIGATION -->
-  <div class="button-row">
-
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/graph/'">
-      ⬅ Back
-    </button>
-
-    
-    
-    <button class="exp-btn" onclick="downloadPDF()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
-      Download Practical PDF 📄
-    </button>
 
 
 
-    <!-- ✅ FINISH PRACTICAL -->
-    <button class="exp-btn" onclick="finishPractical()">
-      Finish Practical ✔
-    </button>
+
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
 
   </div>
 
-</div>
+  <div class="page-container">
 
-<!-- ================= SCRIPTS ================= -->
+    <h1 class="title">Result & Conclusion</h1>
 
-<script>
-/* THEME */
+    <!-- 🧪 RESULT -->
+    <div class="info-box">
+      <h2>Result</h2>
+      <p>
+        The given test substance was evaluated for
+        <strong>acute dermal irritation</strong> according to
+        <strong>OECD Test Guideline 404</strong>.
+      </p>
+      <p>
+        Based on Draize scoring of erythema and oedema at
+        24, 48, and 72 hours, along with the calculated
+        <strong>Primary Dermal Irritation Index (PDII)</strong>,
+        the substance did not produce significant skin reactions.
+      </p>
+    </div>
 
+    <!-- 🧠 CONCLUSION -->
+    <div class="info-box">
+      <h2>Conclusion</h2>
+      <p>
+        Under the conditions of this study, the test substance
+        was found to be a <strong>non-irritant</strong>.
+      </p>
+      <p>
+        No evidence of irreversible dermal damage or corrosive
+        reactions was observed, and the calculated PDII value
+        falls within the non-irritant classification range.
+      </p>
+    </div>
 
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
+    <!-- 🔘 NAVIGATION -->
+    <div class="button-row">
 
-
-
-
-<script>
-function downloadPDF() {
-  const slug = "{{ experiment.slug }}";
-  
-  // 1. TRY TO SCRAPE TABLE DATA FROM DOM
-  let tableData = [];
-  const table = document.querySelector('table'); 
-  if (table) {
-    const rows = table.querySelectorAll('tr');
-    rows.forEach(row => {
-      let rowData = [];
-      const cells = row.querySelectorAll('th, td');
-      cells.forEach(cell => {
-        rowData.push(cell.innerText.trim());
-      });
-      if (rowData.length > 0) rowData.push(""); // filler
-      if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
-    });
-    
-    // Save to localStorage for use on conclusion/other pages
-    if (tableData.length > 0) {
-        localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
-    }
-  } 
-  
-  // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
-  if (tableData.length === 0) {
-    const saved = localStorage.getItem('exp_data_' + slug);
-    if (saved) {
-        tableData = JSON.parse(saved);
-    }
-  }
-
-  fetch(`/experiment/${slug}/download-pdf/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": "{{ csrf_token }}"
-    },
-    body: JSON.stringify({
-      table_data: tableData
-    })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("PDF generation failed");
-    return res.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Practical_Report_${slug}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  })
-  .catch(err => {
-    alert("Failed to generate PDF");
-    console.error(err);
-  });
-}
-</script>
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/experiment/'">
+        ⬅ Back
+      </button>
 
 
 
+      <button class="exp-btn" onclick="downloadPDF()"
+        style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+        Download Practical PDF 📄
+      </button>
 
-<script>
-function finishPractical() {
 
-  fetch("/experiment/finish/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      experiment_slug: "{{ experiment.slug }}",
-      observations: {
-        result: "Non-Irritant as per OECD 404"
+
+      <!-- ✅ FINISH PRACTICAL -->
+      <button class="exp-btn" onclick="finishPractical()">
+        Finish Practical ✔
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+
+  <script>
+    /* THEME */
+
+
+    /* FULLSCREEN */
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
       }
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    window.location.href = data.redirect;
-  })
-  .catch(err => {
-    alert("Failed to submit practical");
-    console.error(err);
-  });
-}
-</script>
+    }
+  </script>
 
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+
+
+  <script>
+    function downloadPDF() {
+      const slug = "{{ experiment.slug }}";
+
+      // 1. TRY TO SCRAPE TABLE DATA FROM DOM
+      let tableData = [];
+      const table = document.querySelector('table');
+      if (table) {
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          let rowData = [];
+          const cells = row.querySelectorAll('th, td');
+          cells.forEach(cell => {
+            rowData.push(cell.innerText.trim());
+          });
+          if (rowData.length > 0) rowData.push(""); // filler
+          if (rowData.length > 0) tableData.push(rowData.filter(c => c !== ""));
+        });
+
+        // Save to localStorage for use on conclusion/other pages
+        if (tableData.length > 0) {
+          localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+        }
+      }
+
+      // 2. IF DOM TABLE IS MISSING/EMPTY, TRY LOCALSTORAGE
+      if (tableData.length === 0) {
+        const saved = localStorage.getItem('exp_data_' + slug);
+        if (saved) {
+          tableData = JSON.parse(saved);
+        }
+      }
+
+      fetch(`/experiment/${slug}/download-pdf/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+          table_data: tableData
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("PDF generation failed");
+          return res.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Practical_Report_${slug}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        })
+        .catch(err => {
+          alert("Failed to generate PDF");
+          console.error(err);
+        });
+    }
+  </script>
+
+
+
+
+  <script>
+    function finishPractical() {
+
+      fetch("/experiment/finish/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          experiment_slug: "{{ experiment.slug }}",
+          observations: {
+            result: "Non-Irritant as per OECD 404"
+          }
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          window.location.href = data.redirect;
+        })
+        .catch(err => {
+          alert("Failed to submit practical");
+          console.error(err);
+        });
+    }
+  </script>
+
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

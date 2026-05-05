@@ -63,112 +63,69 @@
       color: #555;
     }
 
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+  /* 🔝 TOP RIGHT ACTION BUTTONS */
+  .top-actions {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+  }
 
-    .toggle-switch {
-      position: relative;
-      width: 52px;
-      height: 26px;
-    }
+  .next-btn-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
 
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  .back-btn, .exp-btn {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background-color: #555;
-      border-radius: 34px;
-      transition: 0.4s;
-    }
+  .back-btn {
+    background: #4b5563;
+    color: white;
+  }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      border-radius: 50%;
-      transition: 0.4s;
-    }
+  .exp-btn {
+    background: linear-gradient(135deg, #ff2e2e, #e60000);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 46, 46, 0.4);
+  }
 
-    input:checked + .slider {
-      background-color: #ff4b4b;
-    }
+  .back-btn:hover, .exp-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
 
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    .toggle-label {
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    body.light-mode .toggle-label {
-      color: #333;
-    }
-
-    .fullscreen-btn {
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .fullscreen-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 18px rgba(255, 0, 0, 0.9);
-    }
-
-    .next-btn {
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    .next-btn button {
-      padding: 10px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 30px;
-      border: 2px solid #ff2a2a;
-      background: transparent;
-      color: #ff2a2a;
-      cursor: pointer;
-      transition: all 0.35s ease;
-    }
-
-    .next-btn button:hover {
-      background: linear-gradient(135deg, #ff2a2a, #8b0000);
-      color: #ffffff;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-    }
-  </style>
+  .exp-btn:hover {
+    box-shadow: 0 6px 22px rgba(255, 46, 46, 0.6);
+  }
+</style>
 </head>
 
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
     <span><b>Aim:</b> To study and evaluate the mast cell stabilizing (anti-degranulation) activity of a given anti-allergic drug using an experimental animal model.</span>
+  </div>
+
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+    <!-- Theme icons will be injected by theme-toggle.js -->
   </div>
 
   
@@ -185,8 +142,11 @@
 
   <canvas id="resultChart" height="120"></canvas>
 
-  <div class="next-btn">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+  <div class="next-btn-row">
+    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+      ⬅ Back
+    </button>
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
       Next ▶
     </button>
   </div>
@@ -194,23 +154,6 @@
 </div>
 
 <script>
-/* THEME */
-const toggle = document.getElementById("themeToggle");
-
-if (localStorage.getItem("uiTheme") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
-
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "uiTheme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
-
-/* FULLSCREEN */
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();

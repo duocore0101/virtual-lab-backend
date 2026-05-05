@@ -16,7 +16,6 @@
       width: 100%;
       height: 480px;
       border-radius: 14px;
-      border: 0px solid #444;
       background: #000;
       margin-top: 20px;
       position: relative;
@@ -28,12 +27,14 @@
       border-radius: 14px;
     }
 
-    /* ================= FULL SCREEN BUTTON ================= */
+    /* ================= TOP ACTIONS ================= */
     .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
+      position: fixed;
+      top: 20px;
+      right: 25px; /* Aligned to right */
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
     }
 
     .dropdown-btn {
@@ -53,19 +54,67 @@
     }
 
     .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-      border-color: #fa0707;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(202, 7, 7, 0.45);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
     }
 
-    .dropdown-btn:active {
-      transform: scale(0.96);
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
     }
 
-    :fullscreen .top-actions {
-      top: 14px;
-      left: 18px;
+    .modal-content {
+      background: #111;
+      padding: 35px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 850px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      border: 1px solid #333;
+      color: #eee;
+    }
+
+    body.light-mode .modal-content {
+      background: #fff;
+      color: #333;
+      border-color: #ddd;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff4d4d;
+    }
+
+    .mag-content h2 { color: #3b82f6; margin-bottom: 20px; }
+    .mag-content h3 { color: #60a5fa; margin-top: 25px; margin-bottom: 10px; }
+    .mag-content p { margin-bottom: 15px; line-height: 1.6; }
+    .mag-content ul { margin-bottom: 20px; padding-left: 20px; }
+    .mag-content li { margin-bottom: 8px; }
+    .mag-content .formula-box {
+      background: rgba(59, 130, 246, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #3b82f6;
+      font-family: monospace;
+      margin: 15px 0;
     }
   </style>
 </head>
@@ -81,27 +130,69 @@
   
 
 
-<div class="page-container">
-
-  <!-- TITLE -->
-  <h1 class="title">
-    Bioassay Assembly Setup – Practical Demonstration
-  </h1>
-
-  <!-- FULL SCREEN BUTTON -->
+  <!-- 🔝 TOP RIGHT ACTIONS -->
   <div class="top-actions">
-    
+    <button class="dropdown-btn" onclick="openMagModal()">🔍 Magnification Values</button>
   </div>
 
-  <!-- ================= VIDEO FRAME ================= -->
-  <div class="video-frame">
-    <video id="experimentVideo" controls>
-      <source id="videoSource"
-        src="{% static 'experiments/bioassay-assembly/videos/bioassay_part1.mp4' %}"
-        type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+  <!-- 📊 MAGNIFICATION MODAL -->
+  <div id="magModal" class="modal">
+    <div class="modal-content mag-content">
+      <span class="close-btn" onclick="closeMagModal()">✖</span>
+      <h2>Magnification Values in Student Organ Bath Assembly</h2>
+      
+      <p>
+        Magnification value in a student organ bath assembly refers to the amplification factor provided by the recording lever (usually a frontal writing lever or simple/isotonic lever). This magnifies the small contractions of the tissue (e.g., guinea pig ileum) so they are clearly visible on the smoked/inked drum paper.
+      </p>
+
+      <h3>Formula for Magnification (M)</h3>
+      <div class="formula-box">
+        M = A / B (or M = d(F–W) / d(F–T))
+      </div>
+      <ul>
+        <li><strong>A or d(F–W):</strong> Distance from fulcrum (F) to writing stylus/point (W) (longer arm, in cm)</li>
+        <li><strong>B or d(F–T):</strong> Distance from fulcrum (F) to tissue attachment point (T) (shorter arm, in cm)</li>
+      </ul>
+      <p>
+        This is based on the principle of levers (first-class lever system).<br>
+        <strong>Example:</strong> If the longer arm (fulcrum to stylus) = 10 cm and the shorter arm (fulcrum to tissue thread attachment) = 2 cm, then <strong>M = 10 / 2 = 5 times (5× magnification)</strong>.
+      </p>
+
+      <h3>How to Calculate During Assembly Setup (Step-by-Step)</h3>
+      <ul>
+        <li><strong>1. Assemble the organ bath:</strong> Fill with physiological salt solution (e.g., Tyrode’s), maintain temperature (usually 37°C), aerate (95% O₂ + 5% CO₂ or air), and mount the isolated tissue (one end fixed at the bottom, other end tied with thread to the lever).</li>
+        <li><strong>2. Fix the lever:</strong> Fix the lever on a stand/clamp so the writing stylus lightly touches the kymograph drum.</li>
+        <li><strong>3. Adjust fulcrum:</strong> Adjust the fulcrum position along the lever (or choose lever arm lengths) to get the required magnification for the specific tissue.</li>
+        <li><strong>4. Measure distances:</strong> Use a ruler or scale to measure Distance A (fulcrum → stylus tip) and Distance B (fulcrum → point where tissue thread is tied).</li>
+        <li><strong>5. Calculate:</strong> Calculate M = A / B.</li>
+        <li><strong>6. Balance the lever:</strong> Add plasticine/weight on the longer arm so the stylus rests lightly on the drum with proper tension on the tissue (usually 0.5–1 g load).</li>
+        <li><strong>7. Test:</strong> Test by gently pulling the tissue thread – the stylus movement on the drum should be M times larger than actual tissue shortening.</li>
+        <li><strong>8. Record & Adjust:</strong> Record a baseline and adjust fulcrum height/position if needed until desired M is achieved.</li>
+      </ul>
+
+      <h3>Typical Recommended Magnification Values</h3>
+      <ul>
+        <li><strong>Guinea pig ileum:</strong> 5–10×</li>
+        <li><strong>Rat uterus:</strong> 4–6×</li>
+        <li><strong>Frog rectus abdominis:</strong> 10×</li>
+        <li><strong>Rat fundus strip:</strong> 10–15×</li>
+      </ul>
+      <p style="font-style: italic; font-size: 14px; color: #888;">
+        * Lower magnification for highly contractile/rhythmic tissues; higher for less contractile ones to get clear, measurable tracings without overshooting the drum.
+      </p>
+    </div>
   </div>
+
+  <div class="page-container">
+    <h1 class="title">Bioassay Assembly Setup – Practical Demonstration</h1>
+
+    <!-- ================= VIDEO FRAME ================= -->
+    <div class="video-frame">
+      <video id="experimentVideo" controls>
+        <source id="videoSource" src="{% static 'experiments/bioassay-assembly/videos/bioassay_part1.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
   <!-- ================= NAVIGATION BUTTONS ================= -->
   <div class="button-row" style="justify-content:center; margin-top:25px;">
@@ -167,16 +258,13 @@ function finishPractical() {
 
 
 
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(err => {
-      alert(`Error enabling fullscreen: ${err.message}`);
-    });
-  } else {
-    document.exitFullscreen();
-  }
+function openMagModal() {
+  document.getElementById("magModal").style.display = "flex";
 }
 
+function closeMagModal() {
+  document.getElementById("magModal").style.display = "none";
+}
 </script>
 
 

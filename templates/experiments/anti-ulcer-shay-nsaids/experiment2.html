@@ -3,447 +3,527 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-<meta charset="UTF-8">
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
+  <meta charset="UTF-8">
 
-<title>
-Anti-ulcer Activity using NSAID Induced Ulcer Model
-</title>
+  <title>
+    Anti-ulcer Activity using NSAID Induced Ulcer Model
+  </title>
 
-<link rel="stylesheet"
-href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
 
-<style>
+  <style>
+    .top-actions {
+      position: fixed;
+      top: 22px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
 
-.video-frame{
-width:100%;
-height:480px;
-border-radius:14px;
-background:#000;
-margin-top:20px;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+    .dropdown-btn {
+      padding: 9px 20px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
 
-video{
-width:100%;
-height:100%;
-border-radius:14px;
-display:none;
-}
+    .dropdown-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+    }
 
-.start-btn{
-padding:14px 30px;
-font-size:18px;
-border-radius:30px;
-border:none;
-cursor:pointer;
-background:linear-gradient(135deg,#ee0a0a,#b91c1c);
-color:#fff;
-font-weight:600;
-}
+    /* 50-50 SPLIT LAYOUT */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 48% 52%;
+      gap: 20px;
+      align-items: start;
+      margin-top: 10px;
+    }
 
-.top-actions{
-position:absolute;
-top:18px;
-left:22px;
-z-index:20;
-}
+    .video-section {
+      width: 100%;
+    }
 
-.dropdown-btn{
-background:linear-gradient(135deg,#1f2937,#111827);
-color:#fff;
-border:1px solid #374151;
-border-radius:10px;
-padding:8px 14px;
-font-size:14px;
-font-weight:500;
-cursor:pointer;
-}
+    .page-container {
+      max-width: 98% !important;
+      width: 98% !important;
+      padding: 10px 1% !important;
+      margin: 0 auto !important;
+    }
 
-.dropdown-btn:hover{
-background:linear-gradient(135deg,#ee0a0a,#e60909);
-}
+    .top-left-aim {
+      top: 15px !important;
+      left: 20px !important;
+      max-width: 40% !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 10000;
+    }
 
-.modal{
-display:none;
-position:fixed;
-z-index:9999;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-}
+    .top-actions {
+      position: fixed;
+      top: 15px;
+      right: 25px;
+      /* Absolute top-right corner */
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 10001;
+    }
 
-.modal-content{
-background:#111;
-padding:30px;
-border-radius:12px;
-width:95%;
-max-width:1100px;
-color:white;
-}
+    .title {
+      margin-top: 110px !important;
+      position: relative;
+      z-index: 1;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-color:white;
-font-size:14px;
-}
+    .dropdown-btn {
+      padding: 10px 22px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      background: #ff2e2e;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-th,td{
-border:1px solid #444;
-padding:8px;
-text-align:center;
-}
+    .dropdown-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+    }
 
-th{
-background:#222;
-}
+    /* WIDE SPLIT LAYOUT */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 49% 49%;
+      gap: 2%;
+      align-items: stretch;
+      margin-top: 10px;
+      width: 100%;
+    }
 
-.close-btn{
-float:right;
-cursor:pointer;
-color:red;
-font-weight:bold;
-}
+    .video-section {
+      width: 100%;
+    }
 
-.exp-toggle{
-text-align:center;
-margin-top:15px;
-}
+    .video-frame {
+      width: 100%;
+      height: 400px;
+      border-radius: 18px;
+      background: #000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-.toggle-btn{
-padding:8px 16px;
-border-radius:20px;
-border:none;
-cursor:pointer;
-margin:5px;
-background:#444;
-color:#fff;
-}
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
 
-.toggle-btn.active{
-background:#ee0a0a;
-}
+    .start-btn {
+      padding: 18px 45px;
+      font-size: 20px;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff2e2e, #b91c1c);
+      color: #fff;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+    }
 
-.light-mode .modal-content{
-background:#ffffff;
-color:#000;
-}
+    .start-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 0 50px rgba(255, 0, 0, 0.9);
+    }
 
-.light-mode table{
-color:#000;
-}
+    .observation-box {
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      height: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
-.light-mode th{
-background:#e5e7eb;
-}
+    .observation-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff4d4d;
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-</style>
+    .observation-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .observation-table th {
+      background: linear-gradient(135deg, #333, #222);
+      color: #ff4d4d;
+      padding: 12px 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-bottom: 2px solid #ff2e2e;
+    }
+
+    .observation-table td {
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      color: #ddd;
+      font-weight: 500;
+    }
+
+    body.light-mode .observation-box {
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #eee;
+    }
+
+    body.light-mode .observation-table td {
+      color: #333;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    body.light-mode .observation-table th {
+      background: #f8f9fa;
+      color: #ff2e2e;
+      border-bottom: 2px solid #ff2e2e;
+    }
+
+    .res-val {
+      visibility: hidden;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 30px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      color: white;
+      position: relative;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #222;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      color: red;
+      font-weight: bold;
+    }
+
+    .exp-toggle {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .toggle-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+      background: #444;
+      color: #fff;
+    }
+
+    .toggle-btn.active {
+      background: #ee0a0a;
+    }
+
+    .light-mode .modal-content {
+      background: #ffffff;
+      color: #000;
+    }
+
+    .light-mode table {
+      color: #000;
+    }
+
+    .light-mode th {
+      background: #e5e7eb;
+    }
+  </style>
 
 </head>
 
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To Study of Anti-ulcer activity of a drug using Pylorus-ligated (SHAY) rat model and NSAIDS induced ulcer model.</span>
+    <span><b>Aim:</b> To Study of Anti-ulcer activity of a drug using Pylorus-ligated (SHAY) rat model and NSAIDS
+      induced ulcer model.</span>
   </div>
 
-  
 
-  
 
 
-<div class="page-container">
 
-<h1 class="title">
-Anti-ulcer Activity using NSAID Induced Ulcer Model
-</h1>
 
-<!-- TOP RIGHT -->
+  <div class="page-container">
+
+    <h1 class="title">
+      Anti-ulcer Activity using NSAID Induced Ulcer Model
+    </h1>
+
+    <!-- TOP RIGHT -->
+
+    <div class="top-actions">
+      <button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+      <button class="dropdown-btn" onclick="openCalculations()">Calculations</button>
+    </div>
+
+    <!-- TOGGLE -->
+    <div class="exp-toggle">
+      <button class="toggle-btn"
+        onclick="location.href='/experiment/{{ experiment.slug }}/run/'">Pylorus-Ligated</button>
+      <button class="toggle-btn active">NSAIDS</button>
+    </div>
+
+    <div class="main-layout">
+      <!-- 🎥 VIDEO SECTION -->
+      <div class="video-section">
+        <div class="video-frame">
+          <button class="start-btn" id="startBtn" onclick="startExperiment()">▶ Start Practical</button>
+          <video id="experimentVideo" controls>
+            <source src="{% static 'experiments/anti-ulcer-shay-nsaids/videos/nsaids.mp4' %}" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- 📊 OBSERVATION BOX -->
+      <div class="observation-box">
+        <h2>Observation Table – NSAID Model</h2>
+        <table class="observation-table">
+          <thead>
+            <tr>
+              <th>Group</th>
+              <th>Ulcer Index</th>
+              <th>% Protection</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Control (NSAID only)</td>
+              <td class="res-val">22.4</td>
+              <td class="res-val">—</td>
+            </tr>
+            <tr>
+              <td>Standard (Omeprazole 20 mg/kg)</td>
+              <td class="res-val">3.5</td>
+              <td class="res-val">84.4</td>
+            </tr>
+            <tr>
+              <td>Test drug (200 mg/kg)</td>
+              <td class="res-val">7.2</td>
+              <td class="res-val">67.9</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="button-row" style="justify-content:center;margin-top:35px;">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">⬅ Back</button>
+      <button class="exp-btn" onclick="goToConclusion()">Next ▶</button>
+    </div>
+
+  </div>
+
+  <!-- PROCEDURE -->
+
+  <div class="modal" id="procedureModal">
+
+    <div class="modal-content">
+
+      <span class="close-btn" onclick="closeProcedure()">✖</span>
+
+      <h2>Procedure (Step-by-Step)</h2>
+      <ol>
+        <li>Fast rats 24 h.</li>
+        <li>Administer vehicle/standard/test drug daily for 1–2 days + 30 min before NSAID.</li>
+        <li>Give ulcerogenic NSAID: Aspirin (500 mg/kg p.o.) or Indomethacin (20 mg/kg p.o.) suspended in 1% CMC.</li>
+        <li>Withhold food/water for 4–6 h.</li>
+        <li>Sacrifice by cervical decapitation.</li>
+        <li>Remove stomach, open along greater curvature, wash gently.</li>
+        <li>Observe under 10× microscope and score ulcers (same scale as above).</li>
+        <li>(Optional) Collect & analyze gastric juice as in pylorus model.</li>
+      </ol>
 
-<div class="top-actions">
+    </div>
+  </div>
 
-<button class="dropdown-btn"
-onclick="openProcedure()">
-Procedure </button>
+  <!-- CALCULATIONS -->
 
-<button class="dropdown-btn"
-onclick="openCalculations()">
-Calculations </button>
+  <div class="modal" id="calcModal">
 
+    <div class="modal-content">
 
+      <span class="close-btn" onclick="closeCalculations()">✖</span>
 
-</div>
+      <h2>Calculations & Scoring</h2>
+      <div style="text-align: left; white-space: pre-line; line-height: 1.8;">
+        Gastric analysis:
+        • Measure pH of supernatant (1 ml diluted to 10 ml).
+        • Titrate 1 ml supernatant vs 0.01 N NaOH:
+        o Free acidity: To orange endpoint (Topfer’s reagent).
+        o Total acidity: Continue to pink (phenolphthalein).
+        o Acidity (mEq/L/100 g) = (Vol. of NaOH × Normality × 100) / 0.1.
 
-<!-- TOGGLE -->
+        Ulcer Scoring (Intensity)
+        • 0 = normal coloration
+        • 0.5 = red coloration
+        • 1 = spot ulcer
+        • 1.5 = hemorrhagic streaks
+        • 2 = deep ulcer (3–5 ulcers)
+        • 3 = perforations (>5 ulcers)
 
-<div class="exp-toggle">
+        Ulcer Index (UI): UI=UN+US+UP10 \text{UI} = \text{UN} + \text{US} + \frac{\text{UP}}{10} UI=UN+US+10UP (where UN
+        = avg. no. of ulcers/animal, US = avg. severity score, UP = % animals with ulcers).
 
-<button class="toggle-btn"
-onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
-Pylorus-Ligated </button>
+        % Protection/Inhibition: % Protection=(UIcontrol−UItreatedUIcontrol)×100 \% \text{ Protection} = \left(
+        \frac{\text{UI}_{\text{control}} - \text{UI}_{\text{treated}}}{\text{UI}_{\text{control}}} \right) \times 100 %
+        Protection=(UIcontrolUIcontrol−UItreated)×100
+      </div>
 
-<button class="toggle-btn active">
-NSAIDS
-</button>
+      <div style="text-align: center; margin-top: 25px;">
+        <button class="action-btn" onclick="closeCalculations()">Close</button>
+      </div>
 
-</div>
+    </div>
 
-<!-- VIDEO -->
+  </div>
 
-<div class="video-frame">
 
-<button class="start-btn"
-id="startBtn"
-onclick="startExperiment()">
-▶ Start Practical </button>
 
-<video id="experimentVideo" controls>
 
-<source
-src="{% static 'experiments/anti-ulcer-shay-nsaids/videos/nsaid_ulcer.mp4' %}"
-type="video/mp4">
 
-</video>
+  <script>
 
-</div>
+    function startExperiment() {
+      document.getElementById("startBtn").style.display = "none";
+      let video = document.getElementById("experimentVideo");
+      video.style.display = "block";
+      video.play();
 
-<!-- NAVIGATION -->
+      // Show observation values when video ends
+      video.onended = function () {
+        let values = document.querySelectorAll(".res-val");
+        values.forEach(v => v.style.visibility = "visible");
+      };
+    }
 
-<div class="button-row"
-style="justify-content:center;margin-top:25px;">
 
-<button class="back-btn"
-onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
-⬅ Back </button>
 
-<button class="exp-btn"
-onclick="openModal()">
-View Observations 📊 </button>
+    function openProcedure() {
+      document.getElementById("procedureModal").style.display = "flex";
+    }
 
-<button class="exp-btn"
-onclick="goToConclusion()">
-Next ▶ </button>
+    function closeProcedure() {
+      document.getElementById("procedureModal").style.display = "none";
+    }
 
-</div>
+    function openCalculations() {
+      document.getElementById("calcModal").style.display = "flex";
+    }
 
-</div>
+    function closeCalculations() {
+      document.getElementById("calcModal").style.display = "none";
+    }
 
-<!-- PROCEDURE -->
+    function goToConclusion() {
+      location.href = "/experiment/{{ experiment.slug }}/graph/";
+    }
 
-<div class="modal"
-id="procedureModal">
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
 
-<div class="modal-content">
+    function toggleFullscreen() {
 
-<span class="close-btn"
-onclick="closeProcedure()">✖</span>
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
 
-<h2>Procedure</h2>
+    }
 
-<ol>
+  </script>
 
-<li>Fast rats for 24–48 hours (water allowed).</li>
 
-<li>Divide animals into groups: Normal, Control, Standard and Test groups.</li>
-
-<li>Administer test or standard drug orally.</li>
-
-<li>Induce ulcer using indomethacin (48 mg/kg i.p.) or aspirin.</li>
-
-<li>Sacrifice animals after 4–6 hours.</li>
-
-<li>Remove stomach carefully and open along greater curvature.</li>
-
-<li>Wash stomach with saline and examine mucosa.</li>
-
-<li>Score ulcers macroscopically.</li>
-
-<li>Calculate ulcer index based on lesion severity.</li>
-
-</ol>
-
-</div>
-</div>
-
-<!-- CALCULATIONS -->
-
-<div class="modal"
-id="calcModal">
-
-<div class="modal-content">
-
-<span class="close-btn"
-onclick="closeCalculations()">✖</span>
-
-<h2>Calculations</h2>
-
-<p>
-
-<strong>% Ulcer Inhibition</strong>
-
-</p>
-
-<p>
-
-% Inhibition =
-[(UI control − UI test) / UI control] × 100
-
-</p>
-
-</div>
-
-</div>
-
-<!-- OBSERVATION TABLE -->
-
-<div class="modal"
-id="obsModal">
-
-<div class="modal-content">
-
-<span class="close-btn"
-onclick="closeModal()">✖</span>
-
-<h2 style="text-align:center;">
-Observation Table – NSAID Induced Ulcer Model
-</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Group</th>
-<th>Treatment</th>
-<th>Number of Animals</th>
-<th>Mean Ulcer Score</th>
-<th>Ulcer Index</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-<td>I</td>
-<td>Normal Control</td>
-<td>6</td>
-<td>0.0 ± 0.0</td>
-<td>0.0</td>
-</tr>
-
-<tr>
-<td>II</td>
-<td>Indomethacin Control</td>
-<td>6</td>
-<td>3.8 ± 0.3</td>
-<td>11.6</td>
-</tr>
-
-<tr>
-<td>III</td>
-<td>Standard Drug</td>
-<td>6</td>
-<td>1.1 ± 0.2</td>
-<td>3.4</td>
-</tr>
-
-<tr>
-<td>IV</td>
-<td>Test Drug Low Dose</td>
-<td>6</td>
-<td>2.3 ± 0.3</td>
-<td>7.1</td>
-</tr>
-
-<tr>
-<td>V</td>
-<td>Test Drug High Dose</td>
-<td>6</td>
-<td>1.5 ± 0.2</td>
-<td>4.6</td>
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-
-<script>
-
-function startExperiment(){
-
-document.getElementById("startBtn").style.display="none";
-
-let video=document.getElementById("experimentVideo");
-
-video.style.display="block";
-
-video.play();
-
-}
-
-function openModal(){
-document.getElementById("obsModal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("obsModal").style.display="none";
-}
-
-function openProcedure(){
-document.getElementById("procedureModal").style.display="flex";
-}
-
-function closeProcedure(){
-document.getElementById("procedureModal").style.display="none";
-}
-
-function openCalculations(){
-document.getElementById("calcModal").style.display="flex";
-}
-
-function closeCalculations(){
-document.getElementById("calcModal").style.display="none";
-}
-
-function goToConclusion(){
-location.href="/experiment/{{ experiment.slug }}/conclusion/";
-}
-
-function toggleTheme(){
-document.body.classList.toggle("light-mode");
-}
-
-function toggleFullscreen(){
-
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen();
-}else{
-document.exitFullscreen();
-}
-
-}
-
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

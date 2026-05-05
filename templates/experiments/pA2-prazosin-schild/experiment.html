@@ -1,275 +1,429 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>pA₂ Determination – Experiment</title>
+    <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+    <meta charset="UTF-8">
+    <title>pA₂ Determination – Experiment</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; /* Space for fixed headers */
+        }
 
-  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  <style>
-    .video-frame {
-      width: 100%;
-      height: 480px;
-      border-radius: 14px;
-      background: #000;
-      margin-top: 20px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .video-section {
+            flex: 0 0 62%;
+            max-width: 62%;
+        }
 
-    video {
-      width: 100%;
-      height: 100%;
-      border-radius: 14px;
-      display: none;
-    }
+        .observation-section {
+            flex: 0 0 36%;
+            max-width: 36%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-    .start-btn {
-      padding: 14px 30px;
-      font-size: 18px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
-      color: #fff;
-      font-weight: 600;
-    }
+        .video-frame {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    /* FULLSCREEN BUTTON */
-    .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
+        .start-btn {
+            padding: 16px 35px;
+            font-size: 18px;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
 
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-    }
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6);
+        }
 
-    /* MODAL */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-    }
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 6px 12px;
+            border-radius: 35px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .modal-content {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      width: 95%;
-      max-width: 1100px;
-    }
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: white;
-      font-size: 14px;
-    }
+        .top-actions .calc-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
 
-    th,
-    td {
-      border: 1px solid #444;
-      padding: 8px;
-      text-align: center;
-    }
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 55%; /* Reduced width to prevent action button overlap */
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            font-size: 11px; /* Smaller font for long aim */
+            line-height: 1.4;
+            color: var(--text-main, #fff);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    th {
-      background: #222;
-    }
+        .top-left-aim span {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+        /* 🏷️ TITLE SPACING */
+        .page-container .title {
+            margin-top: 10px !important;
+            margin-bottom: 20px !important;
+            font-size: 2.2rem !important;
+        }
+
+        /* 📊 TABLE STYLING */
+        .observation-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main, #fff);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            color: var(--text-main, #eee);
+            font-size: 11px;
+        }
+
+        th, td {
+            padding: 10px 5px;
+            border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+            text-align: center;
+        }
+
+        th {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            color: var(--text-main, white);
+            position: relative;
+            border: 1px solid var(--border-color, #333);
+            overflow-y: auto;
+        }
+
+        body.light-mode .modal-content {
+            color: #333 !important;
+            background: #fff !important;
+        }
+
+        .close-btn {
+            position: sticky;
+            top: -20px;
+            float: right;
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 28px;
+            z-index: 101;
+        }
+
+        .procedure-content h3 {
+            color: #ef4444;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ef4444;
+            padding-left: 15px;
+        }
+
+        /* CALCULATION STYLING */
+        .calc-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .calc-step { margin-bottom: 15px; padding-left: 15px; border-left: 2px solid #10b981; }
+        .formula { background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; font-family: monospace; color: #10b981; font-size: 16px; margin: 15px 0; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+        @media (max-width: 1200px) {
+            .experiment-layout { flex-direction: column; }
+            .video-section, .observation-section { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To determine the pA₂ value of prazosin (selective α₁-adrenoceptor antagonist) on rat anococcygeus muscle using the Schild plot method against noradrenaline (agonist).</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To determine the pA₂ value of prazosin (selective α₁-adrenoceptor antagonist) on rat anococcygeus muscle using the Schild plot method against noradrenaline (agonist).</span>
+    </div>
 
-  
-
-
-  <div class="page-container">
-
-    <h1 class="title">
-      Determination of pA₂ of Prazosin using Schild Plot Method
-    </h1>
-
-    <!-- FULL SCREEN -->
+    <!-- 🔝 TOP ACTIONS -->
     <div class="top-actions">
-      
+        <button class="action-btn calc-btn" onclick="openCalculations()">
+            🧮 Calculations
+        </button>
+        <button class="action-btn" onclick="openProcedure()">
+            📋 Procedure
+        </button>
+        <div id="theme-toggle-container"></div>
     </div>
 
-    <!-- VIDEO FRAME -->
-    <div class="video-frame">
-      <button class="start-btn" id="startBtn" onclick="startExperiment()">
-        ▶ Start Practical
-      </button>
+    <div class="page-container">
+        <h1 class="title" style="color: #ef4444; margin-bottom: 10px;">Experiment-Virtual Simulator</h1>
 
-      <video id="experimentVideo" controls>
-        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_49.mp4' %}" type="video/mp4">
-      </video>
+        <div class="experiment-layout">
+            <!-- LEFT: VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-frame">
+                    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+                        ▶ Start Practical
+                    </button>
+                    <video id="experimentVideo" controls>
+                        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_49.mp4' %}" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="button-row" style="margin-top: 20px; justify-content: flex-start;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+                        ⬅ Back
+                    </button>
+                    <button class="exp-btn" onclick="goToGraph()" style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                        Next ▶
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Observation Table</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr.</th>
+                                <th>Vol (ml)</th>
+                                <th>Resp (mm)</th>
+                                <th>% Resp</th>
+                                <th>Molar Conc.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="observationBody">
+                            <tr><td>1</td><td>0.2</td><td id="r1">—</td><td id="p1">—</td><td>2.6 × 10⁻⁶</td></tr>
+                            <tr><td>2</td><td>0.4</td><td id="r2">—</td><td id="p2">—</td><td>5.2 × 10⁻⁶</td></tr>
+                            <tr><td>3</td><td>0.6</td><td id="r3">—</td><td id="p3">—</td><td>7.82 × 10⁻⁶</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- NAVIGATION -->
-    <div class="button-row" style="justify-content:center; margin-top:25px;">
-      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-        ⬅ Back
-      </button>
+    <!-- CALCULATION MODAL -->
+    <div class="modal" id="calcModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCalculations()">✖</span>
+            <h2 style="color: #10b981; margin-top: 0;">🧮 pA₂ Value Calculations</h2>
+            
+            <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 25px;">1. Calculation of Molar Concentration (Example for Sr. No. 3):</h3>
+            <div class="calc-box">
+                <div class="calc-step"><b>Amount:</b> 0.1 μg/ml × 0.6 ml = 0.06 μg</div>
+                <div class="calc-step"><b>Conc. in bath:</b> 0.06 μg / 20 ml = 0.003 μg/ml</div>
+                <div class="calc-step"><b>Molar conc. (M):</b> (0.003 × 10⁻⁶ g/ml) / 383.4 ≈ 7.82 × 10⁻⁶ M</div>
+            </div>
 
-      <!-- 🔥 Visible from start -->
-      <button class="exp-btn" id="obsBtn" onclick="openModal()">
-        View Observations 📊
-      </button>
+            <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 30px;">2. pA₂ Determination:</h3>
+            <p style="font-size: 14px; margin-bottom: 15px;">pA₂ is defined as the negative log of the molar concentration of antagonist that reduces the agonist response to 50%.</p>
+            
+            <div class="formula">
+                pA₂ = – log [Antagonist concentration for 50% response reduction]
+            </div>
 
-      <button class="exp-btn" onclick="goToGraph()">
-        Next ▶
-      </button>
+            <div class="calc-box">
+                <div class="calc-step"><b>pA₂:</b> – log (7.82 × 10⁻⁶) = <b>6.10</b></div>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 20px;">📋 Procedure Step-by-Step</h2>
+            
+            <div class="procedure-content">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step 1: Mounting & Equilibration:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Tie one end of muscle to tissue holder (fixed hook) and other end to lever/transducer with silk thread.</li>
+                    <li>Mount in 20–25 mL organ bath containing aerated Krebs at 37°C.</li>
+                    <li>Apply resting tension 0.5–1 g.</li>
+                    <li>Allow equilibration for 30–45 min with washing every 10–15 min.</li>
+                </ul>
 
-  <!-- ================= OBSERVATION MODAL ================= -->
-  <div class="modal" id="obsModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">✖</span>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step 2: Control Dose-Response Curve (DRC) of Noradrenaline:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Record cumulative DRC of NA (geometric progression, e.g., 10⁻⁹ to 10⁻⁵ M final bath concentrations).</li>
+                    <li>Add increasing volumes of NA stock; allow contraction to plateau, record height (mm or g tension).</li>
+                    <li>Wash thoroughly after max response.</li>
+                    <li>Determine EC₅₀ (concentration producing 50% maximal response).</li>
+                </ul>
 
-      <h2 style="text-align:center;">
-        Observation Table – Effect of Increasing Prazosin Concentrations
-      </h2>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step 3: DRC in Presence of Prazosin (usually 3 concentrations):</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Add fixed concentration of prazosin (e.g., 10⁻⁹ M, 3×10⁻⁹ M, 10⁻⁸ M).</li>
+                    <li>Incubate for 10–15 min (equilibration).</li>
+                    <li>Repeat cumulative DRC of NA in presence of antagonist.</li>
+                    <li>Wash and repeat with next higher prazosin concentration (allow full recovery between).</li>
+                    <li>Observe parallel rightward shift with same Emax.</li>
+                </ul>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Sr. No.</th>
-            <th>Volume (ml)</th>
-            <th>Response (mm)</th>
-            <th>% Response</th>
-            <th>Amount (µg)</th>
-            <th>Bath Conc. (µg/ml)</th>
-            <th>Molar Conc.</th>
-            <th>Log Molar Conc.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>0.2</td>
-            <td id="r1"></td>
-            <td id="p1"></td>
-            <td>0.02</td>
-            <td>0.001</td>
-            <td>2.6 × 10⁻⁶</td>
-            <td>-6.58</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>0.4</td>
-            <td id="r2"></td>
-            <td id="p2"></td>
-            <td>0.04</td>
-            <td>0.002</td>
-            <td>5.2 × 10⁻⁶</td>
-            <td>-6.28</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>0.6</td>
-            <td id="r3"></td>
-            <td id="p3"></td>
-            <td>0.06</td>
-            <td>0.003</td>
-            <td>7.82 × 10⁻⁶</td>
-            <td>-6.10</td>
-          </tr>
-        </tbody>
-      </table>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">Step 4: Data Analysis & Schild Plot:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>For each curve, calculate Dose Ratio (DR) = EC₅₀ (with antagonist) / EC₅₀ (control).</li>
+                    <li>Calculate log(DR – 1).</li>
+                    <li>Plot Schild plot: – X-axis: –log [prazosin] (molar) – Y-axis: log(DR – 1)</li>
+                    <li>Draw best-fit straight line.</li>
+                    <li>pA₂ = X-intercept (where log(DR–1) = 0).</li>
+                    <li>Slope should be ≈ –1 for competitive antagonism.</li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- 🔥 THEME BUTTON RESTORED -->
-  
+    <script>
+        function startExperiment() {
+            document.getElementById("startBtn").style.display = "none";
+            let video = document.getElementById("experimentVideo");
+            video.style.display = "block";
+            video.play();
 
-  <script>
-    function startExperiment() {
-      document.getElementById("startBtn").style.display = "none";
-      let video = document.getElementById("experimentVideo");
-      video.style.display = "block";
-      video.play();
+            video.onended = function() {
+                fillObservations();
+            };
+        }
 
-      video.onended = function () {
-        fillObservations();
-      };
-    }
+        function fillObservations() {
+            document.getElementById("r1").innerText = 12;
+            document.getElementById("p1").innerText = 85.71;
 
-    function fillObservations() {
-      document.getElementById("r1").innerText = 12;
-      document.getElementById("p1").innerText = 85.71;
+            document.getElementById("r2").innerText = 10;
+            document.getElementById("p2").innerText = 71.42;
 
-      document.getElementById("r2").innerText = 10;
-      document.getElementById("p2").innerText = 71.42;
+            document.getElementById("r3").innerText = 7;
+            document.getElementById("p3").innerText = 50.00;
+        }
 
-      document.getElementById("r3").innerText = 7;
-      document.getElementById("p3").innerText = 50.00;
-    }
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        
+        function openCalculations() { document.getElementById("calcModal").style.display = "flex"; }
+        function closeCalculations() { document.getElementById("calcModal").style.display = "none"; }
 
-    function openModal() {
-      document.getElementById("obsModal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("obsModal").style.display = "none";
-    }
-
-    function goToGraph() {
-      location.href = "/experiment/{{ experiment.slug }}/graph/";
-    }
-
-    
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  </script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+        function goToGraph() { location.href = "/experiment/{{ experiment.slug }}/graph/"; }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
-
 </html>

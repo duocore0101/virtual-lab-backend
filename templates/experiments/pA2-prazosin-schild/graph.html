@@ -3,223 +3,230 @@
 <html lang="en">
 <head>
   <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>Log Concentration Response Curve – Graph</title>
+<meta charset="UTF-8">
+<title>Log Concentration Response Curve – Graph</title>
 
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+<link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=10001">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    /* =========================
-       BODY THEME
-    ========================== */
+<style>
+    /* ================= BODY ================= */
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #0f0f0f;
-      color: white;
-      transition: 0.3s ease;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #0f0f0f;
+        color: white;
+        transition: 0.3s ease;
     }
 
     body.light-mode {
-      background: #f4f6f9;
-      color: #111;
+        background: #f4f6f9;
+        color: #111;
     }
 
-    /* =========================
-       GRAPH CARD
-    ========================== */
+    /* 🔝 TOP RIGHT FIXED ACTIONS */
+    .top-actions {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 6px 12px;
+        border-radius: 35px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 🎯 AIM HEADER ADJUSTMENT */
+    .top-left-aim {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        max-width: 55%;
+        z-index: 9998;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 8px 15px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: 11px;
+        line-height: 1.4;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .top-left-aim span {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* ================= GRAPH CARD ================= */
     .graph-card {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 35px;
-      border-radius: 16px;
-      position: relative;
-
-      /* GREEN GRAPH PAPER */
-      background:
-        linear-gradient(#b9d8b9 1px, transparent 1px),
-        linear-gradient(90deg, #b9d8b9 1px, transparent 1px),
-        linear-gradient(#8fbf8f 2px, transparent 2px),
-        linear-gradient(90deg, #8fbf8f 2px, transparent 2px),
-        #dff3df;
-
-      background-size:
-        20px 20px,
-        20px 20px,
-        100px 100px,
-        100px 100px;
-
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        max-width: 1000px;
+        margin: 100px auto 40px; /* Increased top margin */
+        padding: 35px;
+        border-radius: 20px;
+        position: relative;
+        background: linear-gradient(#b9d8b9 1px, transparent 1px),
+                    linear-gradient(90deg, #b9d8b9 1px, transparent 1px),
+                    linear-gradient(#8fbf8f 2px, transparent 2px),
+                    linear-gradient(90deg, #8fbf8f 2px, transparent 2px),
+                    #dff3df;
+        background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        border: 8px solid #fff;
     }
 
     .graph-title {
-      text-align: center;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: #0a3d0a;
+        text-align: center;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: #0a3d0a;
     }
 
     .graph-subtitle {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #145214;
-      font-weight: 500;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #145214;
+        font-weight: 500;
     }
 
-    /* =========================
-       THEME + FULLSCREEN
-    ========================== */
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    /* ================= BUTTONS ================= */
+    .button-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
     }
 
-    .fullscreen-btn {
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    .back-btn, .next-btn {
+        padding: 12px 30px;
+        font-weight: 700;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .back-btn {
+        background: #fff;
+        color: #ef4444;
+        border: 2px solid #ef4444;
+    }
+
+    .back-btn:hover {
+        background: #ef4444;
+        color: #fff;
     }
 
     .next-btn {
-      display: flex;
-      justify-content: center;
-      margin-top: 25px;
+        background: linear-gradient(135deg, #ef4444, #991b1b);
+        color: #fff;
+        border: none;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
 
-    .next-btn button {
-      padding: 10px 30px;
-      font-weight: 600;
-      border-radius: 25px;
-      border: 2px solid #0a3d0a;
-      background: transparent;
-      color: #0a3d0a;
-      cursor: pointer;
-      transition: 0.3s;
+    .next-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5);
     }
 
-    .next-btn button:hover {
-      background: #0a3d0a;
-      color: white;
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To determine the pA₂ value of prazosin (selective α₁-adrenoceptor antagonist) on rat anococcygeus muscle using the Schild plot method against noradrenaline (agonist).</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To determine the pA₂ value of prazosin (selective α₁-adrenoceptor antagonist) on rat anococcygeus muscle using the Schild plot method against noradrenaline (agonist).</span>
+    </div>
 
-  
+    <!-- 🔝 TOP ACTIONS -->
+    <div class="top-actions">
+        <div id="theme-toggle-container"></div>
+    </div>
 
+    <div class="graph-card">
+        <div class="graph-title">Log Concentration – Response Curve</div>
+        <div class="graph-subtitle">Effect of Increasing Prazosin Concentration on % Response</div>
 
-<!-- FULLSCREEN -->
+        <canvas id="prazosinChart" height="120"></canvas>
 
+        <div class="button-row">
+            <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+                ⬅ Back
+            </button>
+            <button class="next-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+                Next ▶
+            </button>
+        </div>
+    </div>
 
-<div class="graph-card">
+    <script>
+        /* =========================
+           GRAPH DATA
+        ========================== */
+        const logConc = [-6.58, -6.28, -6.10];
+        const responses = [85.71, 71.42, 50.00];
 
-  <div class="graph-title">
-    Log Concentration – Response Curve
-  </div>
+        const ctx = document.getElementById("prazosinChart").getContext("2d");
 
-  <div class="graph-subtitle">
-    Effect of Increasing Prazosin Concentration on % Response
-  </div>
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: logConc,
+                datasets: [{
+                    label: "% Response",
+                    data: responses,
+                    borderColor: "#005c2e",
+                    backgroundColor: "rgba(0, 92, 46, 0.2)",
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: "#003d1f",
+                    fill: true
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Log Molar Concentration of Prazosin",
+                            color: "#003d1f",
+                            font: { weight: "bold" }
+                        },
+                        ticks: { color: "#003d1f" },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: "% Response (of control)",
+                            color: "#003d1f",
+                            font: { weight: "bold" }
+                        },
+                        ticks: { color: "#003d1f" },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
 
-  <canvas id="prazosinChart" height="120"></canvas>
-
-  <div class="next-btn">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<script>
-/* =========================
-   FULLSCREEN
-========================== */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
-<script>
-/* =========================
-   GRAPH DATA
-========================== */
-
-/* Log molar concentration */
-const logConc = [-6.58, -6.28, -6.10];
-
-/* % response */
-const responses = [85.71, 71.42, 50.00];
-
-const ctx = document.getElementById("prazosinChart").getContext("2d");
-
-new Chart(ctx, {
-  type: "line",
-  data: {
-    labels: logConc,
-    datasets: [{
-      label: "% Response",
-      data: responses,
-      borderColor: "#005c2e",
-      backgroundColor: "rgba(0, 92, 46, 0.2)",
-      tension: 0.4,
-      pointRadius: 6,
-      pointBackgroundColor: "#003d1f",
-      fill: true
-    }]
-  },
-  options: {
-    plugins: { legend: { display: false } },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Log Molar Concentration of Prazosin",
-          color: "#003d1f",
-          font: { weight: "bold" }
-        },
-        grid: { display: false }
-      },
-      y: {
-        beginAtZero: false,
-        min: 0,
-        max: 100,
-        title: {
-          display: true,
-          text: "% Response (of control)",
-          color: "#003d1f",
-          font: { weight: "bold" }
-        },
-        grid: { display: false }
-      }
-    }
-  }
-});
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

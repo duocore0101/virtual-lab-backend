@@ -2,538 +2,417 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-<meta charset="UTF-8">
-<title>Acute Eye Irritation / Corrosion Test – Virtual Simulator</title>
+    <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+    <meta charset="UTF-8">
+    <title>Acute Eye Irritation / Corrosion Test – Virtual Simulator</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20003">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; /* Space for fixed headers */
+        }
 
-<link rel="stylesheet"
-href="{% static 'experiments/rotarod/css/experiment.css' %}?v=20003">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-<style>
+        .calculation-section {
+            flex: 0 0 52%;
+            max-width: 52%;
+        }
 
-/* ================= BODY DEFAULT (FIX ADDED) ================= */
-body{
-  background:#000;
-  color:#fff;
-  transition:0.3s ease;
-}
+        .observation-section {
+            flex: 0 0 46%;
+            max-width: 46%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-/* ================= TOP RIGHT ACTIONS ================= */
-.top-actions{
-  position:fixed;
-  top:20px;
-  right:25px;
-  display:flex;
-  gap:12px;
-  z-index:9999;
-}
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 6px 12px;
+            border-radius: 35px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-.top-actions button{
-  padding:10px 18px;
-  border-radius:22px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  background:#ff2e2e;
-  color:#fff;
-  box-shadow:0 0 14px rgba(255,0,0,0.6);
-  transition:0.3s;
-}
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-.top-actions button:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 22px rgba(255,0,0,0.9);
-}
+        .top-actions .formula-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
 
-/* ================= CONTAINER ================= */
-.exp-container{
-  max-width:1000px;
-  margin:40px auto;
-  padding:20px;
-}
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 40%;
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.4));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--text-main, #fff);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-/* ================= CARD DESIGN ================= */
-.exp-card{
-  background:#111;
-  border-radius:16px;
-  padding:25px 30px;
-  margin-bottom:30px;
-  box-shadow:0 0 20px rgba(229,9,20,0.15);
-  border:1px solid rgba(229,9,20,0.2);
-}
+        /* 🏷️ TITLE SPACING */
+        .page-container .title {
+            margin-top: 10px !important;
+            margin-bottom: 20px !important;
+            font-size: 2.2rem !important;
+            color: #ef4444 !important;
+        }
 
-.exp-card h3{
-  margin-bottom:18px;
-  color:#e50914;
-  font-weight:600;
-}
+        /* CARDS */
+        .sim-card {
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            margin-bottom: 20px;
+            color: var(--text-main, #eee);
+        }
 
-/* ================= INPUTS ================= */
-.exp-input{
-  border-radius:10px;
-  padding:8px 10px;
-  font-size:14px;
-  text-align:center;
-  background:#1e1e1e;
-  border:1px solid #333;
-  color:#fff;
-  width:80px;
-}
+        .sim-card h3 { color: #ef4444; margin-bottom: 15px; border-left: 4px solid #ef4444; padding-left: 12px; font-size: 1.1rem; }
 
-select.exp-input{
-  width:200px;
-  cursor:pointer;
-}
+        input, select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main, #eee);
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 13px;
+        }
 
-/* ================= TABLE ================= */
-.exp-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-}
+        /* Specific fix for table inputs */
+        .observation-section input {
+            width: 45px !important;
+            text-align: center;
+            padding: 5px;
+        }
 
-.exp-table th{
-  background:#1b0000;
-  color:#ff4d4d;
-  padding:12px;
-  text-align:center;
-  font-weight:600;
-}
+        /* 🌗 THEME FIXES */
+        body.light-mode { background: #f4f6f9 !important; color: #111 !important; }
+        body.light-mode .sim-card,
+        body.light-mode .observation-section,
+        body.light-mode .top-left-aim,
+        body.light-mode .top-actions { background: #fff !important; border-color: #ddd !important; color: #333 !important; }
+        body.light-mode input, body.light-mode select { background: #f9f9f9 !important; border-color: #ccc !important; color: #333 !important; }
 
-.exp-table td{
-  padding:14px;
-  text-align:center;
-  border-bottom:1px solid #222;
-}
+        /* OBSERVATION TABLE */
+        .observation-section h2 { margin-top: 0; font-size: 1.2rem; color: #ef4444; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; color: inherit; font-size: 11px; }
+        th, td { padding: 8px 3px; border-bottom: 1px solid rgba(128, 128, 128, 0.1); text-align: center; }
+        th { background: rgba(239, 68, 68, 0.1); color: #ef4444; font-weight: 700; text-transform: uppercase; }
 
-/* ================= BUTTON ================= */
-.btn-small{
-  padding:8px 20px;
-  font-size:14px;
-  margin-top:20px;
-  border:none;
-  border-radius:20px;
-  background:#e50914;
-  color:#fff;
-  cursor:pointer;
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
-  transition:0.3s;
-}
+        .result-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            color: #10b981;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
 
-.btn-small:hover{
-  background:#ff2e2e;
-  transform:scale(1.05);
-}
+        .calc-btn {
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
 
-/* ================= RESULT ================= */
-.result-box{
-  background:#1c1c1c;
-  padding:15px;
-  border-radius:12px;
-  margin-top:20px;
-  text-align:center;
-  border:1px solid rgba(229,9,20,0.3);
-}
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px; border-radius: 24px;
+            width: 90%; max-width: 800px; max-height: 85vh;
+            position: relative; border: 1px solid #333; overflow-y: auto;
+        }
+        body.light-mode .modal-content { background: #fff !important; color: #333 !important; }
+        .close-btn { position: sticky; top: -20px; float: right; cursor: pointer; color: #ef4444; font-size: 28px; z-index: 101; }
 
-/* ================= THEME TOGGLE ================= */
-.theme-toggle{
-  text-align:right;
-  margin-bottom:20px;
-  display:flex;
-  justify-content:flex-end;
-  align-items:center;
-  gap:10px;
-}
-
-.toggle-label{
-  font-size:14px;
-  color:#ccc;
-}
-
-.toggle-switch{
-  position:relative;
-  display:inline-block;
-  width:50px;
-  height:24px;
-}
-
-.toggle-switch input{
-  opacity:0;
-  width:0;
-  height:0;
-}
-
-.slider{
-  position:absolute;
-  cursor:pointer;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#444;
-  transition:.4s;
-  border-radius:34px;
-}
-
-.slider:before{
-  position:absolute;
-  content:"";
-  height:18px;
-  width:18px;
-  left:3px;
-  bottom:3px;
-  background:white;
-  transition:.4s;
-  border-radius:50%;
-}
-
-/* ===== FIX: Slider turns white when ON ===== */
-input:checked + .slider{
-  background:#ffffff;
-}
-
-input:checked + .slider:before{
-  background:#000;
-  transform:translateX(26px);
-}
-
-/* ================= LIGHT THEME ================= */
-.light-mode{
-  background:#f5f7fa !important;
-  color:#111 !important;
-}
-
-.light-mode .exp-card{
-  background:#ffffff;
-  color:#111;
-  border:1px solid #ddd;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.light-mode .exp-card h3{
-  color:#e50914;
-}
-
-.light-mode .exp-table th{
-  background:#ffe5e5;
-  color:#e50914;
-}
-
-.light-mode .exp-table td{
-  border-bottom:1px solid #ddd;
-}
-
-.light-mode .exp-input{
-  background:#fff;
-  color:#000;
-  border:1px solid #ccc;
-}
-
-.light-mode .result-box{
-  background:#f0f3f8;
-  color:#000;
-  border:1px solid #ddd;
-}
-
-</style>
+        @media (max-width: 1200px) {
+            .experiment-layout { flex-direction: column; }
+            .calculation-section, .observation-section { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To study and determine the acute eye irritation and/or corrosion potential of a given test substance in albino rabbits as per OECD Test Guideline 405.</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To study and determine the acute eye irritation and/or corrosion potential of a given test substance in albino rabbits as per OECD Test Guideline 405.</span>
+    </div>
 
-  
+    <!-- 🔝 TOP ACTIONS -->
+    <div class="top-actions">
+        <button class="action-btn formula-btn" onclick="openFormulas()">📐 Formulas</button>
+        <button class="action-btn" onclick="openProcedure()">📋 Procedure</button>
+        <div id="theme-toggle-container"></div>
+    </div>
 
-  
+    <div class="page-container">
+        <h1 class="title">Experiment-Virtual Simulator</h1>
 
+        <div class="experiment-layout">
+            <!-- LEFT: CALCULATION SECTION -->
+            <div class="calculation-section">
+                <div class="sim-card">
+                    <h3>Study Setup</h3>
+                    <p><b>Animal:</b> Albino rabbit | <b>Weight:</b> 2.5 kg</p>
+                    <p><b>Route:</b> Conjunctival instillation | <b>Observation:</b> 21 days</p>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 20px; align-items: center;">
+                        <select id="substanceType" style="width: 200px;">
+                            <option value="">Select Substance Type</option>
+                            <option value="liquid">Liquid (0.1 mL)</option>
+                            <option value="solid">Solid (0.1 g)</option>
+                        </select>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="extremePH" style="width: 18px; height: 18px;">
+                            <span>Extreme pH (≤2 or ≥11.5)</span>
+                        </label>
+                    </div>
+                    <div id="phMsg" style="margin-top: 10px; font-weight: 600; color: #ef4444;"></div>
+                </div>
 
-<!-- 🔬 PROCEDURE POPUP -->
-<div id="procedureModal" class="modal">
-<div class="modal-content">
-<span class="close-btn" onclick="closeProcedure()">✖</span>
-<h2>Procedure (Step-by-Step as per OECD 405)</h2>
+                <div class="sim-card">
+                    <h3>Humane Endpoint Decision</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label><input type="checkbox" class="humane"> Corneal perforation</label>
+                        <label><input type="checkbox" class="humane"> Conjunctival necrosis</label>
+                        <label><input type="checkbox" class="humane"> No light reflex at 72h</label>
+                        <label><input type="checkbox" class="humane"> Grade 4 Corneal Opacity</label>
+                    </div>
+                </div>
 
-<ol>
+                <div id="calculationArea" class="sim-card" style="display:none;">
+                    <h3>Calculation Breakdown</h3>
+                    <div id="meanResult" class="result-box"></div>
+                </div>
 
-<li><b>Pre-test Preparation (24 h before)</b>
-<ul>
-<li>Examine both eyes for abnormalities (fluorescein if needed).</li>
-<li>Discard unsuitable animals.</li>
-<li>Acclimatise animals.</li>
-</ul>
-</li>
+                <div class="button-row" style="justify-content: flex-start; gap: 15px;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'" style="padding: 10px 25px; border-radius: 30px; border: 2px solid #ef4444; color: #ef4444; background: transparent; font-weight: 700; cursor: pointer;">⬅ Back</button>
+                    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'" style="padding: 10px 25px; border-radius: 30px; border: none; background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; font-weight: 700; cursor: pointer;">Next ▶</button>
+                </div>
+            </div>
 
-<li><b>Pain Management (Mandatory Refinement)</b>
-<ul>
-<li>60 min before: Buprenorphine 0.01 mg/kg SC.</li>
-<li>5 min before: 1–2 drops topical anaesthetic.</li>
-<li>8 h after: Buprenorphine + Meloxicam SC.</li>
-<li>Continue analgesia until lesions resolve.</li>
-<li>Untreated eye also receives anaesthetic.</li>
-</ul>
-</li>
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Draize Scoring Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Opacity</th>
+                            <th>Area</th>
+                            <th>Iris</th>
+                            <th>Redness</th>
+                            <th>Chemos.</th>
+                            <th>Disch.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>24h</td><td><input type="number" min="0" max="4" class="opacity" value="0"></td><td><input type="number" min="0" max="4" class="area" value="0"></td><td><input type="number" min="0" max="2" class="iris" value="0"></td><td><input type="number" min="0" max="3" class="red" value="0"></td><td><input type="number" min="0" max="4" class="che" value="0"></td><td><input type="number" min="0" max="3" class="dis" value="0"></td></tr>
+                        <tr><td>48h</td><td><input type="number" min="0" max="4" class="opacity" value="0"></td><td><input type="number" min="0" max="4" class="area" value="0"></td><td><input type="number" min="0" max="2" class="iris" value="0"></td><td><input type="number" min="0" max="3" class="red" value="0"></td><td><input type="number" min="0" max="4" class="che" value="0"></td><td><input type="number" min="0" max="3" class="dis" value="0"></td></tr>
+                        <tr><td>72h</td><td><input type="number" min="0" max="4" class="opacity" value="0"></td><td><input type="number" min="0" max="4" class="area" value="0"></td><td><input type="number" min="0" max="2" class="iris" value="0"></td><td><input type="number" min="0" max="3" class="red" value="0"></td><td><input type="number" min="0" max="4" class="che" value="0"></td><td><input type="number" min="0" max="3" class="dis" value="0"></td></tr>
+                    </tbody>
+                </table>
+                <button class="calc-btn" onclick="calculateScores()">Calculate Mean Score</button>
+            </div>
+        </div>
+    </div>
 
-<li><b>Application of Test Substance</b>
-<ul>
-<li>Pull lower eyelid to form conjunctival sac.</li>
-<li>Instil 0.1 mL (liquid) or 0.1 g (solid).</li>
-<li>Hold lids closed for 1 second.</li>
-<li>No washing for 24 h.</li>
-<li>Untreated eye = control.</li>
-</ul>
-</li>
+    <!-- FORMULAS MODAL -->
+    <div class="modal" id="formulaModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeFormulas()">✖</span>
+            <h2 style="color: #10b981; margin-top: 0;">📐 Calculation & Interpretation</h2>
+            
+            <div style="line-height: 1.6; color: inherit; font-size: 14px;">
+                <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 20px;">Draize Scoring Components:</h3>
+                <ul style="background: rgba(16, 185, 129, 0.05); padding: 20px; border-radius: 12px; list-style: none; font-family: monospace; font-size: 13px;">
+                    <li><b>Cornea Score:</b> (Opacity Grade × Area Grade × 5) [Max: 80]</li>
+                    <li><b>Iris Score:</b> (Iris Grade × 5) [Max: 10]</li>
+                    <li><b>Conjunctiva Score:</b> (Redness + Chemosis + Discharge) × 2 [Max: 20]</li>
+                    <li style="margin-left: 20px; opacity: 0.8;">- Chemosis (swelling): 0 (none) to 4 (lids > half closed)</li>
+                    <li style="margin-left: 20px; opacity: 0.8;">- Discharge: 0 (none) to 3 (severe)</li>
+                    <li style="border-top: 1px solid rgba(16, 185, 129, 0.3); margin-top: 10px; padding-top: 10px; font-size: 14px;"><b>Total Maximum Score = 110</b></li>
+                </ul>
+                <p style="font-size: 12px; font-style: italic; opacity: 0.8;">* Record scores for treated and control eyes at each time point. Also note other effects like pannus, vascularisation, etc.</p>
 
-<li><b>Sequential Testing</b>
-<ul>
-<li>Initial test: 1 animal.</li>
-<li>If serious damage → Stop (Category 1).</li>
-<li>If no severe effects → Test up to 2 more animals.</li>
-</ul>
-</li>
+                <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 30px;">Interpretation / Classification (GHS):</h3>
+                <ul style="padding-left: 20px; line-height: 1.8;">
+                    <li><b style="color: #10b981;">No Category (Non-irritant):</b> No or minimal reversible changes. Mean score &lt; 10.</li>
+                    <li><b style="color: #f59e0b;">Category 2 (Eye Irritant):</b> Positive response (cornea ≥ 1 or iris ≥ 1 or redness ≥ 2 or chemosis ≥ 2) in at least 2/3 animals; fully reversible within 21 days.
+                        <ul style="margin-left: 20px; font-size: 13px;">
+                            <li><b>2A:</b> Response persists &gt; 7 days.</li>
+                            <li><b>2B (mild):</b> Reversible within 7 days.</li>
+                        </ul>
+                    </li>
+                    <li><b style="color: #ef4444;">Category 1 (Serious Eye Damage):</b> Effects not reversible within 21 days, OR corneal opacity ≥ 3 and/or iritis &gt; 1.5 persisting in ≥ 2 animals, OR severe persistent effects in any animal.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<li><b>Observation Period</b>
-<ul>
-<li>Observe at 1h, 24h, 48h, 72h.</li>
-<li>Daily up to 21 days.</li>
-<li>Use fluorescein + slit lamp.</li>
-<li>Record pain/distress twice daily.</li>
-<li>Humane euthanasia if severe endpoints reached.</li>
-</ul>
-</li>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 20px;">📋 Procedure (Step-by-Step as per OECD 405)</h2>
+            
+            <div class="procedure-content" style="color: inherit; line-height: 1.6; font-size: 14px;">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px;">1. Pre-test Preparation (24 h before):</h3>
+                <ul style="margin-left: 20px;">
+                    <li>Examine both eyes for pre-existing abnormalities, irritation or corneal injury (use fluorescein if needed). Discard unsuitable animals.</li>
+                    <li>Acclimatise animals to laboratory conditions.</li>
+                </ul>
 
-</ol>
-</div>
-</div>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">2. Pain Management (Mandatory Refinement):</h3>
+                <ul style="margin-left: 20px;">
+                    <li>60 min before: Buprenorphine 0.01 mg/kg SC (systemic analgesia).</li>
+                    <li>5 min before: 1–2 drops topical anaesthetic in both eyes.</li>
+                    <li>8 h after: Buprenorphine 0.01 mg/kg + Meloxicam 0.5 mg/kg SC.</li>
+                    <li>Continue analgesia until lesions resolve. Untreated eye also receives anaesthetic.</li>
+                </ul>
 
-<div class="exp-container">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">3. Application of Test Substance:</h3>
+                <ul style="margin-left: 20px;">
+                    <li>Gently pull lower eyelid to form conjunctival sac.</li>
+                    <li>Instil 0.1 mL (liquid) or 0.1 g (solid) into one eye.</li>
+                    <li>Hold lids gently closed for 1 second to prevent loss.</li>
+                    <li>Do not wash the eye for at least 24 h. Untreated eye = control.</li>
+                </ul>
 
-<!-- TOP BUTTONS -->
-<div class="top-actions">
-<button class="dropdown-btn" onclick="openProcedure()">Procedure</button>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">4. Sequential Testing (to reduce animal use):</h3>
+                <ul style="margin-left: 20px;">
+                    <li>Initial test: 1 animal only. If serious damage observed → Terminate immediately (Category 1).</li>
+                    <li>Confirmatory test: If no severe effects, test up to 2 additional animals.</li>
+                </ul>
 
-</div>
-<!-- 🌗 THEME TOGGLE -->
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 20px;">5. Observation Period:</h3>
+                <ul style="margin-left: 20px;">
+                    <li>Examine eyes at: 1 h, 24 h, 48 h, 72 h (mandatory). Then daily until 21 days maximum.</li>
+                    <li>Use fluorescein staining + slit-lamp for corneal depth.</li>
+                    <li>Humanely euthanise if humane endpoints reached (e.g., grade 4 corneal opacity, corneal perforation).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        function openFormulas() { document.getElementById("formulaModal").style.display = "flex"; }
+        function closeFormulas() { document.getElementById("formulaModal").style.display = "none"; }
 
-<h1>Acute Eye Irritation / Corrosion (OECD 405)</h1>
+        document.getElementById("extremePH").addEventListener("change", function(){
+            let msg = document.getElementById("phMsg");
+            if(this.checked) msg.innerHTML = "Substance predicted corrosive. Classified as Category 1.";
+            else msg.innerHTML = "";
+        });
 
-<div class="exp-card">
-<h3>Study Setup</h3>
+        function calculateScores(){
+            if(document.getElementById("extremePH").checked){
+                alert("Substance is corrosive based on pH. Classification: Category 1.");
+                return;
+            }
 
-<p><b>Animal:</b> Albino rabbit</p>
-<p><b>Weight:</b> 2.5 kg</p>
-<p><b>Route:</b> Conjunctival instillation</p>
-<p><b>Dose:</b> 0.1 mL (Liquid) / 0.1 g (Solid)</p>
-<p><b>Observation Period:</b> 21 days</p>
+            let opacity=document.querySelectorAll(".opacity");
+            let area=document.querySelectorAll(".area");
+            let iris=document.querySelectorAll(".iris");
+            let red=document.querySelectorAll(".red");
+            let che=document.querySelectorAll(".che");
+            let dis=document.querySelectorAll(".dis");
 
-<select id="substanceType" class="exp-input">
-<option value="">Select Substance Type</option>
-<option value="liquid">Liquid</option>
-<option value="solid">Solid</option>
-</select>
+            let totals=[];
+            for(let i=0; i<3; i++){
+                let cornea = (parseInt(opacity[i].value || 0) * parseInt(area[i].value || 0) * 5);
+                let irisVal = (parseInt(iris[i].value || 0) * 5);
+                let conj = ((parseInt(red[i].value || 0) + parseInt(che[i].value || 0) + parseInt(dis[i].value || 0)) * 2);
+                totals.push(cornea + irisVal + conj);
+            }
 
-<br><br>
+            let mean = (totals[0] + totals[1] + totals[2]) / 3;
+            let classification = "Non-Irritant";
+            
+            if(totals.some(t => t >= 80) || [...document.querySelectorAll(".humane")].some(c => c.checked)) {
+                classification = "Category 1 (Serious Eye Damage)";
+            } else if(mean >= 10) {
+                classification = "Category 2 (Eye Irritant)";
+            }
 
-<label>
-<input type="checkbox" id="extremePH">
- Extreme pH (≤2 or ≥11.5)
-</label>
-
-<div id="phMsg"></div>
-</div>
-
-<div class="exp-card">
-<h3>Draize Scoring (24h, 48h, 72h)</h3>
-
-<table class="exp-table">
-<thead>
-<tr>
-<th>Time</th>
-<th>Opacity</th>
-<th>Area</th>
-<th>Iris</th>
-<th>Redness</th>
-<th>Chemosis</th>
-<th>Discharge</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>24h</td>
-<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
-<td><input type="number" min="0" max="4" class="area exp-input"></td>
-<td><input type="number" min="0" max="2" class="iris exp-input"></td>
-<td><input type="number" min="0" max="3" class="red exp-input"></td>
-<td><input type="number" min="0" max="4" class="che exp-input"></td>
-<td><input type="number" min="0" max="3" class="dis exp-input"></td>
-</tr>
-
-<tr>
-<td>48h</td>
-<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
-<td><input type="number" min="0" max="4" class="area exp-input"></td>
-<td><input type="number" min="0" max="2" class="iris exp-input"></td>
-<td><input type="number" min="0" max="3" class="red exp-input"></td>
-<td><input type="number" min="0" max="4" class="che exp-input"></td>
-<td><input type="number" min="0" max="3" class="dis exp-input"></td>
-</tr>
-
-<tr>
-<td>72h</td>
-<td><input type="number" min="0" max="4" class="opacity exp-input"></td>
-<td><input type="number" min="0" max="4" class="area exp-input"></td>
-<td><input type="number" min="0" max="2" class="iris exp-input"></td>
-<td><input type="number" min="0" max="3" class="red exp-input"></td>
-<td><input type="number" min="0" max="4" class="che exp-input"></td>
-<td><input type="number" min="0" max="3" class="dis exp-input"></td>
-</tr>
-</tbody>
-</table>
-
-<button class="btn-small" onclick="calculateScores()">Calculate Mean Score</button>
-
-<div id="meanResult" class="result-box" style="display:none;"></div>
-</div>
-
-<!-- HUMANE ENDPOINT -->
-<div class="exp-card">
-<h3>Humane Endpoint Decision</h3>
-
-<label><input type="checkbox" class="humane"> Corneal perforation</label><br><br>
-<label><input type="checkbox" class="humane"> No light reflex at 72h</label><br><br>
-<label><input type="checkbox" class="humane"> Conjunctival necrosis</label>
-
-</div>
-
-<!-- NAVIGATION -->
-<button onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">⬅ Back</button>
-<button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">Next ▶</button>
-
-</div>
-
-<script>
-document.getElementById("extremePH").addEventListener("change", function(){
-let msg=document.getElementById("phMsg");
-if(this.checked){
-msg.innerHTML="<span class='warning'>Substance predicted corrosive. Animal test not required. Classified as Category 1.</span>";
-}else{
-msg.innerHTML="";
-}
-});
-
-const times=["24h","48h","72h"];
-let container=document.getElementById("timeInputs");
-
-if(container){
-times.forEach(t=>{
-container.innerHTML+=`
-<hr>
-<h4>${t}</h4>
-
-<b>Cornea</b><br>
-Opacity (0-4) <input type="number" min="0" max="4" class="opacity">
-Area (0-4) <input type="number" min="0" max="4" class="area"><br>
-
-<b>Iris</b><br>
-Grade (0-2) <input type="number" min="0" max="2" class="iris"><br>
-
-<b>Conjunctiva</b><br>
-Redness (0-3) <input type="number" min="0" max="3" class="red">
-Chemosis (0-4) <input type="number" min="0" max="4" class="che">
-Discharge (0-3) <input type="number" min="0" max="3" class="dis"><br>
-`;
-});
-}
-
-function calculateScores(){
-
-if(document.getElementById("extremePH").checked){
-return;
-}
-
-let opacity=document.querySelectorAll(".opacity");
-let area=document.querySelectorAll(".area");
-let iris=document.querySelectorAll(".iris");
-let red=document.querySelectorAll(".red");
-let che=document.querySelectorAll(".che");
-let dis=document.querySelectorAll(".dis");
-
-let totals=[];
-
-for(let i=0;i<3;i++){
-let cornea=(opacity[i].value*area[i].value*5)||0;
-let irisScore=(iris[i].value*5)||0;
-let conj=((+red[i].value + +che[i].value + +dis[i].value)*2)||0;
-totals.push(cornea+irisScore+conj);
-}
-
-let mean=(totals[0]+totals[1]+totals[2])/3;
-let classification="Non-Irritant";
-
-if(totals.some(t=>t>=80) ||
-[...document.querySelectorAll(".humane")].some(c=>c.checked)){
-classification="Category 1 (Serious Eye Damage)";
-}
-else if(mean>=10){
-classification="Category 2 (Eye Irritant)";
-}
-
-document.getElementById("meanResult").style.display="block";
-document.getElementById("meanResult").innerHTML=
-"Mean Draize Score (24–72h) = "+mean.toFixed(2)+"<br>"+
-"GHS Classification: "+classification+".";
-}
-
-function openProcedure(){
-document.getElementById("procedureModal").style.display="flex";
-}
-
-function closeProcedure(){
-document.getElementById("procedureModal").style.display="none";
-}
-
-function toggleFullscreen(){
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen();
-}else{
-document.exitFullscreen();
-}
-}
-
-/* ================= THEME TOGGLE JS (FIXED SAFELY) ================= */
-
-document.addEventListener("DOMContentLoaded", function(){
-
-  const toggle = document.getElementById("themeToggle");
-
-  if(!toggle) return;
-
-  // Load saved theme
-  if (localStorage.getItem("expTheme") === "light") {
-    document.body.classList.add("light-mode");
-    toggle.checked = true;
-  }
-
-  // Toggle theme
-  toggle.addEventListener("change", function(){
-    document.body.classList.toggle("light-mode");
-
-    if(document.body.classList.contains("light-mode")){
-      localStorage.setItem("expTheme","light");
-    } else {
-      localStorage.setItem("expTheme","dark");
-    }
-  });
-
-});
-</script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+            document.getElementById("calculationArea").style.display = "block";
+            document.getElementById("meanResult").innerHTML = 
+                "Mean Draize Score (24–72h) = <b>" + mean.toFixed(2) + "</b><br>" +
+                "Classification: <b>" + classification + "</b>";
+            
+            document.getElementById("calculationArea").scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
 </html>

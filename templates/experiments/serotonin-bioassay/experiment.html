@@ -1,285 +1,452 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>Bioassay of Serotonin (5-HT) – Experiment</title>
+    <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+    <meta charset="UTF-8">
+    <title>Bioassay of Serotonin (5-HT) – Experiment</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  <style>
-    .video-frame {
-      width: 100%;
-      height: 480px;
-      border-radius: 14px;
-      background: #000;
-      margin-top: 20px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .video-section {
+            flex: 0 0 62%;
+            max-width: 62%;
+        }
 
-    video {
-      width: 100%;
-      height: 100%;
-      border-radius: 14px;
-      display: none;
-    }
+        .observation-section {
+            flex: 0 0 36%;
+            max-width: 36%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-    .start-btn {
-      padding: 14px 30px;
-      font-size: 18px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
-      color: #fff;
-      font-weight: 600;
-    }
+        .video-frame {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
+        .start-btn {
+            padding: 16px 35px;
+            font-size: 18px;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
 
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-    }
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6);
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-    }
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.2));
+            padding: 5px 10px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+        }
 
-    .modal-content {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      width: 95%;
-      max-width: 1100px;
-    }
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: white;
-      font-size: 14px;
-    }
+        .top-actions .calc-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
 
-    th,
-    td {
-      border: 1px solid #444;
-      padding: 8px;
-      text-align: center;
-    }
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 65%;
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.2));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            font-size: 13px;
+        }
 
-    th {
-      background: #222;
-    }
+        /* 📊 TABLE STYLING */
+        .observation-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main, #fff);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            color: var(--text-main, #eee);
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+            text-align: center;
+        }
+
+        th {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            color: var(--text-main, white);
+            position: relative;
+            border: 1px solid var(--border-color, #333);
+            overflow-y: auto;
+        }
+
+        body.light-mode .modal-content {
+            color: #333 !important;
+            background: #fff !important;
+        }
+
+        .close-btn {
+            position: sticky;
+            top: -20px;
+            float: right;
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 28px;
+            z-index: 101;
+        }
+
+        .procedure-content h3 {
+            color: #ef4444;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ef4444;
+            padding-left: 15px;
+        }
+
+        .procedure-content ul {
+            line-height: 1.8;
+            color: var(--text-main, #eee);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* CALCULATION STYLING */
+        .calc-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .calc-step { margin-bottom: 15px; padding-left: 15px; border-left: 2px solid #10b981; }
+        .formula { background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; font-family: monospace; color: #10b981; font-size: 16px; margin: 15px 0; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+        @media (max-width: 1200px) {
+            .experiment-layout { flex-direction: column; }
+            .video-section, .observation-section { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To Study Bioassay of Serotonin (5-HT) Using Rat Fundus Strip by Three-Point Method</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To Study Bioassay of Serotonin (5-HT) Using Rat Fundus Strip by Three-Point Method</span>
+    </div>
 
-  
-
-
-  <div class="page-container">
-
-    <h1 class="title">
-      Bioassay of Serotonin (5-HT) Using Rat Fundus Strip by Three-Point Method
-    </h1>
-
-    <!-- FULL SCREEN -->
+    <!-- 🔝 TOP ACTIONS -->
     <div class="top-actions">
-      
+        <button class="action-btn calc-btn" onclick="openCalculations()">
+            🧮 Calculations
+        </button>
+        <button class="action-btn" onclick="openProcedure()">
+            📋 Procedure
+        </button>
+        <div id="theme-toggle-container"></div>
     </div>
 
-    <!-- VIDEO FRAME -->
-    <div class="video-frame">
-      <button class="start-btn" id="startBtn" onclick="startExperiment()">
-        ▶ Start Practical
-      </button>
+    <div class="page-container">
+        <h1 class="title" style="color: #ef4444; margin-bottom: 10px;">Experiment-Virtual Simulator</h1>
 
-      <video id="experimentVideo" controls>
-        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_47.mp4' %}" type="video/mp4">
-      </video>
+        <div class="experiment-layout">
+            <!-- LEFT: VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-frame">
+                    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+                        ▶ Start Practical
+                    </button>
+                    <video id="experimentVideo" controls>
+                        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_47.mp4' %}" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="button-row" style="margin-top: 20px; justify-content: flex-start;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+                        ⬅ Back
+                    </button>
+                    <button class="exp-btn" onclick="goToGraph()" style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                        Next ▶
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Observation Table</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cycle</th>
+                                <th>S1 (mm)</th>
+                                <th>S2 (mm)</th>
+                                <th>Test (mm)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="observationBody">
+                            <tr><td>Cycle 1</td><td id="s1_1">—</td><td id="s2_1">—</td><td id="t_1">—</td></tr>
+                            <tr><td>Cycle 2</td><td id="s1_2">—</td><td id="s2_2">—</td><td id="t_2">—</td></tr>
+                            <tr><td>Cycle 3</td><td id="s1_3">—</td><td id="s2_3">—</td><td id="t_3">—</td></tr>
+                            <tr style="font-weight:bold; color:#ef4444;"><td>Average</td><td id="avg_s1">—</td><td id="avg_s2">—</td><td id="avg_t">—</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- NAVIGATION -->
-    <div class="button-row" style="justify-content:center; margin-top:25px;">
-      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-        ⬅ Back
-      </button>
+    <!-- CALCULATION MODAL -->
+    <div class="modal" id="calcModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCalculations()">✖</span>
+            <h2 style="color: #10b981; margin-top: 0;">🧮 Step-by-Step Calculation (Standard 3-Point Formula)</h2>
+            <p style="color: #aaa; margin-bottom: 20px;">The most common formula in B.Pharm practicals (as per Kulkarni, RJPT, and lab manuals):</p>
+            
+            <div class="formula">
+                Concentration of unknown (test) = (s₁ / t) × antilog[ (T – S₁) / (S₂ – S₁) × log(s₂ / s₁) ] × Conc. of standard stock
+            </div>
 
-      <button class="exp-btn" onclick="openModal()">
-        View Observations 📊
-      </button>
+            <div class="calc-box">
+                <p><b>Where:</b></p>
+                <ul style="list-style: disc; padding-left: 20px; line-height: 1.8;">
+                    <li>s₁ = volume of low standard (S1) = 0.2 mL</li>
+                    <li>s₂ = volume of high standard (S2) = 0.6 mL</li>
+                    <li>t = volume of test (T) = 0.4 mL</li>
+                    <li>S₁ = average response of S1 = 23 mm</li>
+                    <li>S₂ = average response of S2 = 57 mm</li>
+                    <li>T = average response of test = 42 mm (use 41.67 for precision)</li>
+                    <li>Conc. of standard stock = 10 μg/mL</li>
+                </ul>
 
-      <button class="exp-btn" onclick="goToGraph()">
-        Next ▶
-      </button>
+                <div style="margin-top: 25px;">
+                    <div class="calc-step"><b>1. Calculate ratio fraction:</b> (T – S₁) / (S₂ – S₁) = (42 – 23) / (57 – 23) = 19 / 34 ≈ 0.5588</div>
+                    <div class="calc-step"><b>2. log(s₂ / s₁):</b> log(0.6 / 0.2) = log(3) ≈ 0.4771</div>
+                    <div class="calc-step"><b>3. Multiply:</b> 0.5588 × 0.4771 ≈ 0.2666</div>
+                    <div class="calc-step"><b>4. Antilog:</b> Antilog(0.2666) ≈ 1.847 (use calculator or log table)</div>
+                    <div class="calc-step"><b>5. Volume ratio:</b> (s₁ / t) = 0.2 / 0.4 = 0.5</div>
+                    <div class="calc-step"><b>6. Potency ratio:</b> 0.5 × 1.847 ≈ 0.9235</div>
+                    <div class="calc-step"><b>7. Concentration of unknown:</b> 0.9235 × 10 μg/mL ≈ 9.24 μg/mL</div>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 14px; font-style: italic; color: #888;">
+                    (If using exact 41.67 mm for T: (41.67 – 23)/(57 – 23) = 18.67/34 ≈ 0.5491; then 0.5491 × 0.4771 ≈ 0.262; antilog ≈ 1.828; 0.5 × 1.828 ≈ 0.914; 0.914 × 10 ≈ 9.14 μg/mL — minor difference, report as ≈9.2 μg/mL)
+                </p>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 20px;">📋 Procedure (Simplified Step-by-Step)</h2>
+            
+            <div class="procedure-content">
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">1. Animal Sacrifice and Tissue Isolation:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Sacrifice the rat by cervical dislocation or stunning blow + exsanguination (as per ethical guidelines).</li>
+                    <li>Open the abdomen with midline incision.</li>
+                    <li>Remove the entire stomach carefully.</li>
+                    <li>Identify the fundus (upper greyish portion). Cut along the junction to separate fundus from antrum/body.</li>
+                    <li>Rinse the fundus gently with Krebs' solution to remove contents.</li>
+                    <li>Open the fundus along the greater curvature.</li>
+                    <li>Prepare a <b>zig-zag (zigzag) strip</b> of longitudinal muscle (1–1.5 cm wide, 3–4 cm long) by making alternate cuts to increase surface area and sensitivity.</li>
+                    <li>Tie one end with thread for attachment to aerator hook (lower end) and the other to recording lever/transducer (upper end).</li>
+                </ul>
 
-  <!-- ================= OBSERVATION MODAL ================= -->
-  <div class="modal" id="obsModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">✖</span>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">2. Mounting the Tissue in Organ Bath:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Suspend the strip in aerated Krebs' solution (5–10 mL bath) at 37°C.</li>
+                    <li>Apply initial load/tension of ~1 g (using spring-loaded lever or weight).</li>
+                    <li>Allow 30–60 min equilibration with frequent washing (every 10–15 min) until baseline stabilizes and spontaneous contractions subside.</li>
+                    <li>The tissue is very sensitive; avoid overstretching.</li>
+                </ul>
 
-      <h2 style="text-align:center;">
-        Observation Table – Three Point Bioassay of 5-HT
-      </h2>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">3. Dose-Response Curve (Preliminary):</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Add graded doses of standard 5-HT (e.g., 0.5, 1, 2, 4, 8, 16 ng/mL bath concentration).</li>
+                    <li>Contact time: 90–120 seconds (contraction peaks slowly; 90% response in 90–120 s).</li>
+                    <li>Wash out after each response (2–3 washes) and allow 3–5 min recovery.</li>
+                    <li>Record height of contraction (mm on kymograph or digital units).</li>
+                    <li>Plot preliminary log dose-response curve and identify:
+                        <ul>
+                            <li><b>S1</b>: Low dose giving small but measurable response (~20–40%).</li>
+                            <li><b>S2</b>: Higher dose giving larger response (~60–80%).</li>
+                            <li><b>T</b>: Test dose giving response between S1 and S2.</li>
+                        </ul>
+                    </li>
+                </ul>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Cycle</th>
-            <th>Sequence</th>
-            <th>S1 Response (mm)</th>
-            <th>S2 Response (mm)</th>
-            <th>T Response (mm)</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <tr>
-            <td>1</td>
-            <td>S1 → S2 → T</td>
-            <td id="s1_1"></td>
-            <td id="s2_1"></td>
-            <td id="t_1"></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>S2 → T → S1</td>
-            <td id="s1_2"></td>
-            <td id="s2_2"></td>
-            <td id="t_2"></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>T → S1 → S2</td>
-            <td id="s1_3"></td>
-            <td id="s2_3"></td>
-            <td id="t_3"></td>
-          </tr>
-          <tr style="font-weight:bold;">
-            <td colspan="2">Average</td>
-            <td id="avg_s1"></td>
-            <td id="avg_s2"></td>
-            <td id="avg_t"></td>
-          </tr>
-        </tbody>
-
-      </table>
+                <h3 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 15px; margin-top: 25px;">4. Actual Three-Point Bioassay:</h3>
+                <ul style="line-height: 1.8; color: var(--text-main, #eee); font-size: 14px;">
+                    <li>Use selected doses: S1, S2, T.</li>
+                    <li>Add doses in randomized/bracketing sequence to minimize bias (e.g., over 3 cycles):
+                        <ul>
+                            <li>Cycle 1: S1 → S2 → T</li>
+                            <li>Cycle 2: S2 → T → S1</li>
+                            <li>Cycle 3: T → S1 → S2</li>
+                        </ul>
+                    </li>
+                    <li>Maintain constant contact time (90–120 s), wash thoroughly, and fixed time interval between doses (usually 5–8 min).</li>
+                    <li>Record all responses.</li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 
-  
+    <script>
+        function startExperiment() {
+            document.getElementById("startBtn").style.display = "none";
+            let video = document.getElementById("experimentVideo");
+            video.style.display = "block";
+            video.play();
 
-  <script>
-    function startExperiment() {
-      document.getElementById("startBtn").style.display = "none";
-      let video = document.getElementById("experimentVideo");
-      video.style.display = "block";
-      video.play();
+            video.onended = function() {
+                fillObservations();
+            };
+        }
 
-      video.onended = function () {
-        fillObservations();
-      };
-    }
+        function fillObservations() {
+            document.getElementById("s1_1").innerText = 24;
+            document.getElementById("s2_1").innerText = 58;
+            document.getElementById("t_1").innerText = 42;
 
-    function fillObservations() {
+            document.getElementById("s1_2").innerText = 22;
+            document.getElementById("s2_2").innerText = 56;
+            document.getElementById("t_2").innerText = 40;
 
-      // ========================
-      // CYCLE VALUES
-      // ========================
+            document.getElementById("s1_3").innerText = 23;
+            document.getElementById("s2_3").innerText = 57;
+            document.getElementById("t_3").innerText = 43;
 
-      // Cycle 1
-      document.getElementById("s1_1").innerText = 24;
-      document.getElementById("s2_1").innerText = 58;
-      document.getElementById("t_1").innerText = 42;
+            document.getElementById("avg_s1").innerText = 23;
+            document.getElementById("avg_s2").innerText = 57;
+            document.getElementById("avg_t").innerText = 41.67;
+        }
 
-      // Cycle 2
-      document.getElementById("s1_2").innerText = 22;
-      document.getElementById("s2_2").innerText = 56;
-      document.getElementById("t_2").innerText = 40;
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        
+        function openCalculations() { document.getElementById("calcModal").style.display = "flex"; }
+        function closeCalculations() { document.getElementById("calcModal").style.display = "none"; }
 
-      // Cycle 3
-      document.getElementById("s1_3").innerText = 23;
-      document.getElementById("s2_3").innerText = 57;
-      document.getElementById("t_3").innerText = 43;
-
-      // ========================
-      // AVERAGE VALUES
-      // ========================
-
-      document.getElementById("avg_s1").innerText = "23 mm";
-      document.getElementById("avg_s2").innerText = "57 mm";
-      document.getElementById("avg_t").innerText = "41.67 mm (≈42 mm)";
-    }
-    function openModal() {
-      document.getElementById("obsModal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("obsModal").style.display = "none";
-    }
-
-    function goToGraph() {
-      location.href = "/experiment/{{ experiment.slug }}/graph/";
-    }
-
-    
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  </script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+        function goToGraph() { location.href = "/experiment/{{ experiment.slug }}/graph/"; }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
-
 </html>

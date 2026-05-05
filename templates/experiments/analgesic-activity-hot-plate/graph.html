@@ -183,16 +183,12 @@
     <span><b>Aim:</b> To Study and Evaluate Analgesic Activity by Hot Plate Method</span>
   </div>
 
-  
-
-  
-
-
-
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions"></div>
 
 <div class="graph-card">
 
-  <div class="graph-title">Hot Plate Method – Analgesic Activity</div>
+  <div class="graph-title">Analgesic Activity (Hot Plate Method)</div>
   <div class="graph-subtitle">Reaction Time (seconds) vs Time (minutes)</div>
 
   <canvas id="resultChart" height="120"></canvas>
@@ -208,69 +204,41 @@
 
 </div>
 
-<script>
-/* THEME */
-const toggle = document.getElementById("themeToggle");
 
-if (localStorage.getItem("gmars-theme-preference") === "light") {
-  document.body.classList.add("light-mode");
-  toggle.checked = true;
-}
-
-toggle.addEventListener("change", () => {
-  toggleTheme();
-});
-
-/* FULLSCREEN */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
 
 <script>
 /* HOT PLATE GRAPH DATA */
 
 const ctx = document.getElementById("resultChart").getContext("2d");
 
-new Chart(ctx, {
+const getLabelColor = () => document.body.classList.contains("light-mode") ? "#444" : "#fff";
+const getGridColor = () => document.body.classList.contains("light-mode") ? "#ddd" : "#444";
+
+window.resultChart = new Chart(ctx, {
   type: "line",
   data: {
-    labels: [0, 30, 60, 90, 120],
+    labels: [0, 15, 30, 60, 90, 120],
     datasets: [
       {
         label: "Control",
-        data: [4.2, 4.5, 4.6, 4.4, 4.3],
-        borderColor: "#2196f3",
-        backgroundColor: "#2196f3",
-        tension: 0.3,
+        data: [6.4, 6.5, 6.7, 6.8, 6.4, 6.1],
+        borderColor: "#1f77b4",
+        backgroundColor: "#1f77b4",
+        pointBackgroundColor: "#1f77b4",
+        pointBorderColor: "#fff",
+        pointRadius: 5,
+        tension: 0,
         fill: false
       },
       {
-        label: "Standard (Pentazocine)",
-        data: [4.1, 7.8, 9.5, 8.9, 7.6],
-        borderColor: "#ff9800",
-        backgroundColor: "#ff9800",
-        tension: 0.3,
-        fill: false
-      },
-      {
-        label: "Test Low Dose",
-        data: [4.0, 6.2, 7.4, 7.0, 6.1],
-        borderColor: "#4caf50",
-        backgroundColor: "#4caf50",
-        tension: 0.3,
-        fill: false
-      },
-      {
-        label: "Test High Dose",
-        data: [4.3, 7.0, 8.6, 8.0, 7.2],
-        borderColor: "#f44336",
-        backgroundColor: "#f44336",
-        tension: 0.3,
+        label: "Standard (Morphine)",
+        data: [6.2, 10.3, 13.5, 14.5, 12.5, 9.8],
+        borderColor: "#ff7f0e",
+        backgroundColor: "#ff7f0e",
+        pointBackgroundColor: "#ff7f0e",
+        pointBorderColor: "#fff",
+        pointRadius: 5,
+        tension: 0,
         fill: false
       }
     ]
@@ -279,25 +247,46 @@ new Chart(ctx, {
     responsive: true,
     plugins: {
       legend: {
-        labels: { color: "#fff" }
+        labels: { color: getLabelColor() }
       }
     },
     scales: {
       y: {
         beginAtZero: false,
+        ticks: { color: getLabelColor() },
+        grid: { color: getGridColor() },
         title: {
           display: true,
-          text: "Reaction Time (seconds)"
+          text: "Reaction Time (seconds)",
+          color: getLabelColor()
         }
       },
       x: {
+        ticks: { color: getLabelColor() },
+        grid: { color: getGridColor() },
         title: {
           display: true,
-          text: "Time (minutes)"
+          text: "Time (minutes)",
+          color: getLabelColor()
         }
       }
     }
   }
+});
+
+window.addEventListener('themeChanged', () => {
+    const c = getLabelColor();
+    const g = getGridColor();
+    if (window.resultChart) {
+        window.resultChart.options.plugins.legend.labels.color = c;
+        window.resultChart.options.scales.x.ticks.color = c;
+        window.resultChart.options.scales.y.ticks.color = c;
+        window.resultChart.options.scales.x.title.color = c;
+        window.resultChart.options.scales.y.title.color = c;
+        window.resultChart.options.scales.x.grid.color = g;
+        window.resultChart.options.scales.y.grid.color = g;
+        window.resultChart.update();
+    }
 });
 </script>
 

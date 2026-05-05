@@ -1,19 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+  <script>(function () { const t = localStorage.getItem('gmars-theme-preference'); if (t === 'light') document.body.classList.add('light-mode'); })();</script>
   <meta charset="UTF-8">
   <title>Acute Skin Irritation Test – Requirements</title>
 
   <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
+  <script type="module" src="{% static 'js/model-viewer.min.js' %}">
   </script>
 
   <!-- Reuse existing intro CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* 🔝 TOP RIGHT ACTION BUTTONS */
@@ -42,7 +41,7 @@
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
     }
-  
+
     /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
     model-viewer {
       --progress-bar-color: #ff2e2e;
@@ -50,6 +49,7 @@
       background-color: #f8f9fa;
       position: relative;
     }
+
     .progress-bar {
       display: block;
       width: 33%;
@@ -60,14 +60,16 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 25px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.9);
       background-color: rgba(0, 0, 0, 0.5);
     }
+
     .progress-bar.hide {
       visibility: hidden;
       transition: visibility 0.3s;
     }
+
     .update-bar {
       background-color: var(--progress-bar-color);
       width: 0%;
@@ -75,149 +77,143 @@
       border-radius: 25px;
       transition: width 0.3s;
     }
-</style>
+  </style>
 </head>
 
 <body>
   <!-- 🎯 EXPERIMENT AIM HEADER -->
   <div class="top-left-aim">
-    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using albino rabbits as per OECD Test Guideline 404.</span>
+    <span><b>Aim:</b> To determine the acute skin irritation and/or corrosion potential of a given test substance using
+      albino rabbits as per OECD Test Guideline 404.</span>
   </div>
 
-  
-
-  
 
 
-<!-- 🔝 TOP RIGHT BUTTONS -->
-<div class="top-actions">
-  
-  
-</div>
 
-<div class="page-container">
 
-  <h1 class="title">Requirements / Materials</h1>
 
-  <!-- 🐇 Animals -->
-  <div class="info-box">
-    <h2>Experimental Animals</h2>
-    <ul>
-      <li>Healthy young adult albino rabbits</li>
-      <li>Either sex</li>
-      <li>Body weight: 2–3 kg</li>
-      <li>Age: 8–12 weeks</li>
-      <li>Use minimum animals (initially 1, then up to 2 more if required)</li>
-    </ul>
+  <!-- 🔝 TOP RIGHT BUTTONS -->
+  <div class="top-actions">
+
+
   </div>
 
-  <!-- 🧪 Test Substance -->
-  <div class="info-box">
-    <h2>Test Substance</h2>
-    <ul>
-      <li>0.5 g (solid/paste) or 0.5 mL (liquid)</li>
-      <li>Used undiluted</li>
-      <li>If solid, moistened with minimal water to ensure good skin contact</li>
-    </ul>
+  <div class="page-container">
+
+    <h1 class="title">Requirements / Materials</h1>
+
+    <!-- 🐇 Animals -->
+    <div class="info-box">
+      <h2>Experimental Animals</h2>
+      <ul>
+        <li>Healthy young adult albino rabbits</li>
+        <li>Either sex</li>
+        <li>Body weight: 2–3 kg</li>
+        <li>Age: 8–12 weeks</li>
+        <li>Use minimum animals (initially 1, then up to 2 more if required)</li>
+      </ul>
+    </div>
+
+    <!-- 🧪 Test Substance -->
+    <div class="info-box">
+      <h2>Test Substance</h2>
+      <ul>
+        <li>0.5 g (solid/paste) or 0.5 mL (liquid)</li>
+        <li>Used undiluted</li>
+        <li>If solid, moistened with minimal water to ensure good skin contact</li>
+      </ul>
+    </div>
+
+    <!-- ⚙ Apparatus -->
+    <div class="info-box">
+      <h2>Apparatus and Instruments</h2>
+      <ul>
+        <li>Rabbit holder / restrainer</li>
+        <li>Electric clipper for shaving dorsal skin</li>
+        <li>Gauze patches (approx. 2.5 × 2.5 cm)</li>
+        <li>Non-irritating adhesive tape</li>
+        <li>Semi-occlusive dressing</li>
+        <li>Weighing balance</li>
+      </ul>
+    </div>
+
+    <!-- 🐇 3D MODEL PLACEHOLDER -->
+    <div class="info-box" style="text-align:justify;">
+      <h2>Rabbit Holder – 3D View</h2>
+
+      <model-viewer loading="eager" reveal="auto"
+        src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/rabbit-eye-drug-effects/models/rabbit.glb' %}{% endif %}"
+        camera-controls auto-rotate rotation-per-second="20deg" shadow-intensity="1" exposure="1.1"
+        style="width:100%; height:420px; border-radius:12px;">
+        <div class="progress-bar" slot="progress-bar">
+          <div class="update-bar"></div>
+        </div>
+      </model-viewer>
+    </div>
+
+    <!-- 🏠 Housing Conditions -->
+    <div class="info-box">
+      <h2>Housing Conditions</h2>
+      <ul>
+        <li>Individual cages</li>
+        <li>Temperature: 20 ± 3°C</li>
+        <li>Relative humidity: 30–70%</li>
+        <li>12-hour light/dark cycle</li>
+        <li>Standard laboratory diet</li>
+        <li>Water ad libitum</li>
+      </ul>
+    </div>
+
+    <!-- 🔘 Navigation Buttons -->
+    <div class="button-row">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
+        ⬅ Back
+      </button>
+
+      <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+        Next ▶
+      </button>
+    </div>
+
   </div>
 
-  <!-- ⚙ Apparatus -->
-  <div class="info-box">
-    <h2>Apparatus and Instruments</h2>
-    <ul>
-      <li>Rabbit holder / restrainer</li>
-      <li>Electric clipper for shaving dorsal skin</li>
-      <li>Gauze patches (approx. 2.5 × 2.5 cm)</li>
-      <li>Non-irritating adhesive tape</li>
-      <li>Semi-occlusive dressing</li>
-      <li>Weighing balance</li>
-    </ul>
-  </div>
+  <!-- 🔧 SCRIPTS -->
+  <script>
 
-  <!-- 🐇 3D MODEL PLACEHOLDER -->
-  <div class="info-box" style="text-align:justify;">
-    <h2>Rabbit Holder – 3D View</h2>
+  </script>
 
-    <model-viewer
-      loading="eager"
-      reveal="auto"
-      src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/acute-skin-irritation-oecd-404/models/rabbit_holder.glb' %}{% endif %}"
-      camera-controls
-      auto-rotate
-      rotation-per-second="20deg"
-      shadow-intensity="1"
-      exposure="1.1"
-      style="width:100%; height:420px; border-radius:12px;">
-          <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
-  </div>
-
-  <!-- 🏠 Housing Conditions -->
-  <div class="info-box">
-    <h2>Housing Conditions</h2>
-    <ul>
-      <li>Individual cages</li>
-      <li>Temperature: 20 ± 3°C</li>
-      <li>Relative humidity: 30–70%</li>
-      <li>12-hour light/dark cycle</li>
-      <li>Standard laboratory diet</li>
-      <li>Water ad libitum</li>
-    </ul>
-  </div>
-
-  <!-- 🔘 Navigation Buttons -->
-  <div class="button-row">
-    <button class="back-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/intro/'">
-      ⬅ Back
-    </button>
-
-    <button class="exp-btn"
-      onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-      Next ▶
-    </button>
-  </div>
-
-</div>
-
-<!-- 🔧 SCRIPTS -->
-<script>
-
-</script>
-
-<script>
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
-      });
+  <script>
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {
+          alert("Fullscreen not supported");
+        });
+      } else {
+        document.exitFullscreen();
+      }
     }
-  });
-</script>
+  </script>
 
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+
+  <script>
+    /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
+    document.addEventListener('DOMContentLoaded', () => {
+      const mv = document.querySelector('model-viewer');
+      if (mv) {
+        const pBar = mv.querySelector('.progress-bar');
+        const uBar = mv.querySelector('.update-bar');
+        mv.addEventListener('progress', (e) => {
+          const prg = e.detail.totalProgress;
+          if (uBar) uBar.style.width = `${prg * 100}%`;
+          if (prg === 1) {
+            setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
+          }
+        });
+      }
+    });
+  </script>
+
+  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
+
 </html>

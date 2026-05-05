@@ -6,14 +6,8 @@
   <meta charset="UTF-8">
   <title>Bioassay of Oxytocin – Theory</title>
 
-  <!-- MODEL VIEWER -->
-  <script type="module"
-    src="{% static 'js/model-viewer.min.js' %}">
-  </script>
-
   <!-- Reuse Rotarod CSS -->
-  <link rel="stylesheet"
-        href="{% static 'experiments/rotarod/css/intro.css' %}">
+  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}">
 
   <style>
     /* ================= SLIDE SYSTEM ================= */
@@ -41,76 +35,17 @@
     /* 🔝 TOP RIGHT ACTION BUTTONS */
     .top-actions {
       position: fixed;
-      top: 20px;
-      right: 25px;
+      top: 15px;
+      right: 15px;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
       z-index: 9999;
-    }
-
-    .top-actions button {
-      padding: 10px 18px;
-      border-radius: 22px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 14px rgba(255, 0, 0, 0.6);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .top-actions button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255, 0, 0, 0.9);
-    }
-
-    /* 🔬 3D MODEL STYLE */
-    .model-container {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    model-viewer {
-      width: 100%;
-      max-width: 600px;
-      height: 400px;
-      background: #111;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
-  
-    /* 🎨 MODERN PROGRESS BAR FOR 3D MODELS */
-    model-viewer {
-      --progress-bar-color: #ff2e2e;
-      --progress-bar-height: 4px;
-      background-color: #f8f9fa;
-      position: relative;
-    }
-    .progress-bar {
-      display: block;
-      width: 33%;
-      height: var(--progress-bar-height);
-      max-height: var(--progress-bar-height);
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 25px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-    .progress-bar.hide {
-      visibility: hidden;
-      transition: visibility 0.3s;
-    }
-    .update-bar {
-      background-color: var(--progress-bar-color);
-      width: 0%;
-      height: 100%;
-      border-radius: 25px;
-      transition: width 0.3s;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 </style>
 </head>
@@ -121,15 +56,10 @@
     <span><b>Aim:</b> To Study Bioassay of Oxytocin Using the Interpolation Method on Isolated Rat Uterine Horn</span>
   </div>
 
-  
-
-  
-
-
-<div class="top-actions">
-  
-  
-</div>
+  <!-- 🔝 TOP ACTIONS -->
+  <div class="top-actions">
+    <div id="theme-toggle-container"></div>
+  </div>
 
 <div class="page-container">
 
@@ -174,28 +104,6 @@
       of the DRC for accurate potency determination.
     </p>
 
-    <!-- 🔬 3D MODEL BELOW TEXT (OPTIONAL PLACEHOLDER) -->
-    <div class="model-container">
-      <model-viewer
-      loading="eager"
-      reveal="auto"
-        src="{% if cached_model_path %}{% static cached_model_path %}{% else %}{% static 'experiments/oxytocin-interpolation/models/organ-bath.glb' %}{% endif %}"
-        alt="Organ Bath Setup 3D Model"
-        auto-rotate
-        camera-controls
-        exposure="1"
-        shadow-intensity="1"
-        ar>
-            <div class="progress-bar" slot="progress-bar">
-        <div class="update-bar"></div>
-      </div>
-    </model-viewer>
-
-      <p style="margin-top:10px; font-size:14px; color:#aaa;">
-        3D Organ Bath & Uterine Contraction Setup
-      </p>
-    </div>
-
   </div>
 
   <div class="slide-counter">
@@ -203,52 +111,11 @@
   </div>
 
   <div class="button-row">
-    <button class="back-btn" onclick="prevSlide()">⬅ Back</button>
-    <button class="exp-btn" onclick="nextSlide()">Next ▶</button>
+    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/requirements/'">⬅ Back</button>
+    <button class="exp-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">Next ▶</button>
   </div>
 
 </div>
-
-<script>
-function nextSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/run/";
-}
-
-function prevSlide() {
-  location.href = "/experiment/{{ experiment.slug }}/requirements/";
-}
-
-
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      alert("Fullscreen not supported");
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-</script>
-
-
-<script>
-  /* 🛠️ SCRIPT TO HANDLE 3D MODEL PROGRESS BAR */
-  document.addEventListener('DOMContentLoaded', () => {
-    const mv = document.querySelector('model-viewer');
-    if (mv) {
-      const pBar = mv.querySelector('.progress-bar');
-      const uBar = mv.querySelector('.update-bar');
-      mv.addEventListener('progress', (e) => {
-        const prg = e.detail.totalProgress;
-        if (uBar) uBar.style.width = `${prg * 100}%`;
-        if (prg === 1) {
-          setTimeout(() => { if (pBar) pBar.classList.add('hide'); }, 300);
-        }
-      });
-    }
-  });
-</script>
 
 <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>

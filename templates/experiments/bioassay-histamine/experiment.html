@@ -1,274 +1,394 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
-  <meta charset="UTF-8">
-  <title>Bioassay of Histamine – Experiment</title>
+    <script>(function(){const t=localStorage.getItem('gmars-theme-preference');if(t==='light')document.body.classList.add('light-mode');})();</script>
+    <meta charset="UTF-8">
+    <title>Bioassay of Histamine – Experiment</title>
+    <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+    <style>
+        /* 📱 MAIN LAYOUT STRUCTURE */
+        .page-container {
+            max-width: 98% !important;
+            width: 98% !important;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-  <link rel="stylesheet" href="{% static 'experiments/rotarod/css/intro.css' %}?v=10002">
+        .experiment-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  <style>
-    .video-frame {
-      width: 100%;
-      height: 480px;
-      border-radius: 14px;
-      background: #000;
-      margin-top: 20px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .video-section {
+            flex: 0 0 62%;
+            max-width: 62%;
+        }
 
-    video {
-      width: 100%;
-      height: 100%;
-      border-radius: 14px;
-      display: none;
-    }
+        .observation-section {
+            flex: 0 0 36%;
+            max-width: 36%;
+            background: var(--bg-card, rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
 
-    .start-btn {
-      padding: 14px 30px;
-      font-size: 18px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ee0a0a, #b91c1c);
-      color: #fff;
-      font-weight: 600;
-    }
+        .video-frame {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .top-actions {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      z-index: 20;
-    }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-    .dropdown-btn {
-      background: linear-gradient(135deg, #1f2937, #111827);
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
+        .start-btn {
+            padding: 16px 35px;
+            font-size: 18px;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
 
-    .dropdown-btn:hover {
-      background: linear-gradient(135deg, #ee0a0a, #e60909);
-    }
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.6);
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-    }
+        /* 🔝 TOP RIGHT FIXED ACTIONS */
+        .top-actions {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            background: var(--bg-card, rgba(0, 0, 0, 0.2));
+            padding: 5px 10px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+        }
 
-    .modal-content {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      width: 95%;
-      max-width: 1100px;
-    }
+        .top-actions .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            color: #fff;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: white;
-      font-size: 14px;
-    }
+        /* 🎯 AIM HEADER ADJUSTMENT */
+        .top-left-aim {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            max-width: 65%;
+            z-index: 9998;
+            background: var(--bg-card, rgba(0, 0, 0, 0.2));
+            padding: 8px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            font-size: 13px;
+        }
 
-    th,
-    td {
-      border: 1px solid #444;
-      padding: 8px;
-      text-align: center;
-    }
+        /* 📊 TABLE STYLING */
+        .observation-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main, #fff);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    th {
-      background: #222;
-    }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            color: var(--text-main, #eee);
+            font-size: 12px;
+        }
 
-    .close-btn {
-      float: right;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+        th, td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+            text-align: center;
+        }
+
+        th {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* MODALS (SCROLLABLE PROCEDURE) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card, #111);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            color: var(--text-main, white);
+            position: relative;
+            border: 1px solid var(--border-color, #333);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            overflow-y: auto; /* Enable scrolling */
+        }
+
+        body.light-mode .modal-content {
+            color: #333 !important;
+            background: #fff !important;
+        }
+
+        .close-btn {
+            position: sticky;
+            top: -20px;
+            float: right;
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 28px;
+            transition: 0.3s;
+            z-index: 101;
+            background: var(--bg-card);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .close-btn:hover { transform: rotate(90deg) scale(1.1); }
+
+        .procedure-content h3 {
+            color: #ef4444;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ef4444;
+            padding-left: 15px;
+        }
+
+        .procedure-content ul {
+            line-height: 1.8;
+            color: var(--text-main, #eee);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .experiment-layout { flex-direction: column; }
+            .video-section, .observation-section { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 🎯 EXPERIMENT AIM HEADER -->
-  <div class="top-left-aim">
-    <span><b>Aim:</b> To Study Bioassay of Histamine using Guinea Pig Ileum by Matching Method</span>
-  </div>
+    <!-- 🎯 EXPERIMENT AIM HEADER -->
+    <div class="top-left-aim">
+        <span><b>Aim:</b> To Study Bioassay of Histamine using Guinea Pig Ileum by Matching Method</span>
+    </div>
 
-  
-
-  
-
-
-  <div class="page-container">
-
-    <h1 class="title">
-      Bioassay of Histamine using Guinea Pig Ileum (Matching Method)
-    </h1>
-
+    <!-- 🔝 TOP ACTIONS -->
     <div class="top-actions">
-      
+        <button class="action-btn" onclick="openProcedure()">
+            📋 Procedure
+        </button>
+        <div id="theme-toggle-container"></div>
     </div>
 
-    <!-- VIDEO FRAME -->
-    <div class="video-frame">
-      <button class="start-btn" id="startBtn" onclick="startExperiment()">
-        ▶ Start Practical
-      </button>
+    <div class="page-container">
+        <h1 class="title" style="color: #ef4444; margin-bottom: 10px;">Experiment-Virtual Simulator</h1>
 
-      <video id="experimentVideo" controls>
-        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_45.mp4' %}" type="video/mp4">
-      </video>
+        <div class="experiment-layout">
+            <!-- LEFT: VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-frame">
+                    <button class="start-btn" id="startBtn" onclick="startExperiment()">
+                        ▶ Start Practical
+                    </button>
+                    <video id="experimentVideo" controls>
+                        <source src="{% static 'experiments/acetylcholine-drc-frog-rectus/videos/drc_45.mp4' %}" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="button-row" style="margin-top: 20px; justify-content: flex-start;">
+                    <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
+                        ⬅ Back
+                    </button>
+                    <button class="exp-btn" onclick="goToGraph()" style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                        Next ▶
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT: OBSERVATION SECTION -->
+            <div class="observation-section">
+                <h2>📊 Observation Table</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Substance</th>
+                                <th>Vol (ml)</th>
+                                <th>Ht (mm)</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="observationBody">
+                            <!-- Data populated via script -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- NAVIGATION -->
-    <div class="button-row" style="justify-content:center; margin-top:25px;">
-      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/theory/'">
-        ⬅ Back
-      </button>
+    <!-- PROCEDURE MODAL (SCROLLABLE) -->
+    <div class="modal" id="procedureModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProcedure()">✖</span>
+            <h2 style="color: #ef4444; margin-top: 0; margin-bottom: 10px;">📋 Procedure (Simplified Step-by-Step)</h2>
+            
+            <div class="procedure-content">
+                <h3>1. Sacrifice & Tissue Preparation</h3>
+                <ul>
+                    <li>Sacrifice guinea pig by stunning (blow on head) + carotid bleeding (humane as per ethics).</li>
+                    <li>Open abdomen, locate ileocecal junction.</li>
+                    <li>Dissect 2–3 cm terminal ileum segment (avoid Peyer's patches).</li>
+                    <li>Flush lumen gently with Tyrode's to remove contents.</li>
+                    <li>Mount tissue in organ bath: One end tied to aeration tube/fixed hook, other to isotonic lever with thread.</li>
+                </ul>
 
-      <button class="exp-btn" onclick="openModal()">
-        View Observations 📊
-      </button>
+                <h3>2. Organ Bath Setup</h3>
+                <ul>
+                    <li>Fill bath with aerated Tyrode's solution at 37°C.</li>
+                    <li>Allow tissue to equilibrate/stabilize for 30–45 min (change solution every 10 min).</li>
+                    <li>Adjust baseline (relaxed position) on drum.</li>
+                    <li>Time cycle: Usually 3 min (180 sec) total — Contact time 30–60 sec + wash/recovery 2× (60 sec each).</li>
+                </ul>
 
-      <button class="exp-btn" onclick="goToGraph()">
-        Next ▶
-      </button>
+                <h3>3. Sensitivity Check & Responses</h3>
+                <ul>
+                    <li>Add small standard histamine dose (e.g., 0.2–0.4 ml of 1 μg/ml) → record contraction.</li>
+                    <li>Wash 2× after response peaks and returns to baseline.</li>
+                    <li>Repeat until consistent responses (tissue sensitivity stabilizes; ileum may show initial sensitization).</li>
+                </ul>
+
+                <h3>4. Matching Method (Core Procedure)</h3>
+                <ul>
+                    <li>Record responses to increasing volumes of standard histamine (S1, S2, S3...) until good range (e.g., low, medium, high contractions).</li>
+                    <li>Typical doses: 0.1 ml, 0.2 ml, 0.4 ml, 0.6 ml, 0.8 ml of standard (1 μg/ml stock).</li>
+                    <li>Now add test sample (T) volume (e.g., start with 0.2 ml or guess based on expected conc.).</li>
+                    <li>Observe contraction height.</li>
+                    <li><b>By trial & error:</b>
+                        <ul>
+                            <li>If T response < nearest S → increase T volume or try higher.</li>
+                            <li>If T response > nearest S → decrease T volume.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>5. Final Steps & Recording</h3>
+                <ul>
+                    <li>Repeat T doses until one T response closely matches (almost equal height) a standard response (S).</li>
+                    <li>Record at least 2–3 matching pairs for accuracy (e.g., T matches S 0.4 ml).</li>
+                    <li>Maintain fixed contact time (e.g., 60 sec), wash time, and cycle.</li>
+                    <li>Responses plotted as height in mm on kymograph tracing.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <script>
+        const observationData = [
+            { sub: "Standard (S1)", vol: "0.2", ht: 15, rem: "Low" },
+            { sub: "Standard (S2)", vol: "0.4", ht: 35, rem: "Medium" },
+            { sub: "Standard (S3)", vol: "0.6", ht: 55, rem: "High" },
+            { sub: "Test (T1)", vol: "0.3", ht: 28, rem: "Too low" },
+            { sub: "Test (T2)", vol: "0.45", ht: 38, rem: "Close" },
+            { sub: "Standard (S2 rep)", vol: "0.4", ht: 36, rem: "Matches T2" }
+        ];
 
-  <!-- ================= OBSERVATION MODAL ================= -->
-  <div class="modal" id="obsModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">✖</span>
+        function startExperiment() {
+            document.getElementById("startBtn").style.display = "none";
+            let video = document.getElementById("experimentVideo");
+            video.style.display = "block";
+            video.play();
+            populateTable();
+        }
 
-      <h2 style="text-align:center;">
-        Observation Table – Matching Method
-      </h2>
+        function populateTable() {
+            const body = document.getElementById("observationBody");
+            body.innerHTML = "";
+            observationData.forEach((row, i) => {
+                setTimeout(() => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `<td>${row.sub}</td><td>${row.vol}</td><td>${row.ht}</td><td>${row.rem}</td>`;
+                    body.appendChild(tr);
+                }, i * 2000);
+            });
+        }
 
-      <table>
-        <thead>
-          <tr>
-            <th>Sr. No.</th>
-            <th>Substance</th>
-            <th>Volume Added (ml)</th>
-            <th>Conc. in Bath (µg/ml approx.)</th>
-            <th>Response Height (mm)</th>
-            <th>Remarks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Standard (S1)</td>
-            <td>0.2</td>
-            <td>0.005–0.007</td>
-            <td>15</td>
-            <td>Low</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Standard (S2)</td>
-            <td>0.4</td>
-            <td>0.01–0.013</td>
-            <td>35</td>
-            <td>Medium</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Standard (S3)</td>
-            <td>0.6</td>
-            <td>0.015–0.02</td>
-            <td>55</td>
-            <td>High</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Test (T1)</td>
-            <td>0.3</td>
-            <td>?</td>
-            <td>28</td>
-            <td>Too low</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Test (T2)</td>
-            <td>0.45</td>
-            <td>?</td>
-            <td>38</td>
-            <td>Close</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>Standard (S2 repeat)</td>
-            <td>0.4</td>
-            <td>0.01–0.013</td>
-            <td>36</td>
-            <td>Matches T2</td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-
-  
-
-  <script>
-    function startExperiment() {
-      document.getElementById("startBtn").style.display = "none";
-      let video = document.getElementById("experimentVideo");
-      video.style.display = "block";
-      video.play();
-    }
-
-    function openModal() {
-      document.getElementById("obsModal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("obsModal").style.display = "none";
-    }
-
-    function goToGraph() {
-      location.href = "/experiment/{{ experiment.slug }}/graph/";
-    }
-
-    
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  </script>
-
-
-<script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+        function openProcedure() { document.getElementById("procedureModal").style.display = "flex"; }
+        function closeProcedure() { document.getElementById("procedureModal").style.display = "none"; }
+        function goToGraph() { location.href = "/experiment/{{ experiment.slug }}/graph/"; }
+    </script>
+    <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
 </body>
-
 </html>

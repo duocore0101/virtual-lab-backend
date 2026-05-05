@@ -73,46 +73,73 @@
     /* =========================
        THEME + FULLSCREEN
     ========================== */
-    .theme-toggle {
-      position: absolute;
+    /* ================= TOP ACTIONS ================= */
+    .top-actions {
+      position: fixed;
       top: 20px;
-      right: 30px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .dropdown-btn {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 6px;
     }
 
-    .fullscreen-btn {
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #ff2e2e;
-      color: #fff;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
     }
 
-    .next-btn {
+    /* ================= NAVIGATION ================= */
+    .nav-buttons {
       display: flex;
       justify-content: center;
-      margin-top: 25px;
+      gap: 20px;
+      margin-top: 30px;
     }
 
-    .next-btn button {
+    .nav-buttons button {
       padding: 10px 30px;
       font-weight: 600;
       border-radius: 25px;
-      border: 2px solid #0a3d0a;
-      background: transparent;
-      color: #0a3d0a;
       cursor: pointer;
       transition: 0.3s;
+      border: 2px solid #0a3d0a;
     }
 
-    .next-btn button:hover {
+    .back-btn {
+      background: transparent;
+      color: #0a3d0a;
+    }
+
+    .back-btn:hover {
+      background: rgba(10, 61, 10, 0.1);
+    }
+
+    .next-btn {
       background: #0a3d0a;
       color: white;
+    }
+
+    .next-btn:hover {
+      background: #082d08;
+      transform: translateX(5px);
     }
   </style>
 </head>
@@ -125,41 +152,34 @@
 
   
 
-  
 
-
-<!-- THEME + FULLSCREEN -->
-
-
-<div class="graph-card">
-
-  <div class="graph-title">Dose – Response Curve</div>
-  <div class="graph-subtitle">
-    Acetylcholine on Frog Rectus Abdominis Muscle
+  <!-- 🔝 TOP RIGHT ACTIONS -->
+  <div class="top-actions">
   </div>
 
-  <canvas id="drcChart" height="120"></canvas>
+  <div class="graph-card">
+    <div class="graph-title">Dose – Response Curve</div>
+    <div class="graph-subtitle">
+      Acetylcholine on Frog Rectus Abdominis Muscle
+    </div>
 
-  <div class="next-btn">
-    <button onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
-      Next ▶
-    </button>
+    <canvas id="drcChart" height="120"></canvas>
+
+    <!-- NAVIGATION -->
+    <div class="nav-buttons">
+      <button class="back-btn" onclick="location.href='/experiment/{{ experiment.slug }}/run/'">
+        ⬅ Back
+      </button>
+      <button class="next-btn" onclick="location.href='/experiment/{{ experiment.slug }}/conclusion/'">
+        Next ▶
+      </button>
+    </div>
   </div>
-
-</div>
 
 <script>
-/* =========================
-   FULLSCREEN
-========================== */
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
+/* THEME & FULLSCREEN */
 </script>
+
 
 <script>
 /* =========================
