@@ -98,6 +98,7 @@ def login_view(request):
             email = request.POST.get("email")
             mobile = request.POST.get("mobile")
             roll_no = request.POST.get("roll_no")  # 🔥 NEW SAFE ADDITION
+            prn_no = request.POST.get("prn_no")    # 🔥 NEW
             password = request.POST.get("password")
             confirm_password = request.POST.get("confirm_password")
 
@@ -240,6 +241,7 @@ def login_view(request):
                     is_active=False,
                     mobile=mobile,      # 🔥 NEW
                     roll_no=roll_no,    # 🔥 NEW
+                    prn_no=prn_no,      # 🔥 NEW
                     password=make_password(password)
                 )
 
@@ -323,6 +325,7 @@ def profile_view(request):
             # Role-specific updates
             if user.role == "student":
                 user.roll_no = request.POST.get("roll_no")
+                user.prn_no = request.POST.get("prn_no")
                 # Update subject if it's a student (stored in User.subject)
                 user.subject = request.POST.get("subject")
 

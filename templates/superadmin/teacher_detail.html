@@ -236,6 +236,7 @@
             <th>Email Address</th>
             <th>Mobile</th>
             <th>Roll No</th>
+            <th>PRN No</th>
           </tr>
         </thead>
         <tbody>
@@ -246,6 +247,7 @@
             <td style="color: var(--text-muted);">{{ student.email }}</td>
             <td>{{ student.mobile|default:"-" }}</td>
             <td><span style="color: var(--accent-red); font-weight: 700;">#{{ student.roll_no|default:"N/A" }}</span></td>
+            <td><span style="color: #1d976c; font-weight: 700;">#{{ student.prn_no|default:"N/A" }}</span></td>
           </tr>
           {% endfor %}
         </tbody>

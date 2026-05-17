@@ -149,6 +149,7 @@
       <thead>
         <tr>
           <th>Roll No</th>
+          <th>PRN No</th>
           <th>Batch</th>
           <th>Student Name</th>
           <th>Email ID</th>
@@ -162,6 +163,9 @@
         <tr>
           <td>
             <span class="roll-badge">{{ student.roll_no|default:"---" }}</span>
+          </td>
+          <td>
+            <span class="roll-badge" style="color: #1d976c; border-color: rgba(29, 151, 108, 0.2); background: rgba(29, 151, 108, 0.05);">{{ student.prn_no|default:"---" }}</span>
           </td>
           <td>
             <span class="batch-name-badge">{{ student.assigned_batch_name }}</span>

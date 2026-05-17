@@ -253,11 +253,12 @@ def export_students_pdf(request):
     elements.append(Paragraph(subtitle, subtitle_style))
 
     # --- Table Data ---
-    data = [["Roll No", "Batch", "Student Name", "Email ID", "Mobile", "Status"]]
+    data = [["Roll No", "PRN No", "Batch", "Student Name", "Email ID", "Mobile", "Status"]]
     for s in students:
         status = "Active" if s.is_active else "Inactive"
         data.append([
             s.roll_no or "---",
+            s.prn_no or "---",
             s.assigned_batch_name,
             f"{s.first_name} {s.last_name}",
             s.email,
@@ -265,7 +266,7 @@ def export_students_pdf(request):
             status
         ])
 
-    table = Table(data, colWidths=[55, 75, 135, 135, 75, 50]) # Total width = 525 (fits in 535 available)
+    table = Table(data, colWidths=[45, 75, 55, 120, 120, 65, 45]) # Total width = 525 (fits in 535 available)
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#ff4b2b")),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -657,7 +658,7 @@ def export_students_excel(request):
     ws.title = "Students List"
 
     # Header Row
-    headers = ["Roll No", "Batch", "Student Name", "Email ID", "Mobile No", "Status"]
+    headers = ["Roll No", "PRN No", "Batch", "Student Name", "Email ID", "Mobile No", "Status"]
     ws.append(headers)
 
     # Styling Header
@@ -674,6 +675,7 @@ def export_students_excel(request):
     for s in students:
         ws.append([
             s.roll_no or "---",
+            s.prn_no or "---",
             s.assigned_batch_name,
             f"{s.first_name} {s.last_name}",
             s.email,
@@ -682,7 +684,7 @@ def export_students_excel(request):
         ])
 
     # Column Widths
-    column_widths = [12, 15, 30, 35, 15, 12]
+    column_widths = [12, 15, 15, 30, 35, 15, 12]
     for i, width in enumerate(column_widths):
         ws.column_dimensions[get_column_letter(i+1)].width = width
 
@@ -788,6 +790,8 @@ def create_student(request):
             role="student",
             college=teacher.college,
             created_by=teacher,
+            roll_no=request.POST.get("roll_no"),
+            prn_no=request.POST.get("prn_no"),
             password=make_password(password)
         )
 

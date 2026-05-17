@@ -8,15 +8,17 @@
 .page-title {
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  color: var(--text-main);
 }
 
 /* ================= TABLE CONTAINER ================= */
 .table-container {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
 }
 
 /* ================= TABLE ================= */
@@ -26,21 +28,23 @@
 }
 
 .sa-table th {
-  background: #f8f9fa;
-  padding: 12px;
+  color: var(--accent-red);
+  padding: 15px;
   font-size: 14px;
   text-align: left;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
 }
 
 .sa-table td {
-  padding: 12px;
+  padding: 15px;
   font-size: 14px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
 }
 
 .sa-table tr:hover {
-  background: #f9fbff;
+  background: rgba(255, 26, 26, 0.05);
 }
 
 /* ================= STATUS BADGES ================= */
@@ -94,6 +98,34 @@
 .btn.reject:hover {
   background: #c82333;
 }
+
+/* ================= LOGO STYLES ================= */
+.logo-box {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.logo-placeholder {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 10px;
+  text-align: center;
+}
 </style>
 
 <h2 class="page-title">📥 Principal Registration Requests</h2>
@@ -119,11 +151,11 @@
       <tr>
         <td>
           {% if req.logo %}
-            <div style="width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; background: #000; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="logo-box">
               <img src="{{ req.logo.url }}" style="max-width: 90%; max-height: 90%; object-fit: contain;">
             </div>
           {% else %}
-            <div style="width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border: 1px solid #eee; border-radius: 10px; color: #999; font-size: 10px; text-align: center;">No Logo</div>
+            <div class="logo-placeholder">No Logo</div>
           {% endif %}
         </td>
         <td>{{ req.fullname }}</td>

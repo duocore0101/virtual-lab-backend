@@ -383,9 +383,13 @@
           </select>
         </div>
 
-        <!-- 🔥 Student Roll Number -->
-        <div id="rollNoDiv" style="display:none;" class="full">
+        <!-- 🔥 Student Roll & PRN -->
+        <div id="rollNoDiv" style="display:none;">
           <input type="text" name="roll_no" id="rollNoInput" placeholder="Roll Number">
+        </div>
+
+        <div id="prnNoDiv" style="display:none;">
+          <input type="text" name="prn_no" id="prnNoInput" placeholder="PRN Number">
         </div>
 
         <div><input type="text" name="fullname" placeholder="Full Name" required></div>
@@ -459,6 +463,7 @@
       let dropdownDiv = document.getElementById("collegeDropdownDiv");
       let teacherDiv = document.getElementById("teacherDropdownDiv");
       let rollDiv = document.getElementById("rollNoDiv");
+      let prnDiv = document.getElementById("prnNoDiv");
       let logoDiv = document.getElementById("logoDiv");
       let addressDiv = document.getElementById("addressDiv");
       let planDiv = document.getElementById("planDiv");
@@ -489,6 +494,7 @@
         teacherDiv.style.display = "none";
         studentSubjectDiv.style.display = "none";
         rollDiv.style.display = "none";
+        prnDiv.style.display = "none";
 
         if (collegeNameInput) collegeNameInput.setAttribute("required", "required");
         if (collegeAddressInput) collegeAddressInput.setAttribute("required", "required");
@@ -506,6 +512,7 @@
         teacherDiv.style.display = "none";
         studentSubjectDiv.style.display = "none";
         rollDiv.style.display = "none";
+        prnDiv.style.display = "none";
 
         if (collegeDropdown) collegeDropdown.setAttribute("required", "required");
 
@@ -521,6 +528,7 @@
         teacherDiv.style.display = "block";
         studentSubjectDiv.style.display = "block";
         rollDiv.style.display = "block";
+        prnDiv.style.display = "block";
 
         if (collegeDropdown) collegeDropdown.setAttribute("required", "required");
         if (teacherDropdown) teacherDropdown.setAttribute("required", "required");

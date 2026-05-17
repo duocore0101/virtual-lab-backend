@@ -52,6 +52,8 @@
           <tr>
             <th>#</th>
             <th>Student Name</th>
+            <th>Roll No</th>
+            <th>PRN No</th>
             <th>Requested Subject</th>
             <th>Email</th>
             <th>College</th>
@@ -68,6 +70,14 @@
 
             <td>
               <strong>{{ approval.student.first_name }}</strong>
+            </td>
+            
+            <td>
+              <span style="font-family: monospace; font-weight: 600; color: var(--accent-red);">{{ approval.student.roll_no|default:"---" }}</span>
+            </td>
+
+            <td>
+              <span style="font-family: monospace; font-weight: 600; color: #1d976c;">{{ approval.student.prn_no|default:"---" }}</span>
             </td>
             
             <td>

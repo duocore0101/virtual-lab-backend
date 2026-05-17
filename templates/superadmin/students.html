@@ -30,6 +30,8 @@
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Roll No</th>
+            <th>PRN No</th>
             <th>Email</th>
             <th>College</th>
             <th>Created By</th>
@@ -45,6 +47,14 @@
 
             <td>
               <strong>{{ student.first_name }}</strong>
+            </td>
+
+            <td>
+              <span class="roll-badge" style="background: rgba(255, 75, 43, 0.1); color: #ff4b2b; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; border: 1px solid rgba(255, 75, 43, 0.2);">{{ student.roll_no|default:"---" }}</span>
+            </td>
+
+            <td>
+              <span class="roll-badge" style="background: rgba(29, 151, 108, 0.1); color: #1d976c; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; border: 1px solid rgba(29, 151, 108, 0.2);">{{ student.prn_no|default:"---" }}</span>
             </td>
 
             <td>{{ student.email }}</td>

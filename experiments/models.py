@@ -246,11 +246,11 @@ class Batch(models.Model):
 
     name = models.CharField(max_length=100)
 
-    start_roll = models.IntegerField(
+    start_roll = models.BigIntegerField(
         help_text="Starting roll number"
     )
 
-    end_roll = models.IntegerField(
+    end_roll = models.BigIntegerField(
         help_text="Ending roll number"
     )
 

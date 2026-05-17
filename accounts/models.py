@@ -85,6 +85,14 @@ class User(AbstractUser):
         help_text="Student Roll Number"
     )
 
+    # PRN Number
+    prn_no = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        help_text="Student PRN Number"
+    )
+
     # Mobile Number
     mobile = models.CharField(
         max_length=15,
