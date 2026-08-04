@@ -1,1026 +1,1054 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About – G MARS Pharma Solution</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-
-/* ================= RESET ================= */
-*, *::before, *::after{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html, body{
-  max-width:100%;
-  overflow-x:hidden;
-}
-
-/* ================= VARIABLES ================= */
-:root{
-  --bg-dark:#05070f;
-  --bg-light:#ffffff;
-  --gold:#f4b400;
-  --text-dark:#e8eaf0;
-  --text-light:#000;
-  --text-dim:#9aa4b2;
-  --card-dark:#0c1222;
-  --border-dark:#1f2937;
-}
-
-/* ================= BODY ================= */
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--bg-dark);
-  color:var(--text-dark);
-  transition:0.4s ease;
-}
-
-body.light-mode{
-  background:var(--bg-light);
-  color:var(--text-light);
-}
-
-/* ================= NAVBAR ================= */
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 50px;
-  background:#060b16;
-}
-
-body.light-mode .navbar{
-  background:#fff;
-}
-
-.logo img{ height:150px; }
-
-.nav-links{
-  display:flex;
-  align-items:center;
-}
-
-.nav-links a{
-  margin-left:25px;
-  text-decoration:none;
-  color:inherit;
-  font-family:'Poppins',sans-serif;
-  font-weight:500;
-}
-
-.login-btn{
-  background:var(--gold);
-  color:#000!important;
-  padding:8px 18px;
-  border-radius:25px;
-}
-
-.theme-toggle{
-  margin-left:20px;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  cursor:pointer;
-  border:1px solid #444;
-  background:#111;
-  color:#fff;
-}
-
-body.light-mode .theme-toggle{
-  background:#fff;
-  color:#000;
-  border:1px solid #ddd;
-}
-
-/* ================= SIDEBAR ================= */
-.hamburger{ display:none; font-size:28px; cursor:pointer; }
-
-.sidebar{
-  position:fixed;
-  top:0;
-  right:-100%;
-  width:75%;
-  max-width:300px;
-  height:100vh;
-  background:#0c1222;
-  padding:100px 30px;
-  transition:0.4s;
-  z-index:200;
-}
-
-.sidebar.active{ right:0; }
-
-.sidebar a{
-  display:block;
-  margin-bottom:25px;
-  font-size:18px;
-  color:#fff;
-  text-decoration:none;
-}
-
-/* Sidebar Light Mode Fix */
-body.light-mode .sidebar{
-  background:#ffffff;
-}
-
-body.light-mode .sidebar a{
-  color:#000;
-}
-
-.mobile-theme-toggle{
-  margin-top:30px;
-  padding:12px;
-  border-radius:30px;
-  border:none;
-  background:var(--gold);
-  color:#000;
-  font-weight:600;
-  width:100%;
-}
-
-.sidebar-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.4);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:150;
-}
-
-.sidebar-overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-/* ================= SECTION ================= */
-.about-section{
-  padding:60px 60px 100px;
-  min-height:100vh;
-}
-
-.about-header small{
-  color:var(--gold);
-  letter-spacing:2px;
-  font-size:14px;
-}
-
-.about-header h1{
-  font-family:'Orbitron',monospace;
-  font-size:44px;
-  margin-top:10px;
-  line-height:1.2;
-}
-
-.about-header h1 span{
-  color:var(--gold);
-}
-
-.about-header p{
-  margin-top:15px;
-  color:var(--text-dim);
-  max-width:650px;
-  font-size:15px;
-  line-height:1.6;
-}
-
-/* ================= Mission ================= */
-.mission-section{
-  margin-top:60px;
-  background:var(--card-dark);
-  padding:40px;
-  border-radius:20px;
-  border:1px solid var(--border-dark);
-  transition:0.3s;
-}
-
-.mission-section:hover{
-  box-shadow:0 0 30px rgba(244,180,0,0.2);
-}
-
-.mission-section h2{
-  color:var(--gold);
-  margin-bottom:20px;
-}
-
-/* Light Mode Mission Fix */
-body.light-mode .mission-section{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-}
-
-body.light-mode .mission-section p{
-  color:#555;
-}
-
-/* ================= TEAM ================= */
-
-.team-section{
-  margin-top:80px;
-}
-
-.team-section h2{
-  font-size:36px;
-  margin-bottom:40px;
-}
-
-.team-section h2 span{
-  color:var(--gold);
-}
-
-/* DESKTOP LAYOUT */
-
-/* DESKTOP TEAM GRID */
-
-.team-container{
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap:25px;
-  align-items:start;
-}
-
-.team-card{
-  background:var(--card-dark);
-  border-radius:20px;
-  padding:30px 20px;
-  text-align:center;
-  width:100%;
-  border:1px solid var(--border-dark);
-  transition:0.3s;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.team-card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 0 30px rgba(244,180,0,0.3);
-}
-
-.team-card img{
-  margin-top:10px;
-  width:170px;
-  height:170px;
-  border-radius:50%;
-  object-fit:cover;
-  object-position:center 20%;
-  border:4px solid var(--gold);
-  margin-bottom:20px;
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
-}
-/* Fix first profile image head cut */
-.team-card:first-child img{
-  object-position:center 10%;
-}
-.team-card p{
-  color:var(--text-dim);
-  font-size:13px;
-}
-
-/* Light Mode Team Fix */
-body.light-mode .team-card{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-}
-
-body.light-mode .team-card p{
-  color:#555;
-}
-
-/* ================= Values ================= */
-.values{
-  margin-top:80px;
-  display:flex;
-  gap:30px;
-  flex-wrap:wrap;
-}
-
-.value-card{
-  background:var(--card-dark);
-  padding:30px;
-  border-radius:20px;
-  flex:1 1 calc(33% - 20px);
-  border:1px solid var(--border-dark);
-  transition:0.3s;
-}
-
-.value-card:hover{
-  box-shadow:0 0 30px rgba(244,180,0,0.2);
-}
-
-.value-card h4{
-  color:var(--gold);
-  margin-bottom:15px;
-}
-
-.value-card p{
-  color:var(--text-dim);
-  font-size:14px;
-}
-
-/* Light Mode Value Fix */
-body.light-mode .value-card{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-}
-
-body.light-mode .value-card p{
-  color:#555;
-}
-/* ================= CONTACT SECTION ================= */
-
-.contact-section{
-  margin-top:90px;
-  scroll-margin-top: 100px;
-}
-
-.contact-section h2{
-  font-size:36px;
-  margin-bottom:40px;
-}
-
-.contact-section h2 span{
-  color:var(--gold);
-}
-
-.contact-container{
-  display:flex;
-  justify-content:center;
-}
-
-.contact-card{
-  background:var(--card-dark);
-  padding:40px;
-  border-radius:20px;
-  border:1px solid var(--border-dark);
-  max-width:700px;
-  width:100%;
-  text-align:center;
-  transition:0.3s;
-}
-
-.contact-card:hover{
-  box-shadow:0 0 30px rgba(244,180,0,0.25);
-}
-
-.contact-item{
-  margin-bottom:20px;
-  font-size:15px;
-  color:var(--text-dim);
-}
-
-.contact-item strong{
-  color:var(--gold);
-}
-
-/* Light mode fix */
-
-body.light-mode .contact-card{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-}
-
-body.light-mode .contact-item{
-  color:#555;
-}
-/* clickable links */
-.contact-link{
-  color:#4db5ff;
-  text-decoration:none;
-  font-weight:600;
-  transition:0.3s;
-}
-
-.contact-link:hover{
-  color:#7fd1ff;
-  text-decoration:underline;
-}
-
-
-
-/* ============================= */
-/* FLOATING TRIAL PANEL */
-/* ============================= */
-
-.trial-panel{
-  position:fixed;
-  bottom:25px;
-  right:25px;
-  width:260px;
-  border-radius:14px;
-  overflow:hidden;
-
-  background:rgba(255,215,0,0.08);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(255,215,0,0.25);
-
-  font-family:'Poppins',sans-serif;
-  box-shadow:
-  0 10px 40px rgba(0,0,0,0.4),
-  inset 0 0 15px rgba(255,255,255,0.08);
-
-  z-index:999;
-}
-
-/* ============================= */
-/* BUTTON STYLE */
-/* ============================= */
-
-.trial-btn{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:16px 20px;
-  font-weight:600;
-  cursor:pointer;
-  transition:all 0.35s ease;
-  overflow:hidden;
-}
-
-/* VIDEO BUTTON (GOLD) */
-
-.trial-btn.video{
-  background:linear-gradient(
-    135deg,
-    #fff4c2,
-    #ffd700,
-    #d4a017
-  );
-  color:#3a2c00;
-}
-
-/* BROCHURE BUTTON (WHITE) */
-
-.trial-btn.brochure{
-  background:linear-gradient(
-    135deg,
-    #ffffff,
-    #f2f2f2
-  );
-  color:#333;
-  text-decoration:none;
-  border-top:1px solid rgba(255,215,0,0.25);
-}
-
-/* ============================= */
-/* GLITTER SHINE EFFECT */
-/* ============================= */
-
-.trial-btn::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:-120%;
-  width:60%;
-  height:100%;
-  background:linear-gradient(
-      120deg,
-      transparent,
-      rgba(255,255,255,0.8),
-      transparent
-  );
-  transform:skewX(-25deg);
-}
-
-.trial-btn:hover::before{
-  animation:shine 1s ease;
-}
-
-@keyframes shine{
-  100%{
-    left:130%;
-  }
-}
-
-/* ============================= */
-/* HOVER EFFECT */
-/* ============================= */
-
-.trial-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:
-  0 10px 20px rgba(0,0,0,0.4),
-  0 0 12px rgba(255,215,0,0.45);
-}
-
-/* ICON */
-
-.trial-icon{
-  font-size:20px;
-}
-
-/* ============================= */
-/* VIDEO POPUP */
-/* ============================= */
-
-.video-popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.9);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-
-.video-popup.active{
-  display:flex;
-}
-
-.video-box{
-  width:85%;
-  max-width:900px;
-  position:relative;
-}
-
-.video-box video{
-  width:100%;
-  border-radius:10px;
-}
-
-.close-video{
-  position:absolute;
-  top:-45px;
-  right:0;
-  font-size:32px;
-  cursor:pointer;
-}
-/* ============================= */
-/* FLOATING CONTACT ICONS */
-/* ============================= */
-
-.floating-contact{
-
-position:fixed;
-
-right:20px;   /* desktop right */
-left:auto;    /* reset mobile override */
-
-bottom:120px;
-
-display:flex;
-flex-direction:column;
-gap:14px;
-
-z-index:998;
-
-}
-
-/* icon container */
-
-.floating-contact a{
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-transition:0.3s ease;
-
-}
-
-/* icon size */
-
-.floating-contact img{
-
-width:50px;
-height:50px;
-
-object-fit:contain;
-
-transition:0.3s ease;
-
-}
-
-/* hover animation */
-
-.floating-contact a:hover img{
-
-transform:scale(1.15) translateY(-4px);
-
-}
-
-/* whatsapp glow */
-
-.floating-contact .whatsapp:hover img{
-
-filter:drop-shadow(0 0 12px #25D366);
-
-}
-
-/* gmail glow */
-
-.floating-contact .email:hover img{
-
-filter:drop-shadow(0 0 12px #EA4335);
-
-}
-
-/* ============================= */
-/* MOBILE */
-/* ============================= */
-
-@media(max-width:768px){
-
-.floating-contact{
-
-left:12px;    /* move to left */
-right:auto;
-bottom:20px;
-gap:8px;
-
-}
-
-.floating-contact img{
-
-width:43px;
-height:43px;
-
-}
-
-}
-
-/* ============================= */
-/* MOBILE RESPONSIVE */
-/* ============================= */
-
-@media(max-width:768px){
-
-.trial-panel{
-  width:90%;
-  right:5%;
-  left:5%;
-  bottom:20px;
-}
-
-.trial-btn{
-  justify-content:center;
-  font-size:15px;
-}
-
-.trial-icon{
-  font-size:18px;
-}
-
-}
-/* ================= MOBILE ================= */
-@media(max-width:900px){
-
-  .nav-links{ display:none; }
-
-  .hamburger{
-    display:block;
-    position:absolute;
-    right:20px;
-  }
-.logo img{ height:100px; }
-
-  .navbar{ padding:15px 20px; }
-
-  .about-section{
-    padding:40px 20px 80px;
-  }
-
-  .about-header h1{
-    font-size:28px;
-  }
-
-  /* TEAM MOBILE FIX */
-
-  .team-container{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:25px;
-  }
-
-  .team-card{
-    width:100%;
-    max-width:400px;
-  }
-
-  .value-card{
-    flex:1 1 100%;
-  }
-
-}
-.trial-panel{
-
-  width:170px;        /* smaller panel */
-  right:15px;
-  left:auto;          /* remove centering */
-  bottom:18px;
-
-  border-radius:12px;
-
-}
-
-.trial-btn{
-
-  padding:9px 12px;
-  font-size:12px;
-  gap:8px;
-
-}
-
-.trial-icon{
-  font-size:14px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About – G MARS Pharma Solution</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ================= RESET ================= */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* ================= VARIABLES ================= */
+    :root {
+      --bg-dark: #05070f;
+      --bg-light: #ffffff;
+      --gold: #f4b400;
+      --text-dark: #e8eaf0;
+      --text-light: #000;
+      --text-dim: #9aa4b2;
+      --card-dark: #0c1222;
+      --border-dark: #1f2937;
+    }
+
+    /* ================= BODY ================= */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: 0.4s ease;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    /* ================= NAVBAR ================= */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: #060b16;
+    }
+
+    body.light-mode .navbar {
+      background: #fff;
+    }
+
+    .logo img {
+      height: 150px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: inherit;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+    }
+
+    .login-btn {
+      background: var(--gold);
+      color: #000 !important;
+      padding: 8px 18px;
+      border-radius: 25px;
+    }
+
+    .theme-toggle {
+      margin-left: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid #444;
+      background: #111;
+      color: #fff;
+    }
+
+    body.light-mode .theme-toggle {
+      background: #fff;
+      color: #000;
+      border: 1px solid #ddd;
+    }
+
+    /* ================= SIDEBAR ================= */
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      max-width: 300px;
+      height: 100vh;
+      background: #0c1222;
+      padding: 100px 30px;
+      transition: 0.4s;
+      z-index: 200;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      margin-bottom: 25px;
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Sidebar Light Mode Fix */
+    body.light-mode .sidebar {
+      background: #ffffff;
+    }
+
+    body.light-mode .sidebar a {
+      color: #000;
+    }
+
+    .mobile-theme-toggle {
+      margin-top: 30px;
+      padding: 12px;
+      border-radius: 30px;
+      border: none;
+      background: var(--gold);
+      color: #000;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 150;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ================= SECTION ================= */
+    .about-section {
+      padding: 60px 60px 100px;
+      min-height: 100vh;
+    }
+
+    .about-header small {
+      color: var(--gold);
+      letter-spacing: 2px;
+      font-size: 14px;
+    }
+
+    .about-header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 44px;
+      margin-top: 10px;
+      line-height: 1.2;
+    }
+
+    .about-header h1 span {
+      color: var(--gold);
+    }
+
+    .about-header p {
+      margin-top: 15px;
+      color: var(--text-dim);
+      max-width: 650px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ================= Mission ================= */
+    .mission-section {
+      margin-top: 60px;
+      background: var(--card-dark);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid var(--border-dark);
+      transition: 0.3s;
+    }
+
+    .mission-section:hover {
+      box-shadow: 0 0 30px rgba(244, 180, 0, 0.2);
+    }
+
+    .mission-section h2 {
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    /* Light Mode Mission Fix */
+    body.light-mode .mission-section {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+
+    body.light-mode .mission-section p {
+      color: #555;
+    }
+
+    /* ================= TEAM ================= */
+
+    .team-section {
+      margin-top: 80px;
+    }
+
+    .team-section h2 {
+      font-size: 36px;
+      margin-bottom: 40px;
+    }
+
+    .team-section h2 span {
+      color: var(--gold);
+    }
+
+    /* DESKTOP LAYOUT */
+
+    /* DESKTOP TEAM GRID */
+
+    .team-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 25px;
+      align-items: start;
+    }
+
+    .team-card {
+      background: var(--card-dark);
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      width: 100%;
+      border: 1px solid var(--border-dark);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(244, 180, 0, 0.3);
+    }
+
+    .team-card img {
+      margin-top: 10px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 20%;
+      border: 4px solid var(--gold);
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Fix first profile image head cut */
+    .team-card:first-child img {
+      object-position: center 10%;
+    }
+
+    .team-card p {
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    /* Light Mode Team Fix */
+    body.light-mode .team-card {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+
+    body.light-mode .team-card p {
+      color: #555;
+    }
+
+    /* ================= Values ================= */
+    .values {
+      margin-top: 80px;
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .value-card {
+      background: var(--card-dark);
+      padding: 30px;
+      border-radius: 20px;
+      flex: 1 1 calc(33% - 20px);
+      border: 1px solid var(--border-dark);
+      transition: 0.3s;
+    }
+
+    .value-card:hover {
+      box-shadow: 0 0 30px rgba(244, 180, 0, 0.2);
+    }
+
+    .value-card h4 {
+      color: var(--gold);
+      margin-bottom: 15px;
+    }
+
+    .value-card p {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Light Mode Value Fix */
+    body.light-mode .value-card {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+
+    body.light-mode .value-card p {
+      color: #555;
+    }
+
+    /* ================= CONTACT SECTION ================= */
+
+    .contact-section {
+      margin-top: 90px;
+      scroll-margin-top: 100px;
+    }
+
+    .contact-section h2 {
+      font-size: 36px;
+      margin-bottom: 40px;
+    }
+
+    .contact-section h2 span {
+      color: var(--gold);
+    }
+
+    .contact-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .contact-card {
+      background: var(--card-dark);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid var(--border-dark);
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .contact-card:hover {
+      box-shadow: 0 0 30px rgba(244, 180, 0, 0.25);
+    }
+
+    .contact-item {
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: var(--text-dim);
+    }
+
+    .contact-item strong {
+      color: var(--gold);
+    }
+
+    /* Light mode fix */
+
+    body.light-mode .contact-card {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+
+    body.light-mode .contact-item {
+      color: #555;
+    }
+
+    /* clickable links */
+    .contact-link {
+      color: #4db5ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .contact-link:hover {
+      color: #7fd1ff;
+      text-decoration: underline;
+    }
+
+
+
+    /* ============================= */
+    /* FLOATING TRIAL PANEL */
+    /* ============================= */
+
+    .trial-panel {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 260px;
+      border-radius: 14px;
+      overflow: hidden;
+
+      background: rgba(255, 215, 0, 0.08);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+
+      font-family: 'Poppins', sans-serif;
+      box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.08);
+
+      z-index: 999;
+    }
+
+    /* ============================= */
+    /* BUTTON STYLE */
+    /* ============================= */
+
+    .trial-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      overflow: hidden;
+    }
+
+    /* VIDEO BUTTON (GOLD) */
+
+    .trial-btn.video {
+      background: linear-gradient(135deg,
+          #fff4c2,
+          #ffd700,
+          #d4a017);
+      color: #3a2c00;
+    }
+
+    /* BROCHURE BUTTON (WHITE) */
+
+    .trial-btn.brochure {
+      background: linear-gradient(135deg,
+          #ffffff,
+          #f2f2f2);
+      color: #333;
+      text-decoration: none;
+      border-top: 1px solid rgba(255, 215, 0, 0.25);
+    }
+
+    /* ============================= */
+    /* GLITTER SHINE EFFECT */
+    /* ============================= */
+
+    .trial-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg,
+          transparent,
+          rgba(255, 255, 255, 0.8),
+          transparent);
+      transform: skewX(-25deg);
+    }
+
+    .trial-btn:hover::before {
+      animation: shine 1s ease;
+    }
+
+    @keyframes shine {
+      100% {
+        left: 130%;
+      }
+    }
+
+    /* ============================= */
+    /* HOVER EFFECT */
+    /* ============================= */
+
+    .trial-btn:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(255, 215, 0, 0.45);
+    }
+
+    /* ICON */
+
+    .trial-icon {
+      font-size: 20px;
+    }
+
+    /* ============================= */
+    /* VIDEO POPUP */
+    /* ============================= */
+
+    .video-popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .video-popup.active {
+      display: flex;
+    }
+
+    .video-box {
+      width: 85%;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .video-box video {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .close-video {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      font-size: 32px;
+      cursor: pointer;
+    }
+
+    /* ============================= */
+    /* FLOATING CONTACT ICONS */
+    /* ============================= */
+
+    .floating-contact {
+
+      position: fixed;
+
+      right: 20px;
+      /* desktop right */
+      left: auto;
+      /* reset mobile override */
+
+      bottom: 120px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+
+      z-index: 998;
+
+    }
+
+    /* icon container */
+
+    .floating-contact a {
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: 0.3s ease;
+
+    }
+
+    /* icon size */
+
+    .floating-contact img {
+
+      width: 50px;
+      height: 50px;
+
+      object-fit: contain;
+
+      transition: 0.3s ease;
+
+    }
+
+    /* hover animation */
+
+    .floating-contact a:hover img {
+
+      transform: scale(1.15) translateY(-4px);
+
+    }
+
+    /* whatsapp glow */
+
+    .floating-contact .whatsapp:hover img {
+
+      filter: drop-shadow(0 0 12px #25D366);
+
+    }
+
+    /* gmail glow */
+
+    .floating-contact .email:hover img {
+
+      filter: drop-shadow(0 0 12px #EA4335);
+
+    }
+
+    /* ============================= */
+    /* MOBILE */
+    /* ============================= */
+
+    @media(max-width:768px) {
+
+      .floating-contact {
+
+        left: 12px;
+        /* move to left */
+        right: auto;
+        bottom: 20px;
+        gap: 8px;
+
+      }
+
+      .floating-contact img {
+
+        width: 43px;
+        height: 43px;
+
+      }
+
+    }
+
+    /* ============================= */
+    /* MOBILE RESPONSIVE */
+    /* ============================= */
+
+    @media(max-width:768px) {
+
+      .trial-panel {
+        width: 90%;
+        right: 5%;
+        left: 5%;
+        bottom: 20px;
+      }
+
+      .trial-btn {
+        justify-content: center;
+        font-size: 15px;
+      }
+
+      .trial-icon {
+        font-size: 18px;
+      }
+
+    }
+
+    /* ================= MOBILE ================= */
+    @media(max-width:900px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+        position: absolute;
+        right: 20px;
+      }
+
+      .logo img {
+        height: 100px;
+      }
+
+      .navbar {
+        padding: 15px 20px;
+      }
+
+      .about-section {
+        padding: 40px 20px 80px;
+      }
+
+      .about-header h1 {
+        font-size: 28px;
+      }
+
+      /* TEAM MOBILE FIX */
+
+      .team-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+      }
+
+      .team-card {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .value-card {
+        flex: 1 1 100%;
+      }
+
+    }
+
+    .trial-panel {
+
+      width: 170px;
+      /* smaller panel */
+      right: 15px;
+      left: auto;
+      /* remove centering */
+      bottom: 18px;
+
+      border-radius: 12px;
+
+    }
+
+    .trial-btn {
+
+      padding: 9px 12px;
+      font-size: 12px;
+      gap: 8px;
+
+    }
+
+    .trial-icon {
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="logo">
-    <img src="{% static 'images/logo.png' %}" alt="Logo">
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="logo">
+      <img src="{% static 'images/logo.png' %}" alt="Logo">
+    </div>
+
+    <div class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'features' %}">Features</a>
+      <a href="{% url 'experiments' %}">Experiments</a>
+      <a href="{% url 'pricing' %}">Pricing</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'login' %}" class="login-btn">Login</a>
+      <button id="themeToggle" class="theme-toggle">🌙</button>
+    </div>
+
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
   </div>
 
-  <div class="nav-links">
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'features' %}">Features</a>
-    <a href="{% url 'experiments' %}">Experiments</a>
-    <a href="{% url 'pricing' %}">Pricing</a>
-    <a href="{% url 'about' %}">About</a>
-    <a href="{% url 'login' %}" class="login-btn">Login</a>
-    <button id="themeToggle" class="theme-toggle">🌙</button>
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <a href="{% url 'home' %}">🏠 Home</a>
+    <a href="{% url 'features' %}">✨ Features</a>
+    <a href="{% url 'experiments' %}">🧪 Experiments</a>
+    <a href="{% url 'pricing' %}">💳 Pricing</a>
+    <a href="{% url 'about' %}">👨‍💻 About</a>
+    <a href="{% url 'login' %}">🔐 Login</a>
+    <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
   </div>
 
-  <div class="hamburger" onclick="toggleSidebar()">☰</div>
-</div>
+  <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <a href="{% url 'home' %}">🏠 Home</a>
-  <a href="{% url 'features' %}">✨ Features</a>
-  <a href="{% url 'experiments' %}">🧪 Experiments</a>
-  <a href="{% url 'pricing' %}">💳 Pricing</a>
-  <a href="{% url 'about' %}">👨‍💻 About</a>
-  <a href="{% url 'login' %}">🔐 Login</a>
-  <button onclick="toggleTheme()" class="mobile-theme-toggle">🌗 Toggle Theme</button>
-</div>
+  <!-- CONTENT -->
+  <section class="about-section">
 
-<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="about-header">
+      <small>ABOUT GMARS</small>
+      <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
+      <p>
+        GMARS Tech Solutions is a next-generation virtual pharmacology simulation platform designed to transform
+        practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning
+        intelligent, accessible and scalable.
+      </p>
+    </div>
 
-<!-- CONTENT -->
-<section class="about-section">
+    <div class="mission-section">
+      <h2>Our Mission</h2>
+      <p>
+        We aim to bridge the gap between theoretical pharmacology education and real-world laboratory experience through
+        advanced digital simulation technology. G MARS empowers colleges with AI-driven evaluation, automated practical
+        journals, real-time analytics, and multi-tenant SaaS infrastructure.
+      </p>
+    </div>
 
-<div class="about-header">
-  <small>ABOUT GMARS</small>
-  <h1>Building The Future Of<br><span>Virtual Pharmacology Labs</span></h1>
-  <p>
-    GMARS Tech Solutions is a next-generation virtual pharmacology simulation platform designed to transform practical education in D.Pharm, B.Pharm and M.Pharm institutions. Our goal is to make laboratory learning intelligent, accessible and scalable.
-  </p>
-</div>
+    <!-- Team -->
+    <div class="team-section">
+      <h2>Meet Our <span>Core Team</span></h2>
 
-<div class="mission-section">
-  <h2>Our Mission</h2>
-  <p>
-    We aim to bridge the gap between theoretical pharmacology education and real-world laboratory experience through advanced digital simulation technology. G MARS empowers colleges with AI-driven evaluation, automated practical journals, real-time analytics, and multi-tenant SaaS infrastructure.
-  </p>
-</div>
+      <div class="team-container">
 
-<!-- Team -->
-<div class="team-section">
-<h2>Meet Our <span>Core Team</span></h2>
+        <!-- Ganesh Dama -->
+        <div class="team-card">
+          <img src="{% static 'images/member1.png' %}" alt="Dr. Ganesh Y Dama">
+          <h3>Dr. Ganesh Yogiraj Dama</h3>
+          <p><strong>Founder – GMARS Tech Solutions</strong></p>
+          <p>
+            He is a distinguished academic and administrator in pharmacy education in India.
+            He serves as Professor and Principal at Sharadchandra Pawar College of Pharmacy,
+            Otur (Pune), Maharashtra, with over 24 years of experience in teaching and research.
+            Specializing in pharmacognosy, he has authored/co-authored books including
+            “Basics and Fundamentals of Nanoscience”, published numerous research papers
+            (47+ works with 346+ citations), and guides PhD students. He also chairs the
+            Board of Studies at SPPU Pune and is widely respected as a mentor inspiring
+            students and faculty.
+          </p>
+        </div>
 
-<div class="team-container">
+        <!-- Sumit Joshi -->
+        <div class="team-card">
+          <img src="{% static 'images/member 5.png' %}" alt="Dr. Sumit A Joshi">
+          <h3>Dr. Sumit Ashok Joshi</h3>
+          <p><strong>Founder – GMARS Tech Solutions</strong></p>
+          <p>
+            He is a dedicated pharmaceutical researcher and faculty member at Shri Gajanan
+            Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College of Pharmacy,
+            Otur, Pune. His research focuses on formulation development, nanotechnology,
+            analytical method validation, and novel drug delivery systems.
+            He has co-authored PCI-aligned textbooks and practical handbooks including
+            “Basics and Fundamentals of Nanoscience”. Dr. Joshi is a co-inventor in multiple
+            patents and actively contributes to research, innovation, and industry consultancy.
+          </p>
+        </div>
 
-<!-- Ganesh Dama -->
-<div class="team-card">
-<img src="{% static 'images/member1.png' %}" alt="Dr. Ganesh Y Dama">
-<h3>Dr. Ganesh Yogiraj Dama</h3>
-<p><strong>Founder – GMARS Tech Solutions</strong></p>
-<p>
-He is a distinguished academic and administrator in pharmacy education in India. 
-He serves as Professor and Principal at Sharadchandra Pawar College of Pharmacy, 
-Otur (Pune), Maharashtra, with over 24 years of experience in teaching and research. 
-Specializing in pharmacognosy, he has authored/co-authored books including 
-“Basics and Fundamentals of Nanoscience”, published numerous research papers 
-(47+ works with 346+ citations), and guides PhD students. He also chairs the 
-Board of Studies at SPPU Pune and is widely respected as a mentor inspiring 
-students and faculty.
-</p>
-</div>
+        <!-- Shriram Pethakar -->
+        <div class="team-card">
+          <img src="{% static 'images/member 4.png' %}" alt="Dr. Shriram R Pethakar">
+          <h3>Dr. Shriram Ramesh Pethakar</h3>
+          <p><strong>Founder – GMARS Tech Solutions</strong></p>
+          <p>
+            He is currently working as Principal at Shramjivi Shikshan Prasarak
+            Mandal’s Shramjivi College of Pharmacy, Omerga. With over 15 years
+            of teaching and industry experience, he is recognized as a
+            distinguished researcher and academic administrator.
+            He completed his Ph.D. from KLE University, Belagavi, has published
+            more than 15 research articles, and holds 9 patents. His work focuses
+            on innovation, research advancement, and institutional development
+            in pharmaceutical education.
+          </p>
+        </div>
 
-<!-- Sumit Joshi -->
-<div class="team-card">
-<img src="{% static 'images/member 5.png' %}" alt="Dr. Sumit A Joshi">
-<h3>Dr. Sumit Ashok Joshi</h3>
-<p><strong>Founder – GMARS Tech Solutions</strong></p>
-<p>
-He is a dedicated pharmaceutical researcher and faculty member at Shri Gajanan 
-Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College of Pharmacy, 
-Otur, Pune. His research focuses on formulation development, nanotechnology, 
-analytical method validation, and novel drug delivery systems. 
-He has co-authored PCI-aligned textbooks and practical handbooks including 
-“Basics and Fundamentals of Nanoscience”. Dr. Joshi is a co-inventor in multiple 
-patents and actively contributes to research, innovation, and industry consultancy.
-</p>
-</div>
+        <!-- Abhishek Meher -->
+        <div class="team-card">
+          <img src="{% static 'images/member2.png' %}" alt="Dr. Abhishek D Meher">
+          <h3>Dr. Abhishek Dattatray Meher</h3>
+          <p><strong>Founder – GMARS Tech Solutions</strong></p>
+          <p>
+            He is the Founder of GMARS Tech Solutions and a dynamic faculty member at
+            Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College
+            of Pharmacy, Otur, Pune since 2019–20. A highly innovative researcher in
+            pharmaceutical sciences, he has published 10 research articles and holds
+            5 patents. His work focuses on novel drug delivery systems and development
+            of advanced digital teaching tools including the GMARS Pharma Solution
+            virtual pharmacology simulation software.
+          </p>
+        </div>
 
-<!-- Shriram Pethakar -->
-<div class="team-card">
-<img src="{% static 'images/member 4.png' %}" alt="Dr. Shriram R Pethakar">
-<h3>Dr. Shriram Ramesh Pethakar</h3>
-<p><strong>Founder – GMARS Tech Solutions</strong></p>
-<p>
-He is currently working as Principal at Shramjivi Shikshan Prasarak 
-Mandal’s Shramjivi College of Pharmacy, Omerga. With over 15 years 
-of teaching and industry experience, he is recognized as a 
-distinguished researcher and academic administrator. 
-He completed his Ph.D. from KLE University, Belagavi, has published 
-more than 15 research articles, and holds 9 patents. His work focuses 
-on innovation, research advancement, and institutional development 
-in pharmaceutical education.
-</p>
-</div>
-
-<!-- Abhishek Meher -->
-<div class="team-card">
-<img src="{% static 'images/member2.png' %}" alt="Dr. Abhishek D Meher">
-<h3>Dr. Abhishek Dattatray Meher</h3>
-<p><strong>Founder – GMARS Tech Solutions</strong></p>
-<p>
-He is the Founder of GMARS Tech Solutions and a dynamic faculty member at 
-Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar College 
-of Pharmacy, Otur, Pune since 2019–20. A highly innovative researcher in 
-pharmaceutical sciences, he has published 10 research articles and holds 
-5 patents. His work focuses on novel drug delivery systems and development 
-of advanced digital teaching tools including the GMARS Pharma Solution 
-virtual pharmacology simulation software.
-</p>
-</div>
-
-<!-- Ashwini Gawade -->
-<div class="team-card">
-<img src="{% static 'images/member3.png' %}" alt="Prof. Ashwini S Gawade">
-<h3>Prof. Ashwini Sukharaj Gawade</h3>
-<p><strong>Founder – GMARS Tech Solutions</strong></p>
-<p>
-She is a dedicated and passionate pharmacologist serving at 
-Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar 
-College of Pharmacy, Otur, Pune for more than 12 years. Through her 
-outstanding teaching, student mentoring, and innovative approaches 
-in pharmacology education, she has contributed significantly to 
-academic excellence and practical learning for B.Pharm students.
-</p>
-</div>
+        <!-- Ashwini Gawade -->
+        <div class="team-card">
+          <img src="{% static 'images/member6.jpeg' %}" alt="Prof. Ashwini S Gawade">
+          <h3>Prof. Ashwini Sukharaj Gawade</h3>
+          <p><strong>Founder – GMARS Tech Solutions</strong></p>
+          <p>
+            She is a dedicated and passionate pharmacologist serving at
+            Shri Gajanan Maharaj Shikshan Prasarak Mandal’s Sharadchandra Pawar
+            College of Pharmacy, Otur, Pune for more than 12 years. Through her
+            outstanding teaching, student mentoring, and innovative approaches
+            in pharmacology education, she has contributed significantly to
+            academic excellence and practical learning for B.Pharm students.
+          </p>
+        </div>
 
 
 
-</div>
-</div>
+      </div>
+    </div>
 
-        <!-- CONTACT US -->
-<div class="contact-section">
+    <!-- CONTACT US -->
+    <div class="contact-section">
 
-<h2>Contact <span>Us</span></h2>
+      <h2>Contact <span>Us</span></h2>
 
-<div class="contact-container">
+      <div class="contact-container">
 
-<div class="contact-card">
+        <div class="contact-card">
 
-<div class="contact-item">
-<strong>Corporate Address</strong><br>
-Eternia, Flat No A-1103, Survey No. 53,<br>
-B T Kawade Road, 93-Avenue, Ghorpadi,<br>
-Pune City, Pune – 411002
-</div>
+          <div class="contact-item">
+            <strong>Corporate Address</strong><br>
+            Eternia, Flat No A-1103, Survey No. 53,<br>
+            B T Kawade Road, 93-Avenue, Ghorpadi,<br>
+            Pune City, Pune – 411002
+          </div>
 
-<div class="contact-item">
-<strong>Mobile</strong><br>
-<a href="tel:+917875526666" class="contact-link">
-+91 7875526666
-</a>
-</div>
+          <div class="contact-item">
+            <strong>Mobile</strong><br>
+            <a href="tel:+917875526666" class="contact-link">
+              +91 7875526666
+            </a>
+          </div>
 
-<div class="contact-item">
-<strong>Email</strong><br>
-<a href="mailto:info@gmars.co.in" class="contact-link">
-info@gmars.co.in
-</a>
-</div>
+          <div class="contact-item">
+            <strong>Email</strong><br>
+            <a href="mailto:info@gmars.co.in" class="contact-link">
+              info@gmars.co.in
+            </a>
+          </div>
 
-<div class="contact-item">
-<strong>Website</strong><br>
-www.gmars.co.in
-</div>
+          <div class="contact-item">
+            <strong>Website</strong><br>
+            www.gmars.co.in
+          </div>
 
-</div>
+        </div>
 
-</div>
-
-</div>
+      </div>
 
     </div>
-</div>
 
-</section>
-<!-- ================================== -->
-<!-- FREE TRIAL + BROCHURE PANEL -->
-<!-- ================================== -->
+    </div>
+    </div>
 
-<div class="trial-panel">
+  </section>
+  <!-- ================================== -->
+  <!-- FREE TRIAL + BROCHURE PANEL -->
+  <!-- ================================== -->
 
-  <!-- FREE VIDEO TRIAL -->
-  <div class="trial-btn video" onclick="openVideo()">
-    <span class="trial-icon">➤</span>
-    Free Video Trial
-  </div>
+  <div class="trial-panel">
 
-  <!-- DOWNLOAD BROCHURE -->
-  <a class="trial-btn brochure"
-     href="{% static 'brochure/gmars-brochure.pdf' %}"
-     download>
+    <!-- FREE VIDEO TRIAL -->
+    <div class="trial-btn video" onclick="openVideo()">
+      <span class="trial-icon">➤</span>
+      Free Video Trial
+    </div>
 
-     <span class="trial-icon">⬇</span>
-     Download Brochure
-  </a>
+    <!-- DOWNLOAD BROCHURE -->
+    <a class="trial-btn brochure" href="{% static 'brochure/gmars-brochure.pdf' %}" download>
 
-</div>
-
-
-<!-- ================================== -->
-<!-- VIDEO POPUP PLAYER -->
-<!-- ================================== -->
-
-<div class="video-popup" id="videoPopup">
-
-  <div class="video-box">
-
-    <div class="close-video" onclick="closeVideo()">✕</div>
-
-    <video controls id="trialVideo">
-      <source src="{% static 'videos/free-trial.mp4' %}" type="video/mp4">
-    </video>
+      <span class="trial-icon">⬇</span>
+      Download Brochure
+    </a>
 
   </div>
 
-</div>
-<!-- FLOATING CONTACT BUTTONS -->
 
-<div class="floating-contact">
+  <!-- ================================== -->
+  <!-- VIDEO POPUP PLAYER -->
+  <!-- ================================== -->
 
-<a href="https://wa.me/917875526666?text=Hello%20GMARS%20Tech%20Solutions%20Team,%20We%20are%20interested%20in%20purchasing%20the%20GMARS%20Tech%20Solutions%20software."
-target="_blank"
-class="whatsapp">
+  <div class="video-popup" id="videoPopup">
 
-<img src="{% static 'images/whatsappppp.png' %}" alt="WhatsApp">
+    <div class="video-box">
 
-</a>
+      <div class="close-video" onclick="closeVideo()">✕</div>
 
-<a href="mailto:info@gmars.co.in" class="email">
+      <video controls id="trialVideo">
+        <source src="{% static 'videos/free-trial.mp4' %}" type="video/mp4">
+      </video>
 
-<img src="{% static 'images/email.png' %}" alt="Email">
+    </div>
 
-</a>
+  </div>
+  <!-- FLOATING CONTACT BUTTONS -->
 
-</div>
-<script>
-const toggleBtn=document.getElementById("themeToggle");
+  <div class="floating-contact">
 
-function toggleTheme(){
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem("theme",
-    document.body.classList.contains("light-mode") ? "light":"dark"
-  );
-}
+    <a href="https://wa.me/917875526666?text=Hello%20GMARS%20Tech%20Solutions%20Team,%20We%20are%20interested%20in%20purchasing%20the%20GMARS%20Tech%20Solutions%20software."
+      target="_blank" class="whatsapp">
 
-if(localStorage.getItem("theme")==="light"){
-  document.body.classList.add("light-mode");
-}
+      <img src="{% static 'images/whatsappppp.png' %}" alt="WhatsApp">
 
-if(toggleBtn){
-  toggleBtn.addEventListener("click",toggleTheme);
-}
+    </a>
 
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
-}
-function openVideo(){
-  document.getElementById("videoPopup").classList.add("active");
-}
+    <a href="mailto:info@gmars.co.in" class="email">
 
-function closeVideo(){
-  const popup = document.getElementById("videoPopup");
-  const video = document.getElementById("trialVideo");
+      <img src="{% static 'images/email.png' %}" alt="Email">
 
-  popup.classList.remove("active");
-  video.pause();
-}
-</script>
+    </a>
+
+  </div>
+  <script>
+    const toggleBtn = document.getElementById("themeToggle");
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      localStorage.setItem("theme",
+        document.body.classList.contains("light-mode") ? "light" : "dark"
+      );
+    }
+
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light-mode");
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", toggleTheme);
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+      document.getElementById("overlay").classList.toggle("active");
+    }
+    function openVideo() {
+      document.getElementById("videoPopup").classList.add("active");
+    }
+
+    function closeVideo() {
+      const popup = document.getElementById("videoPopup");
+      const video = document.getElementById("trialVideo");
+
+      popup.classList.remove("active");
+      video.pause();
+    }
+  </script>
 
 </body>
+
 </html>
