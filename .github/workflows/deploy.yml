@@ -17,8 +17,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
             cd /home/ubuntu/virtual-lab-backend
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             source /home/ubuntu/virtual-lab-backend/venv/bin/activate
             pip install -r requirements.txt
             python manage.py migrate
