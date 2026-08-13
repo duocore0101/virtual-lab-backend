@@ -134,6 +134,53 @@ initTheme();
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', upgradeTopActionsUI);
+    document.addEventListener('DOMContentLoaded', initTableScraper);
 } else {
     upgradeTopActionsUI();
+    initTableScraper();
+}
+
+/**
+ * Automatically scrapes any .observation-table and saves it to localStorage.
+ * This ensures that when the user goes to the conclusion page, the PDF generator has the latest data.
+ */
+function initTableScraper() {
+    const match = window.location.pathname.match(/\/experiment\/([^\/]+)\//);
+    if (!match) return;
+    const slug = match[1];
+
+    function saveTable() {
+        const table = document.querySelector('.observation-table') || document.querySelector('.preview-table') || document.querySelector('table');
+        if (!table) return;
+
+        let tableData = [];
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            let rowData = [];
+            const cells = row.querySelectorAll('th, td');
+            cells.forEach(cell => {
+                const input = cell.querySelector('input');
+                if (input) {
+                    rowData.push(input.value.trim());
+                } else {
+                    rowData.push(cell.textContent.trim());
+                }
+            });
+            // Consider a row a placeholder if all cells (except possibly the first column label) are empty, 0, or —
+            const dataCells = rowData.length > 1 ? rowData.slice(1) : rowData;
+            const isPlaceholder = dataCells.every(c => c === "" || c === "—" || c === "0" || c.toLowerCase().includes("mouse"));
+            if (rowData.length > 0 && !isPlaceholder) tableData.push(rowData);
+        });
+
+        if (tableData.length > 0) {
+            localStorage.setItem('exp_data_' + slug, JSON.stringify(tableData));
+        }
+    }
+
+    // Save periodically and when leaving the page
+    setInterval(saveTable, 2000);
+    window.addEventListener('beforeunload', saveTable);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') saveTable();
+    });
 }

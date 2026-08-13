@@ -398,7 +398,7 @@ def generate_experiment_pdf(request, slug):
     obs_table = post_data.get("table_data", []) # Expected: list of lists
     
     # 🌟 NEW: Fetch live data from database if POST data is missing/incomplete
-    if (not obs_table or len(obs_table) < 2) and role == "student":
+    if (not obs_table or not isinstance(obs_table, list) or len(obs_table) < 2) and role == "student":
         try:
             latest_attempt = ExperimentAttempt.objects.filter(
                 student=user, 
@@ -428,8 +428,8 @@ def generate_experiment_pdf(request, slug):
         except Exception:
             pass
 
-    # Fallback to default table structure if data is still missing
-    if not obs_table or len(obs_table) < 2:
+    # Fallback to default table structure if data is still missing or invalid
+    if not obs_table or not isinstance(obs_table, list) or len(obs_table) < 2 or not isinstance(obs_table[0], list):
         default_html = EXPERIMENT_TABLES.get(slug, "")
         if default_html:
             obs_table = parse_html_table(default_html)
@@ -486,7 +486,13 @@ def generate_experiment_pdf(request, slug):
     if college and college.logo:
         try:
             if os.path.exists(college.logo.path):
-                logo_path = college.logo.path
+                from PIL import Image as PILImage
+                try:
+                    with PILImage.open(college.logo.path) as img:
+                        img.verify()
+                    logo_path = college.logo.path
+                except Exception:
+                    pass
         except: pass
 
     name_style = ParagraphStyle('CN', parent=styles['Normal'], fontName=get_font('Cambria-Bold'), fontSize=22, alignment=0, leading=24, textColor=colors.HexColor("#1e3a8a"))
@@ -579,7 +585,8 @@ def generate_experiment_pdf(request, slug):
             table_content.append(table_row)
 
         if table_content:
-            t = Table(table_content, hAlign='LEFT', colWidths=[(A4[0]-60)/len(obs_table[0])] * len(obs_table[0]))
+            max_cols = max(len(row) for row in obs_table) if obs_table else 1
+            t = Table(table_content, hAlign='LEFT', colWidths=[(A4[0]-60)/max_cols] * max_cols)
             t.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#f3f4f6")),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor("#111827")),
@@ -627,6 +634,8 @@ def generate_experiment_pdf(request, slug):
     try:
         doc.build(elements, onFirstPage=page_setup, onLaterPages=page_setup)
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return HttpResponse(f"Error: {str(e)}", status=500)
     
     response = HttpResponse(content_type='application/pdf')

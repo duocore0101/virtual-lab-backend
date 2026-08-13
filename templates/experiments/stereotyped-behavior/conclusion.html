@@ -196,9 +196,32 @@
     function downloadPDF() {
       const slug = "{{ experiment.slug }}";
       let tableData = [];
-      const saved = localStorage.getItem('stereotypy_data');
-      if (saved) {
-        tableData = JSON.parse(saved);
+      const globalSaved = localStorage.getItem('exp_data_' + slug);
+      if (globalSaved) {
+        try {
+          tableData = JSON.parse(globalSaved);
+        } catch(e) {}
+      }
+
+      // Fallback for backwards compatibility
+      if (tableData.length === 0) {
+        const saved = localStorage.getItem('stereotypy_data');
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              // Convert to 2D array expected by backend
+              tableData = [
+                ["Mouse No.", "Baseline Score (A)", "After Drug Score (B)", "Difference"],
+                ["1", parsed.A || "0", parsed.B || "0", (parsed.B !== undefined && parsed.A !== undefined) ? (parsed.B - parsed.A).toString() : "0"]
+              ];
+            } else if (Array.isArray(parsed)) {
+              tableData = parsed;
+            }
+          } catch (e) {
+            console.error("Error parsing stereotypy_data", e);
+          }
+        }
       }
 
       fetch(`/experiment/${slug}/download-pdf/`, {
@@ -239,7 +262,7 @@
     }
   </script>
 
-  <script src="{% static 'js/theme-toggle.js' %}?v=25"></script>
+  <script src="{% static 'js/theme-toggle.js' %}?v=27"></script>
 </body>
 
 </html>
