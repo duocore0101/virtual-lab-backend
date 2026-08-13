@@ -154,14 +154,13 @@ AWS_S3_OBJECT_PARAMETERS = {
 # STATIC & MEDIA STORAGE
 # --------------------------------------------------
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 if DEBUG:
     # LOCAL DEVELOPMENT
     STATIC_URL = '/static/'
-
-    STATICFILES_DIRS = [
-        BASE_DIR / "static",
-    ]
-
     STATIC_ROOT = BASE_DIR / "staticfiles"
 
     MEDIA_URL = '/media/'
