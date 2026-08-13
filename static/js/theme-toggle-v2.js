@@ -184,3 +184,4 @@ function initTableScraper() {
         if (document.visibilityState === 'hidden') saveTable();
     });
 }
+// trigger collectstatic
